@@ -100,7 +100,7 @@ function Index(userData)
 				// more event
 				$newItems.filter('.more').on('click', function(e){
 					var $more = $(this);
-					self.userData.loadItemsUrl = self.updateUrl(userData.loadItemsUrl);
+					userData.loadItemsUrl = self.updateUrl(userData.loadItemsUrl);
 
 					var url = self.updateUrl(window.location.pathname + location.search);
 					if (window.history.pushState)
