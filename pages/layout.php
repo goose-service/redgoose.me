@@ -83,7 +83,7 @@ $pref['meta']['description'] = ($og['description']) ? $og['description'] : $pref
 <main>
 	<!-- Header -->
 	<header id="header">
-		<h1><a href="<?=__ROOT__?>" class="icon-goose" title="<?=$pref['meta']['title']?>"></a></h1>
+		<h1><a href="<?=__ROOT__?>/" class="icon-goose" title="<?=$pref['meta']['title']?>"></a></h1>
 		<nav class="lnb">
 			<?php
 			$nav = Spawn::item(array(
