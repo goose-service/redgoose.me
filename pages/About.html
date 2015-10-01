@@ -1,0 +1,56 @@
+<div class="articlePage">
+	<div id="View_bg"></div>
+	<div id="View">
+		<section id="Article" role-title="About">
+			<div class="hgroup">
+				<p class="loc">
+					<span>ETC</span>
+					<span>About</span>
+				</p>
+				<h1 class="headding">About</h1>
+			</div>
+			<div class="body about">
+				<section class="first">
+					<h1>info</h1>
+					<ul>
+						<li>from : busan, korea</li>
+						<li>e-mail : scripter@me.com</li>
+					</ul>
+					<p></p>
+				</section>
+				<section>
+					<h1>skill</h1>
+					<ul>
+						<li>use tools : photoshop, cinema4d, flash, illustrator, aftereffect, coda2, editplus</li>
+						<li>programing : html/css, php, javascript, jQuery, actionscript</li>
+					</ul>
+				</section>
+				<section>
+					<h1>sns</h1>
+					<ul>
+						<li>facebook : <a href="https://facebook.com/redgoosekr" target="_blank">scripter@me.com</a></li>
+						<li>pinterest : <a href="https://pinterest.com/redgoosekr" target="_blank">https://pinterest.com/redgoosekr</a></li>
+						<li>instagram : <a href="http://instagram.com/redgoosekr" target="_blank">http://instagram.com/redgoosekr</a></li>
+					</ul>
+				</section>
+				<section>
+					<h1>source code</h1>
+					<ul>
+						<li>github : <a href="https://github.com/RedgooseDev" target="_blank">https://github.com/RedgooseDev</a></li>
+						<li>codepen : <a href="http://codepen.io/redgoose" target="_blank">http://codepen.io/redgoose/</a></li>
+					</ul>
+				</section>
+			</div>
+		</section>
+	</div>
+</div>
+
+<script>
+function log(o){console.log(o);}
+
+jQuery(function($){
+	$('[role-action=closeView]').on('click', function(){
+		window.location.href = '<?=__ROOT__?>';
+	});
+});
+</script>

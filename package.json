@@ -1,0 +1,14 @@
+{
+  "name": "redgoose",
+  "version": "1.0.3",
+  "private": true,
+  "dependencies": {
+    "gulp": "^3.9.0",
+    "gulp-concat": "^2.6.0",
+    "gulp-sass": "^2.0.4",
+    "gulp-sourcemaps": "^1.5.2",
+    "gulp-uglify": "^1.4.1",
+    "imagesloaded": "^3.1.8",
+    "masonry-layout": "^3.3.2"
+  }
+}
