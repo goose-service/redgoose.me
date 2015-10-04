@@ -3,7 +3,7 @@ if(!defined("__GOOSE__")){exit();}
 
 $mode = 'article';
 
-$print = array();
+$print = [];
 
 $articleCount = Spawn::count(array(
 	'table' => Spawn::getTableName('article'),
@@ -85,6 +85,9 @@ $dirUrl .= ($_nest) ? $_nest.'/' : '';
 $dirUrl .= ($_nest && $_category) ? $_category.'/' : '';
 $prevUrl = ($prevItem['srl']) ? $dirUrl.$prevItem['srl'].'/' : '';
 $nextUrl = ($nextItem['srl']) ? $dirUrl.$nextItem['srl'].'/' : '';
+
+// set like count
+$item['json']['like'] = (isset($item['json']['like'])) ? $item['json']['like'] : 0;
 ?>
 
 <div class="articlePage">
@@ -112,12 +115,17 @@ $nextUrl = ($nextItem['srl']) ? $dirUrl.$nextItem['srl'].'/' : '';
 				</div>
 			<?
 			}
+			Util::console($item['json']);
 			?>
 			<div class="body">
 				<?=$item['content']?>
 			</div>
 			<nav class="nav-bottom">
 				<button class="prevView disabled" title="Prev"><i class="icon-prev"></i></button>
+				<button class="likeArticle<?=(isset($_COOKIE['like-'.$item['srl']]) ? ' disabled' : '')?>" title="Like" data-srl="<?=$item['srl']?>">
+					<i class="icon-like"></i>
+					<em><?=($item['json']['like'] > 0) ? $item['json']['like'] : 0?></em>
+				</button>
 				<button class="closeView" title="Close"><i class="icon-close"></i></button>
 				<button class="nextView disabled" title="Next"><i class="icon-next"></i></button>
 			</nav>
@@ -128,12 +136,13 @@ $nextUrl = ($nextItem['srl']) ? $dirUrl.$nextItem['srl'].'/' : '';
 <script>
 window.onload = function()
 {
-	var article = new Article();
+	window.article = new Article();
+	article.root = '<?=__ROOT__?>';
 	article.init({
 		urls : {
-			close : '<?=$closeUrl?>'
-			,prev : '<?=$prevUrl?>'
-			,next : '<?=$nextUrl?>'
+			close : '<?=$closeUrl?>',
+			prev : '<?=$prevUrl?>',
+			next : '<?=$nextUrl?>'
 		}
 		,title : '<?=$title?>'
 	});

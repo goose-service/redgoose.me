@@ -28,6 +28,7 @@ function convertUrl($args=null)
 	}
 }
 
+
 /**
  * hit update
  * 조회수 올리기
@@ -59,7 +60,7 @@ function hitUpdate($srl)
 	if (!isset($_COOKIE['hit-'.$article['srl']]))
 	{
 		// set cookie
-		setcookie('hit-'.$article['srl'], 1, time()+3600*24);
+		setcookie('hit-'.$article['srl'], 1, time()+3600*24, __ROOT__);
 		// update db
 		$article['hit'] += 1;
 		$result = Spawn::update(array(
@@ -72,19 +73,93 @@ function hitUpdate($srl)
 	}
 }
 
-// cut string
+
+/**
+ * Update like
+ * 좋아요 숫자를 갱신한다.
+ *
+ * @param number $srl article srl값
+ * @return array 결과값
+ */
+function updateLike($srl)
+{
+	// 내부 아이피라면 숫자를 올리지 않는다.
+	if (preg_match("/(192.168)/", $_SERVER['REMOTE_ADDR']))
+	{
+		//echo Util::arrayToJson(['state' => 'error'], false);
+		//Goose::end(false);
+	}
+
+	// check cookie
+	if (isset($_COOKIE['like-'.$srl]))
+	{
+		echo Util::arrayToJson(['state' => 'error'], false);
+		Goose::end(false);
+	}
+
+	// get article data
+	$article = Spawn::item([
+		'table' => Spawn::getTableName('article'),
+		'field' => 'srl,json',
+		'where' => 'srl='.$srl
+	]);
+
+	if (isset($article['json']))
+	{
+		$article['json'] = Util::jsonToArray($article['json'], null, true);
+		if (isset($article['json']['like']))
+		{
+			$article['json']['like'] += 1;
+		}
+		else
+		{
+			$article['json']['like'] = 1;
+		}
+	}
+	else
+	{
+		$article['json'] = [ 'like' => 1 ];
+	}
+
+	$stringJson = Util::arrayToJson($article['json'], true);
+	$result = Spawn::update([
+		'table' => Spawn::getTableName('article'),
+		'where' => 'srl='.$article['srl'],
+		'data' => [
+			'json="'.$stringJson.'"'
+		]
+	]);
+
+	if ($result == 'success')
+	{
+		// set cookie
+		setcookie('like-'.$srl, 1, time()+3600*24*365, __ROOT__);
+
+		echo Util::arrayToJson([
+			'state' => 'success',
+			'count' => $article['json']['like']
+		], false);
+		Goose::end(false);
+	}
+	else
+	{
+		echo Util::arrayToJson(['state' => 'error'], false);
+		Goose::end(false);
+	}
+}
+
+
 /**
  * Cutting string
  * 글자를 특정자수만큼 잘라준다.
- * 
- * @Param {String} $str : 자를문자
- * @Param {Number} $len : 길이
- * @Param {String} $tail : 꼬리에 붙는 문자
- * @Return {String} : 잘려서 나온문자
+ *
+ * @param {string} $str 자를문자
+ * @param {number} $len 길이
+ * @param {string} $tail 꼬리에 붙는 문자
+ * @return string 잘려서 나온문자
  */
 function bear3StrCut($str, $len, $tail="...")
-{ 
+{
 	$rtn = array(); 
 	return preg_match('/.{'.$len.'}/su', $str, $rtn) ? $rtn[0].$tail : $str; 
 }
-?>

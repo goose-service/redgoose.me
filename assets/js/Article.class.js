@@ -1,12 +1,15 @@
 function Article()
 {
+	var self = this;
+	var $self = $('#Article');
+	var $body = $('body');
 	var $btns = {
-		close : $('button.closeView')
-		,prev : $('button.prevView')
-		,next : $('button.nextView')
+		close : $self.find('button.closeView')
+		,prev : $self.find('button.prevView')
+		,next : $self.find('button.nextView')
+		,like : $self.find('button.likeArticle')
 	};
 	var $html = $('html');
-
 
 	window.view = null;
 
@@ -18,6 +21,7 @@ function Article()
 
 		// close button event
 		$btns.close.on('click', function(){
+			log('for Article.class.js');
 			window.location.href = userData.urls.close;
 			return false;
 		});
@@ -93,6 +97,20 @@ function Article()
 				,url : path
 			}, $('title').text(), path);
 		}
+	};
+
+	// update like
+	this.onLike = function(srl, $target)
+	{
+		$.get(this.root + '/updateLike/' + srl, function(res){
+			res = JSON.parse(res);
+			if (res.state == 'success')
+			{
+				$target.text(res.count);
+				$body.off('click', 'button.likeArticle');
+				$target.parent().addClass('disabled');
+			}
+		});
 	};
 
 	this.destroy = function()

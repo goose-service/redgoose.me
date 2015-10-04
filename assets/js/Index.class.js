@@ -9,6 +9,8 @@ function Index(userData)
 		,loading : null
 	};
 
+	window.article = new Article();
+	article.root = userData.root;
 
 	// item size to class
 	var itemSizeToClass = function(w, h)

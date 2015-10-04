@@ -26,3 +26,5 @@ $router->route->map('GET', '/items/[a:nest]', 'items');
 $router->route->map('GET', '/items/[a:nest]/', 'items');
 $router->route->map('GET', '/items/[a:nest]/[i:category]', 'items');
 $router->route->map('GET', '/items/[a:nest]/[i:category]/', 'items');
+
+$router->route->map('GET', '/updateLike/[i:article]', 'updateLike');

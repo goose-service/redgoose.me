@@ -31,7 +31,7 @@ if ($router->match)
 	$_target = $router->match['target'];
 	$_params = $router->match['params'];
 	$_method = $_SERVER['REQUEST_METHOD'];
-	
+
 	switch($_target)
 	{
 		case 'index':
@@ -54,6 +54,10 @@ if ($router->match)
 			$_article = $_params['article'];
 			hitUpdate($_article);
 			$containerDirectory = __PWD__.'/pages/article.php';
+			break;
+		case 'updateLike':
+			updateLike((int)$_params['article']);
+			Goose::end(false);
 			break;
 		case 'page':
 			$_page = $_params['page'];

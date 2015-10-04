@@ -103,11 +103,21 @@ jQuery(function($){
 	$(window).trigger('resize');
 
 
+	// 비동기로 article을 열었을때의 버튼 이벤트 초기화
 	var $body = $('body');
 	try {
 		// close view button event
 		$body.on('click', 'button.closeView', function(){
 			view.close(true);
+		});
+
+		// like button evenr
+		$body.on('click', 'button.likeArticle', function(){
+			if (!$(this).hasClass('disabled'))
+			{
+				var srl = parseInt($(this).attr('data-srl'));
+				article.onLike(srl, $(this).children('em'));
+			}
 		});
 	
 		// prev view event
