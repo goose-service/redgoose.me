@@ -7,6 +7,10 @@ if (is_bool(DEBUG) && DEBUG)
 	@define(__StartTime__, array_sum(explode(' ', microtime())));
 }
 
+// is localhost
+define('__IS_LOCAL__', (preg_match("/(192.168)/", $_SERVER['REMOTE_ADDR']) || ($_SERVER['REMOTE_ADDR'] == "::1")) ? true : false);
+
+
 // load program files
 require_once(__GOOSE_LIB__);
 require_once('functions.php');
