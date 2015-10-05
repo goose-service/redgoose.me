@@ -450,19 +450,27 @@ main {
 		text-align: center; padding: 10px $padding $padding;
 		button {
 			display: inline-block;
+			vertical-align: middle;
 			margin: 0 2px; padding: 0;
 			width: 50px; height: 50px;
 			border: none; cursor: pointer;
 			color: #fff;
 			background: $pointColor;
-			border-radius: 50%;
+			border-radius: 50px;
 			transition: background .2s ease-out;
-			i {
-				font-size: 14px;
-				line-height: 50px;
-			}
-			&:hover {
-				background: #333;
+			i, em {vertical-align: middle;}
+			i {font-size: 14px; line-height: 50px;}
+			&:hover {background: #333;}
+			&.likeArticle {
+				min-width: 50px; width: auto; padding: 0 20px;
+				background: #2a6ebb;
+				em {
+					padding-left: 3px;
+					font-style: normal; font-size: 14px;
+					font-family: Helvetica, Arial, sans-serif;
+				}
+				&.disabled {background: #333;}
+				&:hover {background: #333;}
 			}
 			&.prevView, &.nextView {display: none;}
 			

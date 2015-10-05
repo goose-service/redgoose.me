@@ -115,7 +115,6 @@ $item['json']['like'] = (isset($item['json']['like'])) ? $item['json']['like'] :
 				</div>
 			<?
 			}
-			Util::console($item['json']);
 			?>
 			<div class="body">
 				<?=$item['content']?>
@@ -123,7 +122,7 @@ $item['json']['like'] = (isset($item['json']['like'])) ? $item['json']['like'] :
 			<nav class="nav-bottom">
 				<button class="prevView disabled" title="Prev"><i class="icon-prev"></i></button>
 				<button class="likeArticle<?=(isset($_COOKIE['like-'.$item['srl']]) ? ' disabled' : '')?>" title="Like" data-srl="<?=$item['srl']?>">
-					<i class="icon-like"></i>
+					<i class="icon-heart"></i>
 					<em><?=($item['json']['like'] > 0) ? $item['json']['like'] : 0?></em>
 				</button>
 				<button class="closeView" title="Close"><i class="icon-close"></i></button>
