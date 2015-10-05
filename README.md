@@ -62,11 +62,12 @@ redgoose.me Version.1
 ```
 <?php
 define('__GOOSE__', true);
-define('__GOOSE_ROOT__', '/git/goose');
-define('__URL__', '/git/redgoose');
+define('__GOOSE_ROOT__', '/');
+define('__URL__', '/');
 define('__PWD__', dirname(__FILE__));
 define('__GOOSE_LIB__', '../goose/core/lib.php');
-define('__ROOT__', '/git/redgoose');
+define('__ROOT__', '');
+define('__COOKIE_ROOT__', '/');
 define('DEBUG', true);
 
 $app_srl = 1;

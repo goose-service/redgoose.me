@@ -60,7 +60,7 @@ function hitUpdate($srl)
 	if (!isset($_COOKIE['hit-'.$article['srl']]))
 	{
 		// set cookie
-		setcookie('hit-'.$article['srl'], 1, time()+3600*24, __ROOT__);
+		setcookie('hit-'.$article['srl'], 1, time()+3600*24, __COOKIE_ROOT__);
 		// update db
 		$article['hit'] += 1;
 		$result = Spawn::update(array(
@@ -133,7 +133,7 @@ function updateLike($srl)
 	if ($result == 'success')
 	{
 		// set cookie
-		setcookie('like-'.$srl, 1, time()+3600*24*365, __ROOT__);
+		setcookie('like-'.$srl, 1, time()+3600*24*365, __COOKIE_ROOT__);
 
 		echo Util::arrayToJson([
 			'state' => 'success',
