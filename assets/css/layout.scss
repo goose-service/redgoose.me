@@ -469,7 +469,7 @@ main {
 					font-style: normal; font-size: 14px;
 					font-family: Helvetica, Arial, sans-serif;
 				}
-				&.disabled {background: #333;}
+				&.disabled {background: #333; cursor: default;}
 				&:hover {background: #333;}
 			}
 			&.prevView, &.nextView {display: none;}

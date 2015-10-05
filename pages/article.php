@@ -121,7 +121,7 @@ $item['json']['like'] = (isset($item['json']['like'])) ? $item['json']['like'] :
 			</div>
 			<nav class="nav-bottom">
 				<button class="prevView disabled" title="Prev"><i class="icon-prev"></i></button>
-				<button class="likeArticle<?=(isset($_COOKIE['like-'.$item['srl']]) ? ' disabled' : '')?>" title="Like" data-srl="<?=$item['srl']?>">
+				<button class="likeArticle<?=(isset($_COOKIE['like-'.$item['srl']]) || __IS_LOCAL__) ? ' disabled' : ''?>" title="Like" data-srl="<?=$item['srl']?>">
 					<i class="icon-heart"></i>
 					<em><?=($item['json']['like'] > 0) ? $item['json']['like'] : 0?></em>
 				</button>
