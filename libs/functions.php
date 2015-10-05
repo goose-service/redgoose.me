@@ -86,8 +86,8 @@ function updateLike($srl)
 	// 내부 아이피라면 숫자를 올리지 않는다.
 	if (preg_match("/(192.168)/", $_SERVER['REMOTE_ADDR']))
 	{
-		//echo Util::arrayToJson(['state' => 'error'], false);
-		//Goose::end(false);
+		echo Util::arrayToJson(['state' => 'error'], false);
+		Goose::end(false);
 	}
 
 	// check cookie
