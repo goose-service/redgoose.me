@@ -21,7 +21,6 @@ function Article()
 
 		// close button event
 		$btns.close.on('click', function(){
-			log('for Article.class.js');
 			window.location.href = userData.urls.close;
 			return false;
 		});
