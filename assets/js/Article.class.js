@@ -107,8 +107,11 @@ function Article()
 			if (res.state == 'success')
 			{
 				$target.text(res.count);
-				$body.off('click', 'button.likeArticle');
 				$target.parent().addClass('disabled');
+			}
+			else
+			{
+				log(res);
 			}
 		});
 	};

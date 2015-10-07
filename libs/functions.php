@@ -83,17 +83,13 @@ function hitUpdate($srl)
  */
 function updateLike($srl)
 {
-	// 내부 아이피라면 숫자를 올리지 않는다.
-	if (__IS_LOCAL__)
-	{
-		echo Util::arrayToJson(['state' => 'error'], false);
-		Goose::end(false);
-	}
-
 	// check cookie
 	if (isset($_COOKIE['like-'.$srl]))
 	{
-		echo Util::arrayToJson(['state' => 'error'], false);
+		echo Util::arrayToJson([
+			'state' => 'error',
+			'message' => 'cookie error'
+		], false);
 		Goose::end(false);
 	}
 
@@ -143,7 +139,10 @@ function updateLike($srl)
 	}
 	else
 	{
-		echo Util::arrayToJson(['state' => 'error'], false);
+		echo Util::arrayToJson([
+			'state' => 'error',
+			'message' => 'db error'
+		], false);
 		Goose::end(false);
 	}
 }
