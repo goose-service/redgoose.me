@@ -285,6 +285,7 @@ main {
 			position: absolute; z-index: 2;
 			left: 5px; right: 5px; top: 5px; bottom: 5px;
 			border: 5px solid $pointColor;
+			pointer-events: none;
 		}
 	}
 

@@ -22,7 +22,7 @@ var source = {
 };
 
 // convert scss
-gulp.task('layout-scss', function(){
+gulp.task('scss', function(){
 	gulp.src(source.css.layout)
 		.pipe(sourcemaps.init())
 		.pipe(scss({
@@ -35,8 +35,8 @@ gulp.task('layout-scss', function(){
 	;
 });
 // set watcher scss
-gulp.task('layout-scss:watch', function(){
-	gulp.watch(source.css.layout, ['layout-scss']);
+gulp.task('scss:watch', function(){
+	gulp.watch(source.css.layout, ['scss']);
 });
 
 
