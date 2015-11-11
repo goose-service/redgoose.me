@@ -4,10 +4,10 @@ function Article()
 	var $self = $('#Article');
 	var $body = $('body');
 	var $btns = {
-		close : $self.find('button.closeView')
-		,prev : $self.find('button.prevView')
-		,next : $self.find('button.nextView')
-		,like : $self.find('button.likeArticle')
+		close : $('button.closeView')
+		,prev : $('button.prevView')
+		,next : $('button.nextView')
+		,like : $('button.likeArticle')
 	};
 	var $html = $('html');
 

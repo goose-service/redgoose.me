@@ -124,7 +124,7 @@ jQuery(function($){
 		$body.on('click', 'button.prevView', function(){
 			if (!$(this).hasClass('disabled'))
 			{
-				view.go($('#Article').attr('data-prev'));
+				view.go($('#Article').attr('data-prev'), true);
 			}
 		});
 
@@ -132,7 +132,7 @@ jQuery(function($){
 		$body.on('click', 'button.nextView', function(){
 			if (!$(this).hasClass('disabled'))
 			{
-				view.go($('#Article').attr('data-next'));
+				view.go($('#Article').attr('data-next'), true);
 			}
 		});
 	} catch(e) {}

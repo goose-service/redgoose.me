@@ -61,11 +61,15 @@ var View = function(userData) {
 	 * @Param {Boolean} sw : write history
 	 * @Param {String} title
 	 * @Param {String} url
+	 * @Param {Boolean} is_save_path
 	 * @Return void
 	 */
-	var updateURL = function(sw, title, url)
+	var updateURL = function(sw, title, url, is_save_path)
 	{
-		self.path = window.location.pathname + window.location.search;
+		if (is_save_path)
+		{
+			self.path = window.location.pathname + window.location.search;
+		}
 		if (sw && window.history.pushState)
 		{
 			dom.title.text(title);
@@ -104,7 +108,7 @@ var View = function(userData) {
 				$('html').addClass('mode-view');
 				$('#topNav').addClass('on');
 
-				updateURL(sw, $(this).children().attr('data-title'), url);
+				updateURL(sw, $(this).children().attr('data-title'), url, true);
 				directionButtons($(this).children());
 			});
 		});
@@ -116,20 +120,20 @@ var View = function(userData) {
 			{
 				case 27:
 					// esc
-					self.close();
+					self.close(true);
 					break;
 				case 37:
 					// left
 					if ($article.attr('data-prev'))
 					{
-						self.go($article.attr('data-prev'));
+						self.go($article.attr('data-prev'), true);
 					}
 					break;
 				case 39:
 					// right
 					if ($article.attr('data-next'))
 					{
-						self.go($article.attr('data-next'));
+						self.go($article.attr('data-next'), true);
 					}
 					break;
 			}
@@ -181,10 +185,10 @@ var View = function(userData) {
 	 * @Param {String} url : url address
 	 * @Return void
 	 */
-	this.go = function(url)
+	this.go = function(url, is_skip_history)
 	{
 		dom.view.load(url + ' #Article', function(){
-			updateURL(true, $(this).children().attr('data-title'), url);
+			updateURL(true, $(this).children().attr('data-title'), url, !is_skip_history);
 			directionButtons($(this).children());
 		});
 	};
