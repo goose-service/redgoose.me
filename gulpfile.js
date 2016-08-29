@@ -21,6 +21,17 @@ var source = {
 	}
 };
 
+// make vendor
+gulp.task('vendor', function(){
+	gulp.src([
+		'vendor/jquery/jquery-2.2.4.min.js',
+		'vendor/masonry/dist/masonry.pkgd.min.js',
+		'vendor/imagesloaded/imagesloaded.pkgd.min.js'
+	])
+		.pipe(concat('vendor.min.js', { newLine: '\n\n' }))
+		.pipe(gulp.dest(path + '/js'));
+});
+
 // convert scss
 gulp.task('scss', function(){
 	gulp.src(source.css.layout)
@@ -31,8 +42,7 @@ gulp.task('scss', function(){
 		}).on('error', scss.logError))
 		.pipe(concat('style.pkgd.css', { newLine: '\n\n' }))
 		.pipe(sourcemaps.write('.'))
-		.pipe(gulp.dest(source.css.path))
-	;
+		.pipe(gulp.dest(source.css.path));
 });
 // set watcher scss
 gulp.task('scss:watch', function(){

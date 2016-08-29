@@ -1,3 +1,4 @@
+<!doctype html>
 <?php
 if(!defined("__GOOSE__")){exit();}
 
@@ -24,7 +25,7 @@ if ($_article)
 	$og = array(
 		'title' => ($article['title']) ? $article['title'] : '',
 		'description' => ($article['content']) ? $article['content'] : '',
-		'image' => ($article['json']['thumnail']['url']) ? __GOOSE_ROOT__.'/'.$article['json']['thumnail']['url'] : __GOOSE_ROOT__.'/vendor/icons.user/redgoose_512x512x32.png'
+		'image' => ($article['json']['thumbnail']['url']) ? __GOOSE_ROOT__.'/'.$article['json']['thumbnail']['url'] : __GOOSE_ROOT__.'/vendor/icons.user/redgoose_512x512x32.png'
 	);
 
 	if ($article['category_srl'])
@@ -49,7 +50,7 @@ else
 	$og['image'] = __GOOSE_ROOT__.'/vendor/icons.user/redgoose_512x512x32.png';
 }
 $pref['meta']['description'] = ($og['description']) ? $og['description'] : $pref['meta']['description'];
-?><!doctype html>
+?>
 <html lang="ko">
 <head>
 <meta charset="utf-8">
@@ -143,9 +144,7 @@ $pref['meta']['description'] = ($og['description']) ? $og['description'] : $pref
 </nav>
 <!-- // top navigation -->
 
-<script src="<?=__GOOSE_ROOT__?>/vendor/jQuery/jquery-2.1.4.min.js"></script>
-<script src="<?=__ROOT__?>/node_modules/masonry-layout/dist/masonry.pkgd.min.js"></script>
-<script src="<?=__ROOT__?>/node_modules/imagesloaded/imagesloaded.pkgd.min.js"></script>
+<script src="<?=__ROOT__?>/assets/js/vendor.min.js"></script>
 <script src="<?=__ROOT__?>/assets/js/app.pkgd.js"></script>
 </body>
 </html>

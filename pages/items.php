@@ -24,7 +24,7 @@ require_once(__GOOSE_PWD__.'/core/classes/Paginate.class.php');
 
 
 // get redgoose.user plugin vars 수정필요
-$thumnailSizeArray = array('230*230', '470*230', '230*470', '470*470');
+$thumbnailSizeArray = array('230*230', '470*230', '230*470', '470*470');
 
 
 // nest check and get nest data
@@ -73,27 +73,27 @@ if ($itemCount > 0)
 // save item datas
 if (count($items) > 0)
 {
-	$defaultThumnailSize = explode('*', $thumnailSizeArray[0]);
+	$defaultThumbnailSize = explode('*', $thumbnailSizeArray[0]);
 
 	foreach ($items as $k=>$v)
 	{
 		$w = $h = null;
 		$v['json'] = ($v['json']) ? json_decode(urldecode($v['json']), true) : array();
 
-		if ($v['json']['thumnail']['size'])
+		if ($v['json']['thumbnail']['size'])
 		{
-			$v['json']['thumnail']['size'] = explode('*', $v['json']['thumnail']['size']);
-			$w = $v['json']['thumnail']['size'][0];
-			$h = $v['json']['thumnail']['size'][1];
+			$v['json']['thumbnail']['size'] = explode('*', $v['json']['thumbnail']['size']);
+			$w = $v['json']['thumbnail']['size'][0];
+			$h = $v['json']['thumbnail']['size'][1];
 		}
 
 		$item = array(
 			'url' => convertUrl(array('mod'=>$_nest, 'cat'=>$_category, 'doc'=>$v['srl'], 'page'=>$_GET['page']))
 			,'date' => Util::convertDate($v['regdate'])
-			,'img' => ($v['json']['thumnail']['url']) ? __GOOSE_ROOT__.'/'.$v['json']['thumnail']['url'] : null
+			,'img' => ($v['json']['thumbnail']['url']) ? __GOOSE_ROOT__.'/'.$v['json']['thumbnail']['url'] : null
 			,'title' => $v['title']
-			,'width' => ($w) ? $w : $defaultThumnailSize[0]
-			,'height' => ($h) ? $h : $defaultThumnailSize[1]
+			,'width' => ($w) ? $w : $defaultThumbnailSize[0]
+			,'height' => ($h) ? $h : $defaultThumbnailSize[1]
 		);
 
 		array_push($result, $item);
