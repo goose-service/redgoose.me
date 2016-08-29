@@ -183,6 +183,7 @@ var View = function(userData) {
 	 * go view
 	 * 
 	 * @Param {String} url : url address
+	 * @Param {Boolean} is_skip_history : save history
 	 * @Return void
 	 */
 	this.go = function(url, is_skip_history)

@@ -24,7 +24,7 @@ if ($_article)
 	$og = array(
 		'title' => ($article['title']) ? $article['title'] : '',
 		'description' => ($article['content']) ? $article['content'] : '',
-		'image' => ($article['json']['thumnail']['url']) ? __GOOSE_ROOT__.'/'.$article['json']['thumnail']['url'] : __GOOSE_ROOT__.'/ext/icons.user/redgoose_512x512x32.png'
+		'image' => ($article['json']['thumnail']['url']) ? __GOOSE_ROOT__.'/'.$article['json']['thumnail']['url'] : __GOOSE_ROOT__.'/vendor/icons.user/redgoose_512x512x32.png'
 	);
 
 	if ($article['category_srl'])
@@ -46,26 +46,25 @@ else
 {
 	$og['title'] = $pref['meta']['title'];
 	$og['description'] = $pref['meta']['description'];
-	$og['image'] = __GOOSE_ROOT__.'/ext/icons.user/redgoose_512x512x32.png';
+	$og['image'] = __GOOSE_ROOT__.'/vendor/icons.user/redgoose_512x512x32.png';
 }
 $pref['meta']['description'] = ($og['description']) ? $og['description'] : $pref['meta']['description'];
-?>
-
-<!doctype html>
+?><!doctype html>
 <html lang="ko">
 <head>
 <meta charset="utf-8">
 <meta name="google-site-verification" content="bF0pYg2C9_CT16xoUenLKPFbGDG-LNYJoV2vAOpf-74" />
 <title><?=$title?></title>
-<link rel="shortcut icon" href="<?=__GOOSE_ROOT__?>/ext/icons.user/favicon.ico">
-<link rel="icon" type="image/x-icon" href="<?=__GOOSE_ROOT__?>/ext/icons.user/redgoose_256x256x32.png">
-<link rel="apple-touch-icon" href="<?=__GOOSE_ROOT__?>/ext/icons.user/redgoose_app_256x256x32.png">
+<link rel="shortcut icon" href="<?=__GOOSE_ROOT__?>/vendor/icons.user/favicon.ico">
+<link rel="icon" type="image/x-icon" href="<?=__GOOSE_ROOT__?>/vendor/icons.user/redgoose_256x256x32.png">
+<link rel="apple-touch-icon" href="<?=__GOOSE_ROOT__?>/vendor/icons.user/redgoose_app_256x256x32.png">
 
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <meta name="author" content="<?=$pref['meta']['author']?>">
 <meta name="keywords" content="<?=$pref['meta']['keywords']?>">
 <meta name="description" content="<?=$pref['meta']['description']?>">
 <meta name="viewport" content="user-scalable=yes, initial-scale=1.0, maximum-scale=2.0, minimum-scale=1.0">
+<link rel="canonical" href="http://redgoose.me">
 
 <meta property="og:title" content="<?=$og['title']?>">
 <meta property="og:site_name" content="<?=__URL__?>">
@@ -144,7 +143,7 @@ $pref['meta']['description'] = ($og['description']) ? $og['description'] : $pref
 </nav>
 <!-- // top navigation -->
 
-<script src="<?=__GOOSE_ROOT__?>/ext/jQuery/jquery-2.1.4.min.js"></script>
+<script src="<?=__GOOSE_ROOT__?>/vendor/jQuery/jquery-2.1.4.min.js"></script>
 <script src="<?=__ROOT__?>/node_modules/masonry-layout/dist/masonry.pkgd.min.js"></script>
 <script src="<?=__ROOT__?>/node_modules/imagesloaded/imagesloaded.pkgd.min.js"></script>
 <script src="<?=__ROOT__?>/assets/js/app.pkgd.js"></script>
