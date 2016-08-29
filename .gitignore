@@ -2,3 +2,4 @@ node_modules/
 *.user.*
 .idea/
 .DS_Store
+.htaccess
