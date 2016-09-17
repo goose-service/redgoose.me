@@ -26,7 +26,7 @@ if ($_article)
 	$og = array(
 		'title' => ($article['title']) ? $article['title'] : '',
 		'description' => ($article['content']) ? $article['content'] : '',
-		'image' => ($article['json']['thumbnail']['url']) ? __GOOSE_ROOT__.'/'.$article['json']['thumbnail']['url'] : __GOOSE_ROOT__.'/vendor/icons.user/redgoose_512x512x32.png'
+		'image' => ($article['json']['thumbnail']['url']) ? __GOOSE_ROOT__.'/'.$article['json']['thumbnail']['url'] : __GOOSE_ROOT__.'/vendor/icons--user/redgoose_512x512x32.png'
 	);
 
 	if ($article['category_srl'])
@@ -48,7 +48,7 @@ else
 {
 	$og['title'] = $pref['meta']['title'];
 	$og['description'] = $pref['meta']['description'];
-	$og['image'] = __GOOSE_ROOT__.'/vendor/icons.user/redgoose_512x512x32.png';
+	$og['image'] = __GOOSE_ROOT__.'/vendor/icons--user/redgoose_512x512x32.png';
 }
 $pref['meta']['description'] = ($og['description']) ? $og['description'] : $pref['meta']['description'];
 ?>
@@ -57,9 +57,9 @@ $pref['meta']['description'] = ($og['description']) ? $og['description'] : $pref
 <meta charset="utf-8">
 <meta name="google-site-verification" content="bF0pYg2C9_CT16xoUenLKPFbGDG-LNYJoV2vAOpf-74" />
 <title><?=$title?></title>
-<link rel="shortcut icon" href="<?=__GOOSE_ROOT__?>/vendor/icons.user/favicon.ico">
-<link rel="icon" type="image/x-icon" href="<?=__GOOSE_ROOT__?>/vendor/icons.user/redgoose_256x256x32.png">
-<link rel="apple-touch-icon" href="<?=__GOOSE_ROOT__?>/vendor/icons.user/redgoose_app_256x256x32.png">
+<link rel="shortcut icon" href="<?=__GOOSE_ROOT__?>/vendor/icons--user/favicon.ico">
+<link rel="icon" type="image/x-icon" href="<?=__GOOSE_ROOT__?>/vendor/icons--user/redgoose_256x256x32.png">
+<link rel="apple-touch-icon" href="<?=__GOOSE_ROOT__?>/vendor/icons--user/redgoose_app_256x256x32.png">
 
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <meta name="author" content="<?=$pref['meta']['author']?>">
