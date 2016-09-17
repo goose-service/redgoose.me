@@ -1,5 +1,6 @@
 <!doctype html>
 <?php
+use core\Util, core\Spawn;
 if(!defined("__GOOSE__")){exit();}
 
 $pageid = ($_page) ? $_page : (($_nest) ? $_nest : null);

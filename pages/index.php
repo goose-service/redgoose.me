@@ -1,4 +1,5 @@
 <?php
+use core\Spawn;
 if(!defined("__GOOSE__")){exit();}
 
 // init mode

@@ -1,4 +1,5 @@
 <?php
+use core\Spawn, core\Goose, core\Util;
 if(!defined("__GOOSE__")){exit();}
 
 $mode = 'article';

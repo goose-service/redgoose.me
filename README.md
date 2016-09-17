@@ -26,16 +26,16 @@ redgoose.me Version.1
 		"child": [
 			{
 				"name": "3D",
-				"url": "/nest/3d/",
+				"url": "/Nest/3d/",
 				"id": "3d"
 			},
 			{
 				"name": "Visual",
-				"url": "/nest/Visual/"
+				"url": "/Nest/Visual/"
 			},
 			{
 				"name": "Web",
-				"url": "/nest/Web/"
+				"url": "/Nest/Web/"
 			}
 		]
 	},
@@ -44,11 +44,11 @@ redgoose.me Version.1
 		"child": [
 			{
 				"name": "Landscape",
-				"url": "/nest/Landscape/"
+				"url": "/Nest/Landscape/"
 			},
 			{
 				"name": "Portrait",
-				"url": "/nest/Portrait/"
+				"url": "/Nest/Portrait/"
 			}
 		]
 	}
@@ -65,7 +65,7 @@ define('__GOOSE__', true);
 define('__GOOSE_ROOT__', '/');
 define('__URL__', '/');
 define('__PWD__', dirname(__FILE__));
-define('__GOOSE_LIB__', '../goose/core/lib.php');
+define('__GOOSE_LIB__', '../goose/bootstrap/lib.php');
 define('__ROOT__', '');
 define('__COOKIE_ROOT__', '/');
 define('DEBUG', true);

@@ -1,4 +1,5 @@
 <?php
+use core\Util, core\Module, core\Spawn, core\Goose, core\Paginate;
 if(!defined("__GOOSE__")){exit();}
 
 $ajax = isset($_SERVER['HTTP_X_REQUESTED_WITH']) || (isset($_SERVER['HTTP_ORIGIN']) && $_SERVER['REQUEST_METHOD'] == 'GET');
@@ -17,10 +18,6 @@ $_GET['page'] = ($_GET['page'] > 1) ? (int)$_GET['page'] : 1;
 $nest = null;
 $categoryCount = 0;
 $result = array();
-
-
-// load class file
-require_once(__GOOSE_PWD__.'/core/classes/Paginate.class.php');
 
 
 // get redgoose.user plugin vars 수정필요
@@ -82,9 +79,8 @@ if (count($items) > 0)
 
 		if ($v['json']['thumbnail']['size'])
 		{
-			$v['json']['thumbnail']['size'] = explode('*', $v['json']['thumbnail']['size']);
-			$w = $v['json']['thumbnail']['size'][0];
-			$h = $v['json']['thumbnail']['size'][1];
+			$w = $v['json']['thumbnail']['size']['width'];
+			$h = $v['json']['thumbnail']['size']['height'];
 		}
 
 		$item = array(
@@ -92,9 +88,10 @@ if (count($items) > 0)
 			,'date' => Util::convertDate($v['regdate'])
 			,'img' => ($v['json']['thumbnail']['url']) ? __GOOSE_ROOT__.'/'.$v['json']['thumbnail']['url'] : null
 			,'title' => $v['title']
-			,'width' => ($w) ? $w : $defaultThumbnailSize[0]
-			,'height' => ($h) ? $h : $defaultThumbnailSize[1]
+			,'width' => ($w) ? (int)$w : (int)$defaultThumbnailSize[0]
+			,'height' => ($h) ? (int)$h : (int)$defaultThumbnailSize[1]
 		);
+		//Util::console($item);
 
 		array_push($result, $item);
 	}

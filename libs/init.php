@@ -1,4 +1,5 @@
 <?php
+use core\Spawn, core\Goose, core\Util, core\Module;
 if(!defined("__GOOSE__")){exit();}
 
 @error_reporting(E_ALL ^ E_NOTICE);
@@ -16,14 +17,14 @@ require_once(__GOOSE_LIB__);
 require_once('functions.php');
 
 // init router
-$router = Module::load('router');
+$router = Module::load('Router');
 $router->route->setBasePath(__ROOT__);
 require_once('map.php');
 $router->match = $router->route->match();
 
 // set preferences
 $pref = Spawn::item(array(
-	'table' => Spawn::getTableName('json')
+	'table' => Spawn::getTableName('JSON')
 	,'where' => 'srl='.$pref_json_srl
 ));
 $pref = Util::jsonToArray($pref['json'], true, true);
