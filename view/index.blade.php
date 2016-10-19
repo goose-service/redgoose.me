@@ -53,9 +53,7 @@
 @endsection
 
 @section('popup')
-<article class="popup-view">
-
-</article>
+<div class="popup-view" id="popupView"></div>
 @endsection
 
 @section('script')
@@ -65,6 +63,7 @@ jQuery(function($){
 	// init instance objects
 	var index = new window.Index();
 	var mobile = new window.Mobile();
+	var view = new window.View();
 
 	// init toggle category
 	mobile.toggleCategory($('#toggleCategory'));
@@ -85,6 +84,8 @@ jQuery(function($){
 	// init load item
 	index.initLoadItem();
 
+	// init view
+	//view.init();
 });
 </script>
 @endsection

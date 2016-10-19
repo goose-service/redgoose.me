@@ -20,3 +20,11 @@ body {
 }
 main {min-width: 320px;}
 
+
+
+// popup mode
+html.popup-mode {
+	overflow: hidden;
+	&, body {height: 100%;}
+	main {height: 100%;}
+}

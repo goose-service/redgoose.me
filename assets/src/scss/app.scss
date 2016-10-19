@@ -5,7 +5,7 @@
 
 
 
-/* header */
+// header
 .layout-header {
 	padding: 15px 0;
 
@@ -131,7 +131,7 @@
 	}
 }
 
-/* footer */
+// footer
 .layout-footer {
 	.copyright {
 		margin: 0; padding: 70px 0 30px 0;
@@ -146,10 +146,10 @@
 }
 
 
-/* container */
+// container
 .container {}
 
-/* content index */
+// content index
 .content-index {
 	max-width: 910px;
 	margin: 20px auto 0;
@@ -206,7 +206,7 @@
 	}
 }
 
-/* category index */
+// category index
 .category-index {
 	margin: 0 -6px;
 	font-size: 0;
@@ -251,7 +251,8 @@
 	}
 }
 
-/* article index */
+
+// article index
 .article-index {
 	margin: -5px;
 	&:after {content: ''; display: table; clear: both;}
@@ -306,8 +307,54 @@
 	}
 }
 
+// load more item
+.load-more-item {
+	margin: 50px 0 0;
+	&.hide {display: none;}
+	a {
+		position: relative; display: block; margin: 0 auto;
+		width: 64px; height: 64px;
+		background: $color-key; border-radius: 50%;
+	}
+	img {
+		display: block; position: absolute; margin: -12px 0 0 -12px;
+		left: 50%; top: 50%;
+	}
+	a.loading {
+		-webkit-animation: 2s roty infinite linear;
+		-moz-animation: 2s roty infinite linear;
+		-ms-animation: 2s roty infinite linear;
+		animation: 2s roty infinite linear;
+	}
 
-/* article view */
+	@media all and (max-width: $size-mobile-width) {
+		margin: 30px 0 0;
+		a {width: 54px; height: 54px;}
+		img {
+			width: 18px; height: 18px;
+			margin: -9px 0 0 -9px;
+		}
+	}
+}
+@-webkit-keyframes roty {
+	from { -webkit-transform: rotate(0deg); }
+	to   { -webkit-transform: rotate(360deg); }
+}
+@-moz-keyframes roty {
+	from { -moz-transform: rotate(0deg); }
+	to   { -moz-transform: rotate(360deg); }
+}
+@-ms-keyframes roty {
+	from { -ms-transform: rotate(0deg); }
+	to   { -ms-transform: rotate(360deg); }
+}
+@keyframes roty {
+	from { transform: rotate(0deg); }
+	to   { transform: rotate(360deg); }
+}
+
+
+// article view
 .article-view {
 	margin: 30px 0 0;
 
@@ -356,14 +403,22 @@
 		}
 	}
 
-	.direction {
-		a {
+	.external-control {
+		.direction {
 			display: block; position: fixed;
 			top: 50%; margin-top: -25px; padding: 10px;
 			img {display: block; width: 18px;}
-			&.prev {left: 24px;}
-			&.next {right: 24px;}
+			&.prev {left: 15px;}
+			&.next {right: 15px;}
 		}
+		.close {
+			position: fixed;
+			right: 0; top: 0;
+		}
+	}
+
+	.close {
+
 	}
 
 	@media all and (max-width: $size-mobile-width) {
@@ -374,7 +429,7 @@
 			h1 {font-size: 20px;}
 		}
 
-		.direction {
+		.external-control {
 			display: none;
 		}
 
@@ -392,58 +447,25 @@
 	}
 }
 
-/* load more item */
-.load-more-item {
-	margin: 50px 0 0;
-	&.hide {display: none;}
-	a {
-		position: relative; display: block; margin: 0 auto;
-		width: 64px; height: 64px;
-		background: $color-key; border-radius: 50%;
-	}
-	img {
-		display: block; position: absolute; margin: -12px 0 0 -12px;
-		left: 50%; top: 50%;
-	}
-	a.loading {
-		-webkit-animation: 2s roty infinite linear;
-		-moz-animation: 2s roty infinite linear;
-		-ms-animation: 2s roty infinite linear;
-		animation: 2s roty infinite linear;
-	}
+// popup view
+.popup-view {
+	position: fixed; z-index: 100; min-width: 320px;
+	left: 0; right: 0; top: 0; bottom: 0;
+	background: rgba(255,255,255,1);
+	display: none;
+	overflow: auto;
+	-webkit-overflow-scrolling: touch;
+	&.show {display: block;}
 
-	@media all and (max-width: $size-mobile-width) {
-		margin: 30px 0 0;
-		a {width: 54px; height: 54px;}
-		img {
-			width: 18px; height: 18px;
-			margin: -9px 0 0 -9px;
-		}
-	}
-}
-@-webkit-keyframes roty {
-	from { -webkit-transform: rotate(0deg); }
-	to   { -webkit-transform: rotate(360deg); }
-}
-@-moz-keyframes roty {
-	from { -moz-transform: rotate(0deg); }
-	to   { -moz-transform: rotate(360deg); }
-}
-@-ms-keyframes roty {
-	from { -ms-transform: rotate(0deg); }
-	to   { -ms-transform: rotate(360deg); }
-}
-@keyframes roty {
-	from { transform: rotate(0deg); }
-	to   { transform: rotate(360deg); }
+	.article-view {margin: 50px 0;}
 }
 
 
-/* page - basic */
+// page - basic
 .page-basic {
 	padding: 0 80px; margin: 0 auto;
 	max-width: 920px;
 }
 
-/* page - About */
+// page - About
 .page-about {}

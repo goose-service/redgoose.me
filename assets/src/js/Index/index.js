@@ -1,3 +1,8 @@
+import View from '../View';
+
+const view = new View();
+
+
 function Index() {
 
 	this.options = {};
@@ -166,10 +171,10 @@ function Index() {
 		$items.each((n, el) => {
 			$(el).find('a').on('click', (e) => {
 				let button = $(e.currentTarget);
-				console.log(button.attr('href'));
+				view.open(button.attr('href') + '?popup=1');
 				return false;
 			});
-		})
+		});
 	}
 }
 

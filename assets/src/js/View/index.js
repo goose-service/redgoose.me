@@ -1,8 +1,28 @@
 function View() {
 
-	this.options = {};
+	this.$el = {
+		popup : $('#popupView')
+	};
 
-	this.init = (userOptions) => {
+
+	/**
+	 * open view
+	 *
+	 * @Param {String} url
+	 */
+	this.open = (url) => {
+		// TODO : save scroll position
+		// TODO : loading on
+		this.$el.popup.load(url, (e) => {
+			$('html').addClass('popup-mode');
+			this.$el.popup.addClass('show');
+		});
+	};
+
+	/**
+	 * view init
+	 */
+	this.viewInit = () => {
 
 	}
 }

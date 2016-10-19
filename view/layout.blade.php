@@ -87,7 +87,6 @@
 
 <script src="{{ __ROOT__ }}/assets/dist/js/vendor.js"></script>
 <script src="{{ __ROOT__ }}/assets/dist/js/app.js"></script>
-
 @yield('script')
 </body>
 </html>

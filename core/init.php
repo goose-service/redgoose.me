@@ -134,7 +134,7 @@ if ($router->match)
 					'print_data' => ($_GET['get']) ? $_GET['get'] : 'all',
 				]);
 
-				$blade->render('view', [
+				$blade->render((($_GET['popup']) ? 'detail.view-popup' : 'detail.view'), [
 					'pref' => $pref,
 					'appPref' => $appPref,
 					'title' => $pref['meta']['title'],
@@ -142,6 +142,7 @@ if ($router->match)
 					'_category' => $_category,
 					'_article' => $_article,
 					'onLike' => isCookieKey( 'redgoose-like-'.$_article, 7 ) ? true : false,
+					'popup' => $_GET['popup'],
 					'repo' => $repo
 				]);
 				break;
