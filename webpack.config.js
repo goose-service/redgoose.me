@@ -2,14 +2,16 @@ module.exports = {
 	watch: true,
 	devtool: 'eval',
 	resolve: {
-		modulesDirectories: ['src/js'],
+		modulesDirectories: ['assets/src/js'],
 		extensions: ['', '.js']
 	},
 	output: {
-		filename: 'bundle.js'
+		filename: 'app.js'
 	},
 	externals: {
-		'jquery': '$'
+		'jquery': '$',
+		'Masonry': 'Masonry',
+		'FastClick': 'FastClick'
 	},
 	module: {
 		loaders: [
