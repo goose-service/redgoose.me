@@ -442,6 +442,15 @@
 
 		.control {margin: 40px 0 0;}
 	}
+
+	@media all and (min-width: 1440px) {
+		.external-control {
+			.direction {
+				&.prev {left: 8vw;}
+				&.next {right: 8vw;}
+			}
+		}
+	}
 }
 
 // popup view
