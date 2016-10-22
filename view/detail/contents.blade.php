@@ -1,5 +1,6 @@
 @section('contents')
 	<article class="article-view" id="articleView">
+		@if(!($repo['article']['title'] == '.'))
 		<header>
 			<p>
 				@if($repo['nest']['name'])<span>{{ $repo['nest']['name'] }}</span>@endif
@@ -7,6 +8,7 @@
 			</p>
 			<h1>{{ $repo['article']['title'] }}</h1>
 		</header>
+		@endif
 
 		<div class="body">
 			@if($repo['article']['json']['mode'] == 'markdown')
