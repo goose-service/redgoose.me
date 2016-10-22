@@ -386,6 +386,7 @@
 	.body {}
 
 	.basic-body {
+		a {word-break: break-all;}
 		img {max-width: 100%;}
 		.text-left {text-align: left;}
 		.text-center {text-align: center;}
