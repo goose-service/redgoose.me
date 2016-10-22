@@ -3,7 +3,7 @@ import AppHistory from '../Util/AppHistory';
 import CSS3 from '../Util/CSS3';
 
 const appHistory = new AppHistory();
-const ITEM_DELAY = 80;
+const ITEM_DELAY = 50;
 const SCROLL_SPEED = 300;
 
 
