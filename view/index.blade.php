@@ -58,34 +58,18 @@
 
 @section('script')
 <script>
-jQuery(function($){
+var app = new window.APP({
+	root : '{{ __ROOT__ }}',
+	gooseRoot : '{{ __GOOSE_ROOT__ }}'
+});
 
-	// init instance objects
-	var index = new window.Index();
-	var mobile = new window.Mobile();
-	var view = new window.View();
-
-	// init toggle category
-	mobile.toggleCategory($('#toggleCategory'));
-
-	// init index
-	index.init({
-		root : '{{ __ROOT__ }}',
-		gooseRoot : '{{ __GOOSE_ROOT__ }}',
+setTimeout(function(){
+	app.index({
 		_nest : '{{ $_nest }}',
 		_category : parseInt('{{ $_category }}'),
 		$articleIndex : $('#articleIndex'),
 		$moreItemArea : $('#moreItem'),
 	});
-
-	// init masonry
-	index.initMasonry(document.getElementById('articleIndex'));
-
-	// init load item
-	index.initLoadItem();
-
-	// init view
-	//view.init();
-});
+}, 10);
 </script>
 @endsection

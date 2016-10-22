@@ -1,6 +1,10 @@
 import View from '../View';
+import AppHistory from '../Util/AppHistory';
+import CSS3 from '../Util/CSS3';
 
-const view = new View();
+const appHistory = new AppHistory();
+const ITEM_DELAY = 80;
+const SCROLL_SPEED = 300;
 
 
 function Index() {
@@ -8,14 +12,31 @@ function Index() {
 	this.options = {};
 	this.masonry = null;
 	this.$loadItemButton = null;
+	this.view = new View(this);
 
+	// init app history
+	appHistory.initPopEvent(this.view, this);
+
+	/**
+	 * init
+	 *
+	 * @Param {Object} userOptions
+	 */
 	this.init = (userOptions) => {
-		this.options = Object.assign(userOptions, this.options);
+
+		this.options = $.extend({}, userOptions, this.options);
 
 		let $items = this.options.$articleIndex.find('.grid-item');
 		this.initOpenArticle($items);
 
 		this.$loadItemButton = this.options.$moreItemArea.find('a');
+
+		appHistory.replace(
+			{ url: location.pathname + location.search, type: 'index' },
+			null,
+			location.pathname + location.search
+		);
+
 	};
 
 	/**
@@ -53,13 +74,14 @@ function Index() {
 	 * item template
 	 *
 	 * @Param {Object} src
+	 * @Param {Boolean} isAnimation
 	 * @Return {String}
 	 */
-	this.itemTemplate = (src) => {
+	this.itemTemplate = (src, isAnimation) => {
 		let str = `` +
-			`<div class="grid-item ${src.size_className}">` +
-				`<a href="${this.options.root}/article/${this.options._nest ? this.options._nest+'/' : ''}${src.srl}/">` +
-					`<figure style="background-image: url('${this.options.gooseRoot}/${src.json.thumbnail.url}')">` +
+			`<div class="grid-item ${src.size_className} ${isAnimation && 'ready'}">` +
+				`<a href="${window.redgooseState.root}/article/${this.options._nest ? this.options._nest+'/' : ''}${src.srl}/">` +
+					`<figure style="background-image: url('${window.redgooseState.gooseRoot}/${src.json.thumbnail.url}')">` +
 						src.title +
 					`</figure>` +
 				`</a>` +
@@ -70,7 +92,7 @@ function Index() {
 	/**
 	 * load item event
 	 *
-	 * @Param {String} url
+	 * @Param {Object} e
 	 */
 	this.loadItemEvent = (e) => {
 
@@ -85,40 +107,80 @@ function Index() {
 
 		// load item
 		let loadItem = this.load(url);
-
-		// done load item
-		loadItem.done((articles, nextpage) => {
+		loadItem.done((articles, nextpage, currentpage) => {
 			// stop loading button
 			this.loadingLoadItem(false);
 
-			// update more item button
-			if (nextpage)
-			{
-				let url = this.$loadItemButton.attr('href').replace(/page=(.+)/, "page=" + nextpage);
-				this.$loadItemButton
-					.attr('href', url)
-					.on('click', this.loadItemEvent);
-			}
-			else
-			{
-				this.options.$moreItemArea.addClass('hide');
-			}
+			// update index
+			this.updateIndex(articles, nextpage, true, true);
 
-			// make items
-			let items = articles.map((o) => {
-				return this.itemTemplate(o);
-			}).join('');
-			let $items = $(items);
-
-			// init open article event
-			this.initOpenArticle($items);
-
-			// append items in index
-			this.options.$articleIndex.append($items);
-			this.masonry.appended($items);
+			// update history
+			let url = location.pathname + '?page=' + currentpage;
+			appHistory.push({ url: url, type: 'index' }, null, url);
 		});
 
 		return false;
+	};
+
+	/**
+	 * update index
+	 *
+	 * @Param {Object} articles
+	 * @Param {int} nextpage
+	 * @Param {Boolean} isAnimation
+	 * @Param {Boolean} isMoveScroll
+	 */
+	this.updateIndex = (articles, nextpage, isAnimation, isMoveScroll) => {
+		// update more item button
+		if (nextpage)
+		{
+			this.options.$moreItemArea.removeClass('hide');
+
+			let url = this.$loadItemButton.attr('href').replace(/page=(.+)/, "page=" + nextpage);
+			this.$loadItemButton
+				.attr('href', url)
+				.on('click', this.loadItemEvent);
+		}
+		else
+		{
+			this.options.$moreItemArea.addClass('hide');
+		}
+
+		// make items
+		let items = articles.map((o) => {
+			return this.itemTemplate(o, isAnimation);
+		}).join('');
+		let $items = $(items);
+
+		if (isAnimation)
+		{
+			$items.each((k, o) => {
+				let delay = k * ITEM_DELAY;
+				let $el = $(o);
+
+				CSS3.transitionEnd($el, (e) => {
+					$el.removeClass('ready show');
+				});
+
+				setTimeout(() => {
+					$el.addClass('show');
+				}, delay);
+			});
+		}
+
+		// init open article event
+		this.initOpenArticle($items);
+
+		// append items in index
+		this.options.$articleIndex.append($items);
+		this.masonry.appended($items);
+
+		// move scroll
+		if (isMoveScroll)
+		{
+			let top = $items.eq(0).offset().top - 30;
+			$("html, body").stop().animate({ scrollTop: top }, SCROLL_SPEED, 'swing');
+		}
 	};
 
 	/**
@@ -151,7 +213,7 @@ function Index() {
 		$.post(url, (res) => {
 			if (res.state == 'success')
 			{
-				defer.resolve(res.articles, res.nextpage);
+				defer.resolve(res.articles, res.nextpage, res.currentpage);
 			}
 			else
 			{
@@ -171,10 +233,40 @@ function Index() {
 		$items.each((n, el) => {
 			$(el).find('a').on('click', (e) => {
 				let button = $(e.currentTarget);
-				view.open(button.attr('href') + '?popup=1');
+				this.view.open(button.attr('href'));
 				return false;
 			});
 		});
+	};
+
+	/**
+	 * update
+	 *
+	 * @Param {String} url
+	 */
+	this.update = (url) => {
+
+		// off more items button
+		this.$loadItemButton.off('click');
+
+		// off loading
+		this.loadingLoadItem(true);
+
+		// remove items
+		this.masonry.remove(this.options.$articleIndex.find('.grid-item'));
+
+		// load item
+		let loadItem = this.load(url);
+		loadItem.done((articles, nextpage, currentpage) => {
+			// stop loading button
+			this.loadingLoadItem(false);
+
+			// update index
+			this.updateIndex(articles, nextpage, false, false);
+
+			this.masonry.layout();
+		});
+
 	}
 }
 

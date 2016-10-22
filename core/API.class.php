@@ -15,36 +15,6 @@ class API {
 	}
 
 	/**
-	 * Get params key and value
-	 *
-	 * @param string $accept
-	 * @return array
-	 */
-	private function getParams($accept=null)
-	{
-		$result = [];
-		$arr = explode(';', $accept);
-		foreach ($arr as $k=>$v)
-		{
-			$arr2 = explode('=', $v);
-			if ($arr2[0]) $result[$arr2[0]] = $arr2[1];
-		}
-		return $result;
-	}
-
-	/**
-	 * Check header
-	 *
-	 * @param string $key
-	 * @return bool
-	 */
-	private function checkAuthHeader($key)
-	{
-		$header = $this->getParams($_SERVER['HTTP_ACCEPT']);
-		return (isset($header['application']) && $header['application'] == $key);
-	}
-
-	/**
 	 * Search key in array
 	 *
 	 * @param array $get
@@ -68,11 +38,14 @@ class API {
 		$hit += 1;
 		$result = core\Spawn::update([
 			'table' => core\Spawn::getTableName('article'),
-			'where' => 'srl='.$article_srl,
+			'where' => 'srl=' . $article_srl,
 			'data' => [
-				'hit='.$hit
+				'hit=' . $hit
 			],
 		]);
+
+		setCookieKey('redgoose-hit-' . (int)$article_srl);
+
 		return ($result == 'success');
 	}
 
@@ -239,6 +212,7 @@ class API {
 			$result['nextpage'] = (count($nextArticles)) ? $options['page'] + 1 : null;
 		}
 
+		$result['currentpage'] = $options['page'];
 		$result['nest'] = ($this->searchKeyInArray($print, 'nest')) ? $result['nest'] : null;
 		$result['articles'] = ($this->searchKeyInArray($print, 'article')) ? $result['articles'] : null;
 		$result['state'] = 'success';
@@ -349,16 +323,15 @@ class API {
 	 */
 	public function upLike($options)
 	{
-		if (!$this->checkAuthHeader($options['header_key'])) return [ 'state' => 'error', 'message' => 'Path not allowed' ];
 		if (!$options['article_srl']) return [ 'state' => 'error', 'message' => 'not found article_srl' ];
 		$article = core\Spawn::item([
 			'table' => core\Spawn::getTableName('article'),
-			'where' => 'srl='.$options['article_srl'],
+			'where' => 'srl=' . (int)$options['article_srl'],
 			'field' => 'srl,json',
+			'jsonField' => ['json']
 		]);
 		if (!isset($article['json'])) return [ 'state' => 'error', 'message' => 'not found article data' ];
 
-		$article['json'] = core\Util::jsonToArray($article['json'], null, true);
 		$like = (isset($article['json']['like'])) ? ((int)$article['json']['like']) : 0;
 		$article['json']['like'] = $like + 1;
 		$json = core\Util::arrayToJson($article['json'], true);
@@ -369,8 +342,13 @@ class API {
 			'where' => 'srl=' . (int)$options['article_srl'],
 		]);
 
+		setCookieKey('redgoose-like-' . (int)$options['article_srl']);
+
 		return ($result == 'success') ? [
 			'state' => 'success',
+			'data' => [
+				'like' => (int)$article['json']['like']
+			],
 			'message' => 'update complete',
 		] : [
 			'state' => 'error',

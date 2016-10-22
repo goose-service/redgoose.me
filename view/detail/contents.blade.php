@@ -17,27 +17,34 @@
 		</div>
 
 		<nav class="control">
-			<a href="#" class="on-like" title="on like">
-				<img src="{{ __ROOT__ }}/assets/img/{{ $onLike ? 'ico-heart-on' : 'ico-heart' }}.svg" alt="">
+			@if($onLike)
+			<span class="on-like" title="on like">
+				<img src="{{ __ROOT__ }}/assets/img/ico-heart-on.svg" alt="">
+				<em>{{ $repo['article']['json']['like'] or 0 }}</em>
+			</span>
+			@else
+			<a href="{{ __ROOT__ }}/upLike/{{ $repo['article']['srl'] }}/" class="on-like" title="on like">
+				<img src="{{ __ROOT__ }}/assets/img/ico-heart.svg" alt="">
 				<em>{{ $repo['article']['json']['like'] or 0 }}</em>
 			</a>
+			@endif
 		</nav>
 
 		<nav class="external-control">
 			@if($repo['anotherArticle']['prev'])
-			<a href="{{ __ROOT__ }}/article/{{ $repo['anotherArticle']['prev']['srl'] }}/" class="direction prev">
+			<a href="{{ __ROOT__ }}/article/{{ $_nest ? $_nest.'/' : '' }}{{ $repo['anotherArticle']['prev']['srl'] }}/" class="direction prev">
 				<img src="{{ __ROOT__ }}/assets/img/btn-arrow-left2.svg" alt="prev article">
 			</a>
 			@endif
 			@if($repo['anotherArticle']['next'])
-			<a href="{{ __ROOT__ }}/article/{{ $repo['anotherArticle']['next']['srl'] }}/" class="direction next">
+			<a href="{{ __ROOT__ }}/article/{{ $_nest ? $_nest.'/' : '' }}{{ $repo['anotherArticle']['next']['srl'] }}/" class="direction next">
 				<img src="{{ __ROOT__ }}/assets/img/btn-arrow-right2.svg" alt="next article">
 			</a>
 			@endif
 			@if($_GET['popup'])
-			<nav class="close">
-				<button type="button">close</button>
-			</nav>
+			<button type="button" data-action="close" class="close">
+				<img src="{{ __ROOT__ }}/assets/img/btn-close2.svg" alt="close">
+			</button>
 			@endif
 		</nav>
 	</article>

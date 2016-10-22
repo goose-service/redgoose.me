@@ -130,7 +130,7 @@ if ($router->match)
 				$repo = $api->view([
 					'app_srl' => __APP_SRL__,
 					'article_srl' => $_article,
-					'updateHit' => isCookieKey( 'redgoose-hit-' . $_article, 7 ),
+					'updateHit' => !isCookieKey( 'redgoose-hit-' . $_article ),
 					'print_data' => ($_GET['get']) ? $_GET['get'] : 'all',
 				]);
 
@@ -141,7 +141,7 @@ if ($router->match)
 					'_nest' => $_nest,
 					'_category' => $_category,
 					'_article' => $_article,
-					'onLike' => isCookieKey( 'redgoose-like-'.$_article, 7 ) ? true : false,
+					'onLike' => isCookieKey( 'redgoose-like-'.$_article ),
 					'popup' => $_GET['popup'],
 					'repo' => $repo
 				]);
@@ -159,6 +159,10 @@ if ($router->match)
 				break;
 
 			case 'upLike':
+				$_article = (int)$_params['article'];
+
+				$data = $api->upLike([ 'article_srl' => $_article ]);
+				header('Location: ' . $_SERVER['HTTP_REFERER']);
 				break;
 
 			default:

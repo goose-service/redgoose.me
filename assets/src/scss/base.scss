@@ -18,13 +18,16 @@ body {
 	line-height: 1.428;
 	-webkit-text-size-adjust: none;
 }
+a {color: $color-key;}
 main {min-width: 320px;}
 
 
 
 // popup mode
 html.popup-mode {
-	overflow: hidden;
-	&, body {height: 100%;}
-	main {height: 100%;}
+	//overflow: hidden;
+	//&, body {height: 100%;}
+	main {
+		display: none;
+	}
 }

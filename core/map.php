@@ -23,11 +23,4 @@ $router->route->map('GET|POST', '/article/[aa:nest]/[i:article]/', 'article');
 $router->route->map('GET|POST', '/article/[aa:nest]/[i:category]/[i:article]', 'article');
 $router->route->map('GET|POST', '/article/[aa:nest]/[i:category]/[i:article]/', 'article');
 
-$router->route->map('GET|POST', '/upLike/[i:article]', 'upLike');
-
-
-//$router->route->map('GET', '/ajax/', 'ajax#items');
-//$router->route->map('GET', '/ajax/nest/[aa:nest]/', 'ajax#items');
-//$router->route->map('GET', '/ajax/nest/[aa:nest]/[i:category]/', 'ajax#items');
-//$router->route->map('GET', '/ajax/article/[i:article]/', 'ajax#article');
-//$router->route->map('GET', '/ajax/upLike/[i:article]/', 'ajax#upLike');
+$router->route->map('GET|POST', '/upLike/[i:article]/', 'upLike');

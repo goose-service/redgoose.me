@@ -2,6 +2,8 @@
 @import "fonts";
 @import "nomalize";
 @import "base";
+@import "loading";
+@import "pages";
 
 
 
@@ -266,6 +268,12 @@
 			background-size: cover;
 			text-indent: -9999px;
 		}
+		&.ready {
+			opacity: 0;
+			-webkit-transition: opacity .5s ease-out;
+			transition: opacity .5s ease-out;
+		}
+		&.show {opacity: 1;}
 	}
 
 	&.grid {
@@ -356,7 +364,8 @@
 
 // article view
 .article-view {
-	margin: 30px 0 0;
+	margin: 30px auto 0;
+	padding: 0 80px; max-width: 980px;
 
 	> header {
 		margin: 0 15px 40px; text-align: center;
@@ -374,10 +383,7 @@
 		}
 	}
 
-	.body {
-		margin: 0 auto; padding: 0 80px;
-		max-width: 980px;
-	}
+	.body {}
 
 	.basic-body {
 		img {max-width: 100%;}
@@ -389,7 +395,7 @@
 	.control {
 		margin: 60px 0 0;
 		font-size: 0; text-align: center;
-		a {
+		.on-like {
 			display: inline-block; margin: 0 3px; padding: 8px 12px;
 			text-decoration: none;
 			vertical-align: top;
@@ -412,35 +418,30 @@
 			&.next {right: 15px;}
 		}
 		.close {
-			position: fixed;
-			right: 0; top: 0;
+			position: fixed; display: block;
+			right: 15px; top: 15px;
+			margin: 0; padding: 12px;
+			border: none; background: none; outline: 0; cursor: pointer;
+			img {
+				display: block;
+			}
 		}
 	}
 
-	.close {
-
-	}
-
 	@media all and (max-width: $size-mobile-width) {
-		margin: 40px 0 0;
+
+		margin: 40px 0 0; padding: 0 10px;
 
 		> header {
 			margin: 0 10px 20px;
 			h1 {font-size: 20px;}
 		}
 
-		.external-control {
-			display: none;
-		}
+		.external-control {display: none;}
 
 		.body {
-			padding: 0 10px;
-			.markdown-body {
-				font-size: 13px;
-			}
-			.basic-body {
-				font-size: 13px;
-			}
+			.markdown-body {font-size: 13px;}
+			.basic-body {font-size: 13px;}
 		}
 
 		.control {margin: 40px 0 0;}
@@ -449,23 +450,36 @@
 
 // popup view
 .popup-view {
-	position: fixed; z-index: 100; min-width: 320px;
+	position: static; z-index: 100; min-width: 320px;
 	left: 0; right: 0; top: 0; bottom: 0;
 	background: rgba(255,255,255,1);
-	display: none;
-	overflow: auto;
+	display: none; overflow: auto;
 	-webkit-overflow-scrolling: touch;
-	&.show {display: block;}
+	&.ready {
+		position: fixed; display: block;
+		opacity: 0; overflow: hidden;
+		-webkit-transition: opacity .2s ease-out;
+		transition: opacity .2s ease-out;
+	}
 
-	.article-view {margin: 50px 0;}
+	&.hide-ready {position: absolute;}
+	&.show {opacity: 1;}
+	&.active {
+		position: static; display: block;
+		overflow: auto;
+	}
+
+	.article-view {margin-top: 50px; margin-bottom: 50px;}
+
+	@media all and (max-width: $size-mobile-width) {
+		.article-view {margin-top: 30px; margin-bottom: 50px;}
+	}
 }
 
 
-// page - basic
-.page-basic {
-	padding: 0 80px; margin: 0 auto;
-	max-width: 920px;
+// loading
+.popup-loading {
+	position: fixed; z-index: 110; padding: 20px; margin: -60px 0 0 -60px;
+	top: 50%; left: 50%; width: 120px; height: 120px;
+	background: none; overflow: hidden;
 }
-
-// page - About
-.page-about {}

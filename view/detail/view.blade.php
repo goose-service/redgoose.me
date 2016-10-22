@@ -4,9 +4,10 @@
 
 @section('script')
 <script>
-jQuery(function($){
-	var view = new window.View();
-	//console.log(view);
+var app = new window.APP({
+	root : '{{ __ROOT__ }}',
+	gooseRoot : '{{ __GOOSE_ROOT__ }}'
 });
+app.view();
 </script>
 @endsection
