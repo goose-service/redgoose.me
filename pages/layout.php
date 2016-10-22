@@ -77,6 +77,7 @@ $pref['meta']['description'] = ($og['description']) ? $og['description'] : $pref
 <meta name="p:domain_verify" content="<?=$pref['pinterestVerify']?>">
 
 <link rel="stylesheet" href="<?=__ROOT__?>/assets/icon/style.css" media="all">
+<link rel="stylesheet" href="<?=__GOOSE_ROOT__?>/vendor/Parsedown/markdown.css">
 <link rel="stylesheet" href="<?=__ROOT__?>/assets/css/style.pkgd.css" media="all">
 <script>function log(o){console.log(o);}</script>
 </head>

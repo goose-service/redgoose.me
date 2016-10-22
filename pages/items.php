@@ -84,12 +84,13 @@ if (count($items) > 0)
 		}
 
 		$item = array(
-			'url' => convertUrl(array('mod'=>$_nest, 'cat'=>$_category, 'doc'=>$v['srl'], 'page'=>$_GET['page']))
-			,'date' => Util::convertDate($v['regdate'])
-			,'img' => ($v['json']['thumbnail']['url']) ? __GOOSE_ROOT__.'/'.$v['json']['thumbnail']['url'] : null
-			,'title' => $v['title']
-			,'width' => ($w) ? (int)$w : (int)$defaultThumbnailSize[0]
-			,'height' => ($h) ? (int)$h : (int)$defaultThumbnailSize[1]
+			'srl' => (int)$v['srl'],
+			'url' => convertUrl(array('mod'=>$_nest, 'cat'=>$_category, 'doc'=>$v['srl'], 'page'=>$_GET['page'])),
+			'date' => Util::convertDate($v['regdate']),
+			'img' => ($v['json']['thumbnail']['url']) ? __GOOSE_ROOT__.'/'.$v['json']['thumbnail']['url'] : null,
+			'title' => $v['title'],
+			'width' => ($w) ? (int)$w : (int)$defaultThumbnailSize[0],
+			'height' => ($h) ? (int)$h : (int)$defaultThumbnailSize[1]
 		);
 		//Util::console($item);
 

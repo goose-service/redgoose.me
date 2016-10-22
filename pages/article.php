@@ -20,10 +20,28 @@ if ($articleCount == 0)
 
 
 // get article item
-$item = Spawn::item(array(
-	'table' => Spawn::getTableName('article')
-	,'where' => 'srl='.$_article
-));
+$item = Spawn::item([
+	'table' => Spawn::getTableName('article'),
+	'where' => 'srl=' . (int)$_article,
+	'jsonField' => ['json']
+]);
+
+// set article mode
+$itemMode = $item['json']['mode'];
+
+if ($itemMode == 'markdown')
+{
+	// load parsedown
+	require_once(__GOOSE_PWD__.'vendor/Parsedown/Parsedown.class.php');
+	// get instance parsedown
+	$Parsedown = new Parsedown();
+	// convert markdown
+	$item['content'] = '<div class="markdown-body">' . $Parsedown->text($item['content']) . '</div>';
+}
+else
+{
+	$item['content'] = '<div class="body">' . $item['content'] . '</div>';
+}
 
 
 // get prev,next item srl
@@ -46,10 +64,6 @@ $nextItem = Spawn::item(array(
 	,'order' => 'srl'
 	,'limit' => 1
 ));
-
-
-// convert json data
-$item['json'] = Util::jsonToArray($item['json'], true, true);
 
 
 // get nest data
@@ -96,7 +110,7 @@ $item['json']['like'] = (isset($item['json']['like'])) ? $item['json']['like'] :
 	<div id="View">
 		<section id="Article" data-title="<?=$title?>" data-prev="<?=$nextUrl?>" data-next="<?=$prevUrl?>">
 			<?
-			if (isset($item['json']['headline']))
+			if (isset($item['json']['headline']['location']))
 			{
 				$headline = $item['json']['headline'];
 				$style = '';
@@ -117,9 +131,7 @@ $item['json']['like'] = (isset($item['json']['like'])) ? $item['json']['like'] :
 			<?
 			}
 			?>
-			<div class="body">
-				<?=$item['content']?>
-			</div>
+			<?=$item['content']?>
 			<nav class="nav-bottom">
 				<button class="prevView disabled" title="Prev"><i class="icon-prev"></i></button>
 				<button class="likeArticle<?=(isset($_COOKIE['like-'.$item['srl']]) || __IS_LOCAL__) ? ' disabled' : ''?>" title="Like" data-srl="<?=$item['srl']?>">
