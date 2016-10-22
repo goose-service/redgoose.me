@@ -34,13 +34,13 @@
 
 		<nav class="external-control">
 			@if($repo['anotherArticle']['prev'])
-			<a href="{{ __ROOT__ }}/article/{{ $_nest ? $_nest.'/' : '' }}{{ $repo['anotherArticle']['prev']['srl'] }}/" class="direction prev">
-				<img src="{{ __ROOT__ }}/assets/img/btn-arrow-left2.svg" alt="prev article">
+			<a href="{{ __ROOT__ }}/article/{{ $_nest ? $_nest.'/' : '' }}{{ $repo['anotherArticle']['prev']['srl'] }}/" class="direction next">
+				<img src="{{ __ROOT__ }}/assets/img/btn-arrow-right2.svg" alt="prev article">
 			</a>
 			@endif
 			@if($repo['anotherArticle']['next'])
-			<a href="{{ __ROOT__ }}/article/{{ $_nest ? $_nest.'/' : '' }}{{ $repo['anotherArticle']['next']['srl'] }}/" class="direction next">
-				<img src="{{ __ROOT__ }}/assets/img/btn-arrow-right2.svg" alt="next article">
+			<a href="{{ __ROOT__ }}/article/{{ $_nest ? $_nest.'/' : '' }}{{ $repo['anotherArticle']['next']['srl'] }}/" class="direction prev">
+				<img src="{{ __ROOT__ }}/assets/img/btn-arrow-left2.svg" alt="next article">
 			</a>
 			@endif
 			@if($_GET['popup'])

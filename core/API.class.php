@@ -266,7 +266,7 @@ class API {
 		$str = '';
 		$str .= ($this->searchKeyInArray($print_data, 'nest')) ? 'nest_srl='.(int)$article['nest_srl'] : '';
 		$str .= ($this->searchKeyInArray($print_data, 'category') && $article['category_srl']) ? ' and category_srl='.(int)$article['category_srl'] : '';
-		$str .= ($str) ? ' and ' : ' app_srl='.$options['app_srl'].' and ';
+		$str .= ($str) ? ' and ' : ' app_srl='.$options['app_srl'] . ' and ';
 
 		$prevItem = core\Spawn::item([
 			'table' => core\Spawn::getTableName('article'),

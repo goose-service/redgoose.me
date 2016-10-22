@@ -131,7 +131,7 @@ if ($router->match)
 					'app_srl' => __APP_SRL__,
 					'article_srl' => $_article,
 					'updateHit' => !isCookieKey( 'redgoose-hit-' . $_article ),
-					'print_data' => ($_GET['get']) ? $_GET['get'] : 'all',
+					'print_data' => ($_GET['get']) ? $_GET['get'] : 'all' . ($_nest ? ',nest' : '') . ($_nest && $_category ? ',category' : ''),
 				]);
 
 				$blade->render((($_GET['popup']) ? 'detail.view-popup' : 'detail.view'), [
