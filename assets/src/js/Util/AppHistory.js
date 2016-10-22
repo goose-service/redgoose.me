@@ -73,7 +73,6 @@ function AppHistory() {
 						}
 						else
 						{
-							// TODO : update article index
 							index.update(state.url);
 						}
 						break;
@@ -81,7 +80,14 @@ function AppHistory() {
 			}
 			else
 			{
-				//view.close(true);
+				if (window.redgooseState.isViewPopup)
+				{
+					view.close(true);
+				}
+				else
+				{
+					location.reload();
+				}
 			}
 		});
 	}
