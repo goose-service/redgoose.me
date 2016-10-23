@@ -17,8 +17,9 @@
 
 	<meta property="og:title" content="{{ $title }}">
 	<meta property="og:site_name" content="{{ $pref['meta']['title'] }}">
-	<meta property="og:url" content="{{ $pref['meta']['domain'] }}" />
+	<meta property="og:url" content="{{ $_SERVER['REQUEST_URI'] }}" />
 	<meta property="og:locale" content="ko_KR" />
+	<meta property="fb:app_id" content="1619661748331088" />
 
 	@if ($appPref->isUserIcons)
 	<link rel="shortcut icon" href="{{ __GOOSE_ROOT__ }}/vendor/icons--user/favicon.ico">
