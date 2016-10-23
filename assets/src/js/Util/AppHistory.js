@@ -1,3 +1,6 @@
+import changeTitle from '../Util/ChangeTitle';
+
+
 function AppHistory() {
 
 	/**
@@ -51,7 +54,7 @@ function AppHistory() {
 		window.addEventListener('popstate', (e) => {
 			let state = e.state;
 
-			if (state)
+			if (state && state.type)
 			{
 				switch(state.type)
 				{
@@ -74,6 +77,17 @@ function AppHistory() {
 						else
 						{
 							index.update(state.url);
+						}
+						break;
+
+					default:
+						if (window.redgooseState.isViewPopup)
+						{
+							view.close(true);
+						}
+						else
+						{
+							location.reload();
 						}
 						break;
 				}

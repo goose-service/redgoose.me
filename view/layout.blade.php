@@ -13,14 +13,12 @@
 	<meta name="description" content="{{ $pref['meta']['description'] }}">
 	<link rel="canonical" href="{{ $pref['meta']['domain'] }}">
 
-	<meta property="og:title" content="{{ $appPref->og->title or $title }}">
+	@yield('meta')
+
+	<meta property="og:title" content="{{ $title }}">
 	<meta property="og:site_name" content="{{ $pref['meta']['title'] }}">
 	<meta property="og:url" content="{{ $pref['meta']['domain'] }}" />
-	<meta property="og:description" content="{{ $appPref->og->description or $pref['meta']['description'] }}">
 	<meta property="og:locale" content="ko_KR" />
-	@if($appPref->og->image)
-	<meta property="og:image" content="{{ $appPref->og->image }}">
-	@endif
 
 	@if ($appPref->isUserIcons)
 	<link rel="shortcut icon" href="{{ __GOOSE_ROOT__ }}/vendor/icons--user/favicon.ico">

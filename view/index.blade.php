@@ -73,3 +73,8 @@ setTimeout(function(){
 }, 10);
 </script>
 @endsection
+
+@section('meta')
+<meta property="og:description" content="{{ $pref['meta']['description'] }}">
+<meta property="og:image" content="{{ __GOOSE_ROOT__ }}/vendor/icons--user/redgoose_512x512x32.png">
+@endsection

@@ -111,10 +111,14 @@ if ($router->match)
 					core\Goose::error(101, $repo['message'], __URL__);
 				}
 
+				$title = $pref['meta']['title'];
+				$title .= ($_nest) ? ' / ' . $repo['nest']['name'] : '';
+				$title .= ($repo['category_name']) ? ' / ' . $repo['category_name'] : '';
+
 				$blade->render('index', [
 					'pref' => $pref,
 					'appPref' => $appPref,
-					'title' => $pref['meta']['title'],
+					'title' => $title,
 					'_nest' => $_nest,
 					'_category' => $_category,
 					'repo' => $repo
@@ -137,7 +141,7 @@ if ($router->match)
 				$blade->render((($_GET['popup']) ? 'detail.view-popup' : 'detail.view'), [
 					'pref' => $pref,
 					'appPref' => $appPref,
-					'title' => $pref['meta']['title'],
+					'title' => $pref['meta']['title'] . ($repo['article']['title'] && ($repo['article']['title'] !== '.') ? ' / ' . $repo['article']['title'] : ''),
 					'_nest' => $_nest,
 					'_category' => $_category,
 					'_article' => $_article,

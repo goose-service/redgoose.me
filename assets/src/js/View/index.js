@@ -1,6 +1,7 @@
 import Loading from '../Util/Loading';
 import CSS3 from '../Util/CSS3';
 import AppHistory from '../Util/AppHistory';
+import changeTitle from '../Util/ChangeTitle';
 
 const loading = new Loading();
 const appHistory = new AppHistory();
@@ -92,6 +93,9 @@ function View(index) {
 		// save index url
 		window.redgooseState.indexUrl = location.pathname + location.search;
 
+		// save index title
+		window.redgooseState.indexTitle = $('title').text();
+
 		// on loading
 		loading.on();
 
@@ -117,6 +121,9 @@ function View(index) {
 			this.keyEvent = keyboardEvent(true);
 			this.initPopup();
 			this.initView();
+
+			// change title
+			this.changeTitle();
 		});
 	};
 
@@ -150,6 +157,9 @@ function View(index) {
 			appHistory.push(null, null, window.redgooseState.indexUrl);
 			window.redgooseState.indexUrl = null;
 		}
+
+		// change title
+		changeTitle(window.redgooseState.indexTitle);
 	};
 
 	/**
@@ -237,9 +247,23 @@ function View(index) {
 			this.keyEvent = keyboardEvent(true);
 			this.initPopup();
 			this.initView();
+
+			// change title
+			this.changeTitle();
 		});
 
 	};
+
+	this.changeTitle = (title) => {
+		if (this.$el.article.find('> header > h1').length)
+		{
+			changeTitle('Redgoose / ' + this.$el.article.find('> header > h1').text());
+		}
+		else
+		{
+			changeTitle('Redgoose');
+		}
+	}
 }
 
 export default View;

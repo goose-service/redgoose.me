@@ -123,7 +123,11 @@ class API {
 							'table' => core\Spawn::getTableName('article'),
 							'where' => 'category_srl='.(int)$v['srl']
 						]) : 0;
-						if ($options['category_srl'] == (int)$v['srl']) $check_active = true;
+						if ($options['category_srl'] == (int)$v['srl'])
+						{
+							$check_active = true;
+							$result['category_name'] = $v['name'];
+						}
 						$index[] = [
 							'srl' => (int)$v['srl'],
 							'name' => $v['name'],
