@@ -17,7 +17,7 @@
 
 	<meta property="og:title" content="{{ $title }}">
 	<meta property="og:site_name" content="{{ $pref['meta']['title'] }}">
-	<meta property="og:url" content="{{ $_SERVER['REQUEST_URI'] }}" />
+	<meta property="og:url" content="http://{{ $_SERVER['HTTP_HOST'] }}{{ $_SERVER['REQUEST_URI'] }}" />
 	<meta property="og:locale" content="ko_KR" />
 	<meta property="fb:app_id" content="1619661748331088" />
 
