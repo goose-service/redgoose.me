@@ -11,7 +11,7 @@
 	<meta name="author" content="{{ $pref['meta']['author'] }}">
 	<meta name="keywords" content="{{ $pref['meta']['keywords'] }}">
 	<meta name="description" content="{{ $pref['meta']['description'] }}">
-	<link rel="canonical" href="{{ $pref['meta']['domain'] }}">
+	<link rel="canonical" href="http://{{ $_SERVER['HTTP_HOST'] }}{{ $_SERVER['REQUEST_URI'] }}">
 
 	@yield('meta')
 
