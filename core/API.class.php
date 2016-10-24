@@ -51,13 +51,13 @@ class API {
 	/**
 	 * thumbnail size to class name
 	 *
-	 * @params array $size
+	 * @param array $size
 	 * @return string
 	 */
 	private function thumbnailSizeToClassName($size)
 	{
-		$largeSize = __THUMBNAIL_LARGE_SIZE__;
-		$sizeName = (($size['width'] == $largeSize) ? ' wx2' : '') . (($size['height'] == $largeSize) ? ' hx2' : '');
+		$largeSize = explode(',', __THUMBNAIL_LARGE_SIZE__);
+		$sizeName = (in_array($size['width'], $largeSize) ? ' wx2' : '') . (in_array($size['height'], $largeSize) ? ' hx2' : '');
 		return trim($sizeName);
 	}
 
