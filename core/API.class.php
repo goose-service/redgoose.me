@@ -4,7 +4,6 @@ if(!defined("__GOOSE__")){exit();}
 class API {
 
 	public $goose, $ajax;
-	//public $thumbnailSize = [ [230,230], [470,230], [230,470], [470,470] ];
 
 	public function __construct()
 	{
@@ -57,7 +56,7 @@ class API {
 	 */
 	private function thumbnailSizeToClassName($size)
 	{
-		$largeSize = 470;
+		$largeSize = __THUMBNAIL_LARGE_SIZE__;
 		$sizeName = (($size['width'] == $largeSize) ? ' wx2' : '') . (($size['height'] == $largeSize) ? ' hx2' : '');
 		return trim($sizeName);
 	}
