@@ -67,6 +67,10 @@
 
 	@media all and (max-width: $size-mobile-width) {
 		position: relative; padding: 0;
+		border-bottom: 1px solid #ddd;
+		@media (-webkit-min-device-pixel-ratio: 2) {
+			border-bottom-width: 0.5px;
+		}
 		h1 {
 			a {padding: 8px 30px;}
 			img {width: 34px;}
