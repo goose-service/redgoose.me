@@ -85,7 +85,7 @@
 					display: block;
 					> a {
 						display: block; padding: 8px 15px;
-						font-size: 14px; font-weight: 500;
+						font-size: 14px; font-weight: 600;
 						&:after {
 							content: ''; display: block; margin: 2px 0 0;
 							width: 15px; height: 2px;
@@ -105,7 +105,7 @@
 				a {
 					display: block;
 					padding: 8px 0 8px 15px;
-					font-size: 11px; color: #111; font-weight: 300;
+					font-size: 12px; color: #111; font-weight: 400;
 				}
 				li {float: left; width: 50%;}
 				li:hover a {background: none;}
@@ -383,20 +383,27 @@
 		}
 		h1 {
 			margin: 1px 0 0;
-			font-size: 30px; color: #111; font-weight: 300;
+			font-size: 32px; color: #111; font-weight: 300;
 		}
 	}
 
-	.body {}
-
 	.basic-body {
+		font-size: 16px; line-height: 1.72; font-weight: 200;
 		a {word-break: break-all;}
 		img {max-width: 100%;}
 		figure {margin: 1em 0;}
 		ul, ol {padding-left: 24px;}
+		hr {
+			margin: 30px 0; display: block; height: 1px;
+			background: #ccc; border: none;
+		}
 		.text-left {text-align: left;}
 		.text-center {text-align: center;}
 		.text-right {text-align: right;}
+		h1,h2,h3,h4,h5,h6 {line-height: 1.38em; font-weight: 600;}
+	}
+	.markdown-body {
+		font-size: 16px; line-height: 1.72; font-weight: 200;
 	}
 
 	.control {
@@ -440,9 +447,11 @@
 		margin: 40px 0 0; padding: 0 10px;
 
 		> header {
-			margin: 0 10px 20px;
+			margin: 0 10px 40px;
 			h1 {font-size: 20px;}
 		}
+
+		.basic-body {font-weight: 400;}
 
 		.external-control {display: none;}
 
