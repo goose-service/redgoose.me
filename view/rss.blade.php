@@ -13,7 +13,7 @@
 			<link>{{ __URL__ }}article/{{ $article['srl'] }}/</link>
 			<description>
 				<![CDATA[
-					{{ $article['content'] }}
+					{!! $article['content'] !!}
 				]]>
 			</description>
 			<pubDate>{{ $article['date'] }}</pubDate>

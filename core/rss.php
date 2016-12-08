@@ -13,7 +13,7 @@ if(!defined("__GOOSE__")){exit();}
  * render : 데이터를 출력하는 형식 (text,html)
  */
 
-$countPerPage = 5;
+$countPerPage = 10;
 
 
 /**
