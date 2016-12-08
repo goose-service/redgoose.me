@@ -11,10 +11,9 @@
 		<item>
 			<title>{{ $article['title'] }}</title>
 			<link>{{ __URL__ }}/article/{{ $article['srl'] }}/</link>
+			<guid>{{ __URL__ }}/article/{{ $article['srl'] }}/</guid>
 			<description>
-				<![CDATA[
-					{!! $article['content'] !!}
-				]]>
+				<![CDATA[{!! $article['content'] !!}]]>
 			</description>
 			<pubDate>{{ $article['date'] }}</pubDate>
 		</item>

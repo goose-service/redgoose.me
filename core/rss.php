@@ -45,6 +45,30 @@ foreach($data['articles'] as $k=>$o)
 	{
 		$data['articles'][$k]['content'] = $Parsedown->text($o['content']);
 	}
+
+	if (isset($data['articles'][$k]['json']['thumbnail']['srl']))
+	{
+		$file = core\Spawn::item([
+			'table' => core\Spawn::getTableName('File'),
+			'where' => 'srl=' . (int)$data['articles'][$k]['json']['thumbnail']['srl']
+		]);
+
+		$data['articles'][$k]['content'] = (
+			'<img src="' . __GOOSE_URL__ . '/' . $file['loc'] . '" alt="' . $file['name'] . '">'.
+			'<p>'.
+			mb_substr(strip_tags(preg_replace('~>\\s+<~m', '><', $data['articles'][$k]['content'])), 0, 150, 'utf-8').
+			'...</p>'
+		);
+	}
+	else
+	{
+		$data['articles'][$k]['content'] = (
+			'<p>'.
+			mb_substr(strip_tags(preg_replace('~>\\s+<~m', '><', $data['articles'][$k]['content'])), 0, 150, 'utf-8').
+			'...</p>'
+		);
+	}
+
 	$data['articles'][$k]['date'] = date("D, d M Y H:i:s O", strtotime($o['regdate_original']));
 }
 
