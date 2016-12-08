@@ -10,7 +10,7 @@
 		@foreach($articles as $article)
 		<item>
 			<title>{{ $article['title'] }}</title>
-			<link>{{ __URL__ }}article/{{ $article['srl'] }}/</link>
+			<link>{{ __URL__ }}/article/{{ $article['srl'] }}/</link>
 			<description>
 				<![CDATA[
 					{!! $article['content'] !!}
