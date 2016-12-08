@@ -4,21 +4,40 @@ if(!defined("__GOOSE__")){exit();}
 /**
  * URL Guide
  *
- * {APP}/ - 모든 article을 불러옵니다.
- * {APP}/nest/{nest_id}/ - {nest_id} 값을가진 둥지의 데이터를 가져옵니다.
- * {APP}/nest/{nest_id}/{category_srl}/ - {nest_id}값과 {category_srl} 값을 가진 데이터를 가져옵니다.
- * {APP}/article/{article_srl}/ - {article_srl}값을 가진 article 데이터 하나를 가져옵니다.
- * {APP}/upLike/{article_srl}/ - {article_srl}값을 가진 article의 like 값을 1 올립니다.
+ * // POST
+ * {APP}/ : 모든 article을 불러옵니다.
+ * {APP}/nest/{nest_id}/ : {nest_id} 값을가진 둥지의 데이터를 가져옵니다.
+ * {APP}/nest/{nest_id}/{category_srl}/ : {nest_id}값과 {category_srl} 값을 가진 데이터를 가져옵니다.
+ * {APP}/article/{article_srl}/ : {article_srl}값을 가진 article 데이터 하나를 가져옵니다.
+ * {APP}/upLike/{article_srl}/ : {article_srl}값을 가진 article의 like 값을 1 올립니다.
  *
- * {APP}/?page={page} - {page} 페이지 번호로 article 데이터를 가져옵니다.
- * {APP}/?get={get} - {get}에 입력된 데이터만 가져옵니다. (nest,print_paginate,print_moreitem)
- * {APP}/?render={render} - {render}에 입력된 형식의 데이터로 가져옵니다. (text,html)
+ * // GET
+ * $_GET['action'] : (index,nest,article,upLike)
+ * $_GET['nest']
+ * $_GET['category']
+ * $_GET['article']
+ *
+ * {APP}/?page={page} : {page} 페이지 번호로 article 데이터를 가져옵니다.
+ * {APP}/?get={get} : {get}에 입력된 데이터만 가져옵니다. (nest,print_paginate,print_moreitem)
+ * {APP}/?render={render} : {render}에 입력된 형식의 데이터로 가져옵니다. (text,html)
  *
  */
 
+
+$_target = $_GET['action'] ? $_GET['action'] : 'index';
+$_params = [
+	'nest' => $_GET['nest'],
+	'category' => $_GET['category'],
+	'article' => $_GET['article'],
+];
 $data = null;
 
 
+/**
+ * @var string $_target
+ * @var array $_params
+ * @var API $api
+ */
 switch($_target)
 {
 	case 'index':
@@ -38,7 +57,6 @@ switch($_target)
 			'root' => __ROOT__,
 			'count' => __DEFAULT_ITEM_COUNT__
 		]);
-
 		break;
 
 	case 'article':
@@ -66,19 +84,19 @@ switch($_target)
 // check render type
 switch($_GET['render'])
 {
-	case 'text':
-		$header = 'Content-Type: text/plain; charset=utf-8';
-		break;
 	case 'html':
-		$header = 'Content-Type: text/html; charset=utf-8';
+		$header = 'text/html';
 		break;
+	case 'json':
+		$header = 'application/json';
+		break;
+	case 'text':
 	default:
-		$header = 'Content-Type: text/plain; charset=utf-8';
+		$header = 'text/plain';
 		break;
 }
 
 
 // RENDER
-header($header);
-$render_data = json_encode($data, JSON_PRETTY_PRINT);
-print_r($render_data);
+header('Content-Type: ' . $header . '; charset=utf-8');
+print_r(json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));

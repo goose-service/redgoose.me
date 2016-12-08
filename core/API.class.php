@@ -173,7 +173,7 @@ class API {
 		// get articles
 		$result['articles'] = core\Spawn::items([
 			'table' => core\Spawn::getTableName('article'),
-			'field' => 'srl,nest_srl,category_srl,hit,json,regdate,title',
+			'field' => $options['field'] ? $options['field'] : 'srl,nest_srl,category_srl,hit,json,regdate,title',
 			'where' => $where,
 			'limit' => $limit,
 			'sort' => 'desc',
@@ -184,9 +184,11 @@ class API {
 		// adjustment articles
 		if ($this->searchKeyInArray($print, 'article'))
 		{
-			//core\Util::console($this->thumbnailSize);
 			foreach ($result['articles'] as $k=>$v)
 			{
+				$result['articles'][$k]['regdate_original'] = $v['regdate'];
+				$result['articles'][$k]['modate_original'] = $v['regdate'];
+
 				if (isset($v['regdate'])) $result['articles'][$k]['regdate'] = core\Util::convertDate($v['regdate']);
 				if (isset($v['modate'])) $result['articles'][$k]['modate'] = core\Util::convertDate($v['modate']);
 				$result['articles'][$k]['size_className'] = $this->thumbnailSizeToClassName($v['json']['thumbnail']['size']);
@@ -236,6 +238,7 @@ class API {
 		// get article data
 		$article = core\Spawn::item([
 			'table' => core\Spawn::getTableName('article'),
+			'field' => $options['field'] ? $options['field'] : null,
 			'where' => 'srl='.$options['article_srl'],
 			'jsonField' => ['json']
 		]);

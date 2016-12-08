@@ -59,7 +59,8 @@ if ($router->match)
 
 	if ($_method == 'POST')
 	{
-		require_once('ajax.php');
+		$render_data = require_once('ajax.php');
+		print_r(json_encode($render_data, JSON_PRETTY_PRINT));
 		Goose::end();
 	}
 	else
@@ -167,6 +168,16 @@ if ($router->match)
 
 				$data = $api->upLike([ 'article_srl' => $_article ]);
 				header('Location: ' . $_SERVER['HTTP_REFERER']);
+				break;
+
+			case 'ajax':
+				require_once('ajax.php');
+				Goose::end();
+				break;
+
+			case 'rss':
+				require_once('rss.php');
+				Goose::end();
 				break;
 
 			default:
