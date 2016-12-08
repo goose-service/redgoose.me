@@ -59,8 +59,7 @@ if ($router->match)
 
 	if ($_method == 'POST')
 	{
-		$render_data = require_once('ajax.php');
-		print_r(json_encode($render_data, JSON_PRETTY_PRINT));
+		require_once('ajax.php');
 		Goose::end();
 	}
 	else
