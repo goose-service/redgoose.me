@@ -170,6 +170,12 @@ if ($router->match)
 				break;
 
 			case 'ajax':
+				$_target = $_GET['action'] ? $_GET['action'] : 'index';
+				$_params = [
+					'nest' => $_GET['nest'],
+					'category' => $_GET['category'],
+					'article' => $_GET['article'],
+				];
 				require_once('ajax.php');
 				Goose::end();
 				break;

@@ -16,6 +16,7 @@ if(!defined("__GOOSE__")){exit();}
  * $_GET['nest']
  * $_GET['category']
  * $_GET['article']
+ * $_GET['count'] : 목록에서의 글 출력 갯수
  *
  * {APP}/?page={page} : {page} 페이지 번호로 article 데이터를 가져옵니다.
  * {APP}/?get={get} : {get}에 입력된 데이터만 가져옵니다. (nest,print_paginate,print_moreitem)
@@ -23,15 +24,7 @@ if(!defined("__GOOSE__")){exit();}
  *
  */
 
-
-$_target = $_GET['action'] ? $_GET['action'] : 'index';
-$_params = [
-	'nest' => $_GET['nest'],
-	'category' => $_GET['category'],
-	'article' => $_GET['article'],
-];
 $data = null;
-
 
 /**
  * @var string $_target
@@ -55,7 +48,7 @@ switch($_target)
 			'page' => (isset($_GET['page']) && (int)$_GET['page'] > 1) ? (int)$_GET['page'] : 1,
 			'print_data' => 'article,nav_more',
 			'root' => __ROOT__,
-			'count' => __DEFAULT_ITEM_COUNT__
+			'count' => $_GET['count'] ? (int)$_GET['count'] : __DEFAULT_ITEM_COUNT__,
 		]);
 		break;
 
