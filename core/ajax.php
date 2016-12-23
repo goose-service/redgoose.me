@@ -12,17 +12,17 @@ if(!defined("__GOOSE__")){exit();}
  * {APP}/upLike/{article_srl}/ : {article_srl}값을 가진 article의 like 값을 1 올립니다.
  *
  * // GET
- * $_GET['action'] : (index,nest,article,upLike)
- * $_GET['nest']
- * $_GET['category']
- * $_GET['article']
+ * $_GET['action'] : (index,article,upLike)
+ * $_GET['nest'] : 둥지 id
+ * $_GET['category'] : 분류 번호
+ * $_GET['article'] : 글 번호
  * $_GET['count'] : 목록에서의 글 출력 갯수
  *
  * {APP}/?page={page} : {page} 페이지 번호로 article 데이터를 가져옵니다.
  * {APP}/?get={get} : {get}에 입력된 데이터만 가져옵니다. (nest,print_paginate,print_moreitem)
  * {APP}/?render={render} : {render}에 입력된 형식의 데이터로 가져옵니다. (text,html)
- *
  */
+
 
 $data = null;
 
@@ -58,11 +58,11 @@ switch($_target)
 		$_article = (int)$_params['article'];
 
 		// get article
-		$repo = $api->view([
+		$data = $api->view([
 			'app_srl' => __APP_SRL__,
 			'article_srl' => $_article,
 			'updateHit' => !isCookieKey( 'redgoose-hit-' . $_article ),
-			'print_data' => ($_GET['get']) ? $_GET['get'] : 'all',
+			'print_data' => 'all',
 		]);
 		break;
 

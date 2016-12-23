@@ -240,7 +240,7 @@ class API {
 			'table' => core\Spawn::getTableName('article'),
 			'field' => $options['field'] ? $options['field'] : null,
 			'where' => 'srl='.$options['article_srl'],
-			'jsonField' => ['json']
+			'jsonField' => ['json'],
 		]);
 
 		if (!$article) return [ 'state' => 'error', 'message' => 'not found article data' ];
