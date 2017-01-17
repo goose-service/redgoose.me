@@ -8,7 +8,7 @@
 		@if($repo['category'])
 		<nav class="category-index">
 			<button type="button" class="button-toggle-category" id="toggleCategory">
-				<img src="{{ __ROOT__ }}/assets/img/ico-hamburger.svg" alt="">
+				<img src="{{ __ROOT__ }}/assets/dist/img/ico-hamburger.svg" alt="">
 				<span>Category</span>
 			</button>
 			@if(count($repo['category']))
@@ -45,7 +45,7 @@
 	?>
 	<nav class="load-more-item" id="moreItem">
 		<a href="{{ __ROOT__ }}/{{ $loadAddr }}?page={{ $repo['nextpage'] }}">
-			<img src="{{ __ROOT__ }}/assets/img/more-item.svg" alt="more load item">
+			<img src="{{ __ROOT__ }}/assets/dist/img/more-item.svg" alt="more load item">
 		</a>
 	</nav>
 	@endif

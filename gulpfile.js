@@ -1,13 +1,14 @@
 // load modules
-var gulp = require('gulp');
-var concat = require('gulp-concat');
-var sourcemaps = require('gulp-sourcemaps');
-var uglify = require('gulp-uglify');
-var scss = require('gulp-sass');
-var rename = require('gulp-rename');
-var webpack = require('webpack-stream');
+const gulp = require('gulp');
+const concat = require('gulp-concat');
+const sourcemaps = require('gulp-sourcemaps');
+const uglify = require('gulp-uglify');
+const scss = require('gulp-sass');
+const rename = require('gulp-rename');
+const webpack = require('webpack-stream');
+const imagemin = require('gulp-imagemin');
 
-var vendors = [
+const vendors = [
 	'./vendor/jquery/jquery-3.1.1.min.js',
 	'./vendor/masonry/masonry.pkgd.min.js',
 	'./vendor/fastclick/fastclick.min.js'
@@ -15,7 +16,7 @@ var vendors = [
 
 
 // build vendor files
-gulp.task('vendor', function(){
+gulp.task('vendor', () => {
 	gulp.src(vendors)
 		.pipe(concat('vendor.js', { newLine: '\n\n' }))
 		.pipe(gulp.dest('./assets/dist/js'));
@@ -23,7 +24,7 @@ gulp.task('vendor', function(){
 
 
 // build scss
-gulp.task('scss', function(){
+gulp.task('scss', () => {
 	gulp.src('./assets/src/scss/app.scss')
 		.pipe(sourcemaps.init())
 		.pipe(scss({
@@ -39,12 +40,18 @@ gulp.task('scss:watch', function(){
 
 
 // build app
-gulp.task('js', function() {
+gulp.task('js', () => {
 	return gulp.src('./assets/src/js/App.js')
 		.pipe(
-			webpack(
-				require('./webpack.config.js')
-			)
+			webpack( require('./webpack.config.js') )
 		)
 		.pipe(gulp.dest('./assets/dist/js/'));
+});
+
+
+// minify images
+gulp.task('minify-images', () => {
+	gulp.src('assets/src/img/*')
+		.pipe(imagemin())
+		.pipe(gulp.dest('assets/dist/img'));
 });

@@ -8,12 +8,13 @@
 	</header>
 
 	<figure class="profile">
-		<img src="{{ __ROOT__ }}/assets/img/img-about-profile.png" alt="redgoose" width="240">
+		<img src="{{ __ROOT__ }}/assets/dist/img/img-about-profile.png" alt="redgoose" width="240">
 	</figure>
 
 	<div class="description">
 		<p>
-			창작일을 좋아하고 재미있는 작업을 하는것에 모든것을 쏟아붇는것에 마다하지 않는 남자입니다. 처음에는 디자이너로써 일을 시작했지만 현재는 프론트엔드 개발자로 일을 하고 있습니다. 그래픽이나 디자인같은 비쥬얼 창작 작업은 취미활동으로 짬날때마다 하나씩 만들어서 이 사이트에 게시하고 있습니다. 사진찍는것을 좋아하여 한번씩 돌아다니며 세상의 모습을 기록합니다. 개인적으로 만들었던 프로그램들은 대부분 오픈소스로
+			창작일을 좋아하고 재미있는 작업을 하는것에 모든것을 쏟아붇는것에 마다하지 않는 남자입니다. 처음에는 디자이너로써 일을 시작했지만 현재는 프론트엔드 개발자로 일을 하고 있습니다. 그래픽이나 디자인같은 비쥬얼 창작 작업은 취미활동으로 짬날때마다 하나씩 만들어서 이 사이트에 게시하고 있습니다. 사진찍는것을 좋아하여 한번씩 돌아다니며 세상의 모습을 기록합니다.<br/>
+			개인적으로 만들었던 프로그램들은 대부분 오픈소스로
 			<a href="https://github.com/RedgooseDev" target="_blank">github 저장소</a>에 등록을 하고 있습니다.
 		</p>
 	</div>

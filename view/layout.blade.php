@@ -35,7 +35,7 @@
 	<header class="layout-header">
 		<h1>
 			<a href="{{ __ROOT__ }}/">
-				<img src="{{ __ROOT__ }}/assets/img/logo.svg" alt="{{ $pref['meta']['title'] }}">
+				<img src="{{ __ROOT__ }}/assets/dist/img/logo.svg" alt="{{ $pref['meta']['title'] }}">
 			</a>
 		</h1>
 		<nav class="navigation" id="navigation">
@@ -63,12 +63,12 @@
 		@yield('header-user-action')
 		<nav class="button-user-action">
 			<button type="button">
-				<img src="{{ __ROOT__ }}/assets/img/btn-arrow-left.svg" alt="back">
+				<img src="{{ __ROOT__ }}/assets/dist/img/btn-arrow-left.svg" alt="back">
 			</button>
 		</nav>
 		<nav class="button-toggle-navigation">
 			<button type="button" id="toggleNavigation">
-				<img src="{{ __ROOT__ }}/assets/img/toggle-navigation.svg" alt="toggle navigation">
+				<img src="{{ __ROOT__ }}/assets/dist/img/toggle-navigation.svg" alt="toggle navigation">
 			</button>
 		</nav>
 	</header>

@@ -171,7 +171,7 @@ function View(index) {
 			let $el = $(e.currentTarget);
 			$.post($el.attr('href'), (res) => {
 				$el.replaceWith('<span class="on-like" title="on like">' +
-				`<img src="${window.redgooseState.root}/assets/img/ico-heart-on.svg" alt="">` +
+				`<img src="${window.redgooseState.root}/assets/dist/img/ico-heart-on.svg" alt="">` +
 				`<em>${res.data.like}</em>` +
 				'</span>');
 			}, 'json');
