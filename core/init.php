@@ -138,7 +138,18 @@ if ($router->match)
 					'print_data' => ($_GET['get']) ? $_GET['get'] : 'all' . ($_nest ? ',nest' : '') . ($_nest && $_category ? ',category' : ''),
 				]);
 
-				$blade->render((($_GET['popup']) ? 'detail.view-popup' : 'detail.view'), [
+				switch ($_GET['popup']) {
+					case 1:
+						$renderFile = 'detail.view-popupRaw';
+						break;
+					case 2:
+						$renderFile = 'detail.view-popup';
+						break;
+					default:
+						$renderFile = 'detail.view';
+						break;
+				}
+				$blade->render($renderFile, [
 					'pref' => $pref,
 					'appPref' => $appPref,
 					'title' => $pref['meta']['title'] . ($repo['article']['title'] && ($repo['article']['title'] !== '.') ? ' / ' . $repo['article']['title'] : ''),
