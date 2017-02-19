@@ -31,7 +31,7 @@
 	<link rel="stylesheet" href="{{ __ROOT__ }}/assets/dist/css/app.css" media="all">
 </head>
 <body>
-<main>
+<main class="mini-width">
 	<div class="container">
 		@yield('contents')
 	</div>

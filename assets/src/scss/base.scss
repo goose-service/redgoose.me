@@ -19,7 +19,10 @@ body {
 	-webkit-text-size-adjust: none;
 }
 a {color: $color-key;}
-main {min-width: 320px;}
+main {
+	min-width: 320px;
+	&.mini-width {min-width: 200px;}
+}
 
 
 
