@@ -8,8 +8,8 @@ $router->route->map('GET|POST', '/', 'index');
 
 $router->route->map('GET', '/rss', 'rss');
 $router->route->map('GET', '/rss/', 'rss');
-$router->route->map('GET', '/ajax', 'ajax');
-$router->route->map('GET', '/ajax/', 'ajax');
+$router->route->map('GET|POST', '/ajax', 'ajax');
+$router->route->map('GET|POST', '/ajax/', 'ajax');
 
 $router->route->map('GET', '/page/[aa:page]', 'page');
 $router->route->map('GET', '/page/[aa:page]/', 'page');

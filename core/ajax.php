@@ -35,6 +35,7 @@ switch($_target)
 {
 	case 'index':
 	case 'nest':
+	default:
 		$_nest = $_params['nest'];
 		$_category = (int)$_params['category'];
 
