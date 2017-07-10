@@ -9,7 +9,7 @@ const webpack = require('webpack-stream');
 const imagemin = require('gulp-imagemin');
 
 const vendors = [
-	'./vendor/jquery/jquery-3.1.1.min.js',
+	'./vendor/jquery/jquery-3.2.1.min.js',
 	'./vendor/masonry/masonry.pkgd.min.js',
 	'./vendor/fastclick/fastclick.min.js'
 ];
