@@ -58,7 +58,8 @@
 
 	@media all and (max-width: $size-mobile-width) {
 		position: relative; padding: 0;
-		border-bottom: 1px solid #ddd;
+		background: #fff;
+		border-bottom: 1px solid #e2e2e2;
 		@media (-webkit-min-device-pixel-ratio: 2) {
 			border-bottom-width: 0.5px;
 		}
