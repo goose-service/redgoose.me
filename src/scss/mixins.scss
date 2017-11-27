@@ -1,3 +1,20 @@
 @import "variables";
 
 
+// flex
+@mixin d-flex($align-items:null, $justify-content:null) {
+	display: -webkit-flex;
+	display: flex;
+	@if ($align-items) {
+		-webkit-align-items: $align-items;
+		align-items: $align-items;
+	}
+	@if ($justify-content) {
+		-webkit-justify-content: $justify-content;
+		justify-content: $justify-content;
+	}
+}
+@mixin flex($flex:1) {
+	-webkit-flex: $flex;
+	flex: $flex;
+}
