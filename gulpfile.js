@@ -1,57 +1,106 @@
-// load modules
 const gulp = require('gulp');
-const concat = require('gulp-concat');
-const sourcemaps = require('gulp-sourcemaps');
-const uglify = require('gulp-uglify');
+const rollup = require('rollup');
+const uglify = require('rollup-plugin-uglify');
+const babel = require('rollup-plugin-babel');
+const shell = require('shelljs');
 const scss = require('gulp-sass');
-const rename = require('gulp-rename');
-const webpack = require('webpack-stream');
-const imagemin = require('gulp-imagemin');
-
-const vendors = [
-	'./vendor/jquery/jquery-3.2.1.min.js',
-	'./vendor/masonry/masonry.pkgd.min.js',
-	'./vendor/fastclick/fastclick.min.js'
-];
+const sourcemaps = require('gulp-sourcemaps');
 
 
-// build vendor files
-gulp.task('vendor', () => {
-	gulp.src(vendors)
-		.pipe(concat('vendor.js', { newLine: '\n\n' }))
-		.pipe(gulp.dest('./assets/dist/js'));
+// make vendors
+async function makeVendors()
+{
+	try
+	{
+		// remove vendors
+		shell.rm('-rf', 'dist');
+		shell.mkdir('-p', 'dist');
+		shell.mkdir('-p', 'dist/vendors');
+		// copy jquery
+		shell.cp('-R', 'node_modules/jquery/dist/jquery.min.js', 'dist/vendors/');
+		console.log('Complete make vendors');
+	}
+	catch(e)
+	{
+		console.error(e);
+	}
+	return null;
+}
+
+// build javascript
+async function build_js(minify=false)
+{
+	try {
+		// javascript
+		const bundle = await rollup.rollup({
+			input: 'src/js/redgoose.js',
+			plugins: [
+				babel(),
+				minify && uglify()
+			],
+			external: ['jQuery'],
+		});
+		bundle.write({
+			file: 'dist/redgoose.js',
+			format: 'umd',
+			name: 'redgoose',
+			sourcemap: !minify,
+			globals: { jQuery: '$' },
+		});
+	}
+	catch(e)
+	{
+		console.error(e);
+		return new Error(e);
+	}
+}
+
+// build css
+async function build_css(minify=false)
+{
+	try {
+		// scss
+		gulp.src(`src/scss/redgoose.scss`)
+			.pipe(sourcemaps.init())
+			.pipe(scss({
+				outputStyle: minify ? 'compressed' : 'compact'
+			}).on('error', scss.logError))
+			.pipe(sourcemaps.write(''))
+			.pipe(gulp.dest('dist'));
+	}
+	catch(e)
+	{
+		console.error(e);
+		return new Error(e);
+	}
+}
+
+
+// watch
+gulp.task('watch-js', function() {
+	gulp.watch('./src/js/**/*.js', async function(e) {
+		await build_js(false);
+		console.warn(new Date());
+		console.log(`${e.type} - ${e.path}`);
+	});
+});
+gulp.task('watch-css', function() {
+	gulp.watch('./src/scss/**/*.scss', async function(e) {
+		await build_css(false);
+		console.warn(new Date());
+		console.log(`${e.type} - ${e.path}`);
+	});
 });
 
 
-// build scss
-gulp.task('scss', () => {
-	gulp.src('./assets/src/scss/app.scss')
-		.pipe(sourcemaps.init())
-		.pipe(scss({
-			//outputStyle : 'compact'
-			outputStyle: 'compressed'
-		}).on('error', scss.logError))
-		.pipe(sourcemaps.write('maps'))
-		.pipe(gulp.dest('./assets/dist/css'));
-});
-gulp.task('scss:watch', function(){
-	gulp.watch('./assets/src/scss/*.scss', ['scss']);
+// build
+gulp.task('build', async function() {
+	await makeVendors();
+	await build_js(true);
+	await build_css(true);
+	console.log('Complete build');
 });
 
 
-// build app
-gulp.task('js', () => {
-	return gulp.src('./assets/src/js/App.js')
-		.pipe(
-			webpack( require('./webpack.config.js') )
-		)
-		.pipe(gulp.dest('./assets/dist/js/'));
-});
-
-
-// minify images
-gulp.task('minify-images', () => {
-	gulp.src('assets/src/img/*')
-		.pipe(imagemin())
-		.pipe(gulp.dest('assets/dist/img'));
-});
+// make vendors
+gulp.task('make-vendors', makeVendors);

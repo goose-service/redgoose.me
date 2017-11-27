@@ -1,6 +1,7 @@
-node_modules/
 .idea/
-.DS_Store
-.htaccess
-*--user.*
 cache/
+node_modules/
+
+.DS_Store
+*--user.*
+yarn.lock

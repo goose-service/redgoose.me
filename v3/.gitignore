@@ -1,7 +1,0 @@
-.idea/
-cache/
-node_modules/
-
-.DS_Store
-*--user.*
-yarn.lock

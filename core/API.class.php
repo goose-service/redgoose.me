@@ -1,5 +1,7 @@
 <?php
+use core\Spawn, core\Goose, core\Util, core\Module, core\Paginate;
 if(!defined("__GOOSE__")){exit();}
+
 
 class API {
 
@@ -43,7 +45,7 @@ class API {
 			],
 		]);
 
-		setCookieKey('redgoose-hit-' . (int)$article_srl);
+		setCookieKey('redgoose-hit-'.(int)$article_srl);
 
 		return ($result == 'success');
 	}
@@ -64,301 +66,346 @@ class API {
 	/**
 	 * Index
 	 *
-	 * @param array $options
-	 * @return array
+	 * @param object $options
+	 * @return object
 	 */
-	public function index($options)
+	public function index($options=null)
 	{
-		$result = [
+		// set result
+		$result = (object)[
 			'nest' => null,
 			'category' => null,
 			'articles' => null,
 			'pageNavigation' => null,
 			'nextpage' => null,
 		];
-		$print = explode(',', $options['print_data']);
 
-		// get nests
-		if ($options['nest_id'])
+		// set print types
+		$print = isset($options->print_data) ? explode(',', $options->print_data) : ['nest','category','article','nav_paginate','nav_more'];
+
+		// get nest
+		if ($options->nest_id)
 		{
-			$result['nest'] = core\Spawn::item([
-				'table' => core\Spawn::getTableName('nest'),
-				'where' => 'id=\''.$options['nest_id'].'\'',
+			$result->nest = Spawn::item([
+				'table' => Spawn::getTableName('nest'),
+				'where' => 'id=\''.$options->nest_id.'\'',
 				'jsonField' => ['json'],
 			]);
-			if (!isset($result['nest']['srl']))
+
+			if (!isset($result->nest['srl']))
 			{
-				return [
+				return (object)[
 					'state' => 'error',
 					'message' => 'not found nest data',
 				];
 			}
 
-			// get categories list
-			if ($result['nest']['json']['useCategory'] && $this->searchKeyInArray($print, 'category'))
+			// get categories
+			if (!!$result->nest['json']['useCategory'] && $this->searchKeyInArray($print, 'category'))
 			{
-				$result['category'] = core\Spawn::items([
-					'table' => core\Spawn::getTableName('category'),
-					'where' => 'nest_srl='.(int)$result['nest']['srl'],
+				$result->category = Spawn::items([
+					'table' => Spawn::getTableName('category'),
+					'where' => 'nest_srl='.(int)$result->nest['srl'],
 					'field' => 'srl,name',
 					'order' => 'turn',
 					'sort' => 'asc',
 				]);
+			}
 
-				$cnt_all = core\Spawn::count([
-					'table' => core\Spawn::getTableName('article'),
-					'where' => 'app_srl='.$options['app_srl'].' and nest_srl='.(int)$result['nest']['srl'],
-				]);
+			// get article count
+			$cnt_all = core\Spawn::count([
+				'table' => core\Spawn::getTableName('article'),
+				'where' => 'app_srl='.$options->app_srl.' and nest_srl='.(int)$result->nest['srl'],
+			]);
 
-				if (count($result['category']))
+			// correction categories
+			if (count($result->category))
+			{
+				$check_active = false;
+				$index = [
+					[ 'srl' => 0, 'name' => 'All', 'count' => $cnt_all, 'active' => false ]
+				];
+
+				foreach($result->category as $k=>$v)
 				{
-					$check_active = false;
-					$index = [
-						[ 'srl' => 0, 'name' => 'All', 'count' => $cnt_all, 'active' => false ]
+					$cnt = ($cnt_all > 0) ? Spawn::count([
+						'table' => core\Spawn::getTableName('article'),
+						'where' => 'category_srl='.(int)$v['srl']
+					]) : 0;
+					if ($options->category_srl == (int)$v['srl'])
+					{
+						$check_active = true;
+						$result->category_name = $v['name'];
+					}
+					$index[] = [
+						'srl' => (int)$v['srl'],
+						'name' => $v['name'],
+						'count' => $cnt,
+						'active' => !!($options->category_srl == (int)$v['srl'])
 					];
-					foreach($result['category'] as $k=>$v)
-					{
-						$cnt = ($cnt_all > 0) ? core\Spawn::count([
-							'table' => core\Spawn::getTableName('article'),
-							'where' => 'category_srl='.(int)$v['srl']
-						]) : 0;
-						if ($options['category_srl'] == (int)$v['srl'])
-						{
-							$check_active = true;
-							$result['category_name'] = $v['name'];
-						}
-						$index[] = [
-							'srl' => (int)$v['srl'],
-							'name' => $v['name'],
-							'count' => $cnt,
-							'active' => ($options['category_srl'] == (int)$v['srl'])
-						];
-					}
-					if (!$check_active)
-					{
-						$index[0]['active'] = true;
-					}
-					$result['category'] = $index;
 				}
+
+				if (!$check_active)
+				{
+					$index[0]['active'] = true;
+				}
+
+				$result->category = $index;
 			}
 		}
 
 		// get articles
 		// init paginate
-		$options['page'] = ($options['page'] > 1) ? $options['page'] : 1;
-		$count = $options['count'];
-		$scale = $options['pageScale'];
-		$params = [
-			'keyword' => ($_GET['keyword']) ? $_GET['keyword'] : ''
-		];
+		$options->page = (isset($options->page) && $options->page > 1) ? $options->page : 1;
+		$params = ['keyword' => ($options->keyword) ? $options->keyword : ''];
 
-		$nest_srl = ($options['nest_id']) ? ((isset($result['nest']['srl'])) ? $result['nest']['srl'] : -1) : null;
-		$where = 'app_srl='.$options['app_srl'];
+		$nest_srl = ($options->nest_id) ? ((isset($result->nest['srl'])) ? $result->nest['srl'] : -1) : null;
+		$where = 'app_srl='.$options->app_srl;
 		$where .= ($nest_srl) ? ' and nest_srl='.$nest_srl : '';
-		$where .= ($options['category_srl']) ? ' and category_srl='.(int)$options['category_srl'] : '';
-		$where .= ($_GET['keyword']) ? ' and (title LIKE "%'.$_GET['keyword'].'%" or content LIKE "%'.$_GET['keyword'].'%")' : '';
+		$where .= ($options->category_srl) ? ' and category_srl='.(int)$options->category_srl : '';
+		$where .= ($options->keyword) ? ' and (title LIKE "%'.$options->keyword.'%" or content LIKE "%'.$options->keyword.'%")' : '';
 
-		// get total article
-		$total = core\Spawn::count([
-			'table' => core\Spawn::getTableName('article'),
+		// get total article count
+		$total = Spawn::count([
+			'table' => Spawn::getTableName('article'),
 			'where' => $where,
 		]);
 
 		// set paginate instance
-		$paginate = new core\Paginate($total, $_GET['page'], $params, $count, $scale);
+		$paginate = new Paginate($total, $options->page, $params, $options->size, $options->pageScale);
 
 		// set limit
 		$limit = $paginate->offset.','.$paginate->size;
 
 		// get articles
-		$result['articles'] = core\Spawn::items([
-			'table' => core\Spawn::getTableName('article'),
-			'field' => $options['field'] ? $options['field'] : 'srl,nest_srl,category_srl,hit,json,regdate,title',
-			'where' => $where,
-			'limit' => $limit,
-			'sort' => 'desc',
-			'order' => 'srl',
-			'jsonField' => ['json'],
-		]);
-
-		// adjustment articles
 		if ($this->searchKeyInArray($print, 'article'))
 		{
-			foreach ($result['articles'] as $k=>$v)
-			{
-				$result['articles'][$k]['regdate_original'] = $v['regdate'];
-				$result['articles'][$k]['modate_original'] = $v['regdate'];
+			$result->articles = Spawn::items([
+				'table' => Spawn::getTableName('article'),
+				'field' => $options->field ? $options->field : '*',
+				'where' => $where,
+				'limit' => $limit,
+				'sort' => 'desc',
+				'order' => 'srl',
+				'jsonField' => ['json'],
+			]);
 
-				if (isset($v['regdate'])) $result['articles'][$k]['regdate'] = core\Util::convertDate($v['regdate']);
-				if (isset($v['modate'])) $result['articles'][$k]['modate'] = core\Util::convertDate($v['modate']);
-				$result['articles'][$k]['size_className'] = $this->thumbnailSizeToClassName($v['json']['thumbnail']['size']);
+			// adjustment articles
+			foreach ($result->articles as $k=>$v)
+			{
+				$result->articles[$k]['regdate_original'] = $v['regdate'];
+				$result->articles[$k]['modate_original'] = $v['regdate'];
+
+				if (isset($v['regdate'])) $result->articles[$k]['regdate'] = Util::convertDate($v['regdate']);
+				if (isset($v['modate'])) $result->articles[$k]['modate'] = Util::convertDate($v['modate']);
+				$result->articles[$k]['size_className'] = $this->thumbnailSizeToClassName($v['json']['thumbnail']['size']);
 			}
 		}
 
 		// set paginate
 		if ($this->searchKeyInArray($print, 'nav_paginate'))
 		{
-			$result['pageNavigation'] = $paginate->createNavigationToObject();
+			$result->pageNavigation = $paginate->createNavigationToObject();
 		}
 
-		// set nextpage
+		// set more articles
+		// 다음페이지에 글이 존재하는지 검사하고 있으면 다음 페이지 번호를 저장한다.
 		if ($this->searchKeyInArray($print, 'nav_more'))
 		{
-			$nextPaginate = new core\Paginate($total, $options['page']+1, $params, $count, $scale);
+			$nextPaginate = new Paginate($total, $options->page+1, $params, $options->size, $options->pageScale);
 			$limit = $nextPaginate->offset.','.$nextPaginate->size;
-			$nextArticles = core\Spawn::items([
-				'table' => core\Spawn::getTableName('article'),
+			$nextArticles = Spawn::items([
+				'table' => Spawn::getTableName('article'),
 				'field' => 'srl',
 				'where' => $where,
 				'limit' => $limit,
 				'sort' => 'desc',
 				'order' => 'srl',
 			]);
-			$result['nextpage'] = (count($nextArticles)) ? $options['page'] + 1 : null;
+			$result->nextpage = (count($nextArticles)) ? $options->page + 1 : null;
 		}
 
-		$result['currentpage'] = $options['page'];
-		$result['nest'] = ($this->searchKeyInArray($print, 'nest')) ? $result['nest'] : null;
-		$result['articles'] = ($this->searchKeyInArray($print, 'article')) ? $result['articles'] : null;
-		$result['state'] = 'success';
+		$result->currentPage = $options->page;
+		$result->nest = ($this->searchKeyInArray($print, 'nest')) ? $result->nest : null;
+		$result->articles = isset($result->articles) ? $result->articles : null;
+		$result->state = 'success';
 
 		return $result;
 	}
 
 	/**
-	 * View
+	 * Article
 	 *
-	 * @param array $options
-	 * @return array
+	 * @param object $options
+	 * @return object
 	 */
-	public function view($options)
+	public function article($options)
 	{
-		if (!$options['article_srl']) return [ 'state' => 'error', 'message' => 'not found article_srl' ];
+		// check article_srl
+		if (!$options->article_srl)
+		{
+			return (object)[
+				'state' => 'error',
+				'message' => 'not found article_srl'
+			];
+		}
 
 		// get article data
-		$article = core\Spawn::item([
-			'table' => core\Spawn::getTableName('article'),
-			'field' => $options['field'] ? $options['field'] : null,
-			'where' => 'srl='.$options['article_srl'],
+		$article = Spawn::item([
+			'table' => Spawn::getTableName('article'),
+			'field' => $options->field ? $options->field : null,
+			'where' => 'srl='.$options->article_srl,
 			'jsonField' => ['json'],
 		]);
 
-		if (!$article) return [ 'state' => 'error', 'message' => 'not found article data' ];
+		// check article data
+		if ($article)
+		{
+			$article = (object)$article;
+		}
+		else
+		{
+			return (object)[
+				'state' => 'error',
+				'message' => 'not found article data'
+			];
+		}
 
-		$article['regdate'] = core\Util::convertDate($article['regdate']);
-		$article['modate'] = core\Util::convertDate($article['modate']);
+		// convert date
+		$article->regdate = Util::convertDate($article->regdate);
+		$article->modate = Util::convertDate($article->modate);
 
 		// set content type
-		switch($article['json']['mode'])
+		switch($article->json['mode'])
 		{
 			case 'markdown':
 				// load parsedown
-				require_once(__GOOSE_PWD__ . 'vendor/Parsedown/Parsedown.class.php');
+				require_once(__GOOSE_PWD__.'vendor/Parsedown/Parsedown.class.php');
 
-				// get instance parsedown
-				$Parsedown = new Parsedown();
+				// get instance parseDown
+				$parseDown = new Parsedown();
 
 				// convert markdown
-				$article['content'] = $Parsedown->text($article['content']);
+				$article->content = $parseDown->text($article->content);
 				break;
 
 			case 'text':
-				$article['content'] = nl2br(htmlspecialchars($article['content']));
+				$article->content = nl2br(htmlspecialchars($article->content));
 				break;
 		}
 
-		// set prev,next item
-		$print_data = explode(',', $options['print_data']);
-		$str = '';
-		$str .= ($this->searchKeyInArray($print_data, 'nest')) ? 'nest_srl='.(int)$article['nest_srl'] : '';
-		$str .= ($this->searchKeyInArray($print_data, 'category') && $article['category_srl']) ? ' and category_srl='.(int)$article['category_srl'] : '';
-		$str .= ($str) ? ' and ' : ' app_srl='.$options['app_srl'] . ' and ';
+		// make where query
+		$print_data = explode(',', $options->print_data);
+		$str = ($this->searchKeyInArray($print_data, 'nest')) ? 'nest_srl='.(int)$article->nest_srl : '';
+		$str .= ($this->searchKeyInArray($print_data, 'category') && $article->category_srl) ? ' and category_srl='.(int)$article->category_srl : '';
+		$str .= ($str) ? ' and ' : ' app_srl='.$options->app_srl . ' and ';
 
-		$prevItem = core\Spawn::item([
-			'table' => core\Spawn::getTableName('article'),
+		// set prev,next item
+		$prevItem = Spawn::item([
+			'table' => Spawn::getTableName('article'),
 			'field' => 'srl',
-			'where' => $str.'srl<'.(int)$article['srl'],
+			'where' => $str.'srl<'.(int)$article->srl,
 			'order' => 'srl',
 			'sort' => 'desc',
 			'limit' => 1,
+			'debug' => false,
 		]);
-		$nextItem = core\Spawn::item([
-			'table' => core\Spawn::getTableName('article'),
+		$nextItem = Spawn::item([
+			'table' => Spawn::getTableName('article'),
 			'field' => 'srl',
-			'where' => $str.'srl>'.(int)$article['srl'],
+			'where' => $str.'srl>'.(int)$article->srl,
 			'order' => 'srl',
 			'limit' => 1,
+			'debug' => false,
 		]);
 
 		// get nest data
-		$nest = core\Spawn::item([
-			'table' => core\Spawn::getTableName('nest'),
+		$nest = Spawn::item([
+			'table' => Spawn::getTableName('nest'),
 			'field' => 'srl,name,id,json',
-			'where' => 'srl='.(int)$article['nest_srl'],
+			'where' => 'srl='.(int)$article->nest_srl,
 			'jsonField' => ['json']
 		]);
 
 		// get category
-		$category = ($article['category_srl']) ? core\Spawn::item([
-			'table' => core\Spawn::getTablename('category'),
+		$category = !!$article->category_srl ? Spawn::item([
+			'table' => Spawn::getTablename('category'),
 			'field' => 'name',
-			'where' => 'srl='.(int)$article['category_srl'],
+			'where' => 'srl='.(int)$article->category_srl,
 		]) : null;
 
-		return [
+		return (object)[
 			'state' => 'success',
 			'article' => $article,
-			'nest' => $nest,
-			'category' => $category,
-			'anotherArticle' => [
+			'nest' => isset($nest) ? (object)$nest : null,
+			'category' => isset($category) ? (object)$category : null,
+			'anotherArticle' => (object)[
 				'prev' => (isset($prevItem['srl'])) ? [ 'srl' => (int)$prevItem['srl'] ] : null,
 				'next' => (isset($nextItem['srl'])) ? [ 'srl' => (int)$nextItem['srl'] ] : null,
 			],
-			'checkUpdateHit' => ($options['updateHit']) ? ($this->updateHit((int)$article['hit'], (int)$article['srl'])) : null,
+			'checkUpdateHit' => ($options->updateHit) ? ($this->updateHit((int)$article->hit, (int)$article->srl)) : null,
 		];
 	}
 
 	/**
 	 * Up like
 	 *
-	 * @param array $options : [
-	 *   article_srl
-	 *   header_key
-	 * ]
-	 * @return array
+	 * @param object $options : [article_srl, header_key]
+	 * @return object
 	 */
 	public function upLike($options)
 	{
-		if (!$options['article_srl']) return [ 'state' => 'error', 'message' => 'not found article_srl' ];
-		$article = core\Spawn::item([
-			'table' => core\Spawn::getTableName('article'),
-			'where' => 'srl=' . (int)$options['article_srl'],
+		// check `article_srl` value
+		if (!$options->article_srl)
+		{
+			return (object)[
+				'state' => 'error',
+				'message' => 'not found article_srl'
+			];
+		}
+
+		// get article
+		$article = Spawn::item([
+			'table' => Spawn::getTableName('article'),
 			'field' => 'srl,json',
+			'where' => 'srl=' . (int)$options->article_srl,
 			'jsonField' => ['json']
 		]);
-		if (!isset($article['json'])) return [ 'state' => 'error', 'message' => 'not found article data' ];
 
-		$like = (isset($article['json']['like'])) ? ((int)$article['json']['like']) : 0;
-		$article['json']['like'] = $like + 1;
-		$json = core\Util::arrayToJson($article['json'], true);
+		// check article json
+		if (!isset($article->json))
+		{
+			return (object)[
+				'state' => 'error',
+				'message' => 'not found article data'
+			];
+		}
 
-		$result = core\Spawn::update([
-			'table' => core\Spawn::getTableName('article'),
+		// change like count
+		$like = (isset($article->json['like'])) ? ((int)$article->json['like']) : 0;
+		$article->json['like'] = $like + 1;
+		$json = Util::arrayToJson($article->json, true);
+
+		// update article
+		$result = Spawn::update([
+			'table' => Spawn::getTableName('article'),
 			'data' => [ 'json=\''.$json.'\'' ],
-			'where' => 'srl=' . (int)$options['article_srl'],
+			'where' => 'srl=' . (int)$options->article_srl,
 		]);
 
-		setCookieKey('redgoose-like-' . (int)$options['article_srl']);
+		// save cookie
+		// TODO: 쿠키가 아닌 다른 방법을 찾아보기
+		setCookieKey('redgoose-like-' . (int)$options->article_srl);
 
-		return ($result == 'success') ? [
+		// return
+		return ($result == 'success') ? (object)[
 			'state' => 'success',
-			'data' => [
-				'like' => (int)$article['json']['like']
-			],
+			'data' => [ 'like' => (int)$article->json['like'] ],
 			'message' => 'update complete',
-		] : [
+		] : (object)[
 			'state' => 'error',
 			'message' => 'fail update complete',
 		];
 	}
+
 }

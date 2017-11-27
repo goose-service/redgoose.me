@@ -13,4 +13,4 @@ else
 	exit;
 }
 
-require_once(__PWD__ . '/core/init.php');
+require_once(__PWD__ . '/core/bootstrap.php');
