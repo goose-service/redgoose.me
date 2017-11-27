@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="17px" height="26px" viewBox="0 0 17 26" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 40.3 (33839) - http://www.bohemiancoding.com/sketch -->
+    <title>ic_navigate_next_black_24px</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Design" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="View/Desktop" transform="translate(-961.000000, -607.000000)">
+            <g id="NAV-DIR" transform="translate(30.000000, 595.000000)">
+                <g id="ic_navigate_next_black_24px" transform="translate(914.000000, 0.000000)">
+                    <g id="Group">
+                        <polygon id="Shape" fill="#111111" points="20.8333333 12.5 17.8958333 15.4375 27.4375 25 17.8958333 34.5625 20.8333333 37.5 33.3333333 25"></polygon>
+                        <polygon id="Shape" points="0 0 50 0 50 50 0 50"></polygon>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

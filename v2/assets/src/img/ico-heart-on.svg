@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="26px" height="25px" viewBox="0 0 26 25" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 40.3 (33839) - http://www.bohemiancoding.com/sketch -->
+    <title>ic_favorite_black_24px</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Design" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="View/Desktop" transform="translate(-469.000000, -1131.000000)">
+            <g id="ic_favorite_black_24px" transform="translate(457.000000, 1118.000000)">
+                <g id="Group">
+                    <polygon id="Shape" points="0 0 50 0 50 50 0 50"></polygon>
+                    <path class="ico-heart" d="M25,37.1228676 L23.1417425,35.4312126 C16.5417246,29.446342 12.1844313,25.4991468 12.1844313,20.6548618 C12.1844313,16.7076667 15.2857989,13.606299 19.2329941,13.606299 C21.462903,13.606299 23.603103,14.6443601 25,16.2847529 C26.396897,14.6443601 28.537097,13.606299 30.7670059,13.606299 C34.7142011,13.606299 37.8155687,16.7076667 37.8155687,20.6548618 C37.8155687,25.4991468 33.4582754,29.446342 26.8582575,35.4440281 L25,37.1228676 L25,37.1228676 Z" id="Shape" fill="#999999"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="18px" height="10px" viewBox="0 0 18 10" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 40.3 (33839) - http://www.bohemiancoding.com/sketch -->
+    <title>ic_dehaze_black_24px</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="HEADER/mobile" transform="translate(-304.000000, -17.000000)">
+            <g id="HEADER">
+                <g id="ic_dehaze_black_24px" transform="translate(303.000000, 13.000000)">
+                    <g id="Group">
+                        <path d="M4.66666667,13.125 L18.3333333,13.125 L18.3333333,11.625 L4.66666667,11.625 L4.66666667,13.125 Z M7.66666667,9.375 L18.3333333,9.375 L18.3333333,7.875 L7.66666667,7.875 L7.66666667,9.375 Z M1.66666667,4.125 L1.66666667,5.625 L18.3333333,5.625 L18.3333333,4.125 L1.66666667,4.125 L1.66666667,4.125 Z" id="Shape" fill="#000000"></path>
+                        <polygon id="Shape" points="0 0 20 0 20 18 0 18"></polygon>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
