@@ -1,0 +1,37 @@
+// Layout header
+
+
+// header
+.layout-header {
+	&__body {
+		padding: 40px 0 0;
+	}
+	&__logo {}
+	&__side {
+		display: none;
+	}
+	&__gnb {
+		
+	}
+}
+
+
+// logo
+.logo {
+	margin: 0;
+	a {
+		display: block;
+		margin: 0 auto;
+		width: 82px;
+	}
+	img {
+		display: block;
+		width: 100%;
+	}
+}
+
+
+// global navigation buttons
+.gnb {
+
+}
