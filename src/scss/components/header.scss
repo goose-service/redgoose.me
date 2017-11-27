@@ -1,17 +1,20 @@
+@import "../variables";
+
+
 // Layout header
 
 
 // header
 .layout-header {
 	&__body {
-		padding: 40px 0 0;
+		padding: 30px 0 0;
 	}
 	&__logo {}
 	&__side {
 		display: none;
 	}
 	&__gnb {
-		
+		margin-top: 10px;
 	}
 }
 
@@ -33,5 +36,67 @@
 
 // global navigation buttons
 .gnb {
+	$self: &;
 
+	&__children {
+		position: relative;
+		opacity: 0;
+		pointer-events: none;
+		transform: translateY(-8px);
+		transition: opacity .15s ease-out, transform .2s ease-out;
+	}
+	&__dep-1 {
+		margin: 0;
+		padding: 0;
+		list-style: none;
+		@include d-flex(center, center);
+		> li {
+			> a {
+				display: block;
+				padding: 8px 10px;
+				font-size: 13px;
+				text-decoration: none;
+				font-weight: 600;
+				letter-spacing: .25px;
+				color: #111;
+			}
+			&.active {
+				> a {
+					color: $color-key;
+				}
+			}
+			&:hover {
+				text-decoration: underline;
+				#{$self}__children {
+					opacity: 1;
+					pointer-events: auto;
+					transform: translateY(0);
+				}
+			}
+		}
+	}
+	&__dep-2 {
+		margin: 0;
+		list-style: none;
+		position: absolute;
+		left: -5px;
+		min-width: 140px;
+		background: $color-key;
+		padding: 12px 0;
+		border-radius: 3px;
+		box-shadow: 0 2px 5px rgba(0,0,0,.15);
+		> li {
+			> a {
+				display: block;
+				padding: 3px 18px;
+				color: #fff;
+				text-decoration: none;
+				font-size: 13px;
+			}
+			> a:hover,
+			&.active {
+				text-decoration: underline;
+			}
+		}
+	}
 }

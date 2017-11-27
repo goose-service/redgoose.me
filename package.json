@@ -4,11 +4,7 @@
 	"private": true,
 	"author": "redgoose <http://redgoose.me>",
 	"license": "ISC",
-	"scripts": {
-		"make-vendors": "./node_modules/.bin/gulp make-vendors",
-		"watch": "./node_modules/.bin/gulp watch",
-		"build": "./node_modules/.bin/gulp build"
-	},
+	"scripts": {},
 	"repository": {
 		"type": "git",
 		"url": "git+https://redgoose@bitbucket.org/redgooseme/redgoose-v3.git"

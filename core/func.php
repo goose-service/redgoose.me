@@ -67,3 +67,20 @@ function contentToShortText($con, $len=120)
 
 	return $con;
 }
+
+/**
+ * set global navigation button active
+ *
+ * @param array $nav
+ * @return array
+ */
+function setGnbActive($nav=[])
+{
+	foreach($nav as $k=>$v)
+	{
+		if ($v['child'])
+		{
+			core\Util::console($v['child']);
+		}
+	}
+}

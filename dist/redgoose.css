@@ -147,14 +147,34 @@ body { margin: 0; padding: 0; font-size: 1rem; line-height: 1.5; color: #111; ba
 
 a { color: #b31f37; }
 
-.layout-header__body { padding: 40px 0 0; }
+.layout-header__body { padding: 30px 0 0; }
 
 .layout-header__side { display: none; }
+
+.layout-header__gnb { margin-top: 10px; }
 
 .logo { margin: 0; }
 
 .logo a { display: block; margin: 0 auto; width: 82px; }
 
 .logo img { display: block; width: 100%; }
+
+.gnb__children { position: relative; opacity: 0; pointer-events: none; transform: translateY(-8px); transition: opacity .15s ease-out, transform .2s ease-out; }
+
+.gnb__dep-1 { margin: 0; padding: 0; list-style: none; display: -webkit-flex; display: flex; -webkit-align-items: center; align-items: center; -webkit-justify-content: center; justify-content: center; }
+
+.gnb__dep-1 > li > a { display: block; padding: 8px 10px; font-size: 13px; text-decoration: none; font-weight: 600; letter-spacing: .25px; color: #111; }
+
+.gnb__dep-1 > li.active > a { color: #b31f37; }
+
+.gnb__dep-1 > li:hover { text-decoration: underline; }
+
+.gnb__dep-1 > li:hover .gnb__children { opacity: 1; pointer-events: auto; transform: translateY(0); }
+
+.gnb__dep-2 { margin: 0; list-style: none; position: absolute; left: -5px; min-width: 140px; background: #b31f37; padding: 12px 0; border-radius: 3px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15); }
+
+.gnb__dep-2 > li > a { display: block; padding: 3px 18px; color: #fff; text-decoration: none; font-size: 13px; }
+
+.gnb__dep-2 > li > a:hover, .gnb__dep-2 > li.active { text-decoration: underline; }
 
 /*# sourceMappingURL=redgoose.css.map */
