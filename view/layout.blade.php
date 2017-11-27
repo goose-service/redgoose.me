@@ -8,7 +8,6 @@ if(!defined("__GOOSE__")){exit();}
 </head>
 <body>
 <main>
-	asd
 	<!-- Header -->
 	<header class="layout-header">
 		<div class="layout-header__body">
