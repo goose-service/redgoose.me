@@ -1,73 +1,57 @@
-var gulp = require('gulp');
-var concat = require('gulp-concat');
-var scss = require('gulp-sass');
-var uglify = require('gulp-uglify');
-var sourcemaps = require('gulp-sourcemaps');
+// load modules
+const gulp = require('gulp');
+const concat = require('gulp-concat');
+const sourcemaps = require('gulp-sourcemaps');
+const uglify = require('gulp-uglify');
+const scss = require('gulp-sass');
+const rename = require('gulp-rename');
+const webpack = require('webpack-stream');
+const imagemin = require('gulp-imagemin');
 
-var path = './assets';
-var source = {
-	css : {
-		path : path + '/css/',
-		layout : [ path + '/css/layout.scss' ]
-	},
-	js : {
-		path : path + '/js/',
-		app : [
-			path + '/js/Article.class.js',
-			path + '/js/Index.class.js',
-			path + '/js/View.class.js',
-			path + '/js/layout.js'
-		]
-	}
-};
+const vendors = [
+	'./vendor/jquery/jquery-3.2.1.min.js',
+	'./vendor/masonry/masonry.pkgd.min.js',
+	'./vendor/fastclick/fastclick.min.js'
+];
 
-// make vendor
-gulp.task('vendor', function(){
-	gulp.src([
-		'vendor/jquery/jquery-2.2.4.min.js',
-		'vendor/masonry/dist/masonry.pkgd.min.js',
-		'vendor/imagesloaded/imagesloaded.pkgd.min.js'
-	])
-		.pipe(concat('vendor.min.js', { newLine: '\n\n' }))
-		.pipe(gulp.dest(path + '/js'));
+
+// build vendor files
+gulp.task('vendor', () => {
+	gulp.src(vendors)
+		.pipe(concat('vendor.js', { newLine: '\n\n' }))
+		.pipe(gulp.dest('./assets/dist/js'));
 });
 
-// convert scss
-gulp.task('scss', function(){
-	gulp.src(source.css.layout)
+
+// build scss
+gulp.task('scss', () => {
+	gulp.src('./assets/src/scss/app.scss')
 		.pipe(sourcemaps.init())
 		.pipe(scss({
-			//outputStyle: 'compact'
+			//outputStyle : 'compact'
 			outputStyle: 'compressed'
 		}).on('error', scss.logError))
-		.pipe(concat('style.pkgd.css', { newLine: '\n\n' }))
-		.pipe(sourcemaps.write('.'))
-		.pipe(gulp.dest(source.css.path));
+		.pipe(sourcemaps.write('maps'))
+		.pipe(gulp.dest('./assets/dist/css'));
 });
-// set watcher scss
 gulp.task('scss:watch', function(){
-	gulp.watch(source.css.layout, ['scss']);
+	gulp.watch('./assets/src/scss/*.scss', ['scss']);
 });
 
 
-// convert javascript
-gulp.task('javascript', function(){
-	gulp.src(source.js.app)
-		.pipe(sourcemaps.init())
-		.pipe(uglify())
-		.pipe(concat('app.pkgd.js', { newLine: '\n\n' }))
-		.pipe(sourcemaps.write('.'))
-		.pipe(gulp.dest(source.js.path))
-	;
-});
-
-// watch react and javascript
-gulp.task('javascript:watch', function(){
-	gulp.watch(source.js.app, ['javascript']);
+// build app
+gulp.task('js', () => {
+	return gulp.src('./assets/src/js/App.js')
+		.pipe(
+			webpack( require('./webpack.config.js') )
+		)
+		.pipe(gulp.dest('./assets/dist/js/'));
 });
 
 
-// default
-gulp.task('default', function(){
-	console.log('say hello');
+// minify images
+gulp.task('minify-images', () => {
+	gulp.src('assets/src/img/*')
+		.pipe(imagemin())
+		.pipe(gulp.dest('assets/dist/img'));
 });

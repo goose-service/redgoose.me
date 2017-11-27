@@ -1,77 +1,34 @@
-redgoose.me Version.1
-=====
+# redgoose.me version.2
 
-### HTML Preference data
+두번째 버전의 redgoose 저장소
+
+
+## Preference data
 `Goose - json`에서 html 설정값을 가지고 있는 json 데이터를 추가해야한다.
-```
-{
-	"meta": {
-		"title": "Redgoose",
-		"author": "RedGoose",
-		"keywords": "Redgoose 2D 3D Photography Graphic Design CaseStudy Programing Web 붉은거위 거위 Portfolio",
-		"description": "붉은거위의 개인작업물 라이브러리. Redgoose persnal work library"
-	},
-	"pinterestVerify": "3e05cc5b868de908660cf4004dbdc8fe",
-	"copyright": "Copyright 2013 Redgoose. All right reserved."
-}
-```
 
 
-### Navigation data
+## Navigation data
 `Goose - json`에서 메뉴트리값을 가지고 있는 json 데이터를 추가해야한다.
-```
-[
-	{
-		"name": "Works",
-		"child": [
-			{
-				"name": "3D",
-				"url": "/Nest/3d/",
-				"id": "3d"
-			},
-			{
-				"name": "Visual",
-				"url": "/Nest/Visual/"
-			},
-			{
-				"name": "Web",
-				"url": "/Nest/Web/"
-			}
-		]
-	},
-	{
-		"name": "Photography",
-		"child": [
-			{
-				"name": "Landscape",
-				"url": "/Nest/Landscape/"
-			},
-			{
-				"name": "Portrait",
-				"url": "/Nest/Portrait/"
-			}
-		]
-	}
-]
-```
 
 
-### index.user.php
+## index.user.php
 경로설정을 가지고 있는 `index.user.php` 파일이 꼭 필요하다.
 
-```
-<?php
-define('__GOOSE__', true);
-define('__GOOSE_ROOT__', '/');
-define('__URL__', '/');
-define('__PWD__', dirname(__FILE__));
-define('__GOOSE_LIB__', '../goose/bootstrap/lib.php');
-define('__ROOT__', '');
-define('__COOKIE_ROOT__', '/');
-define('DEBUG', true);
+----
 
-$app_srl = 1;
-$defaultItemCount = 50;
-$navigation_json_srl = 2; // json - navigation srl값
-$pref_json_srl = 3; // json - preference srl값
-```
+## URL Guide
+
+### Address
+- `/ajax/` : ajax 형식으로 출력하기
+
+### Parameter
+
+#### List page
+...
+
+#### Detail page
+`/article/{article}/` 형태의 본문 페이지에서 사용되는 파라메터
+
+- `?popup=1` : 소스 형태로 본문 내용을 출력한다.
+- `?popup=2` : 요소가 없는 레이아웃과 본문만 출력된다.
+- `?hud=0` : 컨트롤 버튼이나 좋아요 버튼 출력여부. (기본값:1)
