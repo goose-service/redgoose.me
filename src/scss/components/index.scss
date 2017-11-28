@@ -1,11 +1,17 @@
 @import "../variables";
+@import "../mixins";
 
 
 // index
 .index {
-	border: 1px solid #000;
+	//width: 1250px;
+	margin: 0 auto;
 	&__header {
-		> h1 {}
+		> h1 {
+			margin: 0;
+			font-size: 30px;
+			font-weight: 600;
+		}
 	}
 	&__categories {}
 }
@@ -13,12 +19,32 @@
 
 // categories
 .categories {
-	&__toggle {}
-	&__index {}
+	&__toggle {
+		display: none;
+	}
+	&__index {
+		margin: 0 0 0 -6px;
+		padding: 0;
+		list-style: none;
+		@include d-flex(center);
+		li {}
+		a {
+			display: block;
+			padding: 4px 6px;
+			text-decoration: none;
+			font-size: 11px;
+			font-weight: 400;
+			color: #111;
+			&.active {
+				color: $color-key;
+			}
+		}
+	}
 }
 
 
 // articles
 .articles {
 	&__sizer {}
+	&__item {}
 }
