@@ -1,0 +1,24 @@
+@import "../variables";
+
+
+// index
+.index {
+	border: 1px solid #000;
+	&__header {
+		> h1 {}
+	}
+	&__categories {}
+}
+
+
+// categories
+.categories {
+	&__toggle {}
+	&__index {}
+}
+
+
+// articles
+.articles {
+	&__sizer {}
+}

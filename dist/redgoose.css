@@ -177,4 +177,6 @@ a { color: #b31f37; }
 
 .gnb__dep-2 > li > a:hover, .gnb__dep-2 > li.active { text-decoration: underline; }
 
+.index { border: 1px solid #000; }
+
 /*# sourceMappingURL=redgoose.css.map */

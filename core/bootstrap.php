@@ -113,9 +113,7 @@ if ($router->match)
 			case 'nest':
 				$_nest = $_params->nest;
 				$_category = (int)$_params->category;
-
-				// TODO: 자식 `active`를 검사하여 `$_page`값을 얻어오기
-				//setGnbActive($pref->nav, $_page);
+				$_page = getGnbActive($pref->nav, $_nest);
 
 				// get data
 				$repo = $api->index((object)[
@@ -144,6 +142,7 @@ if ($router->match)
 					'pref' => $pref,
 					'appPref' => $appPref,
 					'title' => $title,
+					'_page' => $_page,
 					'_nest' => $_nest,
 					'_category' => $_category,
 					'repo' => $repo

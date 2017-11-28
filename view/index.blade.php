@@ -14,13 +14,13 @@ if(!defined("__GOOSE__")){exit();}
 	<header class="index__header">
 		<h1>{{ $repo->nest['name'] }}</h1>
 		@if($repo->category)
-		<nav class="categories">
-			<button type="button" class="button-toggle-category" id="toggleCategory">
+		<nav class="categories index__categories">
+			<button type="button" class="categories__toggle" id="toggleCategory">
 				<img src="{{ __ROOT__ }}/assets/img/ico-arrow-down.svg" alt="">
 				<span>Category</span>
 			</button>
 			@if(count($repo->category))
-			<ul id="categories">
+			<ul class="categories__index" id="categories">
 				@foreach($repo->category as $item)
 				<li>
 					<a href="{{ __ROOT__ }}/nest/{{ $_nest ? $_nest.'/' : '' }}{{ $item['srl'] ? $item['srl'].'/' : '' }}"{!! $item['active'] ? ' class="active"' : '' !!}>

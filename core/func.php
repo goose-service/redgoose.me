@@ -1,4 +1,5 @@
 <?php
+use core\Util;
 if(!defined("__GOOSE__")){exit();}
 
 
@@ -69,18 +70,32 @@ function contentToShortText($con, $len=120)
 }
 
 /**
- * set global navigation button active
+ * get global navigation button active
  *
  * @param array $nav
- * @return array
+ * @param string $name
+ * @return string
  */
-function setGnbActive($nav=[])
+function getGnbActive($nav=[], $name)
 {
 	foreach($nav as $k=>$v)
 	{
 		if ($v['child'])
 		{
-			core\Util::console($v['child']);
+			if ($v['id'] === $name or $v['name'] === $name)
+			{
+				if ($v['id']) return $v['id'];
+				else if ($v['name']) return $v['name'];
+			}
+			foreach($v['child'] as $kk=>$vv)
+			{
+				if ($vv['id'] === $name or $vv['name'] === $name)
+				{
+					if ($v['id']) return $v['id'];
+					else if ($v['name']) return $v['name'];
+				}
+			}
 		}
 	}
+	return null;
 }
