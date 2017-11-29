@@ -18,6 +18,7 @@ async function makeVendors()
 		shell.mkdir('-p', 'dist/vendors');
 		// copy jquery
 		shell.cp('-R', 'node_modules/jquery/dist/jquery.min.js', 'dist/vendors/');
+		shell.cp('-R', 'node_modules/masonry-layout/dist/masonry.pkgd.min.js', 'dist/vendors/');
 		console.log('Complete make vendors');
 	}
 	catch(e)
@@ -38,14 +39,14 @@ async function build_js(minify=false)
 				babel(),
 				minify && uglify()
 			],
-			external: ['jQuery'],
+			external: ['jQuery', 'Masonry'],
 		});
 		bundle.write({
 			file: 'dist/redgoose.js',
 			format: 'umd',
 			name: 'redgoose',
 			sourcemap: !minify,
-			globals: { jQuery: '$' },
+			globals: { jQuery: '$', Masonry: 'Masonry' },
 		});
 	}
 	catch(e)

@@ -3,7 +3,7 @@
 
 @section('script')
 <script>
-var app = null;
+var app = 'article';
 </script>
 @endsection
 

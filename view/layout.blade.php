@@ -63,6 +63,7 @@ if(!defined("__GOOSE__")){exit();}
 @yield('popup')
 
 <script src="{{__ROOT__}}/dist/vendors/jquery.min.js"></script>
+<script src="{{__ROOT__}}/dist/vendors/masonry.pkgd.min.js"></script>
 <script src="{{__ROOT__}}/dist/redgoose.js"></script>
 @yield('script')
 </body>

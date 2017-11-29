@@ -1,9 +1,14 @@
 @import "variables";
 
-
+* {
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
 body {
 	margin: 0;
 	padding: 0;
+	min-width: 320px;
 	font-family: $font-family, sans-serif;
 	font-size: 1rem;
 	line-height: 1.5;
@@ -22,5 +27,5 @@ main {
 
 // container
 .container {
-	margin: 50px 30px 0;
+	margin: 40px 0 0;
 }

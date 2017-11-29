@@ -10,54 +10,58 @@ if(!defined("__GOOSE__")){exit();}
 
 @section('contents')
 <article class="index">
-	@if($repo->nest)
-	<header class="index__header">
-		<h1>{{ $repo->nest['name'] }}</h1>
-		@if($repo->category)
-		<nav class="categories index__categories">
-			<button type="button" class="categories__toggle" id="toggleCategory">
-				<img src="{{ __ROOT__ }}/assets/img/ico-arrow-down.svg" alt="">
-				<span>Category</span>
-			</button>
-			@if(count($repo->category))
-			<ul class="categories__index" id="categories">
-				@foreach($repo->category as $item)
-				<li>
-					<a href="{{ __ROOT__ }}/nest/{{ $_nest ? $_nest.'/' : '' }}{{ $item['srl'] ? $item['srl'].'/' : '' }}"{!! $item['active'] ? ' class="active"' : '' !!}>
-						{{ $item['name'] }}({{ $item['count'] }})
+	<div class="index__wrap">
+		@if($repo->nest)
+		<header class="index__header">
+			<h1>{{ $repo->nest['name'] }}</h1>
+			@if($repo->category)
+			<nav class="categories index__categories">
+				<button type="button" class="categories__toggle" id="toggleCategory">
+					<img src="{{ __ROOT__ }}/assets/img/ico-arrow-down.svg" alt="">
+					<span>Category</span>
+				</button>
+				@if(count($repo->category))
+				<ul class="categories__index" id="categories">
+					@foreach($repo->category as $item)
+					<li>
+						<a href="{{ __ROOT__ }}/nest/{{ $_nest ? $_nest.'/' : '' }}{{ $item['srl'] ? $item['srl'].'/' : '' }}"{!! $item['active'] ? ' class="active"' : '' !!}>
+							{{ $item['name'] }}({{ $item['count'] }})
+						</a>
+					</li>
+					@endforeach
+				</ul>
+				@endif
+			</nav>
+			@endif
+		</header>
+		@endif
+
+		<div class="index__articlesWrap">
+			<ul class="articles index__articles" id="articles">
+				<li class="articles__sizer"></li>
+				@foreach($repo->articles as $item)
+				<li class="articles__item{{ $item['size_className'] ? ' '.$item['size_className'] : '' }}">
+					<a href="{{ __ROOT__ }}/article/{{ $_nest ? $_nest.'/' : '' }}{{ $item['srl'] }}/" title="{{ $item['title'] }}">
+						<figure style="background-image: url('{{ __GOOSE_ROOT__ }}/{{ $item['json']['thumbnail']['url'] }}')">
+							{{ $item['title'] }}
+						</figure>
 					</a>
 				</li>
 				@endforeach
 			</ul>
-			@endif
+		</div>
+
+		@if($repo->nextpage)
+		<?php
+		$address = (($_nest) ? 'nest/' . $_nest . '/' : '') . (($_nest && $_category) ? $_category . '/' : '');
+		?>
+		<nav class="loadMore index__loadMore" id="loadMore">
+			<a href="{{ __ROOT__ }}/{{ $address }}?page={{ $repo->nextpage }}" title="load more articles">
+				<img src="{{ __ROOT__ }}/assets/img/ico-loadMore.svg" width="24" alt="plus"/>
+			</a>
 		</nav>
 		@endif
-	</header>
-	@endif
-
-	<ul class="articles index__articles" id="articles">
-		<li class="articles__sizer"></li>
-		@foreach($repo->articles as $item)
-		<li class="articles__item{{ $item['size_className'] ? ' '.$item['size_className'] : '' }}">
-			<a href="{{ __ROOT__ }}/article/{{ $_nest ? $_nest.'/' : '' }}{{ $item['srl'] }}/">
-				<figure style="background-image: url('{{ __GOOSE_ROOT__ }}/{{ $item['json']['thumbnail']['url'] }}')">
-					{{ $item['title'] }}
-				</figure>
-			</a>
-		</li>
-		@endforeach
-	</ul>
-
-	@if($repo->nextpage)
-	<?php
-	$address = (($_nest) ? 'nest/' . $_nest . '/' : '') . (($_nest && $_category) ? $_category . '/' : '');
-	?>
-	<nav class="loadMore index__loadMore" id="loadMore">
-		<a href="{{ __ROOT__ }}/{{ $address }}?page={{ $repo->nextpage }}">
-			<img src="{{ __ROOT__ }}/assets/img/ico-loadMore.svg" alt="More load items" width="40"/>
-		</a>
-	</nav>
-	@endif
+	</div>
 </article>
 @endsection
 
@@ -67,7 +71,7 @@ if(!defined("__GOOSE__")){exit();}
 
 @section('script')
 <script>
-var app = null;
+var app = 'index';
 </script>
 @endsection
 
