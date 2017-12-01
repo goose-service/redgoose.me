@@ -1,3 +1,78 @@
 .article {
-	border: 1px solid #000;
+
+	$basic-wrap-width: 1024px;
+	$basic-body-width: 900px;
+
+	padding: 0;
+
+	&__wrap {
+		max-width: $basic-wrap-width;
+		margin: 0 auto;
+	}
+	&__header {
+		text-align: center;
+		p {
+			margin: 0;
+			font-size: 11px;
+		}
+		h1 {
+			margin: 0;
+			font-size: 40px;
+			font-weight: 200;
+		}
+	}
+
+	&__body {
+		margin: 30px auto 40px;
+		padding: 0 (($basic-wrap-width - $basic-body-width) * .5);
+		text-align: center;
+		*:first-child {
+			margin-top: 0;
+		}
+		img {
+			display: inline-block;
+			margin-left: 0;
+			margin-right: 0;
+			margin-left: calc(-#{($basic-wrap-width - $basic-body-width) * .5});
+			margin-right: calc(-#{($basic-wrap-width - $basic-body-width) * .5});
+			max-width: 100%;
+			max-width: calc(100% + #{$basic-wrap-width - $basic-body-width});
+		}
+	}
+
+	&__control {
+		margin: 0;
+		text-align: center;
+	}
+
+	@media screen and (max-width: $basic-wrap-width - 1px) {
+		$padding: 40px;
+		&__wrap {
+			max-width: none;
+		}
+		&__body {
+			padding: 0 ($padding * .5);
+			img {
+				margin-left: calc(-#{$padding * .5});
+				margin-right: calc(-#{$padding * .5});
+				max-width: calc(100% + #{$padding});
+			}
+		}
+	}
+	@media screen and (max-width: 640px) {
+		$padding: 30px;
+		&__body {
+			padding: 0 ($padding * .5);
+			img {
+				margin-left: calc(-#{$padding * .5});
+				margin-right: calc(-#{$padding * .5});
+				max-width: calc(100% + #{$padding});
+			}
+		}
+	}
+}
+
+
+.external-control {
+	display: none;
 }

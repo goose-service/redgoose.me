@@ -175,9 +175,9 @@ a { color: #b31f37; }
 
 .gnb__dep-1 > li:hover .gnb__children { opacity: 1; pointer-events: auto; transform: translateY(0); }
 
-.gnb__dep-2 { margin: 0; list-style: none; position: absolute; left: -5px; min-width: 140px; background: #b31f37; padding: 12px 0; border-radius: 3px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15); }
+.gnb__dep-2 { margin: 0; list-style: none; position: absolute; left: -5px; min-width: 150px; background: #b31f37; padding: 15px 0; border-radius: 3px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15); }
 
-.gnb__dep-2 > li > a { display: block; padding: 3px 18px; color: #fff; text-decoration: none; font-size: 13px; }
+.gnb__dep-2 > li > a { display: block; padding: 4px 18px; color: #fff; text-decoration: none; font-size: 13px; }
 
 .gnb__dep-2 > li > a:hover, .gnb__dep-2 > li.active { text-decoration: underline; }
 
@@ -256,6 +256,31 @@ a { color: #b31f37; }
   .index .articles__sizer { width: 108px; height: 108px; }
   .index .articles__item { width: 108px; height: 108px; } }
 
-.article { border: 1px solid #000; }
+.article { padding: 0; }
+
+.article__wrap { max-width: 1024px; margin: 0 auto; }
+
+.article__header { text-align: center; }
+
+.article__header p { margin: 0; font-size: 11px; }
+
+.article__header h1 { margin: 0; font-size: 40px; font-weight: 200; }
+
+.article__body { margin: 30px auto 40px; padding: 0 62px; text-align: center; }
+
+.article__body *:first-child { margin-top: 0; }
+
+.article__body img { display: inline-block; margin-left: 0; margin-right: 0; margin-left: calc(-62px); margin-right: calc(-62px); max-width: 100%; max-width: calc(100% + 124px); }
+
+.article__control { margin: 0; text-align: center; }
+
+@media screen and (max-width: 1023px) { .article__wrap { max-width: none; }
+  .article__body { padding: 0 20px; }
+  .article__body img { margin-left: calc(-20px); margin-right: calc(-20px); max-width: calc(100% + 40px); } }
+
+@media screen and (max-width: 640px) { .article__body { padding: 0 15px; }
+  .article__body img { margin-left: calc(-15px); margin-right: calc(-15px); max-width: calc(100% + 30px); } }
+
+.external-control { display: none; }
 
 /*# sourceMappingURL=redgoose.css.map */

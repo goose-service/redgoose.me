@@ -1,7 +1,7 @@
 @section('contents')
 <article class="article" id="article">
 	<div class="article__wrap">
-		<header>
+		<header class="article__header">
 			<p>
 				@if($repo->nest->name)<span>{{ $repo->nest->name }}</span>@endif
 				@if($repo->category->name)<span>{{ $repo->category->name }}</span>@endif
@@ -9,13 +9,11 @@
 			<h1>{{ ($repo->article->title == '.') ? 'Untitled article' : $repo->article->title }}</h1>
 		</header>
 
-		<div class="article__body">
-			@if($repo->article->json['mode'] === 'markdown')
-			<div class="article__body article__body-markdown">{!! $repo->article->content !!}</div>
-			@else
-			<div class="article__body article__body-basic">{!! $repo->article->content !!}</div>
-			@endif
-		</div>
+		@if($repo->article->json['mode'] === 'markdown')
+		<div class="article__body article__body-markdown">{!! $repo->article->content !!}</div>
+		@else
+		<div class="article__body article__body-basic">{!! $repo->article->content !!}</div>
+		@endif
 
 		@if (!isset($_GET['hud']) || (isset($_GET['hud']) && $_GET['hud'] == 1))
 		<nav class="article__control">
