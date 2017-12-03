@@ -44,7 +44,7 @@ async function build_js(minify=false)
 		bundle.write({
 			file: 'dist/redgoose.js',
 			format: 'umd',
-			name: 'redgoose',
+			name: 'Redgoose',
 			sourcemap: !minify,
 			globals: { jQuery: '$', Masonry: 'Masonry' },
 		});

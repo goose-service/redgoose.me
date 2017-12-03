@@ -2,13 +2,14 @@
 
 
 @section('contents')
-<article class="page about page-about">
-	<header>
-		<h1>About</h1>
+<article class="about page page-about">
+	<header class="about__header">
+		<p>Introduce</p>
+		<h1>About redgoose</h1>
 	</header>
 
 	<figure class="about__profile">
-		<img src="{{ __ROOT__ }}/assets/img/img-about.png" alt="redgoose" width="240">
+		<img src="{{ __ROOT__ }}/assets/img/img-about.png" alt="redgoose">
 	</figure>
 
 	<div class="about__description">
@@ -20,21 +21,22 @@
 	</div>
 
 	<div class="about__metas">
-		<section>
-			<h1>infomation</h1>
-			<dl>
-				<dt>position</dt>
-				<dd>frond-end engineer, visual creator</dd>
-				<dt>from</dt>
-				<dd>korea republic of</dd>
-				<dt>e-mail</dt>
-				<dd>
-					scripter@me.com<br/>
-					redgooseme@gmail.com
-				</dd>
-			</dl>
-		</section>
-		<section>
+		<div>
+			<section>
+				<h1>infomation</h1>
+				<dl>
+					<dt>position</dt>
+					<dd>frond-end engineer, visual creator</dd>
+					<dt>from</dt>
+					<dd>korea republic of</dd>
+					<dt>e-mail</dt>
+					<dd>
+						scripter@me.com<br/>
+						redgooseme@gmail.com
+					</dd>
+				</dl>
+			</section>
+			<section>
 			<h1>skill</h1>
 			<dl>
 				<dt>use tools</dt>
@@ -43,18 +45,20 @@
 				<dd>html, css(scss), php, javascript(jQuery, react-js, react-navtive), actionscript</dd>
 			</dl>
 		</section>
-		<section>
-			<h1>sns</h1>
-			<dl>
-				<dt>facebook</dt>
-				<dd><a href="https://www.facebook.com/redgoose.me" target="_blank">scripter@me.com</a></dd>
-				<dt>instagram</dt>
-				<dd><a href="https://www.instagram.com/redgoose.me/" target="_blank">https://www.instagram.com/redgoose.me/</a></dd>
-				<dt>pinterest</dt>
-				<dd><a href="https://pinterest.com/redgooseme/" target="_blank">https://pinterest.com/redgooseme/</a></dd>
-			</dl>
-		</section>
-		<section>
+		</div>
+		<div>
+			<section>
+				<h1>sns</h1>
+				<dl>
+					<dt>facebook</dt>
+					<dd><a href="https://www.facebook.com/redgoose.me" target="_blank">scripter@me.com</a></dd>
+					<dt>instagram</dt>
+					<dd><a href="https://www.instagram.com/redgoose.me/" target="_blank">https://www.instagram.com/redgoose.me/</a></dd>
+					<dt>pinterest</dt>
+					<dd><a href="https://pinterest.com/redgooseme/" target="_blank">https://pinterest.com/redgooseme/</a></dd>
+				</dl>
+			</section>
+			<section>
 			<h1>source code</h1>
 			<dl>
 				<dt>github</dt>
@@ -65,6 +69,7 @@
 				<dd><a href="http://codepen.io/redgoose/" target="_blank">http://codepen.io/redgoose/</a></dd>
 			</dl>
 		</section>
+		</div>
 	</div>
 </article>
 @endsection

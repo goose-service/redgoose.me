@@ -4,97 +4,212 @@
 
 // header
 .layout-header {
+	position: relative;
+	z-index: 2;
 	&__body {
+		position: relative;
 		padding: 30px 0 0;
 	}
 	&__logo {}
 	&__side {
-		display: none;
+		position: absolute;
+		top: 0;
+		bottom: 0;
+		&_left {}
 	}
 	&__gnb {
 		margin-top: 10px;
 	}
-}
 
-
-// logo
-.logo {
-	margin: 0;
-	a {
-		display: block;
-		margin: 0 auto;
-		width: 82px;
-	}
-	img {
-		display: block;
-		width: 100%;
-	}
-}
-
-
-// global navigation buttons
-.gnb {
-	$self: &;
-
-	&__children {
-		position: relative;
-		opacity: 0;
-		pointer-events: none;
-		transform: translateY(-8px);
-		transition: opacity .15s ease-out, transform .2s ease-out;
-	}
-	&__dep-1 {
+	// logo
+	.logo {
 		margin: 0;
-		padding: 0;
-		list-style: none;
-		@include d-flex(center, center);
-		> li {
-			> a {
-				display: block;
-				padding: 8px 10px;
-				font-size: 13px;
-				text-decoration: none;
-				font-weight: 500;
-				letter-spacing: .25px;
-				color: #111;
-			}
-			&.active {
+		a {
+			display: block;
+			margin: 0 auto;
+			width: 82px;
+		}
+		img {
+			display: block;
+			width: 100%;
+		}
+	}
+
+	// global navigation buttons
+	.gnb {
+		$self: &;
+
+		&__children {
+			position: relative;
+			opacity: 0;
+			pointer-events: none;
+			transform: translateY(-8px);
+			transition: opacity .15s ease-out, transform .2s ease-out;
+		}
+		&__dep-1 {
+			margin: 0;
+			padding: 0;
+			list-style: none;
+			@include d-flex(center, center);
+			> li {
 				> a {
-					color: $color-key;
+					display: block;
+					padding: 8px 10px;
+					font-size: 13px;
+					text-decoration: none;
+					font-weight: 500;
+					letter-spacing: .25px;
+					color: #111;
+				}
+				&.active {
+					> a {
+						color: $color-key;
+					}
+				}
+				&:hover {
+					text-decoration: underline;
+					.gnb__children {
+						opacity: 1;
+						pointer-events: auto;
+						transform: translateY(0);
+					}
 				}
 			}
-			&:hover {
-				text-decoration: underline;
-				#{$self}__children {
-					opacity: 1;
-					pointer-events: auto;
-					transform: translateY(0);
+		}
+		&__dep-2 {
+			margin: 0;
+			list-style: none;
+			position: absolute;
+			left: -5px;
+			min-width: 150px;
+			background: $color-key;
+			padding: 15px 0;
+			border-radius: 3px;
+			box-shadow: 0 2px 5px rgba(0,0,0,.15);
+			> li {
+				> a {
+					display: block;
+					padding: 4px 18px;
+					color: #fff;
+					text-decoration: none;
+					font-size: 13px;
+				}
+				> a:hover,
+				&.active {
+					text-decoration: underline;
 				}
 			}
 		}
 	}
-	&__dep-2 {
-		margin: 0;
-		list-style: none;
-		position: absolute;
-		left: -5px;
-		min-width: 150px;
-		background: $color-key;
-		padding: 15px 0;
-		border-radius: 3px;
-		box-shadow: 0 2px 5px rgba(0,0,0,.15);
-		> li {
-			> a {
+	.toggle-gnb {
+		display: none;
+	}
+
+	@media screen and (max-width: $size-mobile) {
+		background: #fff;
+
+		&__body {
+			padding: 0;
+		}
+
+		.logo {
+			a {
+				width: 60px;
+				padding: 10px 0;
+			}
+			img {
+				width: 32px;
+				margin: 0 auto;
+			}
+		}
+		.gnb {
+			display: none;
+			margin-top: 0;
+			background: $color-panel-bg;
+			padding: 20px 20px 30px;
+
+			&-active {
 				display: block;
-				padding: 4px 18px;
-				color: #fff;
-				text-decoration: none;
-				font-size: 13px;
 			}
-			> a:hover,
-			&.active {
-				text-decoration: underline;
+
+			&__children {
+				pointer-events: auto;
+				opacity: 1;
+				transform: none;
+				transition: none;
+			}
+			&__dep-1 {
+				display: block;
+				> li {
+					margin: 20px 0 0;
+					&:first-child {
+						margin-top: 0;
+					}
+					> a {
+						padding: 0;
+						font-size: 18px;
+						font-weight: 600;
+						letter-spacing: -.5px;
+						text-decoration: none;
+						&:active {
+							text-decoration: underline;
+						}
+					}
+					&:hover {
+						text-decoration: none;
+					}
+				}
+			}
+			&__dep-2 {
+				position: static;
+				background: none;
+				box-shadow: 0 0 0;
+				max-width: none;
+				margin: 5px -10px 0;
+				padding: 0;
+				border-radius: 0;
+				@include d-flex(center);
+				flex-wrap: wrap;
+				> li {
+					width: 50%;
+					> a {
+						color: #111;
+						padding: 4px 10px;
+						font-size: 12px;
+					}
+					&:active {
+						text-decoration: underline;
+					}
+					&.active {
+						text-decoration: none;
+						> a {
+							color: $color-key;
+						}
+					}
+				}
+			}
+		}
+		.toggle-gnb {
+			display: block;
+			height: 100%;
+			margin: 0;
+			padding: 0 20px;
+			border-radius: 0;
+			border: none;
+			background: none;
+			z-index: 0;
+			cursor: pointer;
+			&-active {
+				//background: red;
+			}
+			&:focus {
+				outline: $border-focus;
+			}
+			img {
+				display: block;
+				margin: 0 auto;
 			}
 		}
 	}
+
 }

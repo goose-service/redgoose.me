@@ -9,9 +9,14 @@ $font-url: '../assets/fonts';
 // color
 $color-key: #b31f37;
 $color-bg: #fafbfc;
-
+$color-panel-bg: #ecedef;
 
 
 // size
-$size-article: 900px;
 $size-mobile: 640px;
+$size-tablet: 768px;
+$size-article: 900px;
+
+
+// border
+$border-focus: thin dotted #666;

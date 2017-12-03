@@ -16,13 +16,13 @@ if(!defined("__GOOSE__")){exit();}
 					<img src="{{ __ROOT__ }}/assets/img/img-logo.svg" alt="{{ $pref->meta['title'] }}" width="100"/>
 				</a>
 			</h1>
-			<nav class="layout-header__side layout-header__side-right">
-				<button type="button" id="toggleGnb">
+			<nav class="layout-header__side layout-header__side-left">
+				<button type="button" class="toggle-gnb">
 					<img src="{{__ROOT__}}/assets/img/ico-gnb.svg" width="18" alt="Toggle gnb">
 				</button>
 			</nav>
 		</div>
-		<nav class="gnb layout-header__gnb" id="gnb">
+		<nav class="gnb layout-header__gnb">
 			<ul class="gnb__dep-1">
 				@foreach($pref->nav as $item)
 				<li{!! ($_page == $item['name']) ? ' class="active"' : '' !!}>

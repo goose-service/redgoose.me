@@ -1,15 +1,32 @@
-console.log('hello redgoose.me');
-console.log('hello redgoose.me');
+import Header from './Header';
+import Index from './Index';
+import Article from './Article';
+import * as etc from './etc';
 
 
+/**
+ * Redgoose
+ *
+ * @param {Object} options
+ */
+function Redgoose(options)
+{
+
+	// TODO: default options 만들어서 `options`와 합치기
+
+	// init header
+	this.header = new Header(this);
+
+	// init index
+	this.index = new Index(this);
+
+	// init article
+	this.article = new Article(this);
+
+	// init google analytics
+	etc.initGoogleAnalytics(false);
+
+}
 
 
-
-
-// Google Analytics
-// (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-// 	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-// 	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-// })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-// ga('create', 'UA-42563094-1', 'redgoose.me');
-// ga('send', 'pageview');
+export default Redgoose;

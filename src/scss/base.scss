@@ -15,17 +15,26 @@ body {
 	color: #111;
 	background: $color-bg;
 }
-
 a {
 	color: $color-key;
 }
+main {}
 
-main {
 
+.blind {
+	position: absolute;
+	overflow: hidden;
+	visibility: hidden;
+	width: 0;
+	height: 0;
+	font-size: 0;
+	line-height: 0;
 }
 
-
-// container
 .container {
 	margin: 40px 0 0;
+
+	@media screen and (max-width: $size-mobile) {
+		margin: 0;
+	}
 }
