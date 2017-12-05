@@ -28,6 +28,12 @@ function isTouchDevice() {
   return 'ontouchstart' in window || navigator.maxTouchPoints;
 }
 
+function sleep(delay) {
+  return new Promise(function (resolve) {
+    setTimeout(resolve, delay);
+  });
+}
+
 // set size
 const SIZE_MOBILE = 640;
 
@@ -69,17 +75,19 @@ function Header() {
 function Index(parent) {
 	const self = this;
 
-	this.selector_index = '#articles';
-	this.$index = $(this.selector_index);
-	this.$more = $('#loadMoreArticles');
+	this.selector_articles = '#articles';
+	this.$index = $('.index');
+	this.$articles = this.$index.find('.index__articles');
+	this.$category = this.$index.find('.index__categories');
+	this.$more = this.$index.find('.index__loadMore');
 	this.masonry = null;
 
 	// masonry
 	function masonry() {
-		self.$index.addClass('masonry');
-		self.masonry = new Masonry(self.selector_index, {
-			itemSelector: '.articles__item',
-			columnWidth: '.articles__sizer',
+		self.$articles.addClass('masonry');
+		self.masonry = new Masonry(self.selector_articles, {
+			itemSelector: '.grid-item',
+			columnWidth: '.grid-sizer',
 			transitionDuration: '0s',
 			hiddenStyle: {},
 			visibleStyle: {}
@@ -87,23 +95,42 @@ function Index(parent) {
 	}
 
 	// more articles
-	function moreArticles() {
-		console.log($(this));
+	async function moreArticles(page) {
+		// turn on loading
+		self.$more.addClass('loadMore-loading');
+
+		// TODO: call ajax
+		await sleep(1000);
+
+		// turn off loading
+		//self.$more.removeClass('loadMore-loading');
+
 		return false;
 	}
 
-	this.init = function () {
-		if (!this.$index.length) return false;
+	// toggle category
+	function toggleCategory() {
+		$(this).toggleClass('categories__toggle-active');
+		$(this).next().toggleClass('categories__index-active');
+	}
 
-		// TODO: set masonry event
-		console.log(Masonry);
+	this.init = function () {
+		if (!this.$articles.length) return false;
+
+		// set toggle category for mobile
+		this.$category.children('.categories__toggle').on('click', toggleCategory);
+
 		// set masonry
 		masonry();
 
-		// ser more articles event
-		this.$more.on('click', moreArticles);
+		// set more articles event
+		this.$more.children('a').on('click', function () {
+			moreArticles(parseInt(this.getAttribute('nextPage'))).then();
+			return false;
+		});
 
-		console.log('init index');
+		// set change page sensor
+		// TODO
 	};
 }
 

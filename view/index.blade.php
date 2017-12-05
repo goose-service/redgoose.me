@@ -16,12 +16,12 @@ if(!defined("__GOOSE__")){exit();}
 			<h1>{{ $repo->nest['name'] }}</h1>
 			@if($repo->category)
 			<nav class="categories index__categories">
-				<button type="button" class="categories__toggle" id="toggleCategory">
+				<button type="button" title="toggle category index" class="categories__toggle">
 					<img src="{{ __ROOT__ }}/assets/img/ico-arrow-down.svg" alt="">
 					<span>Category</span>
 				</button>
 				@if(count($repo->category))
-				<ul class="categories__index" id="categories">
+				<ul class="categories__index">
 					@foreach($repo->category as $item)
 					<li>
 						<a href="{{ __ROOT__ }}/nest/{{ $_nest ? $_nest.'/' : '' }}{{ $item['srl'] ? $item['srl'].'/' : '' }}"{!! $item['active'] ? ' class="active"' : '' !!}>
@@ -37,26 +37,26 @@ if(!defined("__GOOSE__")){exit();}
 		@endif
 
 		<div class="index__articlesWrap">
-			<ul class="articles index__articles" id="articles">
-				<li class="articles__sizer"></li>
+			<div class="articles index__articles" id="articles">
+				<div class="grid-sizer"></div>
 				@foreach($repo->articles as $item)
-				<li class="articles__item{{ $item['size_className'] ? ' '.$item['size_className'] : '' }}">
+				<div class="grid-item{{ $item['size_className'] ? ' '.$item['size_className'] : '' }}">
 					<a href="{{ __ROOT__ }}/article/{{ $_nest ? $_nest.'/' : '' }}{{ $item['srl'] }}/" title="{{ $item['title'] }}">
 						<figure style="background-image: url('{{ __GOOSE_ROOT__ }}/{{ $item['json']['thumbnail']['url'] }}')">
 							{{ $item['title'] }}
 						</figure>
 					</a>
-				</li>
+				</div>
 				@endforeach
-			</ul>
+			</div>
 		</div>
 
 		@if($repo->nextpage)
 		<?php
 		$address = (($_nest) ? 'nest/' . $_nest . '/' : '') . (($_nest && $_category) ? $_category . '/' : '');
 		?>
-		<nav class="loadMore index__loadMore" id="loadMoreArticles">
-			<a href="{{ __ROOT__ }}/{{ $address }}?page={{ $repo->nextpage }}" title="load more articles">
+		<nav class="loadMore index__loadMore">
+			<a href="{{ __ROOT__ }}/{{ $address }}?page={{ $repo->nextpage }}" nextPage="{{ $repo->nextpage }}" title="load more articles">
 				<img src="{{ __ROOT__ }}/assets/img/ico-loadMore.svg" width="24" alt="plus"/>
 			</a>
 		</nav>

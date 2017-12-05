@@ -22,3 +22,11 @@ export function isTouchDevice()
 {
 	return 'ontouchstart' in window || navigator.maxTouchPoints;
 }
+
+
+export function sleep(delay)
+{
+	return new Promise(function(resolve) {
+		setTimeout(resolve, delay);
+	});
+}

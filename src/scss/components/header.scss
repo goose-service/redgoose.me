@@ -107,6 +107,7 @@
 
 	@media screen and (max-width: $size-mobile) {
 		background: #fff;
+		border-bottom: 1px solid #eee;
 
 		&__body {
 			padding: 0;

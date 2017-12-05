@@ -15,7 +15,7 @@
 			content: '';
 		}
 		p {
-			margin: 0 0 0 2px;
+			margin: 0 0 3px 2px;
 			font-size: 0;
 			color: #888;
 			span {
@@ -53,6 +53,11 @@
 				margin-bottom: 0;
 			}
 		}
+		&:after {
+			content: '';
+			display: table;
+			clear: both;
+		}
 	}
 	&__control {
 		margin: 0;
@@ -85,14 +90,8 @@
 
 	.article-body-basic,
 	.article-body-markdown {
-		font-size: 14px;
+		font-size: 15px;
 		line-height: 1.64;
-
-		&:after {
-			content: '';
-			display: table;
-			clear: both;
-		}
 
 		img {
 			margin: 15px 0;
