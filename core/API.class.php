@@ -132,7 +132,7 @@ class API {
 						'table' => core\Spawn::getTableName('article'),
 						'where' => 'category_srl='.(int)$v['srl']
 					]) : 0;
-					if ($options->category_srl == (int)$v['srl'])
+					if ($options->category_srl === (int)$v['srl'])
 					{
 						$check_active = true;
 						$result->category_name = $v['name'];
@@ -141,7 +141,7 @@ class API {
 						'srl' => (int)$v['srl'],
 						'name' => $v['name'],
 						'count' => $cnt,
-						'active' => !!($options->category_srl == (int)$v['srl'])
+						'active' => !!($options->category_srl === (int)$v['srl'])
 					];
 				}
 
@@ -172,7 +172,7 @@ class API {
 		]);
 
 		// set paginate instance
-		$paginate = new Paginate($total, $options->page, $params, $options->size, $options->pageScale);
+		$paginate = new Paginate($total, $options->page, $params, $options->size, $options->pageSize);
 
 		// set limit
 		$limit = $paginate->offset.','.$paginate->size;
@@ -212,7 +212,7 @@ class API {
 		// 다음페이지에 글이 존재하는지 검사하고 있으면 다음 페이지 번호를 저장한다.
 		if ($this->searchKeyInArray($print, 'nav_more'))
 		{
-			$nextPaginate = new Paginate($total, $options->page+1, $params, $options->size, $options->pageScale);
+			$nextPaginate = new Paginate($total, $options->page+1, $params, $options->size, $options->pageSize);
 			$limit = $nextPaginate->offset.','.$nextPaginate->size;
 			$nextArticles = Spawn::items([
 				'table' => Spawn::getTableName('article'),

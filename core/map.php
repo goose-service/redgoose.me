@@ -13,6 +13,8 @@ $router->route->map('GET', '/rss', 'rss');
 $router->route->map('GET', '/rss/', 'rss');
 $router->route->map('GET|POST', '/ajax', 'ajax');
 $router->route->map('GET|POST', '/ajax/', 'ajax');
+$router->route->map('GET|POST', '/ajax/[aa:action]', 'ajax');
+$router->route->map('GET|POST', '/ajax/[aa:action]/', 'ajax');
 
 $router->route->map('GET', '/page/[aa:page]', 'page');
 $router->route->map('GET', '/page/[aa:page]/', 'page');
