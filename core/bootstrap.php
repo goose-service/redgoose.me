@@ -233,11 +233,3 @@ else
 {
 	Goose::error(404, null, __URL__);
 }
-
-
-
-
-
-
-
-

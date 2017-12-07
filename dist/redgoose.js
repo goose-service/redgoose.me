@@ -28,11 +28,24 @@ function isTouchDevice() {
   return 'ontouchstart' in window || navigator.maxTouchPoints;
 }
 
+/**
+ * sleep
+ *
+ * @param {Number} delay
+ * @return {Promise}
+ */
 function sleep(delay) {
   return new Promise(function (resolve) {
     setTimeout(resolve, delay);
   });
 }
+
+/**
+ * printf
+ *
+ * @param {String} str
+ * @param {String} values
+ */
 
 // set size
 const SIZE_MOBILE = 640;
@@ -75,6 +88,7 @@ function Header() {
 function Index(parent) {
 	const self = this;
 
+	this.srls = {};
 	this.selector_articles = '#articles';
 	this.$index = $('.index');
 	this.$articles = this.$index.find('.index__articles');
@@ -97,25 +111,52 @@ function Index(parent) {
 	// more articles
 	async function moreArticles(page) {
 		// turn on loading
-		self.$more.addClass('loadMore-loading');
+		moreButton(false);
 
 		// TODO: call ajax
 		await sleep(1000);
 
+		// TODO 데이터 가져오기
+
 		// turn off loading
-		//self.$more.removeClass('loadMore-loading');
+		moreButton(true);
 
 		return false;
 	}
 
-	// toggle category
-	function toggleCategory() {
-		$(this).toggleClass('categories__toggle-active');
-		$(this).next().toggleClass('categories__index-active');
+	// more load articles
+	function loadMoreTrigger() {
+		moreArticles(parseInt(this.getAttribute('nextPage'))).then();
+		return false;
 	}
 
-	this.init = function () {
+	/**
+  * control more button
+  *
+  * @param {Boolean} sw
+  */
+	function moreButton(sw) {
+		// toggle category
+		if (sw) {
+			self.$more.children('a').on('click', loadMoreTrigger);
+			self.$more.removeClass('loadMore-loading');
+		} else {
+			self.$more.children('a').off('click', loadMoreTrigger);
+			self.$more.addClass('loadMore-loading');
+		}
+	}
+
+	/**
+  * init
+  *
+  * @param {Object} options
+  */
+	this.init = function (options = {}) {
 		if (!this.$articles.length) return false;
+
+		// set srls
+		this.srls.nest = options.nest_srl;
+		this.srls.category = options.category_srl;
 
 		// set toggle category for mobile
 		this.$category.children('.categories__toggle').on('click', toggleCategory);
@@ -124,10 +165,7 @@ function Index(parent) {
 		masonry();
 
 		// set more articles event
-		this.$more.children('a').on('click', function () {
-			moreArticles(parseInt(this.getAttribute('nextPage'))).then();
-			return false;
-		});
+		moreButton(true);
 
 		// set change page sensor
 		// TODO

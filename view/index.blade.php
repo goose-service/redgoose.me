@@ -72,10 +72,15 @@ if(!defined("__GOOSE__")){exit();}
 @section('script')
 <script>
 var redgoose = new Redgoose({
+	root: '{{ __ROOT__ }}',
+	gooseRoot: '{{ __GOOSE_ROOT__ }}',
 	dev: '{{ DEBUG }}',
 });
 redgoose.header.init();
-redgoose.index.init();
+redgoose.index.init({
+	nest_srl: '{{ $_nest }}',
+	category_srl: '{{ $_category }}',
+});
 </script>
 @endsection
 
