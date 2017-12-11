@@ -69,6 +69,7 @@ function contentToShortText($con, $len=120)
 	return $con;
 }
 
+
 /**
  * get global navigation button active
  *
@@ -98,4 +99,27 @@ function getGnbActive($nav=[], $name)
 		}
 	}
 	return null;
+}
+
+
+/**
+ * get param value
+ *
+ * @param string $key
+ * @return string|int
+ */
+function getParam($key)
+{
+	if (isset($_POST[$key]))
+	{
+		return $_POST[$key];
+	}
+	else if (isset($_GET[$key]))
+	{
+		return $_GET[$key];
+	}
+	else
+	{
+		return null;
+	}
 }

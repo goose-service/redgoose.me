@@ -1,4 +1,11 @@
 
+// default options
+export const defaultOptions = {
+	root: '',
+	gooseRoot: '',
+	debug: false,
+};
+
 
 /**
  * init google analytics

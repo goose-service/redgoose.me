@@ -193,12 +193,21 @@ class API {
 			// adjustment articles
 			foreach ($result->articles as $k=>$v)
 			{
-				$result->articles[$k]['regdate_original'] = $v['regdate'];
-				$result->articles[$k]['modate_original'] = $v['regdate'];
+				if (isset($v['regdate']))
+				{
+					$result->articles[$k]['regdate_original'] = $v['regdate'];
+					$result->articles[$k]['regdate'] = Util::convertDate($v['regdate']);
+				}
+				if (isset($v['modate']))
+				{
+					$result->articles[$k]['modate_original'] = $v['modate'];
+					$result->articles[$k]['modate'] = Util::convertDate($v['modate']);
+				}
 
-				if (isset($v['regdate'])) $result->articles[$k]['regdate'] = Util::convertDate($v['regdate']);
-				if (isset($v['modate'])) $result->articles[$k]['modate'] = Util::convertDate($v['modate']);
-				$result->articles[$k]['size_className'] = $this->thumbnailSizeToClassName($v['json']['thumbnail']['size']);
+				if (isset($v['json']['thumbnail']['size']))
+				{
+					$result->articles[$k]['size_className'] = $this->thumbnailSizeToClassName($v['json']['thumbnail']['size']);
+				}
 			}
 		}
 

@@ -11,8 +11,8 @@ import * as etc from './etc';
  */
 function Redgoose(options)
 {
-
-	// TODO: default options 만들어서 `options`와 합치기
+	// assign options
+	this.options = Object.assign({}, etc.defaultOptions, options);
 
 	// init header
 	this.header = new Header(this);

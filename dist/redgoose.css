@@ -260,11 +260,13 @@ a { color: #b31f37; }
 
 .index .articles .grid-sizer { display: none; width: 230px; height: 230px; }
 
-.index .articles .grid-item { float: left; width: 230px; height: 230px; padding: 5px; overflow: hidden; }
+.index .articles .grid-item { float: left; width: 230px; height: 230px; padding: 5px; overflow: hidden; -webkit-transition: opacity .8s ease-out; transition: opacity .8s ease-out; }
 
 .index .articles .grid-item a { display: block; height: 100%; }
 
 .index .articles .grid-item figure { margin: 0; font-size: 0; height: 100%; overflow: hidden; background-size: cover; background-repeat: no-repeat; background-position: 50% 50%; text-indent: -9999px; }
+
+.index .articles .grid-item__hidden { opacity: 0; }
 
 .index .articles.masonry .grid-sizer { display: block; }
 

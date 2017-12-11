@@ -10,11 +10,11 @@ if(!defined("__GOOSE__")){exit();}
  * `{APP}/ajax/`: 모든 `article`들을 불러옵니다.
  * `{APP}/ajax/{action}/` : (index,article,upLike)
  *
- * // params
+ * // params `$_GET||$_POST` 가능함
  * $_GET['nest'] : 둥지 id
  * $_GET['category'] : 분류 번호
  * $_GET['article'] : 글 번호
- * $_GET['count'] : 목록에서의 글 출력 갯수
+ * $_GET['size'] : 목록에서의 글 출력 갯수
  * $_GET['page'] : 페이지 번호
  * $_GET['get'] : 입력된 데이터만 가져온다. (nest,print_paginate,print_more)
  * $_GET['render'] : 입력된 형식의 데이터로 가져옵니다. (text,html,json)
@@ -35,16 +35,17 @@ switch($_params->action)
 	default:
 		$_nest = $_params->nest;
 		$_category = (int)$_params->category;
-		$page = (isset($_GET['page']) && (int)$_GET['page'] > 1) ? (int)$_GET['page'] : 1;
+		$page = (getParam('page') && (int)getParam('page') > 1) ? (int)getParam('page') : 1;
 
 		// get data
 		$data = $api->index((object)[
+			'field' => getParam('field'),
 			'app_srl' => __APP_SRL__,
 			'nest_id' => $_nest,
 			'category_srl' => $_category,
 			'page' => $page,
-			'print_data' => isset($_GET['get']) ? $_GET['get'] : 'article,nav_more',
-			'count' => $_GET['size'] ? (int)$_GET['size'] : __DEFAULT_ITEM_COUNT__,
+			'print_data' => getParam('get') ? getParam('get') : 'article,nav_more',
+			'size' => getParam('size') ? (int)getParam('size') : __DEFAULT_ITEM_COUNT__,
 			'pageSize' => null,
 		]);
 		break;
@@ -59,7 +60,7 @@ switch($_params->action)
 			'app_srl' => __APP_SRL__,
 			'article_srl' => $_article,
 			//'updateHit' => !isCookieKey( 'redgoose-hit-' . $_article ),
-			'print_data' => isset($_GET['get']) ? $_GET['get'] : 'nest,category',
+			'print_data' => getParam('get') ? getParam('get') : 'nest,category',
 		]);
 		break;
 
@@ -72,7 +73,7 @@ switch($_params->action)
 
 
 // check render type
-switch($_GET['render'])
+switch(getParam('render'))
 {
 	case 'html':
 		$header = 'text/html';

@@ -56,7 +56,7 @@ if(!defined("__GOOSE__")){exit();}
 		$address = (($_nest) ? 'nest/' . $_nest . '/' : '') . (($_nest && $_category) ? $_category . '/' : '');
 		?>
 		<nav class="loadMore index__loadMore">
-			<a href="{{ __ROOT__ }}/{{ $address }}?page={{ $repo->nextpage }}" nextPage="{{ $repo->nextpage }}" title="load more articles">
+			<a href="{{ __ROOT__ }}/{{ $address }}?page={{ $repo->nextpage }}" data-next="{{ $repo->nextpage }}" title="load more articles">
 				<img src="{{ __ROOT__ }}/assets/img/ico-loadMore.svg" width="24" alt="plus"/>
 			</a>
 		</nav>
@@ -74,12 +74,13 @@ if(!defined("__GOOSE__")){exit();}
 var redgoose = new Redgoose({
 	root: '{{ __ROOT__ }}',
 	gooseRoot: '{{ __GOOSE_ROOT__ }}',
-	dev: '{{ DEBUG }}',
+	dev: !!'{{ DEBUG }}',
 });
 redgoose.header.init();
 redgoose.index.init({
 	nest_srl: '{{ $_nest }}',
 	category_srl: '{{ $_category }}',
+	size: parseInt('{{ __DEFAULT_ITEM_COUNT__ }}'),
 });
 </script>
 @endsection
