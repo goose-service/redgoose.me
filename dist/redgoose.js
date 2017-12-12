@@ -132,14 +132,18 @@ function AppHistory() {
 	};
 }
 
-const SCROLL_OFFSET = 30;
-const SCROLL_SPEED = 300;
-const BLOCK_DELAY = 80;
-const LOAD_PAGE_PER_SIZE = 20;
+const SCROLL_OFFSET = 30; // 페이지가 변화되는 스크롤 y축 위치 offset
+const SCROLL_SPEED = 300; // 페이지 추가될때 스크롤 이동되는 속도
+const BLOCK_DELAY = 80; // 아이템들이 추가될때 fade in 딜레이 간격
+const LOAD_PAGE_PER_SIZE = 20; // 페이지 추가될때마다 불러올 아이템의 갯수
 const appHistory = new AppHistory();
 
 function Index(parent) {
 	const self = this;
+
+	/**
+  * PUBLIC VARIABLES
+  */
 
 	this.srls = {};
 	this.options = {};
@@ -151,16 +155,29 @@ function Index(parent) {
 	this.$more = this.$index.find('.index__loadMore');
 	this.masonry = null;
 
-	// masonry
-	function masonry() {
-		self.$articles.addClass('masonry');
-		self.masonry = new Masonry(self.selector_articles, {
-			itemSelector: '.grid-item',
-			columnWidth: '.grid-sizer',
-			transitionDuration: '0s',
-			hiddenStyle: {},
-			visibleStyle: {}
-		});
+	/**
+  * FUNCTIONS
+  */
+
+	/**
+  * masonry
+  * `masonry` 객체를 만들거나 제거한다.
+  *
+  * @param {Boolean} sw
+  */
+	function masonry(sw = true) {
+		if (sw) {
+			self.$articles.addClass('masonry');
+			self.masonry = new Masonry(self.selector_articles, {
+				itemSelector: '.grid-item',
+				columnWidth: '.grid-sizer',
+				transitionDuration: '0s',
+				hiddenStyle: {},
+				visibleStyle: {}
+			});
+		} else {
+			// TODO: destroy masonry
+		}
 	}
 
 	/**
@@ -243,7 +260,7 @@ function Index(parent) {
 			animationBlocks($appendElements);
 		}
 
-		// move scroll
+		// move to next page by scroll
 		if (useScroll) {
 			let $firstElement = $appendElements.eq(0);
 			let top = $firstElement.offset().top - SCROLL_OFFSET;
@@ -287,7 +304,9 @@ function Index(parent) {
 		}
 	}
 
-	// toggle category
+	/**
+  * toggle category
+  */
 	function toggleCategory() {
 		$(this).toggleClass('categories__toggle-active');
 		$(this).next().toggleClass('categories__index-active');
@@ -308,11 +327,15 @@ function Index(parent) {
 
 			if (!$el.length) return false;
 
-			$el.each(function (key) {
-				if (top >= $(this).offset().top - (SCROLL_OFFSET + 5)) {
-					$current = $(this);
-				}
-			});
+			if (top + $(this).height() === $(document).height()) {
+				$current = $el.eq($el.length - 1) ? $el.eq($el.length - 1) : null;
+			} else {
+				$el.each(function (key) {
+					if (top >= $(this).offset().top - (SCROLL_OFFSET + 5)) {
+						$current = $(this);
+					}
+				});
+			}
 
 			// update page
 			let page = $current && $current.length ? $current.data('page') : 1;
@@ -332,13 +355,14 @@ function Index(parent) {
 
 	/**
   * update page
+  * 변경된 페이지 번호로 url 업데이트 한다.
   *
+  * @param {Number} page
   */
 	function updatePage(page) {
 		if (!URL) return;
 
 		let url = new URL(window.location.href);
-		let newUrl = '';
 		let urlParams = url.searchParams;
 		let urlPage = url.searchParams.get('page');
 		urlPage = urlPage ? parseInt(urlPage) : 1;
@@ -351,13 +375,12 @@ function Index(parent) {
 			urlParams.set('page', page);
 		}
 
-		newUrl = location.pathname + (urlParams.toString() ? `?${urlParams.toString()}` : '');
+		let newUrl = location.pathname + (urlParams.toString() ? `?${urlParams.toString()}` : '');
 
 		console.log(newUrl);
 
+		// update url
 		appHistory.replace({ url: newUrl, type: 'index' }, null, newUrl);
-		// TODO : 스크롤 끝에 도달하면 마지막 페이지 엘리먼트에 있는 페이지 번호값을 가져와서 업데이트 하기.
-		// TODO : 왜냐하면 마지막 페이지의 갯수가 부족한데 스크롤에 의해서 업데이트가 안되는 현상이 있음.
 	}
 
 	/**
@@ -394,12 +417,24 @@ function Index(parent) {
 		moreButton(true);
 
 		// set change page sensor
-		// TODO: 모바일에서 스크롤 이벤트가 발생 안하는 방안도 생각해봐야함. more 누르면 업데이트
 		scrollEvent(true);
 	};
+
+	this.changePage = function (page) {};
+
+	this.prevPage = function () {};
+
+	this.nextPage = function () {};
 }
 
-function Article() {}
+function Article() {
+
+	this.open = function (article_srl) {
+		console.log('fire open article');
+	};
+
+	this.close = function () {};
+}
 
 // default options
 const defaultOptions = {

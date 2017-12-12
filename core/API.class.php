@@ -45,6 +45,7 @@ class API {
 			],
 		]);
 
+		// TODO: 쿠키가 아닌 다른방법을 찾아보기. (로봇이 들어와서 조회수를 올릴 수 있음.)
 		setCookieKey('redgoose-hit-'.(int)$article_srl);
 
 		return ($result == 'success');

@@ -18,11 +18,11 @@
 
 // index
 .index {
-
 	$padding: 5px;
 	$item-size: 230px;
 
 	margin: 0 30px;
+	padding: 0 0 10px;
 	@media screen and (max-width: $size-tablet) {
 		margin-left: 0;
 		margin-right: 0;
@@ -127,7 +127,7 @@
 
 	// load more
 	.loadMore {
-		margin: 40px 0 0;
+		margin: 50px 0 0;
 		> a {
 			position: relative;
 			display: block;
@@ -214,6 +214,8 @@
 		}
 	}
 	@media screen and (max-width: $size-mobile) {
+		padding: 0;
+
 		&__header {
 			margin-top: 20px;
 			margin-bottom: 0;
