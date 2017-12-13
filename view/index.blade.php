@@ -41,7 +41,7 @@ if(!defined("__GOOSE__")){exit();}
 				<div class="grid-sizer"></div>
 				@foreach($repo->articles as $item)
 				<div class="grid-item{{ $item['size_className'] ? ' '.$item['size_className'] : '' }}">
-					<a href="{{ __ROOT__ }}/article/{{ $_nest ? $_nest.'/' : '' }}{{ $item['srl'] }}/" title="{{ $item['title'] }}">
+					<a href="{{__ROOT__}}/article/{{$_nest ? $_nest.'/' : ''}}{{$item['srl']}}/" data-srl="{{$item['srl']}}" title="{{$item['title']}}">
 						<figure style="background-image: url('{{ __GOOSE_ROOT__ }}/{{ $item['json']['thumbnail']['url'] }}')">
 							{{ $item['title'] }}
 						</figure>

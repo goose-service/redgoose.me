@@ -213,7 +213,7 @@ function Index(parent) {
 		}
 
 		// update index
-		await updateIndex(response, true, true);
+		updateIndex(response, true, true);
 
 		// update more button
 		self.$more.children('a').attr('data-next', response.nextpage);
@@ -234,7 +234,7 @@ function Index(parent) {
   * @param {Boolean} showAnimation
   * @param {Boolean} useScroll
   */
-	async function updateIndex(res, showAnimation = false, useScroll = false) {
+	function updateIndex(res, showAnimation = false, useScroll = false) {
 		if (!res.nextpage) {
 			self.$more.remove();
 		}
@@ -247,11 +247,16 @@ function Index(parent) {
 			let url = `${parent.options.root}/article/${self.options.nest || ''}${item.srl}`;
 			let image = `${parent.options.gooseRoot}/${item.json.thumbnail.url}`;
 			let className = `grid-item grid-item__hidden ${item.size_className}`;
-			return `<div class="${className}">` + `<a href="${url}" title="${item.title}">` + `<figure style="background-image: url('${image}')">` + `${item.title}` + `</figure>` + `</a>` + `</div>`;
+			return `<div class="${className}">` + `<a href="${url}" data-srl="${item.srl}" title="${item.title}">` + `<figure style="background-image: url('${image}')">` + `${item.title}` + `</figure>` + `</a>` + `</div>`;
 		}).join('');
 
 		// append articles
 		let $appendElements = $(appendElements);
+
+		// set event articles
+		initItemsEvent($appendElements.children('a'));
+
+		// append articles
 		self.$articles.append($appendElements);
 		self.masonry.appended($appendElements);
 
@@ -377,10 +382,23 @@ function Index(parent) {
 
 		let newUrl = location.pathname + (urlParams.toString() ? `?${urlParams.toString()}` : '');
 
-		console.log(newUrl);
-
 		// update url
 		appHistory.replace({ url: newUrl, type: 'index' }, null, newUrl);
+	}
+
+	/**
+  * init items event
+  *
+  * @param {Object} $items
+  */
+	function initItemsEvent($items) {
+		function onClickArticle(e) {
+			let srl = $(this).data('srl');
+			parent.article.open(srl, window.location.pathname + window.location.search);
+			return false;
+		}
+
+		$items.on('click', onClickArticle);
 	}
 
 	/**
@@ -405,12 +423,16 @@ function Index(parent) {
 		// set toggle category for mobile
 		this.$category.children('.categories__toggle').on('click', toggleCategory);
 
+		// initial select item event
+		initItemsEvent(this.$articles.find('.grid-item > a'));
+
 		// initial history pop state event
 		appHistory.initPopEvent();
 
 		// set masonry
 		masonry();
 
+		// 페이지 이동 안되도록 주소변경
 		self.$more.children('a').attr('href', 'javascript:;');
 
 		// set more articles event
@@ -420,20 +442,97 @@ function Index(parent) {
 		scrollEvent(true);
 	};
 
-	this.changePage = function (page) {};
-
-	this.prevPage = function () {};
-
-	this.nextPage = function () {};
+	/**
+  * push page
+  * 특정 페이지 데이터를
+  *
+  * @param {Number} page
+  */
+	this.pushPage = function (page) {
+		moreArticles(page).then();
+	};
 }
 
-function Article() {
+function Article(parent) {
+	this.popup = 'popupArticle';
+	this.$popup = $(`#${this.popup}`);
 
-	this.open = function (article_srl) {
-		console.log('fire open article');
+	/**
+  * FUNCTIONS
+  */
+
+	/**
+  * open
+  *
+  * @param {Number} srl
+  * @param {String} url
+  * @return {Promise}
+  */
+	async function open(srl, url) {
+		console.log('open article', srl, url);
+		let res = await getArticleData(srl);
+		console.log('response', res);
+		// TODO: ajax 콜해서 데이터 가져오기
+		// TODO: 팝업 엘리먼트로 dom 집어넣기
+		// TODO: 본문 article 표시하기 (애니메이션)
+		// TODO: url 푸쉬
+	}
+
+	/**
+  * close
+  *
+  * @return {Promise}
+  */
+	async function close() {
+		console.log('close article');
+	}
+
+	/**
+  * get article data
+  *
+  * @param {Number} srl
+  * @return {Promise}
+  */
+	async function getArticleData(srl) {
+		try {
+			// TODO: 여기서부터 작업
+			return await $.ajax({
+				url: `${parent.options.root}/ajax/article/`,
+				type: 'post',
+				data: {
+					article: srl,
+					field: '*'
+				},
+				dataType: 'json'
+			});
+		} catch (e) {
+			alert('Server error');
+			console.error(e);
+			return false;
+		}
+	}
+
+	/**
+  * METHODS
+  */
+
+	/**
+  * open article
+  *
+  * @param {Number} srl
+  * @param {String} url
+  */
+	this.open = function (srl, url) {
+		open(srl, url).then();
 	};
 
-	this.close = function () {};
+	/**
+  * close article
+  *
+  */
+	this.close = function () {
+		close().then();
+	};
 }
 
 // default options
