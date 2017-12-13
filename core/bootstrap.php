@@ -172,9 +172,6 @@ if ($router->match)
 					case 'popup':
 						$renderFile = 'article.popup';
 						break;
-					case 'row':
-						$renderFile = 'article.row';
-						break;
 					default:
 						$renderFile = 'article.view';
 						break;

@@ -7,6 +7,69 @@
 $ = $ && $.hasOwnProperty('default') ? $['default'] : $;
 Masonry = Masonry && Masonry.hasOwnProperty('default') ? Masonry['default'] : Masonry;
 
+function AppHistory() {
+
+	const $title = $('head > title');
+
+	/**
+  * check support
+  *
+  * @Return {Boolean}
+  */
+	function support() {
+		return !!history.pushState;
+	}
+
+	/**
+  * Push state
+  *
+  * @Param {Object} env
+  * @Param {String} title
+  * @Param {String} url
+  */
+	this.push = function (env, title, url) {
+		if (!support()) return;
+		if (!url) return;
+
+		// change title
+		if (title) {
+			$title.text(title);
+		}
+
+		history.pushState(env || null, title || url, url);
+	};
+
+	/**
+  * Replace state
+  *
+  * @Param {Object} env
+  * @Param {String} title
+  * @Param {String} url
+  */
+	this.replace = function (env, title, url) {
+		if (!support()) return;
+		if (!url) return;
+
+		// change title
+		if (title) {
+			$title.text(title);
+		}
+
+		history.replaceState(env || null, title || url, url);
+	};
+
+	/**
+  * initial history pop event
+  */
+	this.initPopEvent = function () {
+		function onPopState(e) {
+			console.log('on pop state');
+		}
+
+		window.addEventListener('popstate', onPopState);
+	};
+}
+
 /**
  * Get window size
  *
@@ -34,7 +97,11 @@ function isTouchDevice() {
  * @param {Number} delay
  * @return {Promise}
  */
-
+function sleep(delay) {
+  return new Promise(function (resolve) {
+    setTimeout(resolve, delay);
+  });
+}
 
 /**
  * printf
@@ -81,62 +148,11 @@ function Header() {
 	};
 }
 
-function AppHistory() {
-
-	/**
-  * check support
-  *
-  * @Return {Boolean}
-  */
-	function support() {
-		return !!history.pushState;
-	}
-
-	/**
-  * Push state
-  *
-  * @Param {Object} env
-  * @Param {String} title
-  * @Param {String} url
-  */
-	this.push = function (env, title, url) {
-		if (!support()) return;
-		if (!url) return;
-
-		history.pushState(env || null, title || url, url);
-	};
-
-	/**
-  * Replace state
-  *
-  * @Param {Object} env
-  * @Param {String} title
-  * @Param {String} url
-  */
-	this.replace = function (env, title, url) {
-		if (!support()) return;
-		if (!url) return;
-
-		history.replaceState(env || null, title || url, url);
-	};
-
-	/**
-  * initial history pop event
-  */
-	this.initPopEvent = function () {
-		function onPopState(e) {
-			console.log('on pop state');
-		}
-
-		window.addEventListener('popstate', onPopState);
-	};
-}
-
 const SCROLL_OFFSET = 30; // 페이지가 변화되는 스크롤 y축 위치 offset
 const SCROLL_SPEED = 300; // 페이지 추가될때 스크롤 이동되는 속도
 const BLOCK_DELAY = 80; // 아이템들이 추가될때 fade in 딜레이 간격
 const LOAD_PAGE_PER_SIZE = 20; // 페이지 추가될때마다 불러올 아이템의 갯수
-const appHistory = new AppHistory();
+
 
 function Index(parent) {
 	const self = this;
@@ -176,7 +192,9 @@ function Index(parent) {
 				visibleStyle: {}
 			});
 		} else {
-			// TODO: destroy masonry
+			self.$articles.removeClass('masonry');
+			self.masonry.destroy();
+			self.masonry = null;
 		}
 	}
 
@@ -219,7 +237,9 @@ function Index(parent) {
 		self.$more.children('a').attr('data-next', response.nextpage);
 
 		// refresh masonry layout
-		self.masonry.layout();
+		if (self.masonry) {
+			self.masonry.layout();
+		}
 
 		// turn off loading
 		moreButton(true);
@@ -258,7 +278,11 @@ function Index(parent) {
 
 		// append articles
 		self.$articles.append($appendElements);
-		self.masonry.appended($appendElements);
+
+		// append articles using masonry
+		if (self.masonry) {
+			self.masonry.appended($appendElements);
+		}
 
 		// play animation blocks
 		if (showAnimation) {
@@ -348,13 +372,14 @@ function Index(parent) {
 		}
 
 		if (sw) {
-			$(window).on('scroll', function () {
+			$(window).off('scroll.redgoose');
+			$(window).on('scroll.redgoose', function () {
 				// 너무많은 스크롤 이벤트가 트리깅 하는것을 방지하기 위하여 셋 타임아웃을 걸어놓았다.
 				clearTimeout(self.scrollTimer);
 				self.scrollTimer = setTimeout(action, delay);
 			});
 		} else {
-			$(window).off('scroll');
+			$(window).off('scroll.redgoose');
 		}
 	}
 
@@ -383,7 +408,8 @@ function Index(parent) {
 		let newUrl = location.pathname + (urlParams.toString() ? `?${urlParams.toString()}` : '');
 
 		// update url
-		appHistory.replace({ url: newUrl, type: 'index' }, null, newUrl);
+		console.log('wwwww', newUrl);
+		parent.history.replace({ url: newUrl, type: 'index' }, null, newUrl);
 	}
 
 	/**
@@ -394,8 +420,14 @@ function Index(parent) {
 	function initItemsEvent($items) {
 		function onClickArticle(e) {
 			let srl = $(this).data('srl');
-			parent.article.open(srl, window.location.pathname + window.location.search);
+			if (!!srl) {
+				parent.article.open(srl).then(onArticleOpen);
+			}
 			return false;
+		}
+
+		function onArticleOpen() {
+			self.destroyIndexEvent();
 		}
 
 		$items.on('click', onClickArticle);
@@ -427,7 +459,7 @@ function Index(parent) {
 		initItemsEvent(this.$articles.find('.grid-item > a'));
 
 		// initial history pop state event
-		appHistory.initPopEvent();
+		parent.history.initPopEvent();
 
 		// set masonry
 		masonry();
@@ -451,11 +483,48 @@ function Index(parent) {
 	this.pushPage = function (page) {
 		moreArticles(page).then();
 	};
+
+	/**
+  * destroy index event
+  * 목록에 관련된 이벤트를 모두 끈다.
+  */
+	this.destroyIndexEvent = function () {
+		if (this.masonry) {
+			masonry(false);
+		}
+		scrollEvent(false);
+	};
+
+	/**
+  * restore index event
+  * 목록에 관련된 이벤트를 모두 다시켠다.
+  */
+	this.restoreIndexEvent = function () {
+		if (!this.masonry) {
+			masonry(true);
+		}
+		scrollEvent(true);
+	};
+
+	/**
+  * use masonry
+  * masonry 사용할지 안할지에 대한 공개 메서드
+  *
+  * @param {Boolean} sw
+  */
+	this.useMasonry = function (sw) {
+		masonry(sw);
+	};
 }
 
 function Article(parent) {
-	this.popup = 'popupArticle';
-	this.$popup = $(`#${this.popup}`);
+	const self = this;
+	const $html = $('html');
+
+	/**
+  * PUBLIC VARIABLES
+  */
+	this.backupIndexScrollTop = 0;
 
 	/**
   * FUNCTIONS
@@ -465,17 +534,33 @@ function Article(parent) {
   * open
   *
   * @param {Number} srl
-  * @param {String} url
   * @return {Promise}
   */
-	async function open(srl, url) {
-		console.log('open article', srl, url);
-		let res = await getArticleData(srl);
-		console.log('response', res);
-		// TODO: ajax 콜해서 데이터 가져오기
-		// TODO: 팝업 엘리먼트로 dom 집어넣기
-		// TODO: 본문 article 표시하기 (애니메이션)
-		// TODO: url 푸쉬
+	async function open(srl) {
+		const url = `${parent.options.root}/article/${srl}/`;
+
+		// load article page
+		parent.$popup.load(`${url}?mode=popup`, el => {
+			let $el = $(el);
+			let title = $el.find('.article__header > h1').text();
+			title = !!title ? `${parent.options.title} / ${title}` : parent.options.title;
+
+			// push history
+			console.log(url);
+			parent.history.push({ url: url, type: 'article' }, title, url);
+		});
+
+		// save scroll position
+		self.backupIndexScrollTop = $html.scrollTop();
+
+		// interaction
+		parent.$popup.addClass('popupArticle-ready');
+		await sleep(10);
+		parent.$popup.addClass('popupArticle-show');
+		await sleep(300);
+		parent.$popup.removeClass('popupArticle-ready');
+		window.scrollTo(0, 0);
+		parent.$app.addClass('disabled');
 	}
 
 	/**
@@ -488,31 +573,6 @@ function Article(parent) {
 	}
 
 	/**
-  * get article data
-  *
-  * @param {Number} srl
-  * @return {Promise}
-  */
-	async function getArticleData(srl) {
-		try {
-			// TODO: 여기서부터 작업
-			return await $.ajax({
-				url: `${parent.options.root}/ajax/article/`,
-				type: 'post',
-				data: {
-					article: srl,
-					field: '*'
-				},
-				dataType: 'json'
-			});
-		} catch (e) {
-			alert('Server error');
-			console.error(e);
-			return false;
-		}
-	}
-
-	/**
   * METHODS
   */
 
@@ -520,19 +580,20 @@ function Article(parent) {
   * open article
   *
   * @param {Number} srl
-  * @param {String} url
   */
-	this.open = function (srl, url) {
-		open(srl, url).then();
+	this.open = async function (srl) {
+		await open(srl);
 	};
 
 	/**
   * close article
   *
   */
-	this.close = function () {
+	this.close = async function () {
 		close().then();
 	};
+
+	this.go = function (srl) {};
 }
 
 // default options
@@ -566,8 +627,15 @@ function initGoogleAnalytics(sw) {
  * @param {Object} options
  */
 function Redgoose(options) {
+	this.$app = $('main');
+	this.popup = 'popupArticle';
+	this.$popup = $(`#${this.popup}`);
+
 	// assign options
 	this.options = Object.assign({}, defaultOptions, options);
+
+	// init history
+	this.history = new AppHistory(this);
 
 	// init header
 	this.header = new Header(this);

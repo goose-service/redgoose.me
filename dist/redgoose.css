@@ -151,6 +151,8 @@ body, input, button { font-family: "Noto Sans CJK KR", sans-serif; font-size: 1r
 
 a { color: #b31f37; }
 
+main.disabled { display: none; }
+
 .blind { position: absolute; overflow: hidden; visibility: hidden; width: 0; height: 0; font-size: 0; line-height: 0; }
 
 .container { margin: 40px 0 0; }
@@ -518,5 +520,11 @@ a { color: #b31f37; }
   .about__metas section > dl > dt, .about__metas section > dl > dd { padding-top: 0; }
   .about__metas section > dl > dt { margin-top: 12px; float: none; width: auto; font-weight: 500; font-size: 15px; color: #111; }
   .about__metas section > dl > dd { margin: 4px 0 0; } }
+
+.popupArticle { position: static; display: none; background: #fafbfc; }
+
+.popupArticle-ready { position: fixed; left: 0; right: 0; top: 0; bottom: 0; z-index: 10000; display: block; opacity: 0; -webkit-transition: opacity .3s ease-out; transition: opacity .3s ease-out; }
+
+.popupArticle-show { display: block; opacity: 1; }
 
 /*# sourceMappingURL=redgoose.css.map */

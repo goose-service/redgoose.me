@@ -1,5 +1,9 @@
+import $ from 'jQuery';
+
 
 export default function AppHistory() {
+
+	const $title = $('head > title');
 
 	/**
 	 * check support
@@ -23,6 +27,12 @@ export default function AppHistory() {
 		if (!support()) return;
 		if (!url) return;
 
+		// change title
+		if (title)
+		{
+			$title.text(title);
+		}
+
 		history.pushState(
 			env || null,
 			title || url,
@@ -41,6 +51,12 @@ export default function AppHistory() {
 	{
 		if (!support()) return;
 		if (!url) return;
+
+		// change title
+		if (title)
+		{
+			$title.text(title);
+		}
 
 		history.replaceState(
 			env || null,

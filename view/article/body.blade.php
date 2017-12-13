@@ -14,7 +14,7 @@
 	<div class="article__body article-body-basic">{!! $repo->article->content !!}</div>
 	@endif
 
-	@if (!isset($_GET['hud']) || (isset($_GET['hud']) && $_GET['hud'] == 1))
+	@if (!getParam('hud') || (getParam('hud') && getParam('hud') == 1))
 	<nav class="article__control">
 		<button type="button" title="On like" id="toggleLike" class="onLike{{!!$onLike ? ' onLike-on' : ''}}">
 			<img src="{{ __ROOT__ }}/assets/img/ico-heart.svg" width="30" alt="">
@@ -22,7 +22,7 @@
 		</button>
 	</nav>
 	<nav class="external-control">
-		@if($_GET['mode'] !== 'row')
+		@if(getParam('mode') !== 'row')
 			@if($repo->anotherArticle->prev)
 			<span class="direction direction-prev">
 				<a href="{{ __ROOT__ }}/article/{{ $_nest ? $_nest.'/' : '' }}{{ $repo->anotherArticle->prev['srl'] }}/" id="goToPrevArticle">

@@ -11,9 +11,6 @@ if(!defined("__GOOSE__")){exit();}
  * `{APP}/ajax/{action}/` : (index,article,upLike)
  *
  * // params `$_GET||$_POST` 가능함
- * $_GET['nest'] : 둥지 id
- * $_GET['category'] : 분류 번호
- * $_GET['article'] : 글 번호
  * $_GET['size'] : 목록에서의 글 출력 갯수
  * $_GET['page'] : 페이지 번호
  * $_GET['get'] : 입력된 데이터만 가져온다. (nest,print_paginate,print_more)
@@ -31,6 +28,10 @@ $data = null;
  */
 switch($_params->action)
 {
+	/**
+	 * Index
+	 *
+	 */
 	case 'index':
 	default:
 		$_nest = $_params->nest;
@@ -50,20 +51,26 @@ switch($_params->action)
 		]);
 		break;
 
+	/**
+	 * Article
+	 *
+	 * `{APP}/ajax/article/{srl}/`
+	 */
 	case 'article':
-		$_nest = $_params->nest;
-		$_category = (int)$_params->category;
-		$_article = (int)$_params->article;
-
 		// get article
 		$data = $api->article((object)[
 			'app_srl' => __APP_SRL__,
-			'article_srl' => $_article,
+			'article_srl' => getParam('srl'),
 			//'updateHit' => !isCookieKey( 'redgoose-hit-' . $_article ),
 			'print_data' => getParam('get') ? getParam('get') : 'nest,category',
 		]);
 		break;
 
+	/**
+	 * Up like
+	 *
+	 * `{APP}/ajax/upLike/{srl}/`
+	 */
 	case 'upLike':
 		$_article = (int)$_params->article;
 

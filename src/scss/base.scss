@@ -1,5 +1,6 @@
 @import "variables";
 
+
 * {
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
@@ -20,7 +21,11 @@ body, input, button {
 a {
 	color: $color-key;
 }
-main {}
+main {
+	&.disabled {
+		display: none;
+	}
+}
 
 
 .blind {

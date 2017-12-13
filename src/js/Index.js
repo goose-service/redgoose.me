@@ -2,14 +2,12 @@ import $ from 'jQuery';
 import Masonry from 'Masonry';
 
 import * as util from './util';
-import AppHistory from './AppHistory';
 
 
 const SCROLL_OFFSET = 30; // 페이지가 변화되는 스크롤 y축 위치 offset
 const SCROLL_SPEED = 300; // 페이지 추가될때 스크롤 이동되는 속도
 const BLOCK_DELAY = 80; // 아이템들이 추가될때 fade in 딜레이 간격
 const LOAD_PAGE_PER_SIZE = 20; // 페이지 추가될때마다 불러올 아이템의 갯수
-const appHistory = new AppHistory();
 
 
 export default function Index(parent)
@@ -55,7 +53,9 @@ export default function Index(parent)
 		}
 		else
 		{
-			// TODO: destroy masonry
+			self.$articles.removeClass('masonry');
+			self.masonry.destroy();
+			self.masonry = null;
 		}
 	}
 
@@ -102,7 +102,10 @@ export default function Index(parent)
 		self.$more.children('a').attr('data-next', response.nextpage);
 
 		// refresh masonry layout
-		self.masonry.layout();
+		if (self.masonry)
+		{
+			self.masonry.layout();
+		}
 
 		// turn off loading
 		moreButton(true);
@@ -149,7 +152,12 @@ export default function Index(parent)
 
 		// append articles
 		self.$articles.append($appendElements);
-		self.masonry.appended($appendElements);
+
+		// append articles using masonry
+		if (self.masonry)
+		{
+			self.masonry.appended($appendElements);
+		}
 
 		// play animation blocks
 		if (showAnimation)
@@ -255,7 +263,8 @@ export default function Index(parent)
 
 		if (sw)
 		{
-			$(window).on('scroll', function() {
+			$(window).off('scroll.redgoose');
+			$(window).on('scroll.redgoose', function() {
 				// 너무많은 스크롤 이벤트가 트리깅 하는것을 방지하기 위하여 셋 타임아웃을 걸어놓았다.
 				clearTimeout(self.scrollTimer);
 				self.scrollTimer = setTimeout(action, delay);
@@ -263,7 +272,7 @@ export default function Index(parent)
 		}
 		else
 		{
-			$(window).off('scroll');
+			$(window).off('scroll.redgoose');
 		}
 	}
 
@@ -296,7 +305,8 @@ export default function Index(parent)
 		let newUrl = location.pathname + (urlParams.toString() ? `?${urlParams.toString()}` : '');
 
 		// update url
-		appHistory.replace({ url: newUrl, type: 'index' }, null, newUrl);
+		console.log('wwwww', newUrl);
+		parent.history.replace({ url: newUrl, type: 'index' }, null, newUrl);
 	}
 
 	/**
@@ -309,12 +319,21 @@ export default function Index(parent)
 		function onClickArticle(e)
 		{
 			let srl = $(this).data('srl');
-			parent.article.open(srl, window.location.pathname + window.location.search);
+			if (!!srl)
+			{
+				parent.article.open(srl).then(onArticleOpen);
+			}
 			return false;
+		}
+
+		function onArticleOpen()
+		{
+			self.destroyIndexEvent();
 		}
 
 		$items.on('click', onClickArticle);
 	}
+
 
 	/**
 	 * METHODS
@@ -343,7 +362,7 @@ export default function Index(parent)
 		initItemsEvent(this.$articles.find('.grid-item > a'));
 
 		// initial history pop state event
-		appHistory.initPopEvent();
+		parent.history.initPopEvent();
 
 		// set masonry
 		masonry();
@@ -368,5 +387,42 @@ export default function Index(parent)
 	{
 		moreArticles(page).then();
 	};
+
+	/**
+	 * destroy index event
+	 * 목록에 관련된 이벤트를 모두 끈다.
+	 */
+	this.destroyIndexEvent = function()
+	{
+		if (this.masonry)
+		{
+			masonry(false);
+		}
+		scrollEvent(false);
+	};
+
+	/**
+	 * restore index event
+	 * 목록에 관련된 이벤트를 모두 다시켠다.
+	 */
+	this.restoreIndexEvent = function()
+	{
+		if (!this.masonry)
+		{
+			masonry(true);
+		}
+		scrollEvent(true);
+	};
+
+	/**
+	 * use masonry
+	 * masonry 사용할지 안할지에 대한 공개 메서드
+	 *
+	 * @param {Boolean} sw
+	 */
+	this.useMasonry = function(sw)
+	{
+		masonry(sw);
+	}
 
 }
