@@ -1,1 +1,11 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="175.487 159.487 24.877 25.026"><defs><style>.a{fill:#111;fill-rule:evenodd;}</style></defs><path class="a" d="M12.851,12.164,24.528.487l.836.836L13.687,13,25.364,24.677l-.836.836L12.851,13.836,1.323,25.364l-.836-.836L12.015,13,.487,1.472,1.323.636,12.85,12.164Z" transform="translate(175 159)"/></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="175.487 321.487 25 25">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #111;
+        fill-rule: evenodd;
+      }
+    </style>
+  </defs>
+  <path id="패스_1" data-name="패스 1" class="cls-1" d="M12.912,12.152,24.647.487l.84.835L13.752,12.987,25.487,24.652l-.84.835L12.912,13.822,1.327,25.338.487,24.5,12.072,12.987.487,1.471l.84-.835L12.911,12.152Z" transform="translate(175 321)"/>
+</svg>

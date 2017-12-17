@@ -4,6 +4,9 @@ import AppHistory from './AppHistory';
 import * as util from './util';
 
 
+const transitionDelay = 300;
+
+
 export default function Article(parent)
 {
 	const self = this;
@@ -12,7 +15,14 @@ export default function Article(parent)
 	/**
 	 * PUBLIC VARIABLES
 	 */
+
 	this.backupIndexScrollTop = 0;
+	this.$close = null;
+	this.$prev = null;
+	this.$next = null;
+	this.$like = null;
+	this.$body = null;
+	this.srl = null;
 
 
 	/**
@@ -23,44 +33,200 @@ export default function Article(parent)
 	 * open
 	 *
 	 * @param {Number} srl
+	 * @param {Boolean} useHistory
 	 * @return {Promise}
 	 */
-	async function open(srl)
+	async function open(srl, useHistory=false)
 	{
-		const url = `${parent.options.root}/article/${srl}/`;
+		// check mode
+		if (parent.mode !== 'index')
+		{
+			alert(`It is not currently in 'index' mode.`);
+			return;
+		}
 
-		// load article page
-		parent.$popup.load(`${url}?mode=popup`, (el) => {
-			let $el = $(el);
-			let title = $el.find('.article__header > h1').text();
-			title = !!title ? `${parent.options.title} / ${title}` : parent.options.title;
-
-			// push history
-			console.log(url);
-			parent.history.push({ url: url, type: 'article' }, title, url);
-		});
+		// change mode
+		parent.mode = 'article';
 
 		// save scroll position
 		self.backupIndexScrollTop = $html.scrollTop();
 
 		// interaction
-		parent.$popup.addClass('popupArticle-ready');
-		await util.sleep(10);
 		parent.$popup.addClass('popupArticle-show');
-		await util.sleep(300);
-		parent.$popup.removeClass('popupArticle-ready');
-		window.scrollTo(0, 0);
 		parent.$app.addClass('disabled');
+		window.scrollTo(0, 0);
+
+		// go to article
+		go(srl, useHistory, 'push').then();
 	}
 
 	/**
 	 * close
 	 *
+	 * @param {Boolean} useHistory
 	 * @return {Promise}
 	 */
-	async function close()
+	async function close(useHistory=false)
 	{
-		console.log('close article')
+		// check mode
+		if (parent.mode !== 'article')
+		{
+			alert(`It is not currently in 'article' mode.`);
+			return;
+		}
+
+		// change mode
+		parent.mode = 'index';
+
+		if (useHistory)
+		{
+			window.history.back();
+		}
+
+		// set srl
+		self.srl = null;
+
+		// 팝업으로 띄어져 있는 상태라면..
+		if (parent.$popup && parent.$popup.length)
+		{
+			parent.$app.removeClass('disabled').addClass('hidden');
+			parent.$popup.removeClass('popupArticle-show').empty();
+			parent.index.restoreIndexEvent();
+			await util.sleep(10);
+			$('html,body').scrollTop(self.backupIndexScrollTop);
+			parent.$app.removeClass('hidden');
+
+
+			// 팝업이 열려있는 상태에서 윈도우 사이즈를 변경하고 닫으면 레이아웃이 깨지기 때문에 `layout()`메서드를 실행하여 다시 잡아줘야함.
+			if (parent.index)
+			{
+				parent.index.masonry.layout();
+			}
+		}
+
+		// change title
+		document.title = parent.index.options.title;
+	}
+
+	/**
+	 * go to article
+	 *
+	 * @param {Number} srl
+	 * @param {Boolean} useHistory
+	 * @param {String} historyMethod `push|replace`
+	 * @return {Promise}
+	 */
+	function go(srl, useHistory=false, historyMethod='push')
+	{
+		return new Promise(function(resolve) {
+			const url = `${parent.options.root}/article/${srl}/`;
+
+			if (!parent.$popup) return;
+
+			// on loading
+			loading(true);
+
+			// set srl
+			self.srl = srl;
+
+			// clear contents
+			parent.$popup.empty();
+
+			// load article page
+			parent.$popup.load(`${url}?mode=popup`, (el) => {
+				let $el = $(el);
+				let title = $el.find('.article__header > h1').text();
+				title = !!title ? `${parent.options.title} / ${title}` : parent.options.title;
+
+				// setting elements in article
+				self.$body = $('#article');
+				self.$close = $('#closeArticle');
+				self.$prev = $('#goToPrevArticle');
+				self.$next = $('#goToNextArticle');
+				self.$like = $('#toggleLike');
+
+				// initial event in article
+				initCloseEvent();
+				initLikeEvent();
+				initMoveArticleEvent();
+
+				// push history
+				if (useHistory)
+				{
+					if (parent.options.dev) console.warn('change url:', url, historyMethod);
+					parent.history[historyMethod || 'push']({ url, srl, type: 'article' }, title, url);
+				}
+
+				// off loading
+				loading(false);
+
+				// exit
+				resolve();
+			});
+		});
+	}
+
+	/**
+	 * initial close event
+	 */
+	function initCloseEvent(sw=true)
+	{
+		if (sw)
+		{
+			self.$close.on('click', () => close(true));
+		}
+		else
+		{
+			self.$close.off('click');
+		}
+	}
+
+	/**
+	 * initial move article event
+	 */
+	function initMoveArticleEvent(sw=true)
+	{
+		function action()
+		{
+			self.go(this.dataset.srl, true, 'replace');
+			return false;
+		}
+
+		if (sw)
+		{
+			self.$prev.on('click', action);
+			self.$next.on('click', action);
+		}
+		else
+		{
+			self.$prev.off('click');
+			self.$next.off('click');
+		}
+	}
+
+	/**
+	 * initial like event
+	 */
+	function initLikeEvent()
+	{
+		function onClickEvent(e)
+		{
+			console.log(this);
+			// TODO: 여기서부터..
+			return false;
+		}
+
+		self.$like.on('click', onClickEvent);
+	}
+
+	/**
+	 * loading
+	 *
+	 * @param {Boolean} sw
+	 */
+	function loading(sw=false)
+	{
+
 	}
 
 
@@ -72,24 +238,76 @@ export default function Article(parent)
 	 * open article
 	 *
 	 * @param {Number} srl
+	 * @param {Boolean} useHistory
+	 *
 	 */
-	this.open = async function(srl)
+	this.open = async function(srl, useHistory=false)
 	{
-		await open(srl);
+		await open(srl, useHistory);
 	};
 
 	/**
 	 * close article
 	 *
+	 * @param {Boolean} useHistory
+	 * @return {Promise}
 	 */
-	this.close = async function()
+	this.close = async function(useHistory)
 	{
-		close().then();
+		await close(useHistory);
 	};
 
-	this.go = function(srl)
+	/**
+	 * go to article
+	 *
+	 * @param {Number} srl
+	 * @param {Boolean} useHistory
+	 * @param {String} historyMethod
+	 */
+	this.go = function(srl, useHistory, historyMethod='push')
 	{
+		if (!srl)
+		{
+			alert(`not found 'srl'`);
+			return;
+		}
 
+		// check srl and mode
+		if (parent.mode === 'article' && parent.index && parent.$popup)
+		{
+			go(srl, useHistory, historyMethod).then();
+		}
+		else
+		{
+			window.location.href = `${parent.options.root}/article/${srl}/`;
+		}
+	};
+
+	/**
+	 * init
+	 * 단독 article페이지를 열었을때 사용되는 메서드
+	 */
+	this.init = function()
+	{
+		// remove index instance
+		delete parent.index;
+		delete parent.popup;
+		delete parent.$popup;
+
+		// set mode
+		parent.mode = 'article';
+
+		// setting elements in article
+		this.$body = $('#article');
+		this.$prev = $('#goToPrevArticle');
+		this.$next = $('#goToNextArticle');
+		this.$like = $('#toggleLike');
+
+		// initial history pop state event
+		parent.history.initPopEvent();
+
+		// initial events;
+		initLikeEvent();
 	};
 
 }

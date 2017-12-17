@@ -25,21 +25,21 @@
 		@if(getParam('mode') !== 'row')
 			@if($repo->anotherArticle->prev)
 			<span class="direction direction-prev">
-				<a href="{{ __ROOT__ }}/article/{{ $_nest ? $_nest.'/' : '' }}{{ $repo->anotherArticle->prev['srl'] }}/" id="goToPrevArticle">
+				<a href="{{ __ROOT__ }}/article/{{ $_nest ? $_nest.'/' : '' }}{{ $repo->anotherArticle->prev['srl'] }}/" data-srl="{{ $repo->anotherArticle->prev['srl'] }}" id="goToPrevArticle">
 					<img src="{{ __ROOT__ }}/assets/img/ico-arrow-left.svg" width="20" alt="Prev article"/>
 				</a>
 			</span>
 			@endif
 			@if($repo->anotherArticle->next)
 			<span class="direction direction-next">
-				<a href="{{ __ROOT__ }}/article/{{ $_nest ? $_nest.'/' : '' }}{{ $repo->anotherArticle->next['srl'] }}/" id="goToNextArticle">
+				<a href="{{ __ROOT__ }}/article/{{ $_nest ? $_nest.'/' : '' }}{{ $repo->anotherArticle->next['srl'] }}/" data-srl="{{ $repo->anotherArticle->next['srl'] }}" id="goToNextArticle">
 					<img src="{{ __ROOT__ }}/assets/img/ico-arrow-right.svg" width="20" alt="Next article"/>
 				</a>
 			</span>
 			@endif
 		@endif
 		<button type="button" id="closeArticle" class="close">
-			<img src="{{ __ROOT__ }}/assets/img/ico-close.svg" width="20" alt="close"/>
+			<img src="{{ __ROOT__ }}/assets/img/ico-close.svg" alt="close"/>
 		</button>
 	</nav>
 	@endif

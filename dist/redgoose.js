@@ -7,7 +7,7 @@
 $ = $ && $.hasOwnProperty('default') ? $['default'] : $;
 Masonry = Masonry && Masonry.hasOwnProperty('default') ? Masonry['default'] : Masonry;
 
-function AppHistory() {
+function AppHistory(parent) {
 
 	const $title = $('head > title');
 
@@ -63,8 +63,71 @@ function AppHistory() {
   */
 	this.initPopEvent = function () {
 		function onPopState(e) {
-			console.log('on pop state');
+			const state = e.state;
+
+			if (state && state.type) {
+				switch (state.type) {
+					case 'index':
+						// 여기로 진입하는 조건은 목록에서 페이지가 변해서 `e.state`에 값이 들어갔기 때문에 여기에 걸리는 것이다.
+						// 목록으로 돌아갈때 두가지 방식으로 돌아간다.
+						// 첫번째는 `X`버튼을 눌러서 팝업을 닫고 주소만 바꾸은 방식인데 이미 팝업이 닫혀있는 상태이기 때문에 이벤트를 그대로 막아주면 된다.
+						// 두번째는 뒤로가기인데 그냥두면 그대로 있기 때문에 팝업을 직접 닫아줘야한다.
+
+						if (parent.mode === 'article') {
+							if (parent.article.srl) {
+								// 팝업이 띄어진 상태라면 팝업을 닫아준다.
+								parent.article.close();
+								return false;
+							}
+							if (!parent.index) {
+								// 팝업이 아닌 `article`페이지에서 목록으로 넘어갔을 경우
+								location.reload();
+								return false;
+							}
+						}
+						return false;
+
+					case 'article':
+						if (parent.mode === 'index' && state.srl) {
+							// 목록인 상태에서 실행된다면 `article` 열기
+							parent.article.open(state.srl);
+							return false;
+						}
+
+						if (parent.mode === 'article' && parent.article.srl !== state.srl) {
+							// `article`모드이며 srl 값이 서로 다를때 `article.go()` 실행
+							parent.article.go(state.srl);
+							return false;
+						}
+						break;
+
+					default:
+
+						if (parent.mode === 'article' && parent.$popup) {
+							parent.article.close();
+							return false;
+						}
+
+						location.reload();
+						return false;
+						break;
+				}
+			} else {
+				if (parent.mode === 'article' && parent.$popup) {
+					// `article`상태이고 팝업이 띄어진 상태라면 팝업 닫기
+					parent.article.close();
+					return false;
+				} else if (parent.mode === 'index' && parent.$popup) {
+					return false;
+				}
+			}
+
+			// 아무것도 해당되지 않으면 새로고침하기
+			location.reload();
+			return false;
 		}
+
+		if (!support()) return;
 
 		window.addEventListener('popstate', onPopState);
 	};
@@ -99,7 +162,8 @@ function isTouchDevice() {
  */
 function sleep(delay) {
   return new Promise(function (resolve) {
-    setTimeout(resolve, delay);
+    if (window.timer) clearTimeout(window.timer);
+    window.timer = setTimeout(resolve, delay);
   });
 }
 
@@ -148,6 +212,35 @@ function Header() {
 	};
 }
 
+var asyncToGenerator = function (fn) {
+  return function () {
+    var gen = fn.apply(this, arguments);
+    return new Promise(function (resolve, reject) {
+      function step(key, arg) {
+        try {
+          var info = gen[key](arg);
+          var value = info.value;
+        } catch (error) {
+          reject(error);
+          return;
+        }
+
+        if (info.done) {
+          resolve(value);
+        } else {
+          return Promise.resolve(value).then(function (value) {
+            step("next", value);
+          }, function (err) {
+            step("throw", err);
+          });
+        }
+      }
+
+      return step("next");
+    });
+  };
+};
+
 const SCROLL_OFFSET = 30; // 페이지가 변화되는 스크롤 y축 위치 offset
 const SCROLL_SPEED = 300; // 페이지 추가될때 스크롤 이동되는 속도
 const BLOCK_DELAY = 80; // 아이템들이 추가될때 fade in 딜레이 간격
@@ -155,6 +248,71 @@ const LOAD_PAGE_PER_SIZE = 20; // 페이지 추가될때마다 불러올 아이�
 
 
 function Index(parent) {
+
+	/**
+  * more articles
+  * 아이템을 더 불러왔을때..
+  *
+  * @param {Number} page
+  * @return {Promise}
+  */
+	let moreArticles = (() => {
+		var _ref = asyncToGenerator(function* (page) {
+			let response = null;
+
+			// turn on loading
+			moreButton(false);
+
+			// get articles
+			try {
+				response = yield $.ajax({
+					url: `${parent.options.root}/ajax/`,
+					type: 'post',
+					data: {
+						page,
+						size: self.options.size,
+						field: 'srl,title,category_srl,json'
+					},
+					dataType: 'json'
+				});
+			} catch (e) {
+				alert('Server error');
+				console.error(e);
+				moreButton(true);
+				return false;
+			}
+
+			// update index
+			updateIndex(response, true, true);
+
+			// update more button
+			self.$more.children('a').attr('data-next', response.nextpage);
+
+			// refresh masonry layout
+			if (self.masonry) {
+				self.masonry.layout();
+			}
+
+			// turn off loading
+			moreButton(true);
+
+			return false;
+		});
+
+		return function moreArticles(_x) {
+			return _ref.apply(this, arguments);
+		};
+	})();
+
+	/**
+  * update index
+  *
+  * @param {Object} res
+  * @param {Boolean} showAnimation
+  * @param {Boolean} useScroll
+  */
+
+
 	const self = this;
 
 	/**
@@ -196,65 +354,7 @@ function Index(parent) {
 			self.masonry.destroy();
 			self.masonry = null;
 		}
-	}
-
-	/**
-  * more articles
-  * 아이템을 더 불러왔을때..
-  *
-  * @param {Number} page
-  * @return {Promise}
-  */
-	async function moreArticles(page) {
-		let response = null;
-
-		// turn on loading
-		moreButton(false);
-
-		// get articles
-		try {
-			response = await $.ajax({
-				url: `${parent.options.root}/ajax/`,
-				type: 'post',
-				data: {
-					page,
-					size: self.options.size,
-					field: 'srl,title,category_srl,json'
-				},
-				dataType: 'json'
-			});
-		} catch (e) {
-			alert('Server error');
-			console.error(e);
-			moreButton(true);
-			return false;
-		}
-
-		// update index
-		updateIndex(response, true, true);
-
-		// update more button
-		self.$more.children('a').attr('data-next', response.nextpage);
-
-		// refresh masonry layout
-		if (self.masonry) {
-			self.masonry.layout();
-		}
-
-		// turn off loading
-		moreButton(true);
-
-		return false;
-	}
-
-	/**
-  * update index
-  *
-  * @param {Object} res
-  * @param {Boolean} showAnimation
-  * @param {Boolean} useScroll
-  */
-	function updateIndex(res, showAnimation = false, useScroll = false) {
+	}function updateIndex(res, showAnimation = false, useScroll = false) {
 		if (!res.nextpage) {
 			self.$more.remove();
 		}
@@ -334,7 +434,7 @@ function Index(parent) {
 	}
 
 	/**
-  * toggle category
+  * toggle category for mobile
   */
 	function toggleCategory() {
 		$(this).toggleClass('categories__toggle-active');
@@ -347,6 +447,8 @@ function Index(parent) {
   * @param {Boolean} sw
   */
 	function scrollEvent(sw) {
+		if (!parent.options.dynamicChangePageNumber) return;
+
 		const delay = 100;
 
 		function action() {
@@ -408,7 +510,6 @@ function Index(parent) {
 		let newUrl = location.pathname + (urlParams.toString() ? `?${urlParams.toString()}` : '');
 
 		// update url
-		console.log('wwwww', newUrl);
 		parent.history.replace({ url: newUrl, type: 'index' }, null, newUrl);
 	}
 
@@ -421,7 +522,7 @@ function Index(parent) {
 		function onClickArticle(e) {
 			let srl = $(this).data('srl');
 			if (!!srl) {
-				parent.article.open(srl).then(onArticleOpen);
+				parent.article.open(srl, true).then(onArticleOpen);
 			}
 			return false;
 		}
@@ -451,6 +552,10 @@ function Index(parent) {
 
 		// set options
 		this.options.size = options.size || LOAD_PAGE_PER_SIZE;
+		this.options.title = options.title || parent.options.title;
+
+		// set mode
+		parent.mode = 'index';
 
 		// set toggle category for mobile
 		this.$category.children('.categories__toggle').on('click', toggleCategory);
@@ -515,16 +620,18 @@ function Index(parent) {
 	this.useMasonry = function (sw) {
 		masonry(sw);
 	};
+
+	/**
+  * scroll event
+  *
+  * @param {Boolean} sw
+  */
+	this.useScrollEvent = function (sw) {
+		scrollEvent(sw);
+	};
 }
 
 function Article(parent) {
-	const self = this;
-	const $html = $('html');
-
-	/**
-  * PUBLIC VARIABLES
-  */
-	this.backupIndexScrollTop = 0;
 
 	/**
   * FUNCTIONS
@@ -534,73 +641,279 @@ function Article(parent) {
   * open
   *
   * @param {Number} srl
+  * @param {Boolean} useHistory
   * @return {Promise}
   */
-	async function open(srl) {
-		const url = `${parent.options.root}/article/${srl}/`;
+	let open = (() => {
+		var _ref = asyncToGenerator(function* (srl, useHistory = false) {
+			// check mode
+			if (parent.mode !== 'index') {
+				alert(`It is not currently in 'index' mode.`);
+				return;
+			}
 
-		// load article page
-		parent.$popup.load(`${url}?mode=popup`, el => {
-			let $el = $(el);
-			let title = $el.find('.article__header > h1').text();
-			title = !!title ? `${parent.options.title} / ${title}` : parent.options.title;
+			// change mode
+			parent.mode = 'article';
 
-			// push history
-			console.log(url);
-			parent.history.push({ url: url, type: 'article' }, title, url);
+			// save scroll position
+			self.backupIndexScrollTop = $html.scrollTop();
+
+			// interaction
+			parent.$popup.addClass('popupArticle-show');
+			parent.$app.addClass('disabled');
+			window.scrollTo(0, 0);
+
+			// go to article
+			go(srl, useHistory, 'push').then();
 		});
 
-		// save scroll position
-		self.backupIndexScrollTop = $html.scrollTop();
-
-		// interaction
-		parent.$popup.addClass('popupArticle-ready');
-		await sleep(10);
-		parent.$popup.addClass('popupArticle-show');
-		await sleep(300);
-		parent.$popup.removeClass('popupArticle-ready');
-		window.scrollTo(0, 0);
-		parent.$app.addClass('disabled');
-	}
+		return function open(_x) {
+			return _ref.apply(this, arguments);
+		};
+	})();
 
 	/**
   * close
   *
+  * @param {Boolean} useHistory
   * @return {Promise}
   */
-	async function close() {
-		console.log('close article');
+
+
+	let close = (() => {
+		var _ref2 = asyncToGenerator(function* (useHistory = false) {
+			// check mode
+			if (parent.mode !== 'article') {
+				alert(`It is not currently in 'article' mode.`);
+				return;
+			}
+
+			// change mode
+			parent.mode = 'index';
+
+			if (useHistory) {
+				window.history.back();
+			}
+
+			// set srl
+			self.srl = null;
+
+			// 팝업으로 띄어져 있는 상태라면..
+			if (parent.$popup && parent.$popup.length) {
+				parent.$app.removeClass('disabled').addClass('hidden');
+				parent.$popup.removeClass('popupArticle-show').empty();
+				parent.index.restoreIndexEvent();
+				yield sleep(10);
+				$('html,body').scrollTop(self.backupIndexScrollTop);
+				parent.$app.removeClass('hidden');
+
+				// 팝업이 열려있는 상태에서 윈도우 사이즈를 변경하고 닫으면 레이아웃이 깨지기 때문에 `layout()`메서드를 실행하여 다시 잡아줘야함.
+				if (parent.index) {
+					parent.index.masonry.layout();
+				}
+			}
+
+			// change title
+			document.title = parent.index.options.title;
+		});
+
+		return function close() {
+			return _ref2.apply(this, arguments);
+		};
+	})();
+
+	/**
+  * go to article
+  *
+  * @param {Number} srl
+  * @param {Boolean} useHistory
+  * @param {String} historyMethod `push|replace`
+  * @return {Promise}
+  */
+
+
+	const self = this;
+	const $html = $('html');
+
+	/**
+  * PUBLIC VARIABLES
+  */
+
+	this.backupIndexScrollTop = 0;
+	this.$close = null;
+	this.$prev = null;
+	this.$next = null;
+	this.$like = null;
+	this.$body = null;
+	this.srl = null;function go(srl, useHistory = false, historyMethod = 'push') {
+		return new Promise(function (resolve) {
+			const url = `${parent.options.root}/article/${srl}/`;
+
+			if (!parent.$popup) return;
+
+			// on loading
+			self.srl = srl;
+
+			// clear contents
+			parent.$popup.empty();
+
+			// load article page
+			parent.$popup.load(`${url}?mode=popup`, el => {
+				let $el = $(el);
+				let title = $el.find('.article__header > h1').text();
+				title = !!title ? `${parent.options.title} / ${title}` : parent.options.title;
+
+				// setting elements in article
+				self.$body = $('#article');
+				self.$close = $('#closeArticle');
+				self.$prev = $('#goToPrevArticle');
+				self.$next = $('#goToNextArticle');
+				self.$like = $('#toggleLike');
+
+				// initial event in article
+				initCloseEvent();
+				initLikeEvent();
+				initMoveArticleEvent();
+
+				// push history
+				if (useHistory) {
+					if (parent.options.dev) console.warn('change url:', url, historyMethod);
+					parent.history[historyMethod || 'push']({ url, srl, type: 'article' }, title, url);
+				}
+
+				// off loading
+				resolve();
+			});
+		});
 	}
 
 	/**
-  * METHODS
+  * initial close event
   */
+	function initCloseEvent(sw = true) {
+		if (sw) {
+			self.$close.on('click', () => close(true));
+		} else {
+			self.$close.off('click');
+		}
+	}
 
 	/**
-  * open article
-  *
-  * @param {Number} srl
+  * initial move article event
   */
-	this.open = async function (srl) {
-		await open(srl);
-	};
+	function initMoveArticleEvent(sw = true) {
+		function action() {
+			self.go(this.dataset.srl, true, 'replace');
+			return false;
+		}
+
+		if (sw) {
+			self.$prev.on('click', action);
+			self.$next.on('click', action);
+		} else {
+			self.$prev.off('click');
+			self.$next.off('click');
+		}
+	}
+
+	/**
+  * initial like event
+  */
+	function initLikeEvent() {
+		function onClickEvent(e) {
+			console.log(this);
+			// TODO: 여기서부터..
+			return false;
+		}
+
+		self.$like.on('click', onClickEvent);
+	}
+
+	/**
+  * loading
+  *
+  * @param {Boolean} sw
+  */
+	this.open = (() => {
+		var _ref3 = asyncToGenerator(function* (srl, useHistory = false) {
+			yield open(srl, useHistory);
+		});
+
+		return function (_x2) {
+			return _ref3.apply(this, arguments);
+		};
+	})();
 
 	/**
   * close article
   *
+  * @param {Boolean} useHistory
+  * @return {Promise}
   */
-	this.close = async function () {
-		close().then();
+	this.close = (() => {
+		var _ref4 = asyncToGenerator(function* (useHistory) {
+			yield close(useHistory);
+		});
+
+		return function (_x3) {
+			return _ref4.apply(this, arguments);
+		};
+	})();
+
+	/**
+  * go to article
+  *
+  * @param {Number} srl
+  * @param {Boolean} useHistory
+  * @param {String} historyMethod
+  */
+	this.go = function (srl, useHistory, historyMethod = 'push') {
+		if (!srl) {
+			alert(`not found 'srl'`);
+			return;
+		}
+
+		// check srl and mode
+		if (parent.mode === 'article' && parent.index && parent.$popup) {
+			go(srl, useHistory, historyMethod).then();
+		} else {
+			window.location.href = `${parent.options.root}/article/${srl}/`;
+		}
 	};
 
-	this.go = function (srl) {};
+	/**
+  * init
+  * 단독 article페이지를 열었을때 사용되는 메서드
+  */
+	this.init = function () {
+		// remove index instance
+		delete parent.index;
+		delete parent.popup;
+		delete parent.$popup;
+
+		// set mode
+		parent.mode = 'article';
+
+		// setting elements in article
+		this.$body = $('#article');
+		this.$prev = $('#goToPrevArticle');
+		this.$next = $('#goToNextArticle');
+		this.$like = $('#toggleLike');
+
+		// initial history pop state event
+		parent.history.initPopEvent();
+
+		// initial events;
+		initLikeEvent();
+	};
 }
 
 // default options
 const defaultOptions = {
 	root: '',
 	gooseRoot: '',
-	debug: false
+	dynamicChangePageNumber: true,
+	dev: false
 };
 
 /**
@@ -630,6 +943,7 @@ function Redgoose(options) {
 	this.$app = $('main');
 	this.popup = 'popupArticle';
 	this.$popup = $(`#${this.popup}`);
+	this.mode = null;
 
 	// assign options
 	this.options = Object.assign({}, defaultOptions, options);

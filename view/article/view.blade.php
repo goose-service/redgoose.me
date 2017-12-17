@@ -3,7 +3,14 @@
 
 @section('script')
 <script>
-var app = 'article';
+var redgoose = new Redgoose({
+	root: '{{ __ROOT__ }}',
+	gooseRoot: '{{ __GOOSE_ROOT__ }}',
+	title: '{{ $title }}',
+	dev: !!'{{ DEBUG }}',
+});
+redgoose.header.init();
+redgoose.article.init();
 </script>
 @endsection
 

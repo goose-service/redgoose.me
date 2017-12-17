@@ -33,7 +33,8 @@ export function isTouchDevice()
 export function sleep(delay)
 {
 	return new Promise(function(resolve) {
-		setTimeout(resolve, delay);
+		if (window.timer) clearTimeout(window.timer);
+		window.timer = setTimeout(resolve, delay);
 	});
 }
 

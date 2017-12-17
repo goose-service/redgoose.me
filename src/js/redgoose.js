@@ -16,6 +16,7 @@ function Redgoose(options)
 	this.$app = $('main');
 	this.popup = 'popupArticle';
 	this.$popup = $(`#${this.popup}`);
+	this.mode = null;
 
 	// assign options
 	this.options = Object.assign({}, etc.defaultOptions, options);
@@ -34,7 +35,6 @@ function Redgoose(options)
 
 	// init google analytics
 	etc.initGoogleAnalytics(false);
-
 }
 
 

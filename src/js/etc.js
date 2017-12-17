@@ -3,7 +3,8 @@
 export const defaultOptions = {
 	root: '',
 	gooseRoot: '',
-	debug: false,
+	dynamicChangePageNumber: true,
+	dev: false,
 };
 
 

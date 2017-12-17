@@ -256,6 +256,23 @@
 	.external-control {}
 	.close {
 		display: none;
+		position: fixed;
+		right: 5px;
+		top: 5px;
+		margin: 0;
+		padding: 20px;
+		font-size: 0;
+		border: none;
+		background: none;
+		cursor: pointer;
+		border-radius: 0;
+		&:focus {
+			outline: $border-focus;
+		}
+		img {
+			display: block;
+			width: 24px;
+		}
 	}
 
 	@media screen and (max-width: 1200px) {
@@ -302,4 +319,20 @@
 		}
 	}
 
+}
+
+
+// for popup
+.popupArticle .article {
+
+	padding-top: 52px;
+	padding-bottom: 52px;
+
+	&__header {
+		text-align: center;
+	}
+
+	.close {
+		display: block;
+	}
 }

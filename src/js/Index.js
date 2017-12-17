@@ -217,7 +217,7 @@ export default function Index(parent)
 	}
 
 	/**
-	 * toggle category
+	 * toggle category for mobile
 	 */
 	function toggleCategory()
 	{
@@ -232,6 +232,8 @@ export default function Index(parent)
 	 */
 	function scrollEvent(sw)
 	{
+		if (!parent.options.dynamicChangePageNumber) return;
+
 		const delay = 100;
 
 		function action()
@@ -305,7 +307,6 @@ export default function Index(parent)
 		let newUrl = location.pathname + (urlParams.toString() ? `?${urlParams.toString()}` : '');
 
 		// update url
-		console.log('wwwww', newUrl);
 		parent.history.replace({ url: newUrl, type: 'index' }, null, newUrl);
 	}
 
@@ -321,7 +322,7 @@ export default function Index(parent)
 			let srl = $(this).data('srl');
 			if (!!srl)
 			{
-				parent.article.open(srl).then(onArticleOpen);
+				parent.article.open(srl, true).then(onArticleOpen);
 			}
 			return false;
 		}
@@ -354,6 +355,10 @@ export default function Index(parent)
 
 		// set options
 		this.options.size = options.size || LOAD_PAGE_PER_SIZE;
+		this.options.title = options.title || parent.options.title;
+
+		// set mode
+		parent.mode = 'index';
 
 		// set toggle category for mobile
 		this.$category.children('.categories__toggle').on('click', toggleCategory);
@@ -423,6 +428,16 @@ export default function Index(parent)
 	this.useMasonry = function(sw)
 	{
 		masonry(sw);
-	}
+	};
+
+	/**
+	 * scroll event
+	 *
+	 * @param {Boolean} sw
+	 */
+	this.useScrollEvent = function(sw)
+	{
+		scrollEvent(sw);
+	};
 
 }

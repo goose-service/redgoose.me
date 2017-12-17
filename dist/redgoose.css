@@ -153,6 +153,8 @@ a { color: #b31f37; }
 
 main.disabled { display: none; }
 
+main.hidden { opacity: 0; }
+
 .blind { position: absolute; overflow: hidden; visibility: hidden; width: 0; height: 0; font-size: 0; line-height: 0; }
 
 .container { margin: 40px 0 0; }
@@ -457,7 +459,11 @@ main.disabled { display: none; }
 
 .article .direction > img { display: block; width: 20px; }
 
-.article .close { display: none; }
+.article .close { display: none; position: fixed; right: 5px; top: 5px; margin: 0; padding: 20px; font-size: 0; border: none; background: none; cursor: pointer; border-radius: 0; }
+
+.article .close:focus { outline: thin dotted #666; }
+
+.article .close img { display: block; width: 24px; }
 
 @media screen and (max-width: 1200px) { .article .direction-prev { left: 25px; }
   .article .direction-next { right: 75px; } }
@@ -471,6 +477,12 @@ main.disabled { display: none; }
   .article__body { margin: 20px auto; } }
 
 @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) { .article__body img { zoom: .75; } }
+
+.popupArticle .article { padding-top: 52px; padding-bottom: 52px; }
+
+.popupArticle .article__header { text-align: center; }
+
+.popupArticle .article .close { display: block; }
 
 .about { max-width: 1000px; margin: 0 auto; padding: 0 50px; }
 
@@ -523,8 +535,6 @@ main.disabled { display: none; }
 
 .popupArticle { position: static; display: none; background: #fafbfc; }
 
-.popupArticle-ready { position: fixed; left: 0; right: 0; top: 0; bottom: 0; z-index: 10000; display: block; opacity: 0; -webkit-transition: opacity .3s ease-out; transition: opacity .3s ease-out; }
-
-.popupArticle-show { display: block; opacity: 1; }
+.popupArticle-show { display: block; }
 
 /*# sourceMappingURL=redgoose.css.map */

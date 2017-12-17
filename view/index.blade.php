@@ -82,6 +82,7 @@ redgoose.index.init({
 	nest_srl: '{{ $_nest }}',
 	category_srl: '{{ $_category }}',
 	size: parseInt('{{ __DEFAULT_ITEM_COUNT__ }}'),
+	title: '{{ $title }}',
 });
 </script>
 @endsection
