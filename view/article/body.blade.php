@@ -16,8 +16,10 @@
 
 	@if (!getParam('hud') || (getParam('hud') && getParam('hud') == 1))
 	<nav class="article__control">
-		<button type="button" title="On like" id="toggleLike" class="onLike{{!!$onLike ? ' onLike-on' : ''}}">
-			<img src="{{ __ROOT__ }}/assets/img/ico-heart.svg" width="30" alt="">
+		<button type="button" title="On like" id="toggleLike" data-srl="{{$_article}}" class="onLike{{!!$onLike ? ' onLike-on' : ''}}">
+			<svg xmlns="http://www.w3.org/2000/svg" viewBox="129.184 102.606 25.632 23.517" class="onLike__icon">
+				<path d="M13,24.123l-1.858-1.692C4.542,16.446.184,12.5.184,7.655A6.981,6.981,0,0,1,7.233.606,7.673,7.673,0,0,1,13,3.285,7.676,7.676,0,0,1,18.767.606a6.981,6.981,0,0,1,7.049,7.049c0,4.844-4.358,8.791-10.958,14.789Z" transform="translate(129 102)"/>
+			</svg>
 			<em>{{ $repo->article->json['like'] or 0 }}</em>
 		</button>
 	</nav>
@@ -38,6 +40,7 @@
 			</span>
 			@endif
 		@endif
+
 		<button type="button" id="closeArticle" class="close">
 			<img src="{{ __ROOT__ }}/assets/img/ico-close.svg" alt="close"/>
 		</button>

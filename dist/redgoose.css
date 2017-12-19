@@ -375,13 +375,23 @@ main.hidden { opacity: 0; }
 
 .article__control { margin: 0; text-align: center; }
 
-.article__control .onLike { display: block; margin: 0 auto; padding: 12px 20px 10px; border: none; cursor: pointer; border-radius: 0; background: none; }
-
-.article__control .onLike:focus { outline: thin dotted #666; }
-
-.article__control .onLike img { display: block; width: 28px; margin: 0 auto; }
+.article__control .onLike { display: block; margin: 0 auto; padding: 12px 20px 10px; border: none; cursor: pointer; border-radius: 0; background: none; outline: none; }
 
 .article__control .onLike em { display: block; margin: 6px 0 0; font-style: normal; font-size: 10px; color: #999; }
+
+.article__control .onLike__icon { display: block; margin: 0 auto; width: 28px; -webkit-transition: -webkit-transform 0.3s cubic-bezier(0.24, 1.35, 0.8, 1.22); transition: transform 0.3s cubic-bezier(0.24, 1.35, 0.8, 1.22); }
+
+.article__control .onLike__icon path { fill: #b31f37; transition: fill .15s ease-out; }
+
+.article__control .onLike:active .onLike__icon { transform: scale(1.5); }
+
+.article__control .onLike-on { cursor: default; }
+
+.article__control .onLike-on .onLike__icon path { fill: #aaa; }
+
+.article__control .onLike-on:focus { outline: none; }
+
+.article__control .onLike-on:active .onLike__icon { transform: none; }
 
 .article .article-body-basic, .article .article-body-markdown { font-size: 15px; line-height: 1.64; }
 

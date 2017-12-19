@@ -31,19 +31,18 @@ switch($_params->action)
 	/**
 	 * Index
 	 *
+	 * `{APP}/ajax/?nest=&category=&get=&size=&page=`
 	 */
 	case 'index':
 	default:
-		$_nest = $_params->nest;
-		$_category = (int)$_params->category;
 		$page = (getParam('page') && (int)getParam('page') > 1) ? (int)getParam('page') : 1;
 
 		// get data
 		$data = $api->index((object)[
 			'field' => getParam('field'),
 			'app_srl' => __APP_SRL__,
-			'nest_id' => $_nest,
-			'category_srl' => $_category,
+			'nest_id' => getParam('nest'),
+			'category_srl' => (int)getParam('category'),
 			'page' => $page,
 			'print_data' => getParam('get') ? getParam('get') : 'article,nav_more',
 			'size' => getParam('size') ? (int)getParam('size') : __DEFAULT_ITEM_COUNT__,
@@ -54,7 +53,7 @@ switch($_params->action)
 	/**
 	 * Article
 	 *
-	 * `{APP}/ajax/article/{srl}/`
+	 * `{APP}/ajax/article/?srl=&get=`
 	 */
 	case 'article':
 		// get article
@@ -69,12 +68,20 @@ switch($_params->action)
 	/**
 	 * Up like
 	 *
-	 * `{APP}/ajax/upLike/{srl}/`
+	 * `{APP}/ajax/uplike/?srl=`
 	 */
-	case 'upLike':
-		$_article = (int)$_params->article;
-
-		$data = $api->upLike((object)[ 'article_srl' => $_article ]);
+	case 'uplike':
+		if ($_SERVER['HTTP_REDGOOSE_ACTION'] === 'uplike')
+		{
+			$data = $api->upLike((object)[ 'article_srl' => (int)getParam('srl') ]);
+		}
+		else
+		{
+			$data = (object)[
+				'state' => 'error',
+				'message' => 'not found header'
+			];
+		}
 		break;
 }
 

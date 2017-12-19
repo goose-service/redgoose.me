@@ -162,7 +162,7 @@ if ($router->match)
 				$repo = $api->article((object)[
 					'app_srl' => __APP_SRL__,
 					'article_srl' => $_article,
-					//'updateHit' => !isCookieKey( 'redgoose-hit-'.$_article ),
+					'updateHit' => !isCookieKey( 'redgoose-hit-'.$_article ),
 					'print_data' => $printData,
 				]);
 
@@ -188,7 +188,7 @@ if ($router->match)
 					'_nest' => $_nest,
 					'_category' => $_category,
 					'_article' => $_article,
-					//'onLike' => isCookieKey( 'redgoose-like-'.$_article ),
+					'onLike' => isCookieKey( 'redgoose-like-'.$_article ),
 					'repo' => $repo
 				]);
 				break;

@@ -209,14 +209,50 @@ export default function Article(parent)
 	 */
 	function initLikeEvent()
 	{
-		function onClickEvent(e)
+		async function send(srl)
 		{
-			console.log(this);
-			// TODO: 여기서부터..
-			return false;
+			if (!srl) return null;
+
+			return await $.ajax({
+				url: `${parent.options.root}/ajax/uplike/`,
+				type: 'post',
+				headers: { 'redgoose-action': 'uplike' },
+				data: { srl },
+				dataType: 'json',
+			});
 		}
 
-		self.$like.on('click', onClickEvent);
+		function onClickEvent()
+		{
+			const $em = self.$like.children('em');
+			let srl = this.dataset.srl;
+			let n = parseInt($em.text());
+
+			// change button
+			self.$like.addClass('onLike-on').off();
+			$em.text(n + 1);
+
+			// request
+			send(srl).then(function(res) {
+				switch(res.state)
+				{
+					case 'success':
+						break;
+
+					case 'error':
+						$em.text(n);
+						self.$like.removeClass('onLike-on').on('click', onClickEvent);
+						console.error(res.message);
+						break;
+				}
+			});
+		}
+
+		// set event
+		if (!self.$like.hasClass('onLike-on'))
+		{
+			self.$like.on('click', onClickEvent);
+		}
 	}
 
 	/**
@@ -287,12 +323,15 @@ export default function Article(parent)
 	 * init
 	 * 단독 article페이지를 열었을때 사용되는 메서드
 	 */
-	this.init = function()
+	this.init = function(options)
 	{
 		// remove index instance
 		delete parent.index;
 		delete parent.popup;
 		delete parent.$popup;
+
+		// set options
+		this.srl = options.srl;
 
 		// set mode
 		parent.mode = 'article';

@@ -70,20 +70,45 @@
 			cursor: pointer;
 			border-radius: 0;
 			background: none;
-			&:focus {
-				outline: $border-focus
-			}
-			img {
-				display: block;
-				width: 28px;
-				margin: 0 auto;
-			}
+			outline: none;
 			em {
 				display: block;
 				margin: 6px 0 0;
 				font-style: normal;
 				font-size: 10px;
 				color: #999;
+			}
+			&__icon {
+				display: block;
+				margin: 0 auto;
+				width: 28px;
+				-webkit-transition: -webkit-transform .3s cubic-bezier(.24,1.35,.8,1.22);
+				transition: transform .3s cubic-bezier(.24,1.35,.8,1.22);
+				path {
+					fill: $color-key;
+					transition: fill .15s ease-out;
+				}
+			}
+			&:active {
+				.onLike__icon {
+					transform: scale(1.5);
+				}
+			}
+			&-on {
+				cursor: default;
+				.onLike__icon {
+					path {
+						fill: #aaa;
+					}
+				}
+				&:focus {
+					outline: none;
+				}
+				&:active {
+					.onLike__icon {
+						transform: none;
+					}
+				}
 			}
 		}
 	}

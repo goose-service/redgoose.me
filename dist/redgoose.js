@@ -820,13 +820,52 @@ function Article(parent) {
   * initial like event
   */
 	function initLikeEvent() {
-		function onClickEvent(e) {
-			console.log(this);
-			// TODO: 여기서부터..
-			return false;
+		let send = (() => {
+			var _ref3 = asyncToGenerator(function* (srl) {
+				if (!srl) return null;
+
+				return yield $.ajax({
+					url: `${parent.options.root}/ajax/uplike/`,
+					type: 'post',
+					headers: { 'redgoose-action': 'uplike' },
+					data: { srl },
+					dataType: 'json'
+				});
+			});
+
+			return function send(_x2) {
+				return _ref3.apply(this, arguments);
+			};
+		})();
+
+		function onClickEvent() {
+			const $em = self.$like.children('em');
+			let srl = this.dataset.srl;
+			let n = parseInt($em.text());
+
+			// change button
+			self.$like.addClass('onLike-on').off();
+			$em.text(n + 1);
+
+			// request
+			send(srl).then(function (res) {
+				switch (res.state) {
+					case 'success':
+						break;
+
+					case 'error':
+						$em.text(n);
+						self.$like.removeClass('onLike-on').on('click', onClickEvent);
+						console.error(res.message);
+						break;
+				}
+			});
 		}
 
-		self.$like.on('click', onClickEvent);
+		// set event
+		if (!self.$like.hasClass('onLike-on')) {
+			self.$like.on('click', onClickEvent);
+		}
 	}
 
 	/**
@@ -835,12 +874,12 @@ function Article(parent) {
   * @param {Boolean} sw
   */
 	this.open = (() => {
-		var _ref3 = asyncToGenerator(function* (srl, useHistory = false) {
+		var _ref4 = asyncToGenerator(function* (srl, useHistory = false) {
 			yield open(srl, useHistory);
 		});
 
-		return function (_x2) {
-			return _ref3.apply(this, arguments);
+		return function (_x3) {
+			return _ref4.apply(this, arguments);
 		};
 	})();
 
@@ -851,12 +890,12 @@ function Article(parent) {
   * @return {Promise}
   */
 	this.close = (() => {
-		var _ref4 = asyncToGenerator(function* (useHistory) {
+		var _ref5 = asyncToGenerator(function* (useHistory) {
 			yield close(useHistory);
 		});
 
-		return function (_x3) {
-			return _ref4.apply(this, arguments);
+		return function (_x4) {
+			return _ref5.apply(this, arguments);
 		};
 	})();
 
@@ -885,11 +924,14 @@ function Article(parent) {
   * init
   * 단독 article페이지를 열었을때 사용되는 메서드
   */
-	this.init = function () {
+	this.init = function (options) {
 		// remove index instance
 		delete parent.index;
 		delete parent.popup;
 		delete parent.$popup;
+
+		// set options
+		this.srl = options.srl;
 
 		// set mode
 		parent.mode = 'article';

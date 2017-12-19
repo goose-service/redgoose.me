@@ -45,8 +45,8 @@ class API {
 			],
 		]);
 
-		// TODO: 쿠키가 아닌 다른방법을 찾아보기. (로봇이 들어와서 조회수를 올릴 수 있음.)
-		setCookieKey('redgoose-hit-'.(int)$article_srl);
+		// writing cookie
+		setCookieKey('redgoose-hit-'.(int)$article_srl, 7);
 
 		return ($result == 'success');
 	}
@@ -382,6 +382,9 @@ class API {
 			'jsonField' => ['json']
 		]);
 
+		// convert type
+		$article = $article ? (object)$article : null;
+
 		// check article json
 		if (!isset($article->json))
 		{
@@ -404,13 +407,15 @@ class API {
 		]);
 
 		// save cookie
-		// TODO: 쿠키가 아닌 다른 방법을 찾아보기
-		setCookieKey('redgoose-like-' . (int)$options->article_srl);
+		setCookieKey('redgoose-like-'.(int)$options->article_srl, 7);
 
 		// return
 		return ($result == 'success') ? (object)[
 			'state' => 'success',
-			'data' => [ 'like' => (int)$article->json['like'] ],
+			'data' => [
+				'srl' => $options->article_srl,
+				'like' => (int)$article->json['like']
+			],
 			'message' => 'update complete',
 		] : (object)[
 			'state' => 'error',

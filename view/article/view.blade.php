@@ -10,7 +10,9 @@ var redgoose = new Redgoose({
 	dev: !!'{{ DEBUG }}',
 });
 redgoose.header.init();
-redgoose.article.init();
+redgoose.article.init({
+	srl: '{{ $_article }}',
+});
 </script>
 @endsection
 
