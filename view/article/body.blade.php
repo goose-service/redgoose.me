@@ -41,8 +41,9 @@
 			@endif
 		@endif
 
-		<button type="button" id="closeArticle" class="close">
-			<img src="{{ __ROOT__ }}/assets/img/ico-close.svg" alt="close"/>
+		<button type="button" id="closeArticle" title="Close article" class="close">
+			<img src="{{ __ROOT__ }}/assets/img/ico-close.svg" class="close__ico-pc" alt="close"/>
+			<img src="{{ __ROOT__ }}/assets/img/ico-close2.svg" class="close__ico-mobile" alt="close"/>
 		</button>
 	</nav>
 	@endif

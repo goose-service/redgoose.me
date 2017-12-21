@@ -6,6 +6,9 @@
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
 }
+html {
+	//touch-action: manipulation;
+}
 body {
 	margin: 0;
 	padding: 0;
