@@ -49,7 +49,7 @@ export default function Article(parent)
 		parent.mode = 'article';
 
 		// save scroll position
-		self.backupIndexScrollTop = $html.scrollTop();
+		self.backupIndexScrollTop = $(window).scrollTop();
 
 		// interaction
 		parent.$popup.addClass('popupArticle-show');
@@ -92,16 +92,21 @@ export default function Article(parent)
 			parent.$app.removeClass('disabled').addClass('hidden');
 			parent.$popup.removeClass('popupArticle-show').empty();
 			parent.index.restoreIndexEvent();
-			await util.sleep(10);
-			$('html,body').scrollTop(self.backupIndexScrollTop);
-			parent.$app.removeClass('hidden');
 
+			await util.sleep(10);
 
 			// 팝업이 열려있는 상태에서 윈도우 사이즈를 변경하고 닫으면 레이아웃이 깨지기 때문에 `layout()`메서드를 실행하여 다시 잡아줘야함.
 			if (parent.index)
 			{
 				parent.index.masonry.layout();
 			}
+
+			await util.sleep(10);
+
+			$('html,body').scrollTop(self.backupIndexScrollTop);
+			self.backupIndexScrollTop = 0;
+
+			parent.$app.removeClass('hidden');
 		}
 
 		// change title

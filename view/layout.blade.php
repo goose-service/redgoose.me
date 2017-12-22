@@ -6,7 +6,7 @@ if(!defined("__GOOSE__")){exit();}
 <head>
 @include('head')
 </head>
-<body>
+<body ontouchstart="">
 <main>
 	<!-- Header -->
 	<header class="layout-header">

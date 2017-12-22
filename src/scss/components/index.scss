@@ -125,15 +125,41 @@
 		@include masonry-size('.articles', $item-size);
 	}
 
+	// empty article
+	.empty-article {
+		p {
+			margin: 0;
+			padding: 10vh 0;
+			background: #fff;
+			font-size: 24px;
+			text-align: center;
+			font-weight: 600;
+			color: $color-key;
+			letter-spacing: -.5px;
+		}
+	}
+
 	// load more
 	.loadMore {
 		margin: 50px 0 0;
-		> a {
-			position: relative;
+		a {
 			display: block;
 			margin: 0 auto;
 			width: 68px;
 			height: 68px;
+			&:focus {
+				outline: $border-focus;
+			}
+			&:active {
+				span {
+					background: mix(#000, $color-key, 10%);
+				}
+			}
+		}
+		span {
+			display: block;
+			height: 100%;
+			position: relative;
 			background: $color-key;
 			border-radius: 50%;
 		}
@@ -154,6 +180,8 @@
 		}
 	}
 
+
+	// media query
 	@media screen and (min-width: 1260px) {
 		&__wrap {
 			width: 1140px;
@@ -221,7 +249,7 @@
 			margin-bottom: 0;
 			padding: 0;
 			> h1 {
-				margin: 0 0 6px 8px;
+				margin: 0 0 6px 0;
 				font-size: 20px;
 			}
 		}
@@ -278,6 +306,14 @@
 		}
 		.articles {
 			margin-top: 18px;
+		}
+		.loadMore {
+			margin: 30px 0 0;
+			a {
+				margin: 0 auto;
+				width: 54px;
+				height: 54px;
+			}
 		}
 	}
 	@media screen and (max-width: 550px) {
@@ -339,9 +375,36 @@
 	@media screen and (max-width: 320px) {
 		&__header {
 			margin-top: 15px;
+			> h1 {
+				margin-left: 15px;
+			}
 		}
 		.articles {
 			margin-top: -2px;
+		}
+	}
+
+
+	// touch mode
+	.touch & {
+		.categories {
+			&__toggle {
+				@include disable-touchable-button();
+				&:focus {
+					outline: none;
+				}
+				&:active {
+					background: mix(#000, $color-panel-bg, 5%);
+				}
+			}
+		}
+		.loadMore {
+			a {
+				&:focus {
+					outline: none;
+				}
+				@include disable-touchable-button();
+			}
 		}
 	}
 }

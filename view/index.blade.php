@@ -37,10 +37,11 @@ if(!defined("__GOOSE__")){exit();}
 		@endif
 
 		<div class="index__articlesWrap">
+			@if (count($repo->articles))
 			<div class="articles index__articles" id="articles">
 				<div class="grid-sizer"></div>
-				@foreach($repo->articles as $item)
-				<div class="grid-item{{ $item['size_className'] ? ' '.$item['size_className'] : '' }}">
+				@foreach($repo->articles as $k=>$item)
+				<div{{ $k === 0 ? ' data-page='.(isset($_GET['page']) ? $_GET['page'] : 1) : '' }} class="grid-item{{ $item['size_className'] ? ' '.$item['size_className'] : '' }}">
 					<a href="{{__ROOT__}}/article/{{$_nest ? $_nest.'/' : ''}}{{$item['srl']}}/" data-srl="{{$item['srl']}}" title="{{$item['title']}}">
 						<figure style="background-image: url('{{ __GOOSE_ROOT__ }}/{{ $item['json']['thumbnail']['url'] }}')">
 							{{ $item['title'] }}
@@ -49,6 +50,11 @@ if(!defined("__GOOSE__")){exit();}
 				</div>
 				@endforeach
 			</div>
+			@else
+			<div class="empty-article">
+				<p>Not found article</p>
+			</div>
+			@endif
 		</div>
 
 		@if($repo->nextpage)
@@ -57,7 +63,9 @@ if(!defined("__GOOSE__")){exit();}
 		?>
 		<nav class="loadMore index__loadMore">
 			<a href="{{ __ROOT__ }}/{{ $address }}?page={{ $repo->nextpage }}" data-next="{{ $repo->nextpage }}" title="load more articles">
-				<img src="{{ __ROOT__ }}/assets/img/ico-loadMore.svg" width="24" alt="plus"/>
+				<span>
+					<img src="{{ __ROOT__ }}/assets/img/ico-loadMore.svg" width="24" alt="plus"/>
+				</span>
 			</a>
 		</nav>
 		@endif

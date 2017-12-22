@@ -105,6 +105,8 @@
 		display: none;
 	}
 
+
+	// media query
 	@media screen and (max-width: $size-mobile) {
 		background: #fff;
 		border-bottom: 1px solid #eee;
@@ -194,14 +196,17 @@
 			display: block;
 			height: 100%;
 			margin: 0;
-			padding: 0 20px;
+			padding: 0 15px;
 			border-radius: 0;
 			border: none;
 			background: none;
 			z-index: 0;
 			cursor: pointer;
 			&-active {
-				//background: red;
+				background: red;
+			}
+			&:active {
+				background: #eee;
 			}
 			&:focus {
 				outline: $border-focus;
@@ -213,4 +218,14 @@
 		}
 	}
 
+
+	// touch mode
+	.touch & {
+		.toggle-gnb {
+			@include disable-touchable-button();
+			&:focus {
+				outline: none;
+			}
+		}
+	}
 }

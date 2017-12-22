@@ -256,6 +256,12 @@ export default function Index(parent)
 						$current = $(this);
 					}
 				});
+
+				if (!$current)
+				{
+					$current = $el.eq(0);
+				}
+
 			}
 
 			// update page

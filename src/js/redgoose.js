@@ -4,6 +4,7 @@ import Header from './Header';
 import Index from './Index';
 import Article from './Article';
 import * as etc from './etc';
+import * as util from './util';
 
 
 /**
@@ -33,8 +34,14 @@ function Redgoose(options)
 	// init article
 	this.article = new Article(this);
 
+	// set touch device
+	if (util.isTouchDevice())
+	{
+		$('html').addClass('touch');
+	}
+
 	// init google analytics
-	etc.initGoogleAnalytics(false);
+	etc.initGoogleAnalytics(!options.dev);
 }
 
 
