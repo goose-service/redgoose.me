@@ -41,7 +41,9 @@ if(!defined("__GOOSE__")){exit();}
 			<div class="articles index__articles" id="articles">
 				<div class="grid-sizer"></div>
 				@foreach($repo->articles as $k=>$item)
-				<div{{ $k === 0 ? ' data-page='.(isset($_GET['page']) ? $_GET['page'] : 1) : '' }} class="grid-item{{ $item['size_className'] ? ' '.$item['size_className'] : '' }}">
+
+				@set( $page = $_GET['page'] ? $_GET['page'] : 1 )
+				<div class="grid-item{{ $item['size_className'] ? ' '.$item['size_className'] : '' }}"{{ $classPage = $k === 0 ? ' data-page='.$page : '' }}>
 					<a href="{{__ROOT__}}/article/{{$_nest ? $_nest.'/' : ''}}{{$item['srl']}}/" data-srl="{{$item['srl']}}" title="{{$item['title']}}">
 						<figure style="background-image: url('{{ __GOOSE_ROOT__ }}/{{ $item['json']['thumbnail']['url'] }}')">
 							{{ $item['title'] }}
@@ -52,7 +54,10 @@ if(!defined("__GOOSE__")){exit();}
 			</div>
 			@else
 			<div class="empty-article">
-				<p>Not found article</p>
+				<div class="empty-article__wrap">
+					<img src="{{ __ROOT__ }}/assets/img/ico-warning.svg" width="80" alt="empty"/>
+					<p>No article</p>
+				</div>
 			</div>
 			@endif
 		</div>

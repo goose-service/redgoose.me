@@ -26,13 +26,12 @@ export default function Header()
 	/**
 	 * gnb event for touch
 	 * 터치 디바이스이며 모바일보다 큰 사이즈라면 터치 작동에 대한 대응
-	 *
 	 */
 	function gnbEventForTouch()
 	{
 		if (util.isTouchDevice() && preference.SIZE_MOBILE < util.getWindowSize().width)
 		{
-			self.$gnb.find('.gnb__dep-1 > li > a').on('click', false);
+			self.$gnb.find('.gnb__dep-1 > li > div').prev().on('click', false);
 		}
 	}
 

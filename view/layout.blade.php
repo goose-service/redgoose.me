@@ -17,8 +17,8 @@ if(!defined("__GOOSE__")){exit();}
 				</a>
 			</h1>
 			<nav class="layout-header__side layout-header__side-left">
-				<button type="button" class="toggle-gnb">
-					<img src="{{__ROOT__}}/assets/img/ico-gnb.svg" width="18" alt="Toggle gnb">
+				<button type="button" class="toggle-gnb" title="Toggle menu">
+					<span><i></i></span>
 				</button>
 			</nav>
 		</div>

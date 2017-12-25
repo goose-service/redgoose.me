@@ -228,5 +228,5 @@ if ($router->match)
 }
 else
 {
-	Goose::error(404, null, __URL__);
+	Goose::error(404, null, __URL__, getParam('mode') !== 'popup');
 }

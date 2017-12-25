@@ -28,6 +28,9 @@
 			display: block;
 			margin: 0 auto;
 			width: 82px;
+			&:focus {
+				outline: $border-focus;
+			}
 		}
 		img {
 			display: block;
@@ -202,18 +205,65 @@
 			background: none;
 			z-index: 0;
 			cursor: pointer;
-			&-active {
-				background: red;
+
+			span {
+				position: relative;
+				display: block;
+				width: 18px;
+				height: 18px;
+			}
+			span:before, span:after {
+				content: '';
+			}
+			span:before, span:after, i {
+				display: block;
+				position: absolute;
+				left: 0;
+				top: 50%;
+				margin-top: -1px;
+				height: 2px;
+				width: 18px;
+				background: #111;
+				-webkit-transition: -webkit-transform .25s ease-out;
+				-moz-transition: -moz-transform .25s ease-out;
+				transition: transform .25s ease-out;
+			}
+			span:before {
+				@include prefix(transform, scaleX(1) translateY(-4px));
+				@include prefix(transform-origin, 50% 50%);
+			}
+			i {
+				@include prefix(transform-origin, 0 0);
+				@include prefix(transform, scaleX(.45) translateY(0px));
+			}
+			span:after {
+				@include prefix(transform, scaleX(.75) translateY(4px) translateX(-15.5%));
+				@include prefix(transform-origin, 50% 50%);
 			}
 			&:active {
-				background: #eee;
+				span:before {
+					@include prefix(transform, scaleX(1) translateX(0) translateY(-4px) rotate(5deg));
+				}
+				i {
+					@include prefix(transform, scaleX(.40) translateY(0));
+				}
+				span:after {
+					@include prefix(transform, scaleX(.8) translateX(-14%) translateY(4px) rotate(-8deg));
+				}
 			}
 			&:focus {
 				outline: $border-focus;
 			}
-			img {
-				display: block;
-				margin: 0 auto;
+			&-active {
+				span:before {
+					@include prefix(transform, scale(1.2) translateX(0) translateY(0) rotate(135deg));
+				}
+				i {
+					@include prefix(transform, scaleX(0) translateY(0));
+				}
+				span:after {
+					@include prefix(transform, scale(1.2) translateX(0) translateY(0) rotate(-135deg));
+				}
 			}
 		}
 	}
@@ -221,6 +271,14 @@
 
 	// touch mode
 	.touch & {
+		.logo {
+			a {
+				@include disable-touchable-button();
+				&:focus {
+					outline: none;
+				}
+			}
+		}
 		.toggle-gnb {
 			@include disable-touchable-button();
 			&:focus {

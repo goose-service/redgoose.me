@@ -129,6 +129,7 @@ function AppHistory(parent) {
 
 		if (!support()) return;
 
+		window.removeEventListener('popstate', onPopState);
 		window.addEventListener('popstate', onPopState);
 	};
 }
@@ -198,11 +199,10 @@ function Header() {
 	/**
   * gnb event for touch
   * 터치 디바이스이며 모바일보다 큰 사이즈라면 터치 작동에 대한 대응
-  *
   */
 	function gnbEventForTouch() {
 		if (isTouchDevice() && SIZE_MOBILE < getWindowSize().width) {
-			self.$gnb.find('.gnb__dep-1 > li > a').on('click', false);
+			self.$gnb.find('.gnb__dep-1 > li > div').prev().on('click', false);
 		}
 	}
 
@@ -650,10 +650,23 @@ function Article(parent) {
   */
 	let open = (() => {
 		var _ref = asyncToGenerator(function* (srl, useHistory = false) {
+			if (!srl) {
+				alert('Not found srl');
+				return null;
+			}
+
 			// check mode
 			if (parent.mode !== 'index') {
 				alert(`It is not currently in 'index' mode.`);
-				return;
+				return null;
+			}
+
+			// check popup element
+			if (!(parent.$popup && parent.$popup.length)) {
+				if (parent.options.dev) {
+					console.error('not found popup element');
+				}
+				return null;
 			}
 
 			// change mode
@@ -668,7 +681,10 @@ function Article(parent) {
 			window.scrollTo(0, 0);
 
 			// go to article
-			go(srl, useHistory, 'push').then();
+			yield go(srl, useHistory, 'push');
+
+			// initial keyboard event
+			keyboard(true);
 		});
 
 		return function open(_x) {
@@ -720,11 +736,17 @@ function Article(parent) {
 				$('html,body').scrollTop(self.backupIndexScrollTop);
 				self.backupIndexScrollTop = 0;
 
+				// 화면처리하느라 안보이게 했던 화면 보이게 하기
 				parent.$app.removeClass('hidden');
+
+				// destroy keyboard event
+				keyboard(false);
 			}
 
 			// change title
-			document.title = parent.index.options.title;
+			if (parent.index && parent.index.options) {
+				document.title = parent.index.options.title;
+			}
 		});
 
 		return function close() {
@@ -762,6 +784,9 @@ function Article(parent) {
 			if (!parent.$popup) return;
 
 			// on loading
+			loading(true);
+
+			// set srl
 			self.srl = srl;
 
 			// clear contents
@@ -770,6 +795,7 @@ function Article(parent) {
 			// load article page
 			parent.$popup.load(`${url}?mode=popup`, el => {
 				let $el = $(el);
+				console.log($el, $el.hasClass('.article'));
 				let title = $el.find('.article__header > h1').text();
 				title = !!title ? `${parent.options.title} / ${title}` : parent.options.title;
 
@@ -792,6 +818,9 @@ function Article(parent) {
 				}
 
 				// off loading
+				loading(false);
+
+				// exit
 				resolve();
 			});
 		});
@@ -874,6 +903,7 @@ function Article(parent) {
 
 		// set event
 		if (!self.$like.hasClass('onLike-on')) {
+			self.$like.off('click');
 			self.$like.on('click', onClickEvent);
 		}
 	}
@@ -882,6 +912,84 @@ function Article(parent) {
   * loading
   *
   * @param {Boolean} sw
+  */
+	function loading(sw = false) {
+		if (sw) {
+			let $el = $(`<div class="loading" id="loading"><div class="spinner"></div></div>`);
+			$('body').append($el);
+		} else {
+			$('#loading').remove();
+		}
+	}
+
+	/**
+  * keyboard event
+  *
+  * @param {Boolean} sw (`true`: initial event, `false`: destroy event)
+  */
+	function keyboard(sw) {
+		const $window = $(window);
+		const keyMap = {
+			left: 37,
+			right: 39,
+			esc: 27,
+			cmd: 91,
+			ctrl: 17
+		};
+		let ready = true;
+
+		function onKeyUp(e) {
+			switch (e.keyCode) {
+				case keyMap.cmd:
+				case keyMap.ctrl:
+					ready = true;
+					break;
+				case keyMap.left:
+					if (ready) self.prev();
+					break;
+				case keyMap.right:
+					if (ready) self.next();
+					break;
+				case keyMap.esc:
+					if (parent.$popup) {
+						self.close(true);
+					}
+					break;
+			}
+		}
+
+		function onKeyDown(e) {
+			switch (e.keyCode) {
+				case keyMap.left:
+				case keyMap.right:
+					ready = true;
+					break;
+				default:
+					ready = false;
+					break;
+			}
+		}
+
+		if (sw) {
+			// initial event
+			$window.off('keyup.redgoose keydown.redgoose');
+			$window.on('keyup.redgoose', onKeyUp);
+			$window.on('keydown.redgoose', onKeyDown);
+		} else {
+			$window.off('keyup.redgoose keydown.redgoose');
+		}
+	}
+
+	/**
+  * METHODS
+  */
+
+	/**
+  * open article
+  *
+  * @param {Number} srl
+  * @param {Boolean} useHistory
+  *
   */
 	this.open = (() => {
 		var _ref4 = asyncToGenerator(function* (srl, useHistory = false) {
@@ -931,17 +1039,61 @@ function Article(parent) {
 	};
 
 	/**
+  * go to prev article
+  */
+	this.prev = function () {
+		try {
+			if (!(self.$prev && self.$prev.length)) throw 'not found article';
+			let srl = self.$prev.get(0).dataset.srl;
+			if (!srl) throw 'not found article srl';
+			this.go(srl, true, 'replace');
+		} catch (e) {
+			if (parent.options.dev) console.error(e);
+			return false;
+		}
+	};
+
+	/**
+  * go to next article
+  */
+	this.next = function () {
+		try {
+			if (!(self.$next && self.$next.length)) throw 'not found article';
+			let srl = self.$next.get(0).dataset.srl;
+			if (!srl) throw 'not found article srl';
+			this.go(srl, true, 'replace');
+		} catch (e) {
+			if (parent.options.dev) console.error(e);
+			return false;
+		}
+	};
+
+	/**
   * init
   * 단독 article페이지를 열었을때 사용되는 메서드
   */
 	this.init = function (options) {
+		// check popup
+		if (parent.$popup && parent.$popup.length) {
+			if (parent.options.dev) {
+				console.error('Not available in pop-up mode.');
+			}
+			return null;
+		}
+
+		// check srl
+		if (!(options && options.srl)) {
+			console.error('Not found article srl');
+			return null;
+		}
+
 		// remove index instance
 		delete parent.index;
 		delete parent.popup;
 		delete parent.$popup;
 
 		// set options
-		this.srl = options.srl;
+		this.srl = parseInt(options.srl);
 
 		// set mode
 		parent.mode = 'article';
@@ -957,6 +1109,7 @@ function Article(parent) {
 
 		// initial events;
 		initLikeEvent();
+		keyboard(true);
 	};
 }
 

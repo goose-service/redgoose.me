@@ -152,6 +152,7 @@ export default function AppHistory(parent) {
 
 		if (!support()) return;
 
+		window.removeEventListener('popstate', onPopState);
 		window.addEventListener('popstate', onPopState);
 	}
 }

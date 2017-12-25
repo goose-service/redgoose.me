@@ -24,11 +24,11 @@ $router->route->map('GET|POST', '/nest/[aa:nest]/', 'nest');
 $router->route->map('GET|POST', '/nest/[aa:nest]/[i:category]', 'nest');
 $router->route->map('GET|POST', '/nest/[aa:nest]/[i:category]/', 'nest');
 
-$router->route->map('GET|POST', '/article/[i:article]', 'article');
-$router->route->map('GET|POST', '/article/[i:article]/', 'article');
-$router->route->map('GET|POST', '/article/[aa:nest]/[i:article]', 'article');
-$router->route->map('GET|POST', '/article/[aa:nest]/[i:article]/', 'article');
-$router->route->map('GET|POST', '/article/[aa:nest]/[i:category]/[i:article]', 'article');
-$router->route->map('GET|POST', '/article/[aa:nest]/[i:category]/[i:article]/', 'article');
+$router->route->map('GET|POST', '/article/[aa:article]', 'article');
+$router->route->map('GET|POST', '/article/[aa:article]/', 'article');
+$router->route->map('GET|POST', '/article/[aa:nest]/[aa:article]', 'article');
+$router->route->map('GET|POST', '/article/[aa:nest]/[aa:article]/', 'article');
+$router->route->map('GET|POST', '/article/[aa:nest]/[i:category]/[aa:article]', 'article');
+$router->route->map('GET|POST', '/article/[aa:nest]/[i:category]/[aa:article]/', 'article');
 
 $router->route->map('POST', '/upLike/[i:article]/', 'upLike');
