@@ -288,18 +288,15 @@
 			&:focus {
 				outline: $border-focus;
 			}
+			&:active {
+				@include prefix(transform, scale(1.2));
+			}
 		}
 		&-prev {
 			left: 0 - $offset;
-			> a:active {
-				@include prefix(transform, translateX(-8px));
-			}
 		}
 		&-next {
 			right: 50px - $offset;
-			> a:active {
-				@include prefix(transform, translateX(8px));
-			}
 		}
 		> img {
 			display: block;
