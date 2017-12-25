@@ -22,7 +22,8 @@
 		"rollup-plugin-babel": "^3.0.2",
 		"rollup-plugin-node-globals": "^1.1.0",
 		"rollup-plugin-uglify": "^2.0.1",
-		"shelljs": "^0.7.8"
+		"shelljs": "^0.7.8",
+		"uglify-es": "^3.3.2"
 	},
 	"dependencies": {
 		"jquery": "^3.2.1",

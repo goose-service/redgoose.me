@@ -5,6 +5,7 @@ const babel = require('rollup-plugin-babel');
 const shell = require('shelljs');
 const scss = require('gulp-sass');
 const sourcemaps = require('gulp-sourcemaps');
+const uglify_es = require('uglify-es');
 
 
 // make vendors
@@ -37,7 +38,7 @@ async function build_js(minify=false)
 			input: 'src/js/redgoose.js',
 			plugins: [
 				babel(),
-				minify && uglify()
+				minify && uglify({}, uglify_es.minify)
 			],
 			external: ['jQuery', 'Masonry'],
 		});
@@ -61,13 +62,21 @@ async function build_css(minify=false)
 {
 	try {
 		// scss
-		gulp.src(`src/scss/redgoose.scss`)
-			.pipe(sourcemaps.init())
-			.pipe(scss({
-				outputStyle: minify ? 'compressed' : 'compact'
-			}).on('error', scss.logError))
-			.pipe(sourcemaps.write(''))
-			.pipe(gulp.dest('dist'));
+		if (minify)
+		{
+			gulp.src(`src/scss/redgoose.scss`)
+				.pipe(scss({ outputStyle: 'compressed' }).on('error', scss.logError))
+				.pipe(sourcemaps.write(''))
+				.pipe(gulp.dest('dist'));
+		}
+		else
+		{
+			gulp.src(`src/scss/redgoose.scss`)
+				.pipe(sourcemaps.init())
+				.pipe(scss({ outputStyle: 'compact' }).on('error', scss.logError))
+				.pipe(sourcemaps.write(''))
+				.pipe(gulp.dest('dist'));
+		}
 	}
 	catch(e)
 	{

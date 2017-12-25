@@ -1,10 +1,7 @@
 import $ from 'jQuery';
-import AppHistory from './AppHistory';
 
 import * as util from './util';
-
-
-const transitionDelay = 300;
+import messages from './messages';
 
 
 export default function Article(parent)
@@ -40,14 +37,14 @@ export default function Article(parent)
 	{
 		if (!srl)
 		{
-			alert('Not found srl');
+			alert(util.printf(messages.msg_notFound, `'srl'`));
 			return null;
 		}
 
 		// check mode
 		if (parent.mode !== 'index')
 		{
-			alert(`It is not currently in 'index' mode.`);
+			alert(messages.msg_errorIndexMode);
 			return null;
 		}
 
@@ -56,7 +53,7 @@ export default function Article(parent)
 		{
 			if (parent.options.dev)
 			{
-				console.error('not found popup element');
+				console.error(util.printf(messages.msg_notFound, 'popup element'));
 			}
 			return null;
 		}
@@ -90,7 +87,7 @@ export default function Article(parent)
 		// check mode
 		if (parent.mode !== 'article')
 		{
-			alert(`It is not currently in 'article' mode.`);
+			alert(messages.msg_errorArticleMode);
 			return;
 		}
 
@@ -166,7 +163,6 @@ export default function Article(parent)
 			// load article page
 			parent.$popup.load(`${url}?mode=popup`, (el) => {
 				let $el = $(el);
-				console.log($el, $el.hasClass('.article'));
 				let title = $el.find('.article__header > h1').text();
 				title = !!title ? `${parent.options.title} / ${title}` : parent.options.title;
 
@@ -413,7 +409,7 @@ export default function Article(parent)
 	{
 		if (!srl)
 		{
-			alert(`not found 'srl'`);
+			alert(util.printf(messages.msg_notFound, `'srl'`));
 			return;
 		}
 
@@ -435,9 +431,9 @@ export default function Article(parent)
 	{
 		try
 		{
-			if (!(self.$prev && self.$prev.length)) throw 'not found article';
+			if (!(self.$prev && self.$prev.length)) throw util.printf(messages.msg_notFound, 'article');
 			let srl = self.$prev.get(0).dataset.srl;
-			if (!srl) throw 'not found article srl';
+			if (!srl) throw util.printf(messages.msg_notFound, 'article srl');
 			this.go(srl, true, 'replace');
 		}
 		catch(e)
@@ -454,9 +450,9 @@ export default function Article(parent)
 	{
 		try
 		{
-			if (!(self.$next && self.$next.length)) throw 'not found article';
+			if (!(self.$next && self.$next.length)) throw util.printf(messages.msg_notFound, 'article');
 			let srl = self.$next.get(0).dataset.srl;
-			if (!srl) throw 'not found article srl';
+			if (!srl) throw util.printf(messages.msg_notFound, 'article srl');
 			this.go(srl, true, 'replace');
 		}
 		catch(e)
@@ -477,7 +473,7 @@ export default function Article(parent)
 		{
 			if (parent.options.dev)
 			{
-				console.error('Not available in pop-up mode.');
+				console.error(messages.msg_notAvailablePopupMode);
 			}
 			return null;
 		}
@@ -485,7 +481,7 @@ export default function Article(parent)
 		// check srl
 		if (!(options && options.srl))
 		{
-			console.error('Not found article srl');
+			console.error(util.printf(messages.msg_notFound, 'article srl'));
 			return null;
 		}
 

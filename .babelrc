@@ -3,8 +3,9 @@
 		[
 			"env", {
 				"modules": false,
+				"debug": false,
 				"targets": {
-					"browsers": ["last 2 Chrome versions"]
+					"browsers": [ "last 2 Chrome versions" ]
 				}
 			}
 		],

@@ -283,15 +283,23 @@
 			display: block;
 			padding: 20px 15px;
 			margin-top: -#{76*.5}px;
+			-webkit-transition: -webkit-transform .3s cubic-bezier(.24,1.35,.8,1.22);
+			transition: transform .3s cubic-bezier(.24,1.35,.8,1.22);
 			&:focus {
 				outline: $border-focus;
 			}
 		}
 		&-prev {
 			left: 0 - $offset;
+			> a:active {
+				@include prefix(transform, translateX(-8px));
+			}
 		}
 		&-next {
 			right: 50px - $offset;
+			> a:active {
+				@include prefix(transform, translateX(8px));
+			}
 		}
 		> img {
 			display: block;
@@ -446,21 +454,7 @@
 		}
 		.direction {
 			a {
-				-webkit-transition: -webkit-transform .3s cubic-bezier(.24,1.35,.8,1.22);
-				transition: transform .3s cubic-bezier(.24,1.35,.8,1.22);
 				@include disable-touchable-button();
-			}
-			&-prev {
-				> a:active {
-					-webkit-transform: translateX(-10px);
-					transform: translateX(-10px);
-				}
-			}
-			&-next {
-				> a:active {
-					-webkit-transform: translateX(10px);
-					transform: translateX(10px);
-				}
 			}
 		}
 		.close {
