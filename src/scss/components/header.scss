@@ -264,6 +264,17 @@
 				span:after {
 					@include prefix(transform, scale(1.2) translateX(0) translateY(0) rotate(-135deg));
 				}
+				&:active {
+					span:before {
+						@include prefix(transform, scale(1.15) translateX(0) translateY(0) rotate(120deg));
+					}
+					i {
+						@include prefix(transform, scaleX(0) translateY(0));
+					}
+					span:after {
+						@include prefix(transform, scale(1.15) translateX(0) translateY(0) rotate(-120deg));
+					}
+				}
 			}
 		}
 	}
