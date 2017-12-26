@@ -39,7 +39,7 @@ foreach($data->articles as $k=>$o)
 		]);
 
 		$data->articles[$k]['content'] = (
-			'<img src="' . __GOOSE_URL__ . '/' . $file['loc'] . '" alt="' . $file['name'] . '">'.
+			'<img src="' . __GOOSE_URL__ . '/' . $file['loc'] . '" alt="' . $file['name'] . '" style="display:block;margin:0 auto;">'.
 			'<p>'.
 			mb_substr(strip_tags(preg_replace('~>\\s+<~m', '><', $data->articles[$k]['content'])), 0, 150, 'utf-8').
 			'...</p>'
@@ -62,8 +62,8 @@ foreach($data->articles as $k=>$o)
 
 
 // set header
-//header('Content-Type: application/rss+xml; charset=utf-8');
-header('Content-Type: application/xml; charset=utf-8');
+header('Content-Type: application/rss+xml; charset=utf-8');
+//header('Content-Type: application/xml; charset=utf-8');
 
 
 // render page
