@@ -1,10 +1,15 @@
 {
 	"name": "redgoose",
-	"version": "3.0.0",
+	"version": "3.0.1",
 	"private": true,
 	"author": "redgoose <http://redgoose.me>",
 	"license": "ISC",
-	"scripts": {},
+	"scripts": {
+		"watch-js": "./node_modules/.bin/gulp watch-js",
+		"watch-css": "./node_modules/.bin/gulp watch-css",
+		"build": "./node_modules/.bin/gulp build",
+		"make-vendors": "./node_modules/.bin/gulp make-vendors"
+	},
 	"repository": {
 		"type": "git",
 		"url": "git+https://redgoose@bitbucket.org/redgooseme/redgoose-v3.git"
