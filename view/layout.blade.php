@@ -67,12 +67,14 @@ if(!defined("__GOOSE__")){exit();}
 <script src="{{__ROOT__}}/dist/redgoose.js"></script>
 @yield('script')
 <script>
+/*
 if('serviceWorker' in navigator)
 {
 	navigator.serviceWorker
 		.register('/service-worker.js')
 		.then(function() { console.log('Service Worker Registered'); });
 }
+*/
 </script>
 </body>
 </html>
