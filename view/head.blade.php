@@ -21,5 +21,5 @@
 	<link rel="apple-touch-icon" href="{{ __GOOSE_ROOT__ }}/vendor/icons--user/redgoose_app_256x256x32.png">
 @endif
 
-{{--<link rel="stylesheet" href="{{ __GOOSE_ROOT__ }}/vendor/Parsedown/markdown.css">--}}
 <link rel="stylesheet" href="{{ __ROOT__ }}/dist/redgoose.css" media="screen">
+<link rel="manifest" href="/manifest.json">
