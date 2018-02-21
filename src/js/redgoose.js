@@ -39,9 +39,6 @@ function Redgoose(options)
 	{
 		$('html').addClass('touch');
 	}
-
-	// init google analytics
-	etc.initGoogleAnalytics(!options.dev);
 }
 
 
