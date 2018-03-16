@@ -135,6 +135,7 @@
 	.article-body-markdown {
 		font-size: 15px;
 		line-height: 1.64;
+		color: #222;
 
 		img {
 			display: block;
@@ -364,6 +365,7 @@
 		padding: 30px 15px 0;
 
 		&__header {
+			text-align: center;
 			p {
 				font-size: 11px;
 			}
@@ -386,6 +388,10 @@
 			}
 		}
 
+		.article-body-basic,
+		.article-body-markdown {
+			//font-size: 15px;
+		}
 		.close {
 			$size: 56px;
 			$ratio: 1.4;
@@ -469,7 +475,7 @@
 
 // for popup
 .popupArticle .article {
-	padding-top: 52px;
+	padding-top: 35px;
 	padding-bottom: 52px;
 
 	&__header {
