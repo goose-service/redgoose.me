@@ -81,6 +81,8 @@ export default function Index(parent)
 				type: 'post',
 				data: {
 					page,
+					nest: self.srls.nest,
+					category: self.srls.category,
 					size: self.options.size,
 					field: 'srl,title,category_srl,json',
 				},
@@ -353,8 +355,6 @@ export default function Index(parent)
 	 */
 	this.init = function(options={})
 	{
-		if (!this.$articles.length) return false;
-
 		// set srls
 		this.srls.nest = options.nest_srl;
 		this.srls.category = options.category_srl;
@@ -369,11 +369,14 @@ export default function Index(parent)
 		// set toggle category for mobile
 		this.$category.children('.categories__toggle').on('click', toggleCategory);
 
-		// initial select item event
-		initItemsEvent(this.$articles.find('.grid-item > a'));
-
 		// initial history pop state event
 		parent.history.initPopEvent();
+
+		// check articles
+		if (!this.$articles.length) return false;
+
+		// initial select item event
+		initItemsEvent(this.$articles.find('.grid-item > a'));
 
 		// set masonry
 		masonry();
