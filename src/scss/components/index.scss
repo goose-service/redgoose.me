@@ -57,6 +57,15 @@
 			padding: 0;
 			list-style: none;
 			@include d-flex(center);
+			-webkit-flex-wrap: wrap;
+			flex-wrap: wrap;
+			&:hover > li:not(:hover) {
+				opacity: 0.5;
+			}
+			li {
+				-webkit-transition: opacity .2s ease-out;
+				transition: opacity .2s ease-out;
+			}
 			a {
 				display: block;
 				padding: 4px 6px;
@@ -64,6 +73,7 @@
 				font-size: 11px;
 				font-weight: 400;
 				color: #111;
+
 				&.active {
 					color: $color-key;
 				}

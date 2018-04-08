@@ -42,6 +42,9 @@
 	.gnb {
 		$self: &;
 
+		display: flex;
+		justify-content: center;
+
 		&__children {
 			position: relative;
 			opacity: 0;
@@ -54,7 +57,11 @@
 			padding: 0;
 			list-style: none;
 			@include d-flex(center, center);
+			&:hover > li:not(:hover) {
+				opacity: 0.5;
+			}
 			> li {
+				transition: opacity 0.2s;
 				> a {
 					display: block;
 					padding: 8px 10px;

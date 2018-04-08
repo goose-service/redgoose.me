@@ -19,7 +19,7 @@ $data = $api->index((object)[
 
 
 // init parsedown
-require_once(__GOOSE_PWD__ . 'vendor/Parsedown/Parsedown.class.php');
+require_once(__GOOSE_PWD__ . 'vendor/parsedown/Parsedown.php');
 $Parsedown = new Parsedown();
 
 
