@@ -337,8 +337,8 @@
 		}
 		&:active {
 			.close__ico {
-				-webkit-transform: scale(1.5);
-				transform: scale(1.5);
+				-webkit-transform: scale(.9);
+				transform: scale(.9);
 			}
 		}
 	}
@@ -433,7 +433,7 @@
 				}
 				.close__ico {
 					&-mobile {
-						transform: scale(1.8);
+						transform: scale(.75);
 					}
 				}
 			}

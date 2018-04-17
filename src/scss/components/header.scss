@@ -118,20 +118,40 @@
 
 	// media query
 	@media screen and (max-width: $size-mobile) {
+		position: fixed;
+		left: 0;
+		right: 0;
+		top: 0;
 		background: #fff;
-		border-bottom: 1px solid #eee;
+		height: $size-mobile-header-height;
+		&:after {
+			content: '';
+			display: block;
+			position: absolute;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			height: 1px;
+			border-bottom: 1px solid #eee;
+			@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+				border-bottom-width: 0.5px;
+			}
+		}
 
 		&__body {
 			padding: 0;
+			height: 100%;
 		}
 
 		.logo {
+			@include d-flex(center, center);
+			height: 100%;
 			a {
-				width: 60px;
-				padding: 10px 0;
+				display: block;
+				padding: 8px 0;
 			}
 			img {
-				width: 32px;
+				width: 42px;
 				margin: 0 auto;
 			}
 		}
@@ -154,6 +174,7 @@
 			&__dep-1 {
 				display: block;
 				> li {
+					opacity: 1 !important;
 					margin: 20px 0 0;
 					&:first-child {
 						margin-top: 0;

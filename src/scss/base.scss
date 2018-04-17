@@ -31,6 +31,10 @@ main {
 	&.hidden {
 		opacity: 0;
 	}
+
+	@media screen and (max-width: $size-mobile) {
+		padding-top: $size-mobile-header-height;
+	}
 }
 
 
