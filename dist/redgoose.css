@@ -596,6 +596,8 @@ main.hidden { opacity: 0; }
 
 @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) { .article__body img { zoom: .75; } }
 
+@media all and (display-mode: standalone) { .article .close { top: auto; bottom: 4px; right: 4px; -moz-transform: rotate(90deg) scale(1.2); -webkit-transform: rotate(90deg) scale(1.2); transform: rotate(90deg) scale(1.2); } }
+
 .touch .article__control .onLike { outline: none; -moz-user-select: none; -ms-user-select: none; -webkit-user-select: none; -webkit-touch-callout: none; -webkit-tap-highlight-color: transparent; }
 
 .touch .article .direction a { -moz-user-select: none; -ms-user-select: none; -webkit-user-select: none; -webkit-touch-callout: none; -webkit-tap-highlight-color: transparent; }

@@ -446,6 +446,16 @@
 			}
 		}
 	}
+	@media all and (display-mode: standalone) {
+		.close {
+			top: auto;
+			bottom: 4px;
+			right: 4px;
+			-moz-transform: rotate(90deg) scale(1.2);
+			-webkit-transform: rotate(90deg) scale(1.2);
+			transform: rotate(90deg) scale(1.2);
+		}
+	}
 
 	// touch mode
 	.touch & {
