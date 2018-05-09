@@ -439,14 +439,7 @@
 			}
 		}
 	}
-	@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
-		&__body {
-			img {
-				zoom: .75;
-			}
-		}
-	}
-	@media all and (display-mode: standalone) {
+	@media (max-width: $size-mobile) and (display-mode: standalone) {
 		.close {
 			top: auto;
 			bottom: 4px;
@@ -454,6 +447,13 @@
 			-moz-transform: rotate(90deg) scale(1.2);
 			-webkit-transform: rotate(90deg) scale(1.2);
 			transform: rotate(90deg) scale(1.2);
+		}
+	}
+	@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+		&__body {
+			img {
+				zoom: .75;
+			}
 		}
 	}
 

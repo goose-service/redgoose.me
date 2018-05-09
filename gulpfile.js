@@ -97,8 +97,6 @@ gulp.task('watch-js', function() {
 gulp.task('watch-css', function() {
 	gulp.watch('./src/scss/**/*.scss', async function(e) {
 		await build_css(false);
-		console.warn(new Date());
-		console.log(`${e.type} - ${e.path}`);
 	});
 });
 
