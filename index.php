@@ -1,4 +1,7 @@
 <?php
+echo '공사중입니다. 기다려주세요~ ㅠ_ㅠ';
+exit;
+
 header("content-type:text/html; charset=utf-8");
 session_cache_expire(30);
 session_start();

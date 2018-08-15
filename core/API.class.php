@@ -1,17 +1,15 @@
 <?php
-use core\Spawn, core\Goose, core\Util, core\Module, core\Paginate;
 if(!defined("__GOOSE__")){exit();}
 
 
 class API {
 
-	public $goose, $ajax;
+	public $ajax, $api;
 
 	public function __construct()
 	{
-		global $goose;
-
-		$this->goose = $goose;
+		global $api_context;
+		$this->api = $api_context;
 		$this->ajax = isset($_SERVER['HTTP_X_REQUESTED_WITH']) || (isset($_SERVER['HTTP_ORIGIN']) && $_SERVER['REQUEST_METHOD'] == 'GET');
 	}
 
@@ -62,6 +60,29 @@ class API {
 		$largeSize = explode(',', __THUMBNAIL_LARGE_SIZE__);
 		$sizeName = (in_array($size['width'], $largeSize) ? ' wx2' : '') . (in_array($size['height'], $largeSize) ? ' hx2' : '');
 		return trim($sizeName);
+	}
+
+	/**
+	 * call api
+	 *
+	 * @param string $url
+	 * @param object $params
+	 * @return object|array
+	 */
+	private function callApi($url, $params)
+	{
+		try
+		{
+			$params = $params ? '?'.http_build_query($params) : '';
+			$res = file_get_contents(__GOOSE_ROOT__.$url.$params, false, $this->api);
+			$res = json_decode($res);
+			if (!$res->success) throw new Exception($res->message);
+			return $res->data;
+		}
+		catch(Exception $e)
+		{
+			return null;
+		}
 	}
 
 	/**
@@ -156,23 +177,28 @@ class API {
 		}
 
 		// get articles
-		// init paginate
-		$options->page = (isset($options->page) && $options->page > 1) ? $options->page : 1;
-		$params = ['keyword' => ($options->keyword) ? $options->keyword : ''];
-
+		$opts = (object)[];
+		$opts->app = $options->app_srl;
 		$nest_srl = ($options->nest_id) ? ((isset($result->nest['srl'])) ? $result->nest['srl'] : -1) : null;
-		$where = 'app_srl='.$options->app_srl;
-		$where .= ($nest_srl) ? ' and nest_srl='.$nest_srl : '';
-		$where .= ($options->category_srl) ? ' and category_srl='.(int)$options->category_srl : '';
-		$where .= ($options->keyword) ? ' and (title LIKE "%'.$options->keyword.'%" or content LIKE "%'.$options->keyword.'%")' : '';
+		if ($nest_srl) $opts->nest = $nest_srl;
+		if ($options->category_srl) $opts->category = (int)$options->category_srl;
+		if ($options->keyword)
+		{
+			$opts->title = $options->keyword;
+			$opts->content = $options->keyword;
+		}
+		$opts->size = __DEFAULT_ITEM_COUNT__;
+		$opts->page = (isset($options->page) && $options->page > 1) ? $options->page : 1;
+		$opts->order = 'srl';
+		$opts->sort = 'desc';
+		$opts->limit = 10; // TODO: 페이지 번호에 맞게 조정
+		$opts->field = 'srl';
 
-		// get total article count
-		$total = Spawn::count([
-			'table' => Spawn::getTableName('article'),
-			'where' => $where,
-		]);
+		$articles = self::callApi('/articles', $opts);
+		exit;
 
 		// set paginate instance
+		require_once(__PWD__.'/core/Paginate.class.php');
 		$paginate = new Paginate($total, $options->page, $params, $options->size, $options->pageSize);
 
 		// set limit

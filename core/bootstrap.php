@@ -1,9 +1,5 @@
 <?php
-use core\Spawn, core\Goose, core\Util, core\Module, core\Blade;
 if(!defined("__GOOSE__")){exit();}
-
-
-/** @var Goose $goose */
 
 
 // print debug
@@ -11,7 +7,6 @@ if (is_bool(DEBUG) && DEBUG)
 {
 	@error_reporting(E_ALL ^ E_NOTICE);
 	@ini_set("display_errors", 1);
-	@define(__StartTime__, array_sum(explode(' ', microtime())));
 }
 else
 {
@@ -25,49 +20,51 @@ define('__IS_LOCAL__', (preg_match("/(192.168)/", $_SERVER['REMOTE_ADDR']) || ($
 
 
 // load program files
-require_once(__GOOSE_LIB__);
 require_once('func.php');
+require_once (__PWD__.'/vendor/Router/AltoRouter.php');
+require_once (__PWD__.'/vendor/BladeOne/BladeOne.php');
+Use eftec\bladeone;
 
 
-// check values
-if (!defined('__APP_SRL__'))
-{
-	$goose->error(101, 'Not found \'__APP_SRL__\'', __ROOT__);
-}
+// set rest api context
+$opts = [
+	'http' => [
+		'method' => 'GET',
+		'header' => 'Authorization: '.__TOKEN_PUBLIC__
+	]
+];
+$api_context = stream_context_create($opts);
 
 
 // init router
-$router = Module::load('Router');
-$router->route->setBasePath(__ROOT__);
+$router = new AltoRouter();
+$router->setBasePath(__ROOT__);
 require_once('map.php');
-$router->match = $router->route->match();
-
 
 // set preferences
-$pref = Spawn::item([
-	'table' => Spawn::getTableName('JSON'),
-	'field' => 'json',
-	'where' => 'srl=' . __JSON_SRL_PREFERENCE__,
-	'jsonField' => ['json']
-]);
-$pref = (object)$pref['json'];
+$pref = file_get_contents(__GOOSE_ROOT__.'/json/'.__JSON_SRL_PREFERENCE__, false, $api_context);
+$pref = json_decode($pref);
+if (!($pref->success && $pref->data))
+{
+	echo 'not found pref data';
+	exit;
+}
 
 
 // set blade
-$blade = new Blade(__PWD__.'view', __PWD__.'cache');
-
+$blade = new bladeone\BladeOne(__PWD__.'view', __PWD__.'cache');
 
 // set app preference
 $appPref = (object)[
-	'isUserIcons' => is_dir(__GOOSE_PWD__ . 'vendor/icons--user/')
+	'isUserIcons' => is_dir(__PWD__ . 'assets/icons/')
 ];
 
-
 // action route
-if ($router->match)
+if ($router->match())
 {
-	$_target = $router->match['target'];
-	$_params = (object)$router->match['params'];
+	$match = $router->match();
+	$_target = $match['target'];
+	$_params = (object)$match['params'];
 	$_method = $_SERVER['REQUEST_METHOD'];
 
 	// init api
@@ -77,7 +74,7 @@ if ($router->match)
 	if ($_method === 'POST')
 	{
 		require_once('ajax.php');
-		Goose::end();
+		exit;
 	}
 	else if ($_method === 'GET')
 	{
@@ -94,6 +91,7 @@ if ($router->match)
 					'root' => __ROOT__,
 					'size' => __DEFAULT_ITEM_COUNT__
 				]);
+				exit;
 
 				// check error
 				if ($repo->state == 'error')
@@ -221,12 +219,12 @@ if ($router->match)
 				break;
 
 			default:
-				Goose::error(404, null, __URL__);
+				echo '404';
 				break;
 		}
 	}
 }
 else
 {
-	Goose::error(404, null, __URL__, getParam('mode') !== 'popup');
+	echo '404';
 }
