@@ -10,7 +10,7 @@ if (is_bool(DEBUG) && DEBUG)
 }
 else
 {
-	@error_reporting(0);
+	@error_reporting(E_ALL ^ E_NOTICE);
 	@ini_set("display_errors", 0);
 }
 
@@ -20,22 +20,12 @@ define('__IS_LOCAL__', (preg_match("/(192.168)/", $_SERVER['REMOTE_ADDR']) || ($
 
 
 // load program files
-require_once(__PWD__.'/core/func.php');
 require_once(__PWD__.'/vendor/Router/AltoRouter.php');
 require_once(__PWD__.'/vendor/BladeOne/BladeOne.php');
 require_once(__PWD__.'/core/Util.class.php');
+require_once(__PWD__.'/core/func.php');
 
 Use eftec\bladeone;
-
-
-// set rest api context
-$opts = [
-	'http' => [
-		'method' => 'GET',
-		'header' => 'Authorization: '.__TOKEN_PUBLIC__
-	]
-];
-$api_context = stream_context_create($opts);
 
 
 // init router
@@ -44,17 +34,17 @@ $router->setBasePath(__ROOT__);
 require_once('map.php');
 
 // set preferences
-$pref = file_get_contents(__GOOSE_ROOT__.'/json/'.__JSON_SRL_PREFERENCE__, false, $api_context);
-$pref = json_decode($pref);
-if (!($pref->success && $pref->data))
+$pref = externalApi('/json/'.__JSON_SRL_PREFERENCE__);
+if (!$pref)
 {
 	echo 'not found pref data';
 	exit;
 }
 else
 {
-	$pref = $pref->data->json;
+	$pref = $pref->json;
 }
+
 // set app preference
 $appPref = (object)[
 	'isUserIcons' => is_dir(__PWD__ . 'assets/icons/')
@@ -102,6 +92,7 @@ if ($router->match())
 					echo 'error data';
 					exit;
 				}
+
 
 				// render
 				echo $blade->run('index', [
@@ -215,16 +206,15 @@ if ($router->match())
 
 			case 'ajax':
 				require_once('ajax.php');
-				Goose::end();
 				break;
 
 			case 'rss':
 				require_once('rss.php');
-				exit;
+				break;
 
 			default:
 				echo '404';
-				exit;
+				break;
 		}
 	}
 }

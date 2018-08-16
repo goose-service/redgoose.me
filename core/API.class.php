@@ -34,7 +34,7 @@ class API {
 	 */
 	private function updateHit($article_srl)
 	{
-		$result = self::callApi('/articles/'.$article_srl.'/update', (object)[ 'type' => 'hit' ]);
+		$result = externalApi('/articles/'.$article_srl.'/update', (object)[ 'type' => 'hit' ]);
 		if ($result->hit)
 		{
 			// writing cookie
@@ -50,38 +50,17 @@ class API {
 	/**
 	 * thumbnail size to class name
 	 *
-	 * @param array $size
+	 * @param string $size
 	 * @return string
 	 */
 	private function thumbnailSizeToClassName($size)
 	{
-		// TODO: 작업예정
-//		$largeSize = explode(',', __THUMBNAIL_LARGE_SIZE__);
-//		$sizeName = (in_array($size['width'], $largeSize) ? ' wx2' : '') . (in_array($size['height'], $largeSize) ? ' hx2' : '');
-		return trim('');
-	}
-
-	/**
-	 * call api
-	 *
-	 * @param string $url
-	 * @param object $params
-	 * @return object|array
-	 */
-	private function callApi($url, $params=null)
-	{
-		try
-		{
-			$params = $params ? '?'.http_build_query($params) : '';
-			$res = file_get_contents(__GOOSE_ROOT__.$url.$params, false, $this->api);
-			$res = json_decode($res);
-			if (!$res->success) throw new Exception($res->message);
-			return $res->data;
-		}
-		catch(Exception $e)
-		{
-			return null;
-		}
+		if (!(isset($size) && $size)) return '';
+		$sizeName = '';
+		$arr = explode('*', $size);
+		if ((int)$arr[0] === 2) $sizeName .= ' wx2';
+		if ((int)$arr[1] === 2) $sizeName .= ' hx2';
+		return trim($sizeName);
 	}
 
 	/**
@@ -109,7 +88,7 @@ class API {
 			// get nest
 			if ($options->nest_id)
 			{
-				$result->nest = self::callApi('/nests/id/'.$options->nest_id);
+				$result->nest = externalApi('/nests/id/'.$options->nest_id);
 
 				if (!isset($result->nest->srl))
 				{
@@ -119,7 +98,7 @@ class API {
 				// get categories
 				if (!!$result->nest->json->useCategory && $this->searchKeyInArray($print, 'category'))
 				{
-					$result->categories = self::callApi('/categories', (object)[
+					$result->categories = externalApi('/categories', (object)[
 						'nest' => (int)$result->nest->srl,
 						'field' => 'srl,name',
 						'order' => 'turn',
@@ -130,7 +109,7 @@ class API {
 				}
 
 				// correction categories
-				if (count($result->categories))
+				if ($result->categories && count($result->categories))
 				{
 					$check_active = false;
 					foreach($result->categories as $k=>$v)
@@ -156,7 +135,7 @@ class API {
 			$nest_srl = ($options->nest_id) ? ((isset($result->nest->srl)) ? $result->nest->srl : -1) : null;
 			if ($nest_srl) $opts->nest = $nest_srl;
 			if ($options->category_srl) $opts->category = (int)$options->category_srl;
-			$opts->field = 'srl,title,regdate,json';
+			$opts->field = $options->field ? $options->field : 'srl,title,regdate,json';
 			if ($options->keyword)
 			{
 				$opts->title = $options->keyword;
@@ -169,7 +148,8 @@ class API {
 			$opts->ext_field = 'next_page';
 
 			// get articles
-			$result->articles = self::callApi('/articles', $opts);
+			$result->articles = externalApi('/articles', $opts);
+
 
 			// adjustment articles
 			if ($result->articles && $result->articles->index && $this->searchKeyInArray($print, 'article'))
@@ -182,10 +162,7 @@ class API {
 						$result->articles->index[$k]->regdate = Util::convertDate($v->regdate);
 					}
 
-					if (isset($v->json->thumbnail->sizeSet))
-					{
-						$result->articles->index[$k]->json->thumbnail->size = $this->thumbnailSizeToClassName($v->json->thumbnail->sizeSet);
-					}
+					$result->articles->index[$k]->size_className = $this->thumbnailSizeToClassName($v->json->thumbnail ? $v->json->thumbnail->sizeSet : null);
 				}
 			}
 
@@ -231,7 +208,7 @@ class API {
 		}
 
 		// get article data
-		$article = self::callApi('/articles/'.$options->article_srl, (object)[
+		$article = externalApi('/articles/'.$options->article_srl, (object)[
 			'field' => $options->field ? $options->field : ''
 		]);
 		if (!$article)
@@ -252,12 +229,12 @@ class API {
 		$article->content = $parseDown->text($article->content);
 
 		// get nest data
-		$nest = self::callApi('/nests/'.(int)$article->nest_srl, (object)[
+		$nest = externalApi('/nests/'.(int)$article->nest_srl, (object)[
 			'field' => 'srl,name,id,json'
 		]);
 
 		// get category
-		$category = !!$article->category_srl ? self::callApi('/categories/'.$article->category_srl, (object)[
+		$category = !!$article->category_srl ? externalApi('/categories/'.$article->category_srl, (object)[
 			'field' => 'name',
 		]) : null;
 
@@ -291,7 +268,7 @@ class API {
 			];
 		}
 
-		$result = self::callApi(
+		$result = externalApi(
 			'/articles/'.$options->article_srl.'/update',
 			(object)[ 'type' => 'star' ]
 		);

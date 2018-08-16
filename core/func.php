@@ -1,5 +1,4 @@
 <?php
-use core\Util;
 if(!defined("__GOOSE__")){exit();}
 
 
@@ -120,6 +119,37 @@ function getParam($key)
 		return $_GET[$key];
 	}
 	else
+	{
+		return null;
+	}
+}
+
+
+function externalApi($url, $params=null, $method='get')
+{
+	try
+	{
+		$params = $params ? '?'.http_build_query($params) : '';
+
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, __GOOSE_ROOT__.$url.$params);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($ch, CURLOPT_POST, ($method === 'post'));
+		curl_setopt($ch, CURLOPT_HTTPHEADER, ['Authorization: ' . __TOKEN_PUBLIC__]);
+		$response = curl_exec($ch);
+		$http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+		curl_close($ch);
+
+		if (!$response)
+		{
+			throw new Exception('no response');
+		}
+
+		$response = json_decode($response);
+		if (!$response->success) throw new Exception($response->message);
+		return $response->data;
+	}
+	catch(Exception $e)
 	{
 		return null;
 	}
