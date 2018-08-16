@@ -79,7 +79,7 @@
 var redgoose = new Redgoose({
 	root: '{{ __ROOT__ }}',
 	gooseRoot: '{{ __GOOSE_ROOT__ }}',
-	title: '{{ $pref->meta['title'] }}',
+	title: '{{ $pref->meta->title }}',
 	dev: !!'{{ DEBUG }}'
 });
 redgoose.header.init();

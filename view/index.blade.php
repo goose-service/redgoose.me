@@ -13,19 +13,19 @@ if(!defined("__GOOSE__")){exit();}
 	<div class="index__wrap">
 		@if($repo->nest)
 		<header class="index__header">
-			<h1>{{ $repo->nest['name'] }}</h1>
-			@if($repo->category)
+			<h1>{{ $repo->nest->name }}</h1>
+			@if($repo->categories)
 			<nav class="categories index__categories">
 				<button type="button" title="toggle category index" class="categories__toggle">
 					<img src="{{ __ROOT__ }}/assets/img/ico-arrow-down.svg" alt="">
 					<span>Category</span>
 				</button>
-				@if(count($repo->category))
+				@if(count($repo->categories))
 				<ul class="categories__index">
-					@foreach($repo->category as $item)
+					@foreach($repo->categories as $item)
 					<li>
-						<a href="{{ __ROOT__ }}/nest/{{ $_nest ? $_nest.'/' : '' }}{{ $item['srl'] ? $item['srl'].'/' : '' }}"{!! $item['active'] ? ' class="active"' : '' !!}>
-							{{ $item['name'] }}({{ $item['count'] }})
+						<a href="{{ __ROOT__ }}/nest/{{ $_nest ? $_nest.'/' : '' }}{{ $item->srl ? $item->srl.'/' : '' }}"{!! $item->active ? ' class="active"' : '' !!}>
+							{{ $item->name }}({{ $item->count_article }})
 						</a>
 					</li>
 					@endforeach
@@ -37,16 +37,16 @@ if(!defined("__GOOSE__")){exit();}
 		@endif
 
 		<div class="index__articlesWrap">
-			@if (count($repo->articles))
+			@if ($repo->articles && count($repo->articles))
 			<div class="articles index__articles" id="articles">
 				<div class="grid-sizer"></div>
 				@foreach($repo->articles as $k=>$item)
 
 				@set( $page = $_GET['page'] ? $_GET['page'] : 1 )
-				<div class="grid-item{{ $item['size_className'] ? ' '.$item['size_className'] : '' }}"{{ $classPage = $k === 0 ? ' data-page='.$page : '' }}>
-					<a href="{{__ROOT__}}/article/{{$_nest ? $_nest.'/' : ''}}{{$item['srl']}}/" data-srl="{{$item['srl']}}" title="{{$item['title']}}">
-						<figure style="background-image: url('{{ __GOOSE_ROOT__ }}/{{ $item['json']['thumbnail']['url'] }}')">
-							{{ $item['title'] }}
+				<div class="grid-item{{ $item->size_className ? ' '.$item->size_className : '' }}"{{ $classPage = $k === 0 ? ' data-page='.$page : '' }}>
+					<a href="{{__ROOT__}}/article/{{$_nest ? $_nest.'/' : ''}}{{$item->srl}}/" data-srl="{{$item->srl}}" title="{{$item->title}}">
+						<figure style="background-image: url('{{ __GOOSE_ROOT__ }}/{{ $item->json->thumbnail->path }}')">
+							{{ $item->title }}
 						</figure>
 					</a>
 				</div>
@@ -87,7 +87,7 @@ if(!defined("__GOOSE__")){exit();}
 var redgoose = new Redgoose({
 	root: '{{ __ROOT__ }}',
 	gooseRoot: '{{ __GOOSE_ROOT__ }}',
-	title: '{{ $pref->meta['title'] }}',
+	title: '{{ $pref->meta->title }}',
 	dev: !!'{{ DEBUG }}',
 });
 redgoose.header.init();
@@ -101,7 +101,7 @@ redgoose.index.init({
 @endsection
 
 @section('meta')
-<meta property="og:description" content="{{ $pref->meta['description'] }}">
+<meta property="og:description" content="{{ $pref->meta->description }}">
 @if ($appPref->isUserIcons)
 <meta property="og:image" content="{{ __GOOSE_ROOT__ }}/vendor/icons--user/redgoose_512x512x32.png">
 @endif

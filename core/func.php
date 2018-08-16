@@ -77,28 +77,29 @@ function contentToShortText($con, $len=120)
  * @param string $name
  * @return string
  */
-function getGnbActive($nav=[], $name)
+function getGnbActive($nav, $name)
 {
+	if (!($nav && count($nav))) return null;
+
 	foreach($nav as $k=>$v)
 	{
-		if ($v['child'])
+		if ($v->child)
 		{
-			if ($v['id'] === $name or $v['name'] === $name)
+			if ($v->id === $name or $v->name === $name)
 			{
-				if ($v['id']) return $v['id'];
-				else if ($v['name']) return $v['name'];
+				if ($v->id) return $v->id;
+				else if ($v->name) return $v->name;
 			}
-			foreach($v['child'] as $kk=>$vv)
+			foreach($v->child as $kk=>$vv)
 			{
-				if ($vv['id'] === $name or $vv['name'] === $name)
+				if ($vv->id === $name or $vv->name === $name)
 				{
-					if ($v['id']) return $v['id'];
-					else if ($v['name']) return $v['name'];
+					if ($v->id) return $v->id;
+					else if ($v->name) return $v->name;
 				}
 			}
 		}
 	}
-	return null;
 }
 
 

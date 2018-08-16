@@ -12,8 +12,8 @@ if(!defined("__GOOSE__")){exit();}
 	<header class="layout-header">
 		<div class="layout-header__body">
 			<h1 class="logo layout-header__logo">
-				<a href="{{ __ROOT__ }}/" title="{{ $pref->meta['title'] }}">
-					<img src="{{ __ROOT__ }}/assets/img/img-logo.svg" alt="{{ $pref->meta['title'] }}" width="100"/>
+				<a href="{{ __ROOT__ }}/" title="{{ $pref->meta->title }}">
+					<img src="{{ __ROOT__ }}/assets/img/img-logo.svg" alt="{{ $pref->meta->title }}" width="100"/>
 				</a>
 			</h1>
 			<nav class="layout-header__side layout-header__side-left">
@@ -25,16 +25,16 @@ if(!defined("__GOOSE__")){exit();}
 		<nav class="gnb layout-header__gnb">
 			<ul class="gnb__dep-1">
 				@foreach($pref->nav as $item)
-				<li{!! ($_page == $item['name']) ? ' class="active"' : '' !!}>
-					<a href="{{ $item['ext'] ? $item['url'] : __ROOT__.$item['url'] }}" target="{{ $item['target'] }}">
-						{{ $item['name'] }}
+				<li{!! ($_page == $item->name) ? ' class="active"' : '' !!}>
+					<a href="{{ $item->ext ? $item->url : __ROOT__.$item->url }}" target="{{ $item->target }}">
+						{{ $item->name }}
 					</a>
-					@if(count($item['child']))
+					@if($item->child && count($item->child))
 					<div class="gnb__children">
 						<ul class="gnb__dep-2">
-							@foreach($item['child'] as $item2)
-							<li{!! ($_nest && ($_nest == $item2['name'] || $_nest == $item2['id'])) ? ' class="active"' : '' !!}>
-								<a href="{{ $item2['ext'] ? $item2['url'] : __ROOT__.$item2['url'] }}">{{ $item2['name'] }}</a>
+							@foreach($item->child as $item2)
+							<li{!! ($_nest && ($_nest == $item2->name || $_nest == $item2->id)) ? ' class="active"' : '' !!}>
+								<a href="{{ $item2->ext ? $item2->url : __ROOT__.$item2->url }}">{{ $item2->name }}</a>
 							</li>
 							@endforeach
 						</ul>

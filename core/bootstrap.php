@@ -20,9 +20,11 @@ define('__IS_LOCAL__', (preg_match("/(192.168)/", $_SERVER['REMOTE_ADDR']) || ($
 
 
 // load program files
-require_once('func.php');
-require_once (__PWD__.'/vendor/Router/AltoRouter.php');
-require_once (__PWD__.'/vendor/BladeOne/BladeOne.php');
+require_once(__PWD__.'/core/func.php');
+require_once(__PWD__.'/vendor/Router/AltoRouter.php');
+require_once(__PWD__.'/vendor/BladeOne/BladeOne.php');
+require_once(__PWD__.'/core/Util.class.php');
+
 Use eftec\bladeone;
 
 
@@ -49,15 +51,17 @@ if (!($pref->success && $pref->data))
 	echo 'not found pref data';
 	exit;
 }
-
-
-// set blade
-$blade = new bladeone\BladeOne(__PWD__.'view', __PWD__.'cache');
-
+else
+{
+	$pref = $pref->data->json;
+}
 // set app preference
 $appPref = (object)[
 	'isUserIcons' => is_dir(__PWD__ . 'assets/icons/')
 ];
+
+// set blade
+$blade = new bladeone\BladeOne(__PWD__.'view', __PWD__.'cache');
 
 // action route
 if ($router->match())
@@ -91,19 +95,19 @@ if ($router->match())
 					'root' => __ROOT__,
 					'size' => __DEFAULT_ITEM_COUNT__
 				]);
-				exit;
 
 				// check error
 				if ($repo->state == 'error')
 				{
-					Goose::error(101, $repo->message, __URL__);
+					echo 'error data';
+					exit;
 				}
 
 				// render
-				$blade->render('index', [
+				echo $blade->run('index', [
 					'pref' => $pref,
 					'appPref' => $appPref,
-					'title' => $pref->meta['title'],
+					'title' => $pref->meta->title,
 					'repo' => $repo
 				]);
 				break;
@@ -127,16 +131,17 @@ if ($router->match())
 				// check error
 				if ($repo->state == 'error')
 				{
-					Goose::error(101, $repo->message, __URL__);
+					echo '500 error';
+					exit;
 				}
 
 				// set title
-				$title = $pref->meta['title'];
-				$title .= ($_nest) ? ' / ' . $repo->nest['name'] : '';
+				$title = $pref->meta->title;
+				$title .= ($_nest) ? ' / ' . $repo->nest->name : '';
 				$title .= ($repo->category_name) ? ' / ' . $repo->category_name : '';
 
 				// render
-				$blade->render('index', [
+				echo $blade->run('index', [
 					'pref' => $pref,
 					'appPref' => $appPref,
 					'title' => $title,
@@ -176,10 +181,10 @@ if ($router->match())
 				}
 
 				// set title
-				$title = $pref->meta['title'] . (($repo->article->title) ? ' / ' . $repo->article->title : '');
+				$title = $pref->meta->title . (($repo->article->title) ? ' / ' . $repo->article->title : '');
 
 				// render
-				$blade->render($renderFile, [
+				echo $blade->run($renderFile, [
 					'pref' => $pref,
 					'appPref' => $appPref,
 					'title' => $title,
@@ -197,14 +202,14 @@ if ($router->match())
 				// check page file
 				if (!file_exists(__PWD__.'view/pages/'.$_page.'.blade.php'))
 				{
-					Goose::error(404, null, __URL__);
+					echo '404 error';
+					exit;
 				}
-
-				$blade->render('pages.'.$_page, [
+				echo $blade->run('pages.'.$_page, [
 					'_page' => $_page,
 					'pref' => $pref,
 					'appPref' => $appPref,
-					'title' => $pref->meta['title']
+					'title' => $pref->title
 				]);
 				break;
 
@@ -215,16 +220,16 @@ if ($router->match())
 
 			case 'rss':
 				require_once('rss.php');
-				Goose::end();
-				break;
+				exit;
 
 			default:
 				echo '404';
-				break;
+				exit;
 		}
 	}
 }
 else
 {
 	echo '404';
+	exit;
 }

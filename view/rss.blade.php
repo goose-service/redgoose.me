@@ -2,20 +2,20 @@
 
 <rss version="2.0">
 	<channel>
-		<title>{{ $pref->meta['title'] }}</title>
-		<description>{{ $pref->meta['description'] }}</description>
-		<link>{{ $pref->meta['domain'] }}</link>
+		<title>{{ $pref->meta->title }}</title>
+		<description>{{ $pref->meta->description }}</description>
+		<link>{{ $pref->meta->domain }}</link>
 		<language>ko-kr</language>
 		<copyright>{{ $pref->copyright }}</copyright>
 		@foreach($articles as $article)
 			<item>
-				<title>{{ $article['title'] }}</title>
-				<link>{{ __URL__ }}/article/{{ $article['srl'] }}/</link>
-				<guid>{{ __URL__ }}/article/{{ $article['srl'] }}/</guid>
+				<title>{{ $article->title }}</title>
+				<link>{{ __URL__ }}/article/{{ $article->srl }}/</link>
+				<guid>{{ __URL__ }}/article/{{ $article->srl }}/</guid>
 				<description>
-					<![CDATA[{!! $article['content'] !!}]]>
+					<![CDATA[{!! $article->content !!}]]>
 				</description>
-				<pubDate>{{ $article['date'] }}</pubDate>
+				<pubDate>{{ $article->date }}</pubDate>
 			</item>
 		@endforeach
 	</channel>
