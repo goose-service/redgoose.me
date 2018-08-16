@@ -166,8 +166,7 @@ class API {
 			$opts->page = (isset($options->page) && $options->page > 1) ? $options->page : 1;
 			$opts->order = 'srl';
 			$opts->sort = 'desc';
-			$start = ($opts->page - 1) * $options->size;
-			$opts->limit = $start.','.($start + $options->size);
+			$opts->ext_field = 'next_page';
 
 			// get articles
 			$result->articles = self::callApi('/articles', $opts);
@@ -192,20 +191,9 @@ class API {
 
 			// set more articles
 			// 다음페이지에 글이 존재하는지 검사하고 있으면 다음 페이지 번호를 저장한다.
-			// TODO: 작업예정
 			if ($this->searchKeyInArray($print, 'nav_more'))
 			{
-//				$nextPaginate = new Paginate($total, $opts->page+1, $params, $options->size, $options->pageSize);
-//				$limit = $nextPaginate->offset.','.$nextPaginate->size;
-//				$nextArticles = Spawn::items([
-//					'table' => Spawn::getTableName('article'),
-//					'field' => 'srl',
-//					'where' => $where,
-//					'limit' => $limit,
-//					'sort' => 'desc',
-//					'order' => 'srl',
-//				]);
-//				$result->nextpage = (count($nextArticles)) ? $opts->page + 1 : null;
+				$result->nextpage = $result->articles->nextPage;
 			}
 
 			// set result data

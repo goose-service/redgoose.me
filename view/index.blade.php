@@ -42,7 +42,9 @@ if(!defined("__GOOSE__")){exit();}
 				<div class="grid-sizer"></div>
 				@foreach($repo->articles as $k=>$item)
 
-				@set( $page = $_GET['page'] ? $_GET['page'] : 1 )
+				<?php
+				$page = isset($_GET['page']) ? $_GET['page'] : 1;
+				?>
 				<div class="grid-item{{ $item->size_className ? ' '.$item->size_className : '' }}"{{ $classPage = $k === 0 ? ' data-page='.$page : '' }}>
 					<a href="{{__ROOT__}}/article/{{$_nest ? $_nest.'/' : ''}}{{$item->srl}}/" data-srl="{{$item->srl}}" title="{{$item->title}}">
 						<figure style="background-image: url('{{ __GOOSE_ROOT__ }}/{{ $item->json->thumbnail->path }}')">

@@ -135,7 +135,7 @@ export default function Index(parent)
 		// make article template
 		let appendElements = res.articles.map((item, key) => {
 			let url = `${parent.options.root}/article/${self.options.nest || ''}${item.srl}`;
-			let image = `${parent.options.gooseRoot}/${item.json.thumbnail.url}`;
+			let image = `${parent.options.gooseRoot}/${item.json.thumbnail.path}`;
 			let className = `grid-item grid-item__hidden ${item.size_className}`;
 			return `<div class="${className}">` +
 				`<a href="${url}" data-srl="${item.srl}" title="${item.title}">` +
