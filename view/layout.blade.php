@@ -34,7 +34,9 @@ if(!defined("__GOOSE__")){exit();}
 						<ul class="gnb__dep-2">
 							@foreach($item->child as $item2)
 							<li{!! ($_nest && ($_nest == $item2->name || $_nest == $item2->id)) ? ' class="active"' : '' !!}>
-								<a href="{{ $item2->ext ? $item2->url : __ROOT__.$item2->url }}">{{ $item2->name }}</a>
+								<a href="{{isset($item2->ext) ? $item2->url : __ROOT__.$item2->url}}">
+									{{ $item2->name }}
+								</a>
 							</li>
 							@endforeach
 						</ul>
