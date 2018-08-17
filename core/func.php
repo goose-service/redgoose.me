@@ -125,6 +125,14 @@ function getParam($key)
 }
 
 
+/**
+ * call external api
+ *
+ * @param string $url
+ * @param object $params
+ * @param string $method
+ * @return object
+ */
 function externalApi($url, $params=null, $method='get')
 {
 	try
