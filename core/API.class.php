@@ -4,12 +4,10 @@ if(!defined("__GOOSE__")){exit();}
 
 class API {
 
-	public $ajax, $api;
+	public $ajax;
 
 	public function __construct()
 	{
-		global $api_context;
-		$this->api = $api_context;
 		$this->ajax = isset($_SERVER['HTTP_X_REQUESTED_WITH']) || (isset($_SERVER['HTTP_ORIGIN']) && $_SERVER['REQUEST_METHOD'] == 'GET');
 	}
 
@@ -28,7 +26,6 @@ class API {
 	/**
 	 * Update hit
 	 *
-	 * @param int $hit
 	 * @param int $article_srl
 	 * @return bool
 	 */
@@ -89,7 +86,6 @@ class API {
 			if ($options->nest_id)
 			{
 				$result->nest = externalApi('/nests/id/'.$options->nest_id);
-
 				if (!isset($result->nest->srl))
 				{
 					throw new Exception('not found nest data');
@@ -105,12 +101,13 @@ class API {
 						'sort' => 'asc',
 						'ext_field' => 'count_article,item_all'
 					]);
-					$result->categories = $result->categories->index;
 				}
 
 				// correction categories
-				if ($result->categories && count($result->categories))
+				if ($result->categories && $result->categories->index && count($result->categories->index))
 				{
+					$result->categories = $result->categories->index;
+
 					$check_active = false;
 					foreach($result->categories as $k=>$v)
 					{
@@ -129,7 +126,7 @@ class API {
 				}
 			}
 
-			// get articles
+			// set params for get articles
 			$opts = (object)[];
 			$opts->app = $options->app_srl;
 			$nest_srl = ($options->nest_id) ? ((isset($result->nest->srl)) ? $result->nest->srl : -1) : null;
@@ -147,9 +144,14 @@ class API {
 			$opts->sort = 'desc';
 			$opts->ext_field = 'next_page';
 
-			// get articles
+			// call api for get articles
 			$result->articles = externalApi('/articles', $opts);
 
+			// check article
+			if (!$result->articles)
+			{
+				throw new Exception('Not found article');
+			}
 
 			// adjustment articles
 			if ($result->articles && $result->articles->index && $this->searchKeyInArray($print, 'article'))

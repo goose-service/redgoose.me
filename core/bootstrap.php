@@ -18,11 +18,6 @@ require_once(__PWD__.'/core/func.php');
 Use eftec\bladeone;
 
 
-// init router
-$router = new AltoRouter();
-$router->setBasePath(__ROOT__);
-require_once('map.php');
-
 // set preferences
 $pref = externalApi('/json/'.__JSON_SRL_PREFERENCE__);
 if (!$pref)
@@ -43,7 +38,11 @@ $appPref = (object)[
 // set blade
 $blade = new bladeone\BladeOne(__PWD__.'view', __PWD__.'cache');
 
-// action route
+// router
+$router = new AltoRouter();
+$router->setBasePath(__ROOT__);
+require_once('map.php');
+
 if ($router->match())
 {
 	$match = $router->match();
