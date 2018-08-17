@@ -1,18 +1,8 @@
 <?php
 if(!defined("__GOOSE__")){exit();}
 
-
-// print debug
-if (is_bool(DEBUG) && DEBUG)
-{
-	@error_reporting(E_ALL ^ E_NOTICE);
-	@ini_set("display_errors", 1);
-}
-else
-{
-	@error_reporting(E_ALL ^ E_NOTICE);
-	@ini_set("display_errors", 0);
-}
+@error_reporting(E_ALL ^ E_NOTICE);
+@ini_set("display_errors", (is_bool(DEBUG) && DEBUG) ? 1 : 0);
 
 
 // check localhost
