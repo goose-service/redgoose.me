@@ -1,6 +1,7 @@
 .idea/
 cache/
 node_modules/
+.AppleDouble/
 
 .DS_Store
 *--user.*
