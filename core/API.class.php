@@ -88,7 +88,7 @@ class API {
 				$result->nest = externalApi('/nests/id/'.$options->nest_id);
 				if (!isset($result->nest->srl))
 				{
-					throw new Exception('not found nest data');
+					throw new Exception('not found nest data', 500);
 				}
 
 				// get categories
@@ -147,12 +147,6 @@ class API {
 			// call api for get articles
 			$result->articles = externalApi('/articles', $opts);
 
-			// check article
-			if (!$result->articles)
-			{
-				throw new Exception('Not found article');
-			}
-
 			// adjustment articles
 			if ($result->articles && $result->articles->index && $this->searchKeyInArray($print, 'article'))
 			{
@@ -172,7 +166,7 @@ class API {
 			// 다음페이지에 글이 존재하는지 검사하고 있으면 다음 페이지 번호를 저장한다.
 			if ($this->searchKeyInArray($print, 'nav_more'))
 			{
-				$result->nextpage = $result->articles->nextPage;
+				$result->nextpage = $result->articles ? $result->articles->nextPage : null;
 			}
 
 			// set result data
@@ -187,6 +181,7 @@ class API {
 		{
 			return (object)[
 				'state' => 'error',
+				'code' => $e->getCode(),
 				'message' => $e->getMessage(),
 			];
 		}

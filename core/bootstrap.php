@@ -17,12 +17,19 @@ require_once(__PWD__.'/core/func.php');
 
 Use eftec\bladeone;
 
+// set blade
+$blade = new bladeone\BladeOne(__PWD__.'view', __PWD__.'cache');
 
 // set preferences
 $pref = externalApi('/json/'.__JSON_SRL_PREFERENCE__);
 if (!$pref)
 {
-	echo 'not found pref data';
+	echo $blade->run('error', [
+		'error' => true,
+		'code' => 500,
+		'message' => DEBUG ? 'no pref data' : 'Service error',
+		'title' => 'redgoose',
+	]);
 	exit;
 }
 else
@@ -34,9 +41,6 @@ else
 $appPref = (object)[
 	'isUserIcons' => is_dir(__PWD__ . 'assets/icons/')
 ];
-
-// set blade
-$blade = new bladeone\BladeOne(__PWD__.'view', __PWD__.'cache');
 
 // router
 $router = new AltoRouter();
@@ -78,10 +82,14 @@ if ($router->match())
 				// check error
 				if ($repo->state == 'error')
 				{
-					echo 'error data';
+					echo $blade->run('error', [
+						'error' => true,
+						'code' => 500,
+						'message' => DEBUG ? 'Error index data' : 'Service error',
+						'title' => $pref->meta->title,
+					]);
 					exit;
 				}
-
 
 				// render
 				echo $blade->run('index', [
@@ -111,7 +119,12 @@ if ($router->match())
 				// check error
 				if ($repo->state == 'error')
 				{
-					echo '500 error';
+					echo $blade->run('error', [
+						'error' => true,
+						'code' => 500,
+						'message' => DEBUG ? 'Error index data' : 'Service error',
+						'title' => $pref->meta->title,
+					]);
 					exit;
 				}
 
@@ -182,14 +195,19 @@ if ($router->match())
 				// check page file
 				if (!file_exists(__PWD__.'view/pages/'.$_page.'.blade.php'))
 				{
-					echo '404 error';
+					echo $blade->run('error', [
+						'error' => true,
+						'code' => 404,
+						'message' => 'Not found page',
+						'title' => $pref->meta->title,
+					]);
 					exit;
 				}
 				echo $blade->run('pages.'.$_page, [
 					'_page' => $_page,
 					'pref' => $pref,
 					'appPref' => $appPref,
-					'title' => $pref->title
+					'title' => $pref->meta->title
 				]);
 				break;
 
@@ -202,13 +220,23 @@ if ($router->match())
 				break;
 
 			default:
-				echo '404';
-				break;
+				echo $blade->run('error', [
+					'error' => true,
+					'code' => 404,
+					'message' => 'Not found page',
+					'title' => $pref->meta->title,
+				]);
+				exit;
 		}
 	}
 }
 else
 {
-	echo '404';
+	echo $blade->run('error', [
+		'error' => true,
+		'code' => 404,
+		'message' => 'Not found page',
+		'title' => $pref->meta->title,
+	]);
 	exit;
 }

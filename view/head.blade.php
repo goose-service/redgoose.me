@@ -8,7 +8,7 @@
 <link rel="canonical" href="http://{{ $_SERVER['HTTP_HOST'] }}{{ $_SERVER['REQUEST_URI'] }}"/>
 @yield('meta')
 <meta property="og:title" content="{{ $title }}"/>
-<meta property="og:site_name" content="{{ $pref->meta->title }}"/>
+<meta property="og:site_name" content="redgoose"/>
 <meta property="og:url" content="http://{{ $_SERVER['HTTP_HOST'] }}{{ $_SERVER['REQUEST_URI'] }}"/>
 <meta property="og:locale" content="ko_KR"/>
 <meta property="fb:app_id" content="1619661748331088"/>
@@ -18,12 +18,10 @@
 <meta name="mobile-web-app-capable" content="yes"/>
 <meta name="apple-mobile-web-app-status-bar-style" content="light"/>
 
-@if ($appPref->isUserIcons)
-<link rel="shortcut icon" href="{{ __ROOT__ }}/assets/icons/favicon.ico"/>
-<link rel="icon" type="image/x-icon" href="{{ __ROOT__ }}/assets/icons/redgoose_256x256x32.png"/>
-<link rel="apple-touch-icon" href="{{ __ROOT__ }}/assets/icons/redgoose_app_256x256x32.png"/>
-<link rel="apple-touch-startup-image" href="{{ __ROOT__ }}/assets/icons/redgoose_app_256x256x32.png"/>
-@endif
+<link rel="shortcut icon" href="{{ __GOOSE_ROOT__ }}/usr/icons/favicon.ico"/>
+<link rel="icon" type="image/x-icon" href="{{ __GOOSE_ROOT__ }}/usr/icons/redgoose_256x256x32.png"/>
+<link rel="apple-touch-icon" href="{{ __GOOSE_ROOT__ }}/usr/icons/redgoose_app_256x256x32.png"/>
+<link rel="apple-touch-startup-image" href="{{ __GOOSE_ROOT__ }}/usr/icons/redgoose_app_256x256x32.png"/>
 
 <link rel="stylesheet" href="{{ __ROOT__ }}/dist/redgoose.css" media="screen"/>
 <link rel="manifest" href="/manifest.json"/>
