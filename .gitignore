@@ -1,8 +1,8 @@
 .idea/
 node_modules/
 .AppleDouble/
+vendor/
 
 .DS_Store
 yarn.lock
 .env
-/vendor/
