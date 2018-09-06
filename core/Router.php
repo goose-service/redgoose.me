@@ -1,32 +1,35 @@
 <?php
 namespace Core;
-use AltoRouter;
+use AltoRouter, Exception;
+
 /**
  * Router
  *
+ * @property AltoRouter route
  * @property array match
- * @property string target
- * @property object params
- * @property string method
  */
 class Router {
+
+	/**
+	 * @throws Exception
+	 */
 	public function __construct()
 	{
-		$router = new AltoRouter();
-		$router->setBasePath(getenv('PATH_RELATIVE'));
-		$router->addMatchTypes([ 'char' => '[0-9A-Za-z_-]++' ]);
-		$router->addRoutes($this->map());
-		$this->match = $router->match();
-
-		if ($this->match)
-		{
-			$this->target = $this->match['target'];
-			$this->params = (object)$this->match['params'];
-			$this->method = $_SERVER['REQUEST_METHOD'];
-		}
+		$this->route = new AltoRouter();
+		$this->route->setBasePath(getenv('PATH_RELATIVE'));
+		$this->route->addMatchTypes([ 'char' => '[0-9A-Za-z_-]++' ]);
+		$this->route->addRoutes($this->map());
+		$this->match = $this->route->match();
 	}
+
+	/**
+	 * route map
+	 *
+	 * @return array
+	 */
 	private function map()
 	{
 		return require __PATH__.'/./core/route.php';
 	}
+
 }

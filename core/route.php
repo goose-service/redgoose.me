@@ -5,11 +5,10 @@ return [
 
 	[ 'GET', '', 'index' ],
 	[ 'GET', '/', 'index' ],
-
-	[ 'GET', '/nest/[char:id]', 'nest' ],
-	[ 'GET', '/nest/[char:id]/', 'nest' ],
-	[ 'GET', '/nest/[char:id]/[i:srl]', 'nest/category' ],
-	[ 'GET', '/nest/[char:id]/[i:srl]/', 'nest/category' ],
+	[ 'GET', '/nest/[char:id]', 'index/nest' ],
+	[ 'GET', '/nest/[char:id]/', 'index/nest' ],
+	[ 'GET', '/nest/[char:id]/[i:srl]', 'index/nest' ],
+	[ 'GET', '/nest/[char:id]/[i:srl]/', 'index/nest' ],
 
 	[ 'GET', '/article/[i:srl]', 'article' ],
 	[ 'GET', '/article/[i:srl]/', 'article' ],
