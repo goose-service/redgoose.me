@@ -3,6 +3,7 @@ node_modules/
 .AppleDouble/
 vendor/
 cache/
+!assets/vendor/
 
 .DS_Store
 yarn.lock
