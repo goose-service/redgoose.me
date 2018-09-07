@@ -81,10 +81,12 @@ try {
 						];
 					}
 				}
-				Util::console($index);
+				//Util::console($index);
 
 				// render page
 				$blade->render('index', (object)[
+					'title' => 'redgoose',
+					'pageTitle' => 'Newstest works',
 					'index' => $index,
 					'nextPage' => $res->data->nextPage,
 				]);

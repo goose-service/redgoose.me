@@ -1,0 +1,37 @@
+@import "./valiables";
+
+// responsive
+@mixin responsive($range)
+{
+	@if $range == tablet
+	{
+		@media (max-width: #{$size-screen-tablet}) { @content; }
+	}
+	@else if $range == mobile
+	{
+		@media (max-width: #{$size-screen-mobile}) { @content; }
+	}
+	@else if $range == min
+	{
+		@media (max-width: #{$size-screen-min - 1}) { @content; }
+	}
+	// 768 ~ 1000
+	@else if $range == desktop
+	{
+		@media (max-width: #{$size-screen-desktop}) { @content; }
+	}
+	@else if $range == desktop-large
+	{
+		@media (min-width: #{$size-screen-desktop-large}) { @content; }
+	}
+	@else if $range == max
+	{
+		@media (min-width: #{$size-screen-max}) { @content; }
+	}
+}
+
+// retina display
+@mixin retina()
+{
+	@media (-webkit-min-device-pixel-ratio: 2) { @content; }
+}

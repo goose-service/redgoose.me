@@ -7,21 +7,29 @@ if(!defined("__GOOSE__")){exit();}
 
 @extends('layout')
 
+@section('meta')
+<title>{{ $title }}</title>
+<meta name="description" content="붉은거위의 개인작업물 라이브러리. Redgoose personal work library"/>
+<meta property="og:title" content="{{ $title }}"/>
+<meta property="og:description" content="붉은거위의 개인작업물 라이브러리. Redgoose personal work library">
+<meta property="og:image" content="{{ __API__ }}/usr/icons/redgoose_512x512x32.png">
+@endsection
+
 @section('contents')
 <article class="index">
 	<header class="indexHeader index__header">
-		<h1>Newstest works</h1>
+		<h1>{{$pageTitle}}</h1>
 	</header>
 
 	<div class="indexWorks index__works">
-		@if (true)
+		@if ($index && count($index))
 			<ul>
 				@foreach($index as $k=>$item)
-					<li>
-						<a href="/articles/{{$item->srl}}" data-srl="{{$item->srl}}}">
-							<img src="{{__API__}}/{{$item->image}}" alt="{{$item->title}}">
-						</a>
-					</li>
+				<li class="{{$item->className}}">
+					<a href="/articles/{{$item->srl}}" data-srl="{{$item->srl}}}">
+						<img src="{{__API__}}/{{$item->image}}" alt="{{$item->title}}">
+					</a>
+				</li>
 				@endforeach
 			</ul>
 		@else
@@ -38,9 +46,10 @@ if(!defined("__GOOSE__")){exit();}
 @endsection
 
 @section('script')
-	<ul>
-		<li>// TODO: load jquery</li>
-		<li>// TODO: load masonry</li>
-		<li>// TODO: load control index script</li>
-	</ul>
+<script src="{{__ROOT__}}/assets/vendor/jquery-3.3.1.min.js"></script>
+<script src="{{__ROOT__}}/assets/vendor/masonry.pkgd.min.js"></script>
+<script src="{{__ROOT__}}/assets/dist/app.js"></script>
+<script>
+window.redgoose = new Redgoose('index');
+</script>
 @endsection

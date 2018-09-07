@@ -4,7 +4,7 @@ if(!defined("__GOOSE__")){exit();}
 ?>
 <html lang="ko">
 <head>
-// TODO: meta
+@include('head')
 </head>
 <body ontouchstart="">
 <main>

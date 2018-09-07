@@ -1,0 +1,83 @@
+@import "../valiables";
+@import "../mixins";
+
+$contents-width: 940px;
+
+// body
+.index {
+	margin: 50px 0 0;
+	&__header {}
+	&__works {}
+}
+
+// header
+.indexHeader {
+	margin: 0 auto 20px;
+	width: $contents-width;
+	h1 {
+		margin: 0;
+		font-size: 30px;
+		font-weight: 600;
+		letter-spacing: -.5px;
+		line-height: 1;
+	}
+}
+
+// works
+.indexWorks {
+	ul {
+		box-sizing: border-box;
+		margin: 0 auto;
+		padding: 0;
+		list-style: none;
+	}
+	li {
+		font-size: 0;
+		background: #eee;
+		&.w2 {}
+		&.h2 {}
+	}
+	a {
+		display: block;
+		height: 100%;
+		background: #eee;
+	}
+	img {
+		display: block;
+	}
+
+	&__more {
+		margin: 40px 0 0;
+		text-align: center;
+		button {
+			display: block;
+			margin: 0 auto;
+			padding: 0;
+			width: 64px;
+			height: 64px;
+			border-radius: 50%;
+			border: none;
+			background: $color-key;
+			font-size: 0;
+			cursor: pointer;
+		}
+		img {
+			display: block;
+			margin: 0 auto;
+			width: 20px;
+			height: 20px;
+		}
+
+		&--processing {
+			img {
+				animation: 2s roty infinite linear;
+			}
+			// rotate
+			@keyframes roty {
+				from { transform: rotate(0deg); }
+				to   { transform: rotate(360deg); }
+			}
+		}
+	}
+}
+

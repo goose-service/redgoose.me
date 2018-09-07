@@ -1,0 +1,161 @@
+@import "../valiables";
+@import "../mixins";
+
+// header
+.header {
+	position: sticky;
+	left: 0;
+	right: 0;
+	top: 0;
+	background: rgba($color-bg,.9);
+	border-bottom: 1px solid #ddd;
+
+	&__wrap {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+
+		nav {
+			flex: 1;
+			ul {
+				margin: 0;
+				padding: 0;
+				list-style: none;
+				display: flex;
+				> li {
+					> a {
+						display: flex;
+						align-items: center;
+						padding: 15px 12px;
+						font-size: .8125rem;
+						text-decoration: none;
+						color: $color-text-base;
+						font-weight: 600;
+						&.nuxt-active {
+							color: $color-key;
+						}
+					}
+					> div {
+						position: relative;
+					}
+					&:hover {
+						> a {
+							color: $color-key;
+						}
+						> div {
+							> ol {
+								opacity: 1;
+								transform: translateY(0);
+								pointer-events: auto;
+							}
+						}
+					}
+				}
+			}
+			ol {
+				position: absolute;
+				left: -8px;
+				top: -4px;
+				margin: 0;
+				padding: 10px 0;
+				list-style: none;
+				background: $color-key;
+				min-width: 150px;
+				border-radius: 2px;
+				opacity: 0;
+				pointer-events: none;
+				transform: translateY(-10px);
+				transition: transform .3s ease-out, opacity .2s ease-out;
+				> li {
+					> a {
+						display: block;
+						padding: 5px 20px;
+						color: #fff;
+						text-decoration: none;
+						font-size: .8125rem;
+						white-space: nowrap;
+						&.nuxt-active,
+						&:hover {
+							text-decoration: underline;
+						}
+					}
+				}
+			}
+			&.left {
+				ul {
+					justify-content: flex-end;
+				}
+			}
+			&.right {}
+		}
+		h1 {
+			margin: 0;
+			a {
+				position: relative;
+				z-index: 2;
+				display: block;
+				padding: 0 20px;
+			}
+			img {
+				display: block;
+				margin: 0 0 -30px;
+				width: 80px;
+			}
+		}
+	}
+
+	@include responsive(mobile) {
+		&__wrap {
+			justify-content: flex-start;
+			nav {
+				order: 2;
+				flex: none;
+				ul {
+					> li {
+						> a {
+							padding: 14px 8px;
+						}
+					}
+				}
+				&.left {
+					ul {
+						justify-content: normal;
+					}
+				}
+			}
+			h1 {
+				order: 1;
+				margin-right: -5px;
+				a {
+					padding: 0 15px;
+				}
+				img {
+					margin: 0;
+					width: 38px;
+				}
+			}
+		}
+	}
+}
+
+// container
+.container {}
+
+// footer
+.footer {
+	margin: 50px 0 0;
+	&__wrap {
+		margin: 0 auto;
+		padding: 0 0 20px;
+		text-align: center;
+	}
+	&__copyright {
+		margin: 0;
+		font-size: .6875rem;
+		font-style: italic;
+	}
+
+	@include responsive(tablet) {
+		padding: 0 $size-container-padding-tablet;
+	}
+}

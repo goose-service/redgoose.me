@@ -1,0 +1,33 @@
+@import "./valiables";
+@import "./normalize";
+
+body {
+	margin: 0;
+	min-width: 320px;
+	-webkit-text-size-adjust: 100%;
+	color: $color-text-base;
+	font-size: 1rem;
+	line-height: 1.5;
+	text-size-adjust: 100%;
+	background: $color-bg;
+}
+
+body, button, input, textarea, select {
+	font-family: $font-system;
+	text-size-adjust: none;
+}
+
+a {
+	color: $color-key;
+}
+code,
+kbd,
+pre,
+samp {
+	font-family: $font-console;
+}
+
+@import "./view/layout";
+@import "./view/index";
+@import "./view/detail";
+@import "./view/about";
