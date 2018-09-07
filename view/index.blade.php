@@ -19,11 +19,14 @@ if(!defined("__GOOSE__")){exit();}
 <article class="index">
 	<header class="indexHeader index__header">
 		<h1>{{$pageTitle}}</h1>
+		@if (false)
+			<nav>...</nav>
+		@endif
 	</header>
 
 	<div class="indexWorks index__works">
-		@if ($index && count($index))
-			<ul>
+		@if (!$index && count($index))
+			<ul id="index" class="indexWorks__index">
 				@foreach($index as $k=>$item)
 				<li class="{{$item->className}}">
 					<a href="/articles/{{$item->srl}}" data-srl="{{$item->srl}}}">
@@ -33,10 +36,12 @@ if(!defined("__GOOSE__")){exit();}
 				@endforeach
 			</ul>
 		@else
-			<p>.empty</p>
+			<div class="indexWorks__empty">
+				.empty item
+			</div>
 		@endif
 
-		<nav class="indexWorks__more indexWorks__more--processing">
+		<nav class="indexWorks__more indexWorks__more--processing" id="index_button_more">
 			<button type="button">
 				<img src="{{__ROOT__}}/assets/images/ico-load-more.svg" alt="load more">
 			</button>
