@@ -69,7 +69,7 @@ export default function Index(app) {
 			if (!!self.nest.srl)
 			{
 				let url = `${self.app.options.urlRoot}/nest/${self.nest.id}${self.category.srl ? `/${self.category.srl}${window.location.search}` : ''}`;
-				let title = `${self.category.name ? `${self.category.name} / ` : ''}${self.nest.name} / ${self.app.options.title}`;
+				let title = `${self.category.name ? `${self.category.name} - ` : ''}${self.nest.name} - ${self.app.options.title}`;
 				self.app.history.replace(
 					{
 						url,
@@ -351,7 +351,7 @@ export default function Index(app) {
 			if (useHistory)
 			{
 				let url = `${options.urlRoot}/nest/${this.nest.id}${srl ? `/${srl}` : ''}`;
-				let title = `${this.category.name ? `${this.category.name} / ` : ''}${this.nest.name} / ${options.title}`;
+				let title = `${this.category.name !== 'All' ? `${this.category.name} - ` : ''}${this.nest.name} - ${options.title}`;
 				this.app.history.push(
 					{ url, title, srl, action: 'change-category' },
 					title,

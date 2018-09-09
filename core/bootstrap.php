@@ -59,7 +59,7 @@ try {
 
 				// render page
 				$blade->render('index', (object)[
-					'title' => 'redgoose',
+					'title' => getenv('TITLE'),
 					'pageTitle' => 'Newstest works',
 					'index' => Util::getWorksData($res->data->index),
 					'page' => Util::getPage(),
@@ -78,8 +78,8 @@ try {
 				if (!($res && $res->success)) throw new Exception($res->message);
 
 				$title = 'redgoose';
-				if (isset($res->data->nest->name)) $title = $res->data->nest->name.' / '.$title;
-				if ($res->data->category) $title = $res->data->category->name.' / '.$title;
+				if (isset($res->data->nest->name)) $title = $res->data->nest->name.' - '.$title;
+				if ($res->data->category) $title = $res->data->category->name.' - '.$title;
 				// render page
 				$blade->render('index', (object)[
 					'title' => $title,
@@ -96,6 +96,32 @@ try {
 				break;
 
 			case 'article':
+				$res = Util::api('/articles/'.(int)$_params->srl, (object)[
+					'hit' => 0,
+					'ext_field' => 'category_name'
+				]);
+				if (!($res && $res->success)) throw new Exception($res->message);
+				$res->data->regdate = Util::convertDate($res->data->regdate);
+
+				// parse markdown
+				$parsedown = new \Parsedown();
+				$res->data->content = $parsedown->text($res->data->content);
+
+				// render page
+				switch ($_GET['mode'])
+				{
+					case 'popup':
+						break;
+
+					default:
+						$blade->render('article.detail', (object)[
+							'title' => $res->data->title.' - '.getenv('TITLE'),
+							'description' => Util::contentToShortText($res->data->content),
+							'image' => __API__.'/'.$res->data->json->thumbnail->path,
+							'data' => $res->data,
+						]);
+						break;
+				}
 				break;
 
 			case 'page':

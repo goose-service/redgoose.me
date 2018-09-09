@@ -1,19 +1,5 @@
-export default class Detail {
+export default function Detail(app) {
 
-	/**
-	 * constructor
-	 *
-	 * @param {Redgoose} app
-	 */
-	constructor(app)
-	{
-		this.name = 'detail';
-
-		// play
-		if (init)
-		{
-			console.log('play detail');
-		}
-	}
+	console.log('detail');
 
 }

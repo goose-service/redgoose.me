@@ -2633,7 +2633,7 @@ function Index(app) {
 			// update history
 			if (!!self.nest.srl) {
 				var url = self.app.options.urlRoot + '/nest/' + self.nest.id + (self.category.srl ? '/' + self.category.srl + window.location.search : '');
-				var title = '' + (self.category.name ? self.category.name + ' / ' : '') + self.nest.name + ' / ' + self.app.options.title;
+				var title = '' + (self.category.name ? self.category.name + ' - ' : '') + self.nest.name + ' - ' + self.app.options.title;
 				self.app.history.replace({
 					url: url,
 					title: title,
@@ -2872,7 +2872,7 @@ function Index(app) {
 							// update history
 							if (useHistory) {
 								url = options.urlRoot + '/nest/' + this.nest.id + (srl ? '/' + srl : '');
-								title = '' + (this.category.name ? this.category.name + ' / ' : '') + this.nest.name + ' / ' + options.title;
+								title = '' + (this.category.name !== 'All' ? this.category.name + ' - ' : '') + this.nest.name + ' - ' + options.title;
 
 								this.app.history.push({ url: url, title: title, srl: srl, action: 'change-category' }, title, url);
 							}
@@ -3103,33 +3103,12 @@ function Index(app) {
 Object.defineProperty(exports, "__esModule", {
 	value: true
 });
-
-var _classCallCheck2 = require('babel-runtime/helpers/classCallCheck');
-
-var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var Detail =
-
-/**
- * constructor
- *
- * @param {Redgoose} app
- */
-function Detail(app) {
-	(0, _classCallCheck3.default)(this, Detail);
-
-	this.name = 'detail';
-
-	// play
-	if (init) {
-		console.log('play detail');
-	}
-};
-
 exports.default = Detail;
-},{"babel-runtime/helpers/classCallCheck":"../../node_modules/babel-runtime/helpers/classCallCheck.js"}],"Header/index.js":[function(require,module,exports) {
+function Detail(app) {
+
+	console.log('detail');
+}
+},{}],"Header/index.js":[function(require,module,exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {

@@ -50,7 +50,7 @@ if(!defined("__GOOSE__")){exit();}
 				<div class="indexWorks__sizer"></div>
 				@foreach($index as $k=>$item)
 				<div class="indexWorks__item{{$item->className ? ' '.$item->className : ''}}">
-					<a href="/articles/{{$item->srl}}" data-srl="{{$item->srl}}">
+					<a href="/article/{{$item->srl}}" data-srl="{{$item->srl}}">
 						<img src="{{__API__}}/{{$item->image}}" alt="{{$item->title}}">
 					</a>
 				</div>
@@ -78,7 +78,7 @@ if(!defined("__GOOSE__")){exit();}
 <script src="{{__ROOT__}}/assets/dist/app.js"></script>
 <script>
 window.redgoose = new Redgoose('index', {
-	title: 'redgoose',
+	title: '{{getenv('TITLE')}}',
 	urlRoot: '{{__ROOT__}}',
 	urlApi: '{{__API__}}',
 	token: '{{getenv('TOKEN_PUBLIC')}}',
