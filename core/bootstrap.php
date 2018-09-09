@@ -55,44 +55,42 @@ try {
 					'page' => Util::getPage(),
 					'ext_field' => 'next_page',
 				]);
-				if (!$res->success) throw new Exception($res->message);
-				if (!$res) throw new Exception($res->message);
-
-				$index = [];
-				foreach ($res->data->index as $key=>$item)
-				{
-					if ($item->json && $item->json->thumbnail)
-					{
-						$size = '';
-						if ($item->json->thumbnail->sizeSet)
-						{
-							$size = explode('*', $item->json->thumbnail->sizeSet);
-							$size[0] = $size[0] ? 'w'.$size[0] : '';
-							$size[1] = $size[1] ? 'h'.$size[1] : '';
-							$size = implode(' ', $size);
-						}
-
-						// render page
-						$index[] = (object)[
-							'srl' => (int)$item->srl,
-							'title' => $item->title,
-							'image' => $item->json->thumbnail->path,
-							'className' => $size,
-						];
-					}
-				}
-				//Util::console($index);
+				if (!($res && $res->success)) throw new Exception($res->message);
 
 				// render page
 				$blade->render('index', (object)[
 					'title' => 'redgoose',
 					'pageTitle' => 'Newstest works',
-					'index' => $index,
+					'index' => Util::getWorksData($res->data->index),
 					'nextPage' => $res->data->nextPage,
 				]);
 				break;
 
 			case 'index/nest':
+				$res = Util::api('/external/redgoose-me-nest', (object)[
+					'nest_id' => $_params->id,
+					'category_srl' => $_params->srl,
+					'ext_field' => 'item_all,count_article',
+					'page' => Util::getPage(),
+					'size' => getenv('DEFAULT_INDEX_SIZE'),
+				]);
+				if (!($res && $res->success)) throw new Exception($res->message);
+
+				$title = 'redgoose';
+				if (isset($res->data->nest->name)) $title = $res->data->nest->name.' / '.$title;
+				if ($res->data->category) $title = $res->data->category->name.' / '.$title;
+				// render page
+				$blade->render('index', (object)[
+					'title' => $title,
+					'pageTitle' => $res->data->nest->name,
+					'nest_id' => $_params->id,
+					'nest_srl' => $res->data->nest->srl,
+					'category_srl' => $_params->srl,
+					'category_name' => isset($res->data->category->name) ? $res->data->category->name : null,
+					'index' => Util::getWorksData($res->data->works),
+					'categories' => $res->data->categories,
+					'nextPage' => $res->data->nextPage,
+				]);
 				break;
 
 			case 'article':

@@ -9,16 +9,22 @@ if(!defined("__GOOSE__")){exit();}
 <body ontouchstart="">
 <main>
 	<header class="header">
-		<div class="header__wrap">
+		<div class="header__wrap" id="gnb">
 			<nav class="left">
 				<ul>
 					<li>
 						<a href="/nest/visual"><span>Works</span></a>
 						<div>
 							<ol>
-								<li><a href="/nest/visual">Visual</a></li>
-								<li><a href="/nest/3d">3D</a></li>
-								<li><a href="/nest/develop">Develop</a></li>
+								<li{!!$nest_id === 'visual' ? ' class="on"' : ''!!}>
+									<a href="/nest/visual">Visual</a>
+								</li>
+								<li{!!$nest_id === '3d' ? ' class="on"' : ''!!}>
+									<a href="/nest/3d">3D</a>
+								</li>
+								<li{!!$nest_id === 'develop' ? ' class="on"' : ''!!}>
+									<a href="/nest/develop">Develop</a>
+								</li>
 							</ol>
 						</div>
 					</li>
@@ -26,12 +32,24 @@ if(!defined("__GOOSE__")){exit();}
 						<a href="/nest/landscape"><span>Photos</span></a>
 						<div>
 							<ol>
-								<li><a href="/nest/landscape">Landscape</a></li>
-								<li><a href="/nest/portrait">Portrait</a></li>
-								<li><a href="/nest/snap/">Snap</a></li>
-								<li><a href="/nest/composition">Composition</a></li>
-								<li><a href="/nest/foreign">Foreign countries</a></li>
-								<li><a href="/nest/cosplay">Cosplay</a></li>
+								<li{!!$nest_id === 'landscape' ? ' class="on"' : ''!!}>
+									<a href="/nest/landscape">Landscape</a>
+								</li>
+								<li{!!$nest_id === 'portrait' ? ' class="on"' : ''!!}>
+									<a href="/nest/portrait">Portrait</a>
+								</li>
+								<li{!!$nest_id === 'snap' ? ' class="on"' : ''!!}>
+									<a href="/nest/snap">Snap</a>
+								</li>
+								<li{!!$nest_id === 'composition' ? ' class="on"' : ''!!}>
+									<a href="/nest/composition">Composition</a>
+								</li>
+								<li{!!$nest_id === 'foreign' ? ' class="on"' : ''!!}>
+									<a href="/nest/foreign">Foreign countries</a>
+								</li>
+								<li{!!$nest_id === 'cosplay' ? ' class="on"' : ''!!}>
+									<a href="/nest/cosplay">Cosplay</a>
+								</li>
 							</ol>
 						</div>
 					</li>

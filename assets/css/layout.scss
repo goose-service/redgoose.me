@@ -1,20 +1,29 @@
-@import "../valiables";
-@import "../mixins";
+@import "./libs/valiables";
+@import "./libs/mixins";
 
 // header
 .header {
 	position: sticky;
+	z-index: 10;
 	left: 0;
 	right: 0;
 	top: 0;
 	background: rgba($color-bg,.9);
-	border-bottom: 1px solid #ddd;
+	&:after {
+		content: '';
+		display: block;
+		position: absolute;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		height: 1px;
+		background: #ddd;
+	}
 
 	&__wrap {
 		display: flex;
 		align-items: center;
 		justify-content: center;
-
 		nav {
 			flex: 1;
 			ul {
@@ -26,18 +35,16 @@
 					> a {
 						display: flex;
 						align-items: center;
-						padding: 15px 12px;
+						padding: 14px 8px;
 						font-size: .8125rem;
 						text-decoration: none;
 						color: $color-text-base;
 						font-weight: 600;
-						&.nuxt-active {
-							color: $color-key;
-						}
 					}
 					> div {
 						position: relative;
 					}
+					&:focus-within,
 					&:hover {
 						> a {
 							color: $color-key;
@@ -53,9 +60,11 @@
 				}
 			}
 			ol {
-				position: absolute;
-				left: -8px;
-				top: -4px;
+				position: fixed;
+				z-index: 2;
+				top: 45px;
+				left: 10px;
+				right: 10px;
 				margin: 0;
 				padding: 10px 0;
 				list-style: none;
@@ -74,8 +83,12 @@
 						text-decoration: none;
 						font-size: .8125rem;
 						white-space: nowrap;
-						&.nuxt-active,
 						&:hover {
+							text-decoration: underline;
+						}
+					}
+					&.on {
+						> a {
 							text-decoration: underline;
 						}
 					}
@@ -94,44 +107,52 @@
 				position: relative;
 				z-index: 2;
 				display: block;
-				padding: 0 20px;
+				padding: 0 4px;
 			}
 			img {
 				display: block;
-				margin: 0 0 -30px;
-				width: 80px;
+				margin: 0;
+				width: 44px;
 			}
 		}
 	}
 
-	@include responsive(mobile) {
+	@include retina() {
+		&:after {
+			transform-origin: left bottom;
+			transform: scaleY(.5);
+		}
+	}
+	@include responsive(mini) {
 		&__wrap {
-			justify-content: flex-start;
 			nav {
-				order: 2;
-				flex: none;
 				ul {
 					> li {
 						> a {
-							padding: 14px 8px;
+							padding: 15px 15px;
 						}
-					}
-				}
-				&.left {
-					ul {
-						justify-content: normal;
 					}
 				}
 			}
 			h1 {
-				order: 1;
-				margin-right: -5px;
 				a {
-					padding: 0 15px;
+					padding: 0 20px;
 				}
 				img {
-					margin: 0;
-					width: 38px;
+					margin: 0 0 -30px;
+					width: 80px;
+				}
+			}
+		}
+	}
+	@include responsive(tablet) {
+		&__wrap {
+			nav {
+				ol {
+					position: absolute;
+					left: -8px;
+					top: -4px;
+					right: auto;
 				}
 			}
 		}
@@ -143,7 +164,7 @@
 
 // footer
 .footer {
-	margin: 50px 0 0;
+	margin: 30px 0 0;
 	&__wrap {
 		margin: 0 auto;
 		padding: 0 0 20px;
@@ -155,7 +176,10 @@
 		font-style: italic;
 	}
 
-	@include responsive(tablet) {
-		padding: 0 $size-container-padding-tablet;
+	@include responsive(desktop) {
+		margin: 50px 0 0;
+	}
+	@include responsive(desktop-large) {
+		margin: 60px 0 0;
 	}
 }

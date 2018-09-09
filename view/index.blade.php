@@ -19,30 +19,53 @@ if(!defined("__GOOSE__")){exit();}
 <article class="index">
 	<header class="indexHeader index__header">
 		<h1>{{$pageTitle}}</h1>
-		@if (false)
-			<nav>...</nav>
+		@if (isset($categories) && count($categories))
+			<nav class="indexCategories" id="categories">
+				<button type="button" class="indexCategories__toggle">
+					<img src="{{__ROOT__}}/assets/images/ico-arrow-down.svg" alt="icon">
+					<span>Category</span>
+				</button>
+				<ul class="indexCategories__index">
+					@foreach($categories as $k=>$item)
+						<li{!!($category_srl === $item->srl || (!$category_srl && !$item->srl)) ? ' class="on"' : ''!!}>
+							<a href="/nest/{{$nest_id}}{{$item->srl ? '/'.$item->srl : ''}}" data-srl="{{$item->srl}}">
+								<span>{{$item->name}}</span><em>{{$item->count_article}}</em>
+							</a>
+						</li>
+					@endforeach
+				</ul>
+			</nav>
 		@endif
 	</header>
 
 	<div class="indexWorks index__works">
-		@if (!$index && count($index))
-			<ul id="index" class="indexWorks__index">
+		<div class="loading indexWorks__loading" id="index_loading">
+			<div class="loading__loader">
+				<div class="loading__shadow"></div>
+				<div class="loading__box"></div>
+			</div>
+		</div>
+		<div id="index" class="indexWorks__index">
+			@if ($index && count($index))
+				<div class="indexWorks__sizer"></div>
 				@foreach($index as $k=>$item)
-				<li class="{{$item->className}}">
+				<div class="indexWorks__item {{$item->className}}">
 					<a href="/articles/{{$item->srl}}" data-srl="{{$item->srl}}}">
 						<img src="{{__API__}}/{{$item->image}}" alt="{{$item->title}}">
 					</a>
-				</li>
+				</div>
 				@endforeach
-			</ul>
-		@else
-			<div class="indexWorks__empty">
-				.empty item
-			</div>
-		@endif
+			@else
+				<div class="indexEmpty indexWorks__empty">
+					<img src="{{__ROOT__}}/assets/images/img-error.png" alt="error">
+					<p>Not found work.</p>
+				</div>
+			@endif
+		</div>
 
-		<nav class="indexWorks__more indexWorks__more--processing" id="index_button_more">
-			<button type="button">
+		{{--indexMore--processing--}}
+		<nav class="indexMore indexWorks__more {{!$nextPage ? 'indexMore--hide' : ''}}" id="index_button_more">
+			<button type="button" data-page="{{$nextPage}}">
 				<img src="{{__ROOT__}}/assets/images/ico-load-more.svg" alt="load more">
 			</button>
 		</nav>
@@ -55,6 +78,17 @@ if(!defined("__GOOSE__")){exit();}
 <script src="{{__ROOT__}}/assets/vendor/masonry.pkgd.min.js"></script>
 <script src="{{__ROOT__}}/assets/dist/app.js"></script>
 <script>
-window.redgoose = new Redgoose('index');
+window.redgoose = new Redgoose('index', {
+	title: 'redgoose',
+	urlRoot: '{{__ROOT__}}',
+	urlApi: '{{__API__}}',
+	token: '{{getenv('TOKEN_PUBLIC')}}',
+	size: parseInt('{{getenv('DEFAULT_INDEX_SIZE')}}'),
+	nest_srl: parseInt('{{$nest_srl}}'),
+	nest_id: '{{$nest_id}}',
+	nest_name: '{{$pageTitle}}',
+	category_srl: '{{$category_srl}}',
+	category_name: '{{$category_name}}',
+});
 </script>
 @endsection

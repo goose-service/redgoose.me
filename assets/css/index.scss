@@ -1,0 +1,353 @@
+@import "./libs/valiables";
+@import "./libs/mixins";
+
+@mixin grid($size, $col, $padding) {
+	&__index {
+		width: $size * $col;
+	}
+	&__sizer {
+		width: $size;
+		height: $size;
+	}
+	&__item {
+		width: $size;
+		height: $size;
+		padding: $padding;
+		&.w2 {
+			width: $size * 2;
+		}
+		&.h2 {
+			height: $size * 2;
+		}
+	}
+}
+
+// body
+.index {
+	margin: 15px 0 0;
+	&__header {}
+	&__works {}
+
+	@include responsive(tablet) {
+		margin: 40px 0 0;
+	}
+	@include responsive(desktop) {
+		margin: 60px 0 0;
+	}
+}
+
+// header
+.indexHeader {
+	margin: 0 auto 2.5vw;
+	h1 {
+		margin: 0;
+		padding: 0 1rem;
+		font-size: 22px;
+		font-weight: 600;
+		line-height: 1;
+	}
+
+	@include responsive(tablet) {
+		h1 {
+			padding: 0 calc(2vw + 4px);
+			font-size: 30px;
+			letter-spacing: -.4px;
+		}
+	}
+	@include responsive(desktop) {
+		margin: 0 auto 20px;
+		max-width: $size-container-base;
+		h1 {
+			padding: 0 22px;
+		}
+	}
+	@include responsive(desktop-large) {
+		margin: 0 auto 30px;
+		h1 {
+			padding: 0;
+		}
+	}
+}
+
+// categories
+.indexCategories {
+	$self: '.indexCategories';
+	margin: 8px 0 0;
+	&__toggle {
+		display: block;
+		width: 100%;
+		box-sizing: border-box;
+		margin: 0;
+		padding: 0;
+		background: #ecedef;
+		border: none;
+		height: 44px;
+		cursor: pointer;
+		outline: 0;
+		-webkit-tap-highlight-color: transparent;
+		&:focus {
+			box-shadow: inset 0 0 0 1px rgba($color-key, 1);
+		}
+		&:active {
+			background: mix(#000, #ecedef, 5%);
+		}
+		> * {
+			display: inline-block;
+			vertical-align: middle;
+		}
+		img {
+			width: 10px;
+			margin: 0 5px 0 0;
+			transition: transform .3s ease-out;
+		}
+		span {
+			margin: -1px 0 0;
+			font-size: 13px;
+			letter-spacing: .5px;
+			font-weight: bold;
+		}
+	}
+	&__index {
+		list-style: none;
+		align-items: center;
+		flex-wrap: wrap;
+		margin: 1px 0 0;
+		padding: 8px 10px 10px;
+		background: #ecedef;
+		display: none;
+		li {
+			width: 50%;
+		}
+		a {
+			display: block;
+			padding: 8px 5px;
+			text-decoration: none;
+			font-size: 11px;
+			font-weight: 400;
+			color: $color-text-base;
+			white-space: nowrap;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			&:active {
+				text-decoration: underline;
+			}
+		}
+		em {
+			font-style: normal;
+			&:before {
+				content: '(';
+			}
+			&:after {
+				content: ')';
+			}
+		}
+		li.on {
+			a {
+				color: $color-key;
+				font-weight: bold;
+				cursor: default;
+				&:hover {
+					text-decoration: none;
+				}
+			}
+		}
+	}
+	&.active {
+		#{$self} {
+			&__toggle {
+				background: mix(#000, #ecedef, 5%);
+				img {
+					transform: rotateX(180deg);
+				}
+			}
+			&__index {
+				display: flex;
+			}
+		}
+	}
+
+	@include responsive(tablet) {
+		margin: 0;
+		padding: 0 calc(2vw + 4px);
+		&__toggle {
+			display: none;
+		}
+		&__index {
+			display: flex;
+			background: none;
+			padding: 0;
+			margin: 8px -6px 0;
+			li {
+				width: auto;
+			}
+			a {
+				padding: 2px 6px;
+				font-size: 12px;
+				&:hover {
+					text-decoration: underline;
+				}
+			}
+		}
+	}
+	@include responsive(desktop) {
+		padding: 0 22px;
+	}
+	@include responsive(desktop-large) {
+		padding: 0;
+	}
+}
+
+// works
+.indexWorks {
+	$self: '.indexWorks';
+	min-height: 200px;
+	@include grid(32vw, 3, 2px);
+	&__index {
+		box-sizing: border-box;
+		margin: 0 auto;
+		display: none;
+		&:after {
+			content: '';
+			display: table;
+			clear: both;
+		}
+		&.empty,
+		&.masonry {
+			display: block;
+		}
+		&.empty {
+			#{$self}__sizer {
+				display: none;
+			}
+		}
+	}
+	&__sizer {}
+	&__item {
+		font-size: 0;
+		box-sizing: border-box;
+		float: left;
+		overflow: hidden;
+		a {
+			display: block;
+			height: 100%;
+			background: #eee;
+		}
+		img {
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+			display: block;
+		}
+	}
+	&__empty {}
+	&__more {
+		margin: 20px 0 0;
+	}
+	&__loading {
+		display: none;
+	}
+
+	@include responsive(tablet) {
+		@include grid(24vw, 4, 4px);
+		&__more {
+			$size: 64px;
+			margin: 30px 0 0;
+			button {
+				width: $size;
+				height: $size;
+			}
+		}
+	}
+	@include responsive(desktop) {
+		@include grid(23vw, 4, 4px);
+		&__more {
+			margin: 30px 0 0;
+		}
+	}
+	@include responsive(desktop-large) {
+		@include grid(18vw, 5, 5px);
+		&__more {
+			margin: 40px 0 0;
+		}
+	}
+	@include responsive(max) {
+		@include grid(230px, 6, 5px);
+	}
+	@include responsive(over) {
+		@include grid(230px, 8, 5px);
+	}
+}
+
+// more
+.indexMore {
+	$size: 54px;
+	text-align: center;
+	button {
+		display: block;
+		margin: 0 auto;
+		padding: 0;
+		width: $size;
+		height: $size;
+		border-radius: 50%;
+		border: none;
+		background: $color-key;
+		font-size: 0;
+		cursor: pointer;
+	}
+	img {
+		display: block;
+		margin: 0 auto;
+		width: 20px;
+		height: 20px;
+	}
+	&--processing {
+		img {
+			animation: 2s roty infinite linear;
+		}
+		// rotate
+		@keyframes roty {
+			from { transform: rotate(0deg); }
+			to   { transform: rotate(360deg); }
+		}
+	}
+	&--hide {
+		display: none;
+	}
+
+	@include responsive(tablet) {
+		$size: 64px;
+		button {
+			width: $size;
+			height: $size;
+		}
+	}
+}
+
+// empty
+.indexEmpty {
+	padding: 40px 0 30px;
+	text-align: center;
+	img {
+		display: block;
+		margin: 0 auto;
+		width: 240px;
+		max-width: 100%;
+	}
+	p {
+		margin: 0;
+		font-size: 0;
+	}
+	@include responsive(tablet) {
+		padding: 80px 0 80px;
+		img {
+			width: auto;
+			max-width: 300px;
+		}
+	}
+	@include retina() {
+		img {
+			zoom: .5;
+			max-width: none;
+		}
+	}
+}

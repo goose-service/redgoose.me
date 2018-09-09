@@ -1,5 +1,5 @@
-@import "./valiables";
-@import "./normalize";
+@import "./libs/valiables";
+@import "./libs/normalize";
 
 body {
 	margin: 0;
@@ -27,7 +27,8 @@ samp {
 	font-family: $font-console;
 }
 
-@import "./view/layout";
-@import "./view/index";
-@import "./view/detail";
-@import "./view/about";
+@import "./layout";
+@import "./index";
+@import "./detail";
+@import "./about";
+@import "./loading";

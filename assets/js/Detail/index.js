@@ -4,9 +4,8 @@ export default class Detail {
 	 * constructor
 	 *
 	 * @param {Redgoose} app
-	 * @param {Boolean} init
 	 */
-	constructor(app, init)
+	constructor(app)
 	{
 		this.name = 'detail';
 

@@ -107,4 +107,39 @@ class Util {
 		return (isset($_GET['page']) && (int)$_GET['page'] > 1) ? (int)$_GET['page'] : 1;
 	}
 
+	/**
+	 * get works data
+	 *
+	 * @param array $index
+	 * @return array
+	 */
+	static public function getWorksData($index)
+	{
+		$result = [];
+
+		foreach ($index as $key=>$item)
+		{
+			if ($item->json && $item->json->thumbnail)
+			{
+				$size = '';
+				if ($item->json->thumbnail->sizeSet)
+				{
+					$size = explode('*', $item->json->thumbnail->sizeSet);
+					$size[0] = $size[0] ? 'w'.$size[0] : '';
+					$size[1] = $size[1] ? 'h'.$size[1] : '';
+					$size = implode(' ', $size);
+				}
+
+				$result[] = (object)[
+					'srl' => (int)$item->srl,
+					'title' => $item->title,
+					'image' => $item->json->thumbnail->path,
+					'className' => $size,
+				];
+			}
+		}
+
+		return $result;
+	}
+
 }
