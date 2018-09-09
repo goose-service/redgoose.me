@@ -49,8 +49,8 @@ if(!defined("__GOOSE__")){exit();}
 			@if ($index && count($index))
 				<div class="indexWorks__sizer"></div>
 				@foreach($index as $k=>$item)
-				<div class="indexWorks__item {{$item->className}}">
-					<a href="/articles/{{$item->srl}}" data-srl="{{$item->srl}}}">
+				<div class="indexWorks__item{{$item->className ? ' '.$item->className : ''}}">
+					<a href="/articles/{{$item->srl}}" data-srl="{{$item->srl}}">
 						<img src="{{__API__}}/{{$item->image}}" alt="{{$item->title}}">
 					</a>
 				</div>
@@ -63,7 +63,6 @@ if(!defined("__GOOSE__")){exit();}
 			@endif
 		</div>
 
-		{{--indexMore--processing--}}
 		<nav class="indexMore indexWorks__more {{!$nextPage ? 'indexMore--hide' : ''}}" id="index_button_more">
 			<button type="button" data-page="{{$nextPage}}">
 				<img src="{{__ROOT__}}/assets/images/ico-load-more.svg" alt="load more">
@@ -84,11 +83,13 @@ window.redgoose = new Redgoose('index', {
 	urlApi: '{{__API__}}',
 	token: '{{getenv('TOKEN_PUBLIC')}}',
 	size: parseInt('{{getenv('DEFAULT_INDEX_SIZE')}}'),
+	app_srl: parseInt('{{getenv('DEFAULT_APP_SRL')}}'),
 	nest_srl: parseInt('{{$nest_srl}}'),
 	nest_id: '{{$nest_id}}',
 	nest_name: '{{$pageTitle}}',
 	category_srl: '{{$category_srl}}',
 	category_name: '{{$category_name}}',
+	page: '{{$page}}',
 });
 </script>
 @endsection

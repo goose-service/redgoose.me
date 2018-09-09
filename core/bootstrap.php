@@ -62,6 +62,7 @@ try {
 					'title' => 'redgoose',
 					'pageTitle' => 'Newstest works',
 					'index' => Util::getWorksData($res->data->index),
+					'page' => Util::getPage(),
 					'nextPage' => $res->data->nextPage,
 				]);
 				break;
@@ -89,6 +90,7 @@ try {
 					'category_name' => isset($res->data->category->name) ? $res->data->category->name : null,
 					'index' => Util::getWorksData($res->data->works),
 					'categories' => $res->data->categories,
+					'page' => Util::getPage(),
 					'nextPage' => $res->data->nextPage,
 				]);
 				break;

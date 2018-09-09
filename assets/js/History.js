@@ -9,6 +9,9 @@ export default function History(app) {
 
 	this.name = 'history';
 	this.app = app;
+	this.env = null;
+	this.title = null;
+	this.url = null;
 
 	(function constructor(){
 		if (!support()) return;
@@ -64,8 +67,15 @@ export default function History(app) {
 	this.push = function(env, title, url)
 	{
 		if (!(support() && url)) return;
+
+		// save member values
+		this.env = env;
+		this.title = title;
+		this.url = url;
+
 		// change title
 		if (title) $title.text(title);
+
 		// update history
 		history.pushState(env || null, title || url, url);
 	};
@@ -80,8 +90,15 @@ export default function History(app) {
 	this.replace = function(env, title, url)
 	{
 		if (!(support() && url)) return;
+
+		// save member values
+		this.env = env;
+		this.title = title;
+		this.url = url;
+
 		// change title
 		if (title) $title.text(title);
+
 		// update history
 		history.replaceState(env || null, title || url, url);
 	};

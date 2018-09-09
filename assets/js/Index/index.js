@@ -1,6 +1,11 @@
 import * as api from '../libs/api';
 import * as util from '../libs/util';
 
+const SCROLL_OFFSET = 100; // 페이지가 변화되는 스크롤 y축 위치 offset
+const SCROLL_SPEED = 300; // 페이지 추가될때 스크롤 이동되는 속도
+const SCROLL_DELAY = 100; // 스크롤 이벤트가 트리거까지 대기시간
+const BLOCK_DELAY = 60; // 아이템들이 추가될때 fade in 딜레이 간격
+
 /**
  * Index class
  */
@@ -26,6 +31,7 @@ export default function Index(app) {
 		srl: this.app.options.category_srl,
 		name: this.app.options.category_name
 	};
+	this.scrollEvent = null;
 
 	(function constructor(){
 		try
@@ -43,17 +49,26 @@ export default function Index(app) {
 			{
 				// on masonry
 				masonry(true);
+				// set page on first item
+				self.$index.children('.indexWorks__item').eq(0).attr('data-page', self.app.options.page || 1);
+				// scroll event
+				initScrollEvent(true);
 			}
 
+			// init more button
 			if (self.$more && self.$more.length)
 			{
-				// TODO: more 이벤트 만들기
+				self.$more.children('button').on('click', function() {
+					let page = parseInt(this.dataset.page) || null;
+					if (!page) return false;
+					self.changePage(page, true);
+				});
 			}
 
 			// update history
 			if (!!self.nest.srl)
 			{
-				let url = `${self.app.options.urlRoot}/nest/${self.nest.id}${self.category.srl ? `/${self.category.srl}` : ''}`;
+				let url = `${self.app.options.urlRoot}/nest/${self.nest.id}${self.category.srl ? `/${self.category.srl}${window.location.search}` : ''}`;
 				let title = `${self.category.name ? `${self.category.name} / ` : ''}${self.nest.name} / ${self.app.options.title}`;
 				self.app.history.replace(
 					{
@@ -66,8 +81,6 @@ export default function Index(app) {
 					url
 				);
 			}
-
-			// TODO: scroll event
 		}
 		catch(e)
 		{
@@ -102,11 +115,11 @@ export default function Index(app) {
 	}
 
 	/**
-	 * switching loading
+	 * switching loading for category
 	 *
 	 * @param {Boolean} sw
 	 */
-	function loading(sw)
+	function loadingForCategory(sw)
 	{
 		if (sw)
 		{
@@ -123,6 +136,23 @@ export default function Index(app) {
 				self.loading = null;
 			}
 			self.$loading.removeClass('loading--show');
+		}
+	}
+
+	/**
+	 * switching loading for page
+	 *
+	 * @param {Boolean} sw
+	 */
+	function loadingForPage(sw)
+	{
+		if (sw)
+		{
+			self.$more.addClass('indexMore--processing');
+		}
+		else
+		{
+			self.$more.removeClass('indexMore--processing');
 		}
 	}
 
@@ -148,14 +178,16 @@ export default function Index(app) {
 	 * make index element
 	 *
 	 * @param {Array} index
+	 * @param {Boolean} ready
 	 * @return String
 	 */
-	function element(index)
+	function element(index, ready)
 	{
 		let dom = index.map(function(o, k) {
 			let sizeSet = (o.json.thumbnail && o.json.thumbnail.sizeSet) ? o.json.thumbnail.sizeSet.split('*') : [1,1];
-			let classname = `${parseInt(sizeSet[0]) === 2 ? 'w2' : ''} ${parseInt(sizeSet[1]) === 2 ? 'h2' : ''}`.trim();
-			return `<div class="indexWorks__item ${classname}">
+			let classname = `${parseInt(sizeSet[0]) === 2 ? 'w2' : ''} ${parseInt(sizeSet[1]) === 2 ? 'h2' : ''}`;
+			if (ready) classname += ' ready';
+			return `<div class="indexWorks__item${classname ? ' ' + classname.trim() : ''}">
 				<a href="/articles/${o.srl}" data-srl="${o.srl}">
 					<img src="${self.app.options.urlApi}/${o.json.thumbnail.path}" alt="${o.title}">
 				</a>
@@ -163,6 +195,100 @@ export default function Index(app) {
 		}).join('');
 
 		return dom;
+	}
+
+	/**
+	 * 스크롤을할때 주소에 페이지 번호가 변하는 기능을 초기화 한다.
+	 *
+	 * @param {Boolean} sw 이벤트 리스너를 껏다켜는 스위치
+	 */
+	function initScrollEvent(sw)
+	{
+		/**
+		 * 현재 주소를 분석하여 새로운 `page`값이 적용된 url을 만들어서 `history.replace` 실행한다.
+		 *
+		 * @param {Number} page
+		 */
+		function updatePage(page)
+		{
+			const { history } = self.app;
+
+			let url = new URL(window.location.href);
+			let urlParams = url.searchParams;
+			let urlPage = url.searchParams.get('page');
+			urlPage = urlPage ? parseInt(urlPage) : 1;
+
+			if (page === urlPage) return;
+
+			if (page === 1)
+			{
+				urlParams.delete('page');
+			}
+			else
+			{
+				urlParams.set('page', page);
+			}
+
+			let newUrl = location.pathname + (urlParams.toString() ? `?${urlParams.toString()}` : '');
+
+			// change default page
+			self.app.options.page = page;
+
+			history.replace(
+				{
+					...history.env,
+					...{ url: newUrl }
+				},
+				history.title,
+				newUrl
+			);
+		}
+
+		function action()
+		{
+			const $el = self.$index.children('[data-page]');
+			const top = $(this).scrollTop();
+			let $current = null;
+
+			if (!$el.length) return false;
+
+			if (top + $(this).height() === $(document).height())
+			{
+				$current = ($el.eq($el.length - 1)) ? $el.eq($el.length - 1) : null;
+			}
+			else
+			{
+				$el.each(function(key) {
+					if (top >= ($(this).offset().top - (SCROLL_OFFSET + 5)))
+					{
+						$current = $(this);
+					}
+				});
+
+				if (!$current)
+				{
+					$current = $el.eq(0);
+				}
+
+			}
+
+			// update page
+			let page = ($current && $current.length) ? $current.data('page') : 1;
+			updatePage(page);
+		}
+
+		if (sw)
+		{
+			$(window).off('scroll.redgoose_index').on('scroll.redgoose_index', function() {
+				// 너무많은 스크롤 이벤트가 트리깅 하는것을 방지하기 위하여 셋 타임아웃을 걸어놓았다.
+				clearTimeout(self.scrollEvent);
+				self.scrollEvent = setTimeout(action, SCROLL_DELAY);
+			});
+		}
+		else
+		{
+			$(window).off('scroll.redgoose_index');
+		}
 	}
 
 	/**
@@ -236,7 +362,7 @@ export default function Index(app) {
 			// off masonry
 			if (this.masonry) masonry(false);
 			// on loading
-			loading(true);
+			loadingForCategory(true);
 			// remove empty element
 			this.$index.children('.indexWorks__empty').remove();
 			// hide more
@@ -261,7 +387,7 @@ export default function Index(app) {
 			// append elements
 			this.$index.append(elements);
 			// off loading
-			loading(false);
+			loadingForCategory(false);
 			// start masonry
 			masonry(true);
 			// update more button
@@ -274,7 +400,6 @@ export default function Index(app) {
 		catch(e)
 		{
 			let message = null;
-			let img = null;
 			switch (e)
 			{
 				case 404:
@@ -295,8 +420,92 @@ export default function Index(app) {
 			// append elements
 			this.$index.addClass('empty').append(elements);
 			// off loading
-			loading(false);
+			loadingForCategory(false);
 		}
 	}
 
+	/**
+	 * change page
+	 *
+	 * @param {Number} page
+	 * @param {Boolean} scroll use scroll
+	 * @return {Promise}
+	 */
+	this.changePage = async function(page, scroll)
+	{
+		if (this.$more.hasClass('indexMore--processing')) return false;
+
+		try
+		{
+			// on loading
+			loadingForPage(true);
+
+			// get data
+			let params = {
+				field: 'srl,json,title',
+				app: this.app.options.app_srl,
+				page,
+				order: 'srl',
+				sort: 'desc',
+				ext_field: 'next_page',
+			};
+			if (this.nest.srl) params.nest = this.nest.srl;
+			if (this.category.srl) params.category = this.category.srl;
+			let res = await api.get('/articles', params);
+			if (!res.success) throw 404;
+			res = res.data;
+
+			// update more button
+			if (res.nextPage)
+			{
+				this.$more.children('button').attr('data-page', res.nextPage);
+			}
+			else
+			{
+				this.$more.addClass('indexMore--hide');
+			}
+
+			// make new elements
+			let elements = element(res.index, true);
+			let $elements = $(elements);
+
+			// append
+			this.$index.append($elements);
+			if (this.masonry) this.masonry.appended($elements);
+
+			// play block animation
+			$elements.each(function(key) {
+				setTimeout(() => {
+					$(this).removeClass('ready');
+				}, BLOCK_DELAY * key);
+			});
+
+			if (scroll)
+			{
+				let $firstElement = $elements.eq(0);
+				let top = $firstElement.offset().top - SCROLL_OFFSET;
+				$firstElement.attr('data-page', page);
+				$("html, body").stop().animate({ scrollTop: top }, SCROLL_SPEED, 'swing');
+			}
+
+			// off loading
+			loadingForPage(false);
+		}
+		catch(e)
+		{
+			let message = null;
+			switch (e)
+			{
+				case 404:
+					message = 'Not found work.';
+					break;
+				default:
+					console.error(e);
+					message = 'Service error.';
+					break;
+			}
+			alert(message);
+			loadingForPage(false);
+		}
+	}
 }

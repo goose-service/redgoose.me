@@ -227,6 +227,7 @@
 		box-sizing: border-box;
 		float: left;
 		overflow: hidden;
+		transition: opacity .6s ease-out;
 		a {
 			display: block;
 			height: 100%;
@@ -237,6 +238,9 @@
 			height: 100%;
 			object-fit: cover;
 			display: block;
+		}
+		&.ready {
+			opacity: 0;
 		}
 	}
 	&__empty {}

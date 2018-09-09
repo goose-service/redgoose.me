@@ -2552,6 +2552,10 @@ var _asyncToGenerator2 = require('babel-runtime/helpers/asyncToGenerator');
 
 var _asyncToGenerator3 = _interopRequireDefault(_asyncToGenerator2);
 
+var _extends2 = require('babel-runtime/helpers/extends');
+
+var _extends3 = _interopRequireDefault(_extends2);
+
 exports.default = Index;
 
 var _api = require('../libs/api');
@@ -2565,6 +2569,11 @@ var util = _interopRequireWildcard(_util);
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var SCROLL_OFFSET = 100; // 페이지가 변화되는 스크롤 y축 위치 offset
+var SCROLL_SPEED = 300; // 페이지 추가될때 스크롤 이동되는 속도
+var SCROLL_DELAY = 100; // 스크롤 이벤트가 트리거까지 대기시간
+var BLOCK_DELAY = 60; // 아이템들이 추가될때 fade in 딜레이 간격
 
 /**
  * Index class
@@ -2591,6 +2600,7 @@ function Index(app) {
 		srl: this.app.options.category_srl,
 		name: this.app.options.category_name
 	};
+	this.scrollEvent = null;
 
 	(function constructor() {
 		try {
@@ -2605,15 +2615,24 @@ function Index(app) {
 			if (self.$index && self.$index.length) {
 				// on masonry
 				masonry(true);
+				// set page on first item
+				self.$index.children('.indexWorks__item').eq(0).attr('data-page', self.app.options.page || 1);
+				// scroll event
+				initScrollEvent(true);
 			}
 
-			if (self.$more && self.$more.length) {}
-			// TODO: more 이벤트 만들기
-
+			// init more button
+			if (self.$more && self.$more.length) {
+				self.$more.children('button').on('click', function () {
+					var page = parseInt(this.dataset.page) || null;
+					if (!page) return false;
+					self.changePage(page, true);
+				});
+			}
 
 			// update history
 			if (!!self.nest.srl) {
-				var url = self.app.options.urlRoot + '/nest/' + self.nest.id + (self.category.srl ? '/' + self.category.srl : '');
+				var url = self.app.options.urlRoot + '/nest/' + self.nest.id + (self.category.srl ? '/' + self.category.srl + window.location.search : '');
 				var title = '' + (self.category.name ? self.category.name + ' / ' : '') + self.nest.name + ' / ' + self.app.options.title;
 				self.app.history.replace({
 					url: url,
@@ -2622,8 +2641,6 @@ function Index(app) {
 					action: 'change-category'
 				}, title, url);
 			}
-
-			// TODO: scroll event
 		} catch (e) {
 			console.error(e);
 		}
@@ -2652,11 +2669,11 @@ function Index(app) {
 	}
 
 	/**
-  * switching loading
+  * switching loading for category
   *
   * @param {Boolean} sw
   */
-	function loading(sw) {
+	function loadingForCategory(sw) {
 		if (sw) {
 			// this.loading
 			self.loading = setTimeout(function () {
@@ -2668,6 +2685,19 @@ function Index(app) {
 				self.loading = null;
 			}
 			self.$loading.removeClass('loading--show');
+		}
+	}
+
+	/**
+  * switching loading for page
+  *
+  * @param {Boolean} sw
+  */
+	function loadingForPage(sw) {
+		if (sw) {
+			self.$more.addClass('indexMore--processing');
+		} else {
+			self.$more.removeClass('indexMore--processing');
 		}
 	}
 
@@ -2692,16 +2722,91 @@ function Index(app) {
   * make index element
   *
   * @param {Array} index
+  * @param {Boolean} ready
   * @return String
   */
-	function element(index) {
+	function element(index, ready) {
 		var dom = index.map(function (o, k) {
 			var sizeSet = o.json.thumbnail && o.json.thumbnail.sizeSet ? o.json.thumbnail.sizeSet.split('*') : [1, 1];
-			var classname = ((parseInt(sizeSet[0]) === 2 ? 'w2' : '') + ' ' + (parseInt(sizeSet[1]) === 2 ? 'h2' : '')).trim();
-			return '<div class="indexWorks__item ' + classname + '">\n\t\t\t\t<a href="/articles/' + o.srl + '" data-srl="' + o.srl + '">\n\t\t\t\t\t<img src="' + self.app.options.urlApi + '/' + o.json.thumbnail.path + '" alt="' + o.title + '">\n\t\t\t\t</a>\n\t\t\t</div>';
+			var classname = (parseInt(sizeSet[0]) === 2 ? 'w2' : '') + ' ' + (parseInt(sizeSet[1]) === 2 ? 'h2' : '');
+			if (ready) classname += ' ready';
+			return '<div class="indexWorks__item' + (classname ? ' ' + classname.trim() : '') + '">\n\t\t\t\t<a href="/articles/' + o.srl + '" data-srl="' + o.srl + '">\n\t\t\t\t\t<img src="' + self.app.options.urlApi + '/' + o.json.thumbnail.path + '" alt="' + o.title + '">\n\t\t\t\t</a>\n\t\t\t</div>';
 		}).join('');
 
 		return dom;
+	}
+
+	/**
+  * 스크롤을할때 주소에 페이지 번호가 변하는 기능을 초기화 한다.
+  *
+  * @param {Boolean} sw 이벤트 리스너를 껏다켜는 스위치
+  */
+	function initScrollEvent(sw) {
+		/**
+   * 현재 주소를 분석하여 새로운 `page`값이 적용된 url을 만들어서 `history.replace` 실행한다.
+   *
+   * @param {Number} page
+   */
+		function updatePage(page) {
+			var history = self.app.history;
+
+
+			var url = new URL(window.location.href);
+			var urlParams = url.searchParams;
+			var urlPage = url.searchParams.get('page');
+			urlPage = urlPage ? parseInt(urlPage) : 1;
+
+			if (page === urlPage) return;
+
+			if (page === 1) {
+				urlParams.delete('page');
+			} else {
+				urlParams.set('page', page);
+			}
+
+			var newUrl = location.pathname + (urlParams.toString() ? '?' + urlParams.toString() : '');
+
+			// change default page
+			self.app.options.page = page;
+
+			history.replace((0, _extends3.default)({}, history.env, { url: newUrl }), history.title, newUrl);
+		}
+
+		function action() {
+			var $el = self.$index.children('[data-page]');
+			var top = $(this).scrollTop();
+			var $current = null;
+
+			if (!$el.length) return false;
+
+			if (top + $(this).height() === $(document).height()) {
+				$current = $el.eq($el.length - 1) ? $el.eq($el.length - 1) : null;
+			} else {
+				$el.each(function (key) {
+					if (top >= $(this).offset().top - (SCROLL_OFFSET + 5)) {
+						$current = $(this);
+					}
+				});
+
+				if (!$current) {
+					$current = $el.eq(0);
+				}
+			}
+
+			// update page
+			var page = $current && $current.length ? $current.data('page') : 1;
+			updatePage(page);
+		}
+
+		if (sw) {
+			$(window).off('scroll.redgoose_index').on('scroll.redgoose_index', function () {
+				// 너무많은 스크롤 이벤트가 트리깅 하는것을 방지하기 위하여 셋 타임아웃을 걸어놓았다.
+				clearTimeout(self.scrollEvent);
+				self.scrollEvent = setTimeout(action, SCROLL_DELAY);
+			});
+		} else {
+			$(window).off('scroll.redgoose_index');
+		}
 	}
 
 	/**
@@ -2734,7 +2839,7 @@ function Index(app) {
 		var _ref = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee(srl) {
 			var useHistory = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
 
-			var options, $selected, url, title, res, elements, message, img, _elements;
+			var options, $selected, url, title, res, elements, message, _elements;
 
 			return _regenerator2.default.wrap(function _callee$(_context) {
 				while (1) {
@@ -2775,7 +2880,7 @@ function Index(app) {
 							// off masonry
 							if (this.masonry) masonry(false);
 							// on loading
-							loading(true);
+							loadingForCategory(true);
 							// remove empty element
 							this.$index.children('.indexWorks__empty').remove();
 							// hide more
@@ -2813,7 +2918,7 @@ function Index(app) {
 							// append elements
 							this.$index.append(elements);
 							// off loading
-							loading(false);
+							loadingForCategory(false);
 							// start masonry
 							masonry(true);
 							// update more button
@@ -2821,28 +2926,27 @@ function Index(app) {
 								self.$more.removeClass('indexMore--hide');
 								self.$more.children('button').attr('data-page', res.nextPage);
 							}
-							_context.next = 42;
+							_context.next = 41;
 							break;
 
 						case 26:
 							_context.prev = 26;
 							_context.t0 = _context['catch'](3);
 							message = null;
-							img = null;
 							_context.t1 = _context.t0;
-							_context.next = _context.t1 === 404 ? 33 : 35;
+							_context.next = _context.t1 === 404 ? 32 : 34;
 							break;
 
-						case 33:
+						case 32:
 							message = 'Not found work.';
-							return _context.abrupt('break', 38);
+							return _context.abrupt('break', 37);
 
-						case 35:
+						case 34:
 							console.error(_context.t0);
 							message = 'Service error.';
-							return _context.abrupt('break', 38);
+							return _context.abrupt('break', 37);
 
-						case 38:
+						case 37:
 							// make elements
 							_elements = '<div class="indexEmpty indexWorks__empty">\n\t\t\t\t<img src="' + options.urlRoot + '/assets/images/img-error.png" alt="error">\n\t\t\t\t<p>' + message + '</p>\n\t\t\t</div>';
 							// remove prev elements
@@ -2851,9 +2955,9 @@ function Index(app) {
 							// append elements
 							this.$index.addClass('empty').append(_elements);
 							// off loading
-							loading(false);
+							loadingForCategory(false);
 
-						case 42:
+						case 41:
 						case 'end':
 							return _context.stop();
 					}
@@ -2865,8 +2969,135 @@ function Index(app) {
 			return _ref.apply(this, arguments);
 		};
 	}();
+
+	/**
+  * change page
+  *
+  * @param {Number} page
+  * @param {Boolean} scroll use scroll
+  * @return {Promise}
+  */
+	this.changePage = function () {
+		var _ref2 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee2(page, scroll) {
+			var params, res, elements, $elements, $firstElement, top, message;
+			return _regenerator2.default.wrap(function _callee2$(_context2) {
+				while (1) {
+					switch (_context2.prev = _context2.next) {
+						case 0:
+							if (!this.$more.hasClass('indexMore--processing')) {
+								_context2.next = 2;
+								break;
+							}
+
+							return _context2.abrupt('return', false);
+
+						case 2:
+							_context2.prev = 2;
+
+							// on loading
+							loadingForPage(true);
+
+							// get data
+							params = {
+								field: 'srl,json,title',
+								app: this.app.options.app_srl,
+								page: page,
+								order: 'srl',
+								sort: 'desc',
+								ext_field: 'next_page'
+							};
+
+							if (this.nest.srl) params.nest = this.nest.srl;
+							if (this.category.srl) params.category = this.category.srl;
+							_context2.next = 9;
+							return api.get('/articles', params);
+
+						case 9:
+							res = _context2.sent;
+
+							if (res.success) {
+								_context2.next = 12;
+								break;
+							}
+
+							throw 404;
+
+						case 12:
+							res = res.data;
+
+							// update more button
+							if (res.nextPage) {
+								this.$more.children('button').attr('data-page', res.nextPage);
+							} else {
+								this.$more.addClass('indexMore--hide');
+							}
+
+							// make new elements
+							elements = element(res.index, true);
+							$elements = $(elements);
+
+							// append
+
+							this.$index.append($elements);
+							if (this.masonry) this.masonry.appended($elements);
+
+							// play block animation
+							$elements.each(function (key) {
+								var _this = this;
+
+								setTimeout(function () {
+									$(_this).removeClass('ready');
+								}, BLOCK_DELAY * key);
+							});
+
+							if (scroll) {
+								$firstElement = $elements.eq(0);
+								top = $firstElement.offset().top - SCROLL_OFFSET;
+
+								$firstElement.attr('data-page', page);
+								$("html, body").stop().animate({ scrollTop: top }, SCROLL_SPEED, 'swing');
+							}
+
+							// off loading
+							loadingForPage(false);
+							_context2.next = 36;
+							break;
+
+						case 23:
+							_context2.prev = 23;
+							_context2.t0 = _context2['catch'](2);
+							message = null;
+							_context2.t1 = _context2.t0;
+							_context2.next = _context2.t1 === 404 ? 29 : 31;
+							break;
+
+						case 29:
+							message = 'Not found work.';
+							return _context2.abrupt('break', 34);
+
+						case 31:
+							console.error(_context2.t0);
+							message = 'Service error.';
+							return _context2.abrupt('break', 34);
+
+						case 34:
+							alert(message);
+							loadingForPage(false);
+
+						case 36:
+						case 'end':
+							return _context2.stop();
+					}
+				}
+			}, _callee2, this, [[2, 23]]);
+		}));
+
+		return function (_x3, _x4) {
+			return _ref2.apply(this, arguments);
+		};
+	}();
 }
-},{"babel-runtime/regenerator":"../../node_modules/babel-runtime/regenerator/index.js","babel-runtime/helpers/asyncToGenerator":"../../node_modules/babel-runtime/helpers/asyncToGenerator.js","../libs/api":"libs/api.js","../libs/util":"libs/util.js"}],"Detail/index.js":[function(require,module,exports) {
+},{"babel-runtime/regenerator":"../../node_modules/babel-runtime/regenerator/index.js","babel-runtime/helpers/asyncToGenerator":"../../node_modules/babel-runtime/helpers/asyncToGenerator.js","babel-runtime/helpers/extends":"../../node_modules/babel-runtime/helpers/extends.js","../libs/api":"libs/api.js","../libs/util":"libs/util.js"}],"Detail/index.js":[function(require,module,exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2954,6 +3185,9 @@ function History(app) {
 
 	this.name = 'history';
 	this.app = app;
+	this.env = null;
+	this.title = null;
+	this.url = null;
 
 	(function constructor() {
 		if (!support()) return;
@@ -3005,8 +3239,15 @@ function History(app) {
   */
 	this.push = function (env, title, url) {
 		if (!(support() && url)) return;
+
+		// save member values
+		this.env = env;
+		this.title = title;
+		this.url = url;
+
 		// change title
 		if (title) $title.text(title);
+
 		// update history
 		history.pushState(env || null, title || url, url);
 	};
@@ -3020,8 +3261,15 @@ function History(app) {
   */
 	this.replace = function (env, title, url) {
 		if (!(support() && url)) return;
+
+		// save member values
+		this.env = env;
+		this.title = title;
+		this.url = url;
+
 		// change title
 		if (title) $title.text(title);
+
 		// update history
 		history.replaceState(env || null, title || url, url);
 	};
