@@ -96,11 +96,17 @@ try {
 
 			case 'article':
 				$res = Util::api('/articles/'.(int)$_params->srl, (object)[
-					'hit' => 0,
+					'hit' => Util::checkCookie('redgoose-hit-'.$_params->srl) ? 0 : 1,
 					'ext_field' => 'category_name,nest_name'
 				]);
 				if (!($res && $res->success)) throw new Exception($res->message);
 				$res->data->regdate = Util::convertDate($res->data->regdate);
+
+				// add key in cookie
+				if (!Util::checkCookie('redgoose-hit-'.$_params->srl))
+				{
+					Util::setCookie('redgoose-hit-'.$_params->srl, '1', 7);
+				}
 
 				// parse markdown
 				$parsedown = new \Parsedown();
@@ -110,17 +116,21 @@ try {
 				switch ($_GET['mode'])
 				{
 					case 'popup':
-						$blade->render('article.popup', (object)[
+						$blade->render('work.popup', (object)[
 							'data' => $res->data,
+							'onLike' => Util::checkCookie('redgoose-like-'.$_params->srl),
+							'mode' => 'popup'
 						]);
 						break;
 
 					default:
-						$blade->render('article.detail', (object)[
-							'title' => $res->data->title.' - '.getenv('TITLE'),
+						$blade->render('work.detail', (object)[
+							'title' => ($res->data->title === '.' ? 'Untitled work' : $res->data->title).' - '.getenv('TITLE'),
 							'description' => Util::contentToShortText($res->data->content),
 							'image' => __API__.'/'.$res->data->json->thumbnail->path,
 							'data' => $res->data,
+							'onLike' => Util::checkCookie('redgoose-like-'.$_params->srl),
+							'mode' => 'default'
 						]);
 						break;
 				}

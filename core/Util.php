@@ -196,4 +196,32 @@ class Util {
 		return $con;
 	}
 
+	/**
+	 * check cookie key
+	 *
+	 * @param string $key
+	 * @return bool
+	 */
+	static public function checkCookie($key='')
+	{
+		return isset($_COOKIE[$key]) ? true : false;
+	}
+
+	/**
+	 * set cookie
+	 *
+	 * @param string $key
+	 * @param string $value
+	 * @param int $day
+	 */
+	static public function setCookie($key='', $value='1', $day=1)
+	{
+		setcookie(
+			$key,
+			$value,
+			time() + 3600 * 24 * $day,
+			getenv('PATH_COOKIE')
+		);
+	}
+
 }

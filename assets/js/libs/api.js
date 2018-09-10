@@ -28,14 +28,6 @@ export const get = async function(url, params)
 {
 	try
 	{
-		// merge params
-		params = {
-			...{
-				size: parseInt(app.options.size) || 10
-			},
-			...params,
-		};
-
 		return await $.ajax({
 			url: url + util.serialize(params, true),
 			type: 'get',

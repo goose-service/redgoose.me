@@ -81,6 +81,7 @@ window.redgoose = new Redgoose('index', {
 	title: '{{getenv('TITLE')}}',
 	urlRoot: '{{__ROOT__}}',
 	urlApi: '{{__API__}}',
+	urlCookie: '{{getenv('PATH_COOKIE')}}',
 	token: '{{getenv('TOKEN_PUBLIC')}}',
 	size: parseInt('{{getenv('DEFAULT_INDEX_SIZE')}}'),
 	app_srl: parseInt('{{getenv('DEFAULT_APP_SRL')}}'),
@@ -90,6 +91,7 @@ window.redgoose = new Redgoose('index', {
 	category_srl: '{{$category_srl}}',
 	category_name: '{{$category_name}}',
 	page: '{{$page}}',
+	debug: !!'{{getenv('USE_DEBUG')}}',
 });
 </script>
 @endsection

@@ -16,14 +16,20 @@ if(!defined("__GOOSE__")){exit();}
 <meta property="og:image" content="{{$image}}">
 @endsection
 
-@include('article.body')
+@include('work.body')
 
 @section('script')
 <script src="{{__ROOT__}}/assets/vendor/jquery-3.3.1.min.js"></script>
 <script src="{{__ROOT__}}/assets/dist/app.js"></script>
 <script>
-window.redgoose = new Redgoose('detail', {
-	//
+window.redgoose = new Redgoose('work', {
+	srl: parseInt('{{$data->srl}}'),
+	urlRoot: '{{__ROOT__}}',
+	urlApi: '{{__API__}}',
+	urlCookie: '{{getenv('PATH_COOKIE')}}',
+	token: '{{getenv('TOKEN_PUBLIC')}}',
+	app_srl: parseInt('{{getenv('DEFAULT_APP_SRL')}}'),
+	debug: !!'{{getenv('USE_DEBUG')}}',
 });
 </script>
 @endsection

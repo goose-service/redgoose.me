@@ -1,5 +1,5 @@
 import Index from './Index';
-import Detail from './Detail';
+import Work from './Work';
 import Header from './Header';
 import History from './History';
 // resource
@@ -21,7 +21,7 @@ class Redgoose {
 		this.name = 'redgoose';
 		// set instance
 		this.index = null;
-		this.detail = null;
+		this.work = null;
 		this.header = new Header(this);
 		this.history = new History(this);
 		// set etc
@@ -45,9 +45,9 @@ class Redgoose {
 				this.index = new Index(this);
 				break;
 
-			case 'detail':
+			case 'work':
 				this.mode = 'view';
-				this.detail = new Detail(this);
+				this.work = new Work(this);
 				break;
 
 			default:

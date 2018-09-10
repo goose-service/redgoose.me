@@ -2384,6 +2384,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.sleep = sleep;
 exports.serialize = serialize;
+exports.setCookie = setCookie;
 /**
  * check touch device
  *
@@ -2448,6 +2449,24 @@ function serialize(obj) {
 	res = str.join('&');
 	return res && usePrefix ? '?' + res : res;
 }
+
+/**
+ * set cookie
+ *
+ * @param {String} key
+ * @param {String} value
+ * @param {Number} day
+ * @param {String} path
+ */
+function setCookie(key) {
+	var value = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '1';
+	var day = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 7;
+	var path = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : '/';
+
+	var date = new Date();
+	date.setTime(date.getTime() + day * 24 * 60 * 60 * 1000);
+	document.cookie = key + '=' + value + ';expires=' + date.toUTCString() + ';path=' + path;
+}
 },{}],"libs/api.js":[function(require,module,exports) {
 'use strict';
 
@@ -2459,10 +2478,6 @@ exports.get = exports.init = undefined;
 var _regenerator = require('babel-runtime/regenerator');
 
 var _regenerator2 = _interopRequireDefault(_regenerator);
-
-var _extends2 = require('babel-runtime/helpers/extends');
-
-var _extends3 = _interopRequireDefault(_extends2);
 
 var _asyncToGenerator2 = require('babel-runtime/helpers/asyncToGenerator');
 
@@ -2505,39 +2520,33 @@ var get = exports.get = function () {
 				switch (_context.prev = _context.next) {
 					case 0:
 						_context.prev = 0;
-
-						// merge params
-						params = (0, _extends3.default)({
-							size: parseInt(app.options.size) || 10
-						}, params);
-
-						_context.next = 4;
+						_context.next = 3;
 						return $.ajax({
 							url: url + util.serialize(params, true),
 							type: 'get'
 						});
 
-					case 4:
+					case 3:
 						return _context.abrupt('return', _context.sent);
 
-					case 7:
-						_context.prev = 7;
+					case 6:
+						_context.prev = 6;
 						_context.t0 = _context['catch'](0);
 						return _context.abrupt('return', null);
 
-					case 10:
+					case 9:
 					case 'end':
 						return _context.stop();
 				}
 			}
-		}, _callee, this, [[0, 7]]);
+		}, _callee, this, [[0, 6]]);
 	}));
 
 	return function get(_x, _x2) {
 		return _ref.apply(this, arguments);
 	};
 }();
-},{"babel-runtime/regenerator":"../../node_modules/babel-runtime/regenerator/index.js","babel-runtime/helpers/extends":"../../node_modules/babel-runtime/helpers/extends.js","babel-runtime/helpers/asyncToGenerator":"../../node_modules/babel-runtime/helpers/asyncToGenerator.js","./util":"libs/util.js"}],"Index/index.js":[function(require,module,exports) {
+},{"babel-runtime/regenerator":"../../node_modules/babel-runtime/regenerator/index.js","babel-runtime/helpers/asyncToGenerator":"../../node_modules/babel-runtime/helpers/asyncToGenerator.js","./util":"libs/util.js"}],"Index/index.js":[function(require,module,exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2821,12 +2830,12 @@ function Index(app) {
 	};
 
 	this.open = function () {
-		//
+		// TODO
 		console.log('open work');
 	};
 
 	this.close = function () {
-		//
+		// TODO
 		console.log('close work');
 	};
 
@@ -2841,7 +2850,7 @@ function Index(app) {
 		var _ref = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee(srl) {
 			var useHistory = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
 
-			var options, $selected, url, title, res, elements, message, _elements;
+			var options, $selected, url, title, res, elements, $elements, message, _elements;
 
 			return _regenerator2.default.wrap(function _callee$(_context) {
 				while (1) {
@@ -2881,12 +2890,16 @@ function Index(app) {
 
 							// off masonry
 							if (this.masonry) masonry(false);
+
 							// off scroll event
 							initScrollEvent(false);
+
 							// on loading
 							loadingForCategory(true);
+
 							// remove empty element
 							this.$index.children('.indexWorks__empty').remove();
+
 							// hide more
 							self.$more.addClass('indexMore--hide');
 
@@ -2898,6 +2911,7 @@ function Index(app) {
 								category: srl || '',
 								order: 'srl',
 								sort: 'desc',
+								size: parseInt(this.app.options.size) || 10,
 								ext_field: 'next_page'
 							});
 
@@ -2916,43 +2930,51 @@ function Index(app) {
 
 							// make elements
 							elements = element(res.index);
+							$elements = $(elements);
+							// TODO: 목록에서 디테일 오픈 이벤트 만들기
+
 							// remove prev elements
 
 							this.$index.children('.indexWorks__item').remove();
+
 							// append elements
 							this.$index.append(elements);
+
 							// off loading
 							loadingForCategory(false);
+
 							// start masonry
 							masonry(true);
+
 							// on scroll event
 							initScrollEvent(true);
+
 							// update more button
 							if (res.nextPage) {
 								self.$more.removeClass('indexMore--hide');
 								self.$more.children('button').attr('data-page', res.nextPage);
 							}
-							_context.next = 43;
+							_context.next = 44;
 							break;
 
-						case 28:
-							_context.prev = 28;
+						case 29:
+							_context.prev = 29;
 							_context.t0 = _context['catch'](3);
 							message = null;
 							_context.t1 = _context.t0;
-							_context.next = _context.t1 === 404 ? 34 : 36;
+							_context.next = _context.t1 === 404 ? 35 : 37;
 							break;
 
-						case 34:
+						case 35:
 							message = 'Not found work.';
-							return _context.abrupt('break', 39);
+							return _context.abrupt('break', 40);
 
-						case 36:
+						case 37:
 							console.error(_context.t0);
 							message = 'Service error.';
-							return _context.abrupt('break', 39);
+							return _context.abrupt('break', 40);
 
-						case 39:
+						case 40:
 							// make elements
 							_elements = '<div class="indexEmpty indexWorks__empty">\n\t\t\t\t<img src="' + options.urlRoot + '/assets/images/img-error.png" alt="error">\n\t\t\t\t<p>' + message + '</p>\n\t\t\t</div>';
 							// remove prev elements
@@ -2963,12 +2985,12 @@ function Index(app) {
 							// off loading
 							loadingForCategory(false);
 
-						case 43:
+						case 44:
 						case 'end':
 							return _context.stop();
 					}
 				}
-			}, _callee, this, [[3, 28]]);
+			}, _callee, this, [[3, 29]]);
 		}));
 
 		return function (_x2) {
@@ -3010,6 +3032,7 @@ function Index(app) {
 								page: page,
 								order: 'srl',
 								sort: 'desc',
+								size: parseInt(this.app.options.size) || 10,
 								ext_field: 'next_page'
 							};
 
@@ -3041,6 +3064,7 @@ function Index(app) {
 							// make new elements
 							elements = element(res.index, true);
 							$elements = $(elements);
+							// TODO: 목록에서 디테일 오픈 이벤트 만들기
 
 							// append
 
@@ -3103,18 +3127,152 @@ function Index(app) {
 		};
 	}();
 }
-},{"babel-runtime/regenerator":"../../node_modules/babel-runtime/regenerator/index.js","babel-runtime/helpers/asyncToGenerator":"../../node_modules/babel-runtime/helpers/asyncToGenerator.js","babel-runtime/helpers/extends":"../../node_modules/babel-runtime/helpers/extends.js","../libs/api":"libs/api.js","../libs/util":"libs/util.js"}],"Detail/index.js":[function(require,module,exports) {
+},{"babel-runtime/regenerator":"../../node_modules/babel-runtime/regenerator/index.js","babel-runtime/helpers/asyncToGenerator":"../../node_modules/babel-runtime/helpers/asyncToGenerator.js","babel-runtime/helpers/extends":"../../node_modules/babel-runtime/helpers/extends.js","../libs/api":"libs/api.js","../libs/util":"libs/util.js"}],"Work/index.js":[function(require,module,exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
 	value: true
 });
-exports.default = Detail;
-function Detail(app) {
 
-	console.log('detail');
+var _regenerator = require('babel-runtime/regenerator');
+
+var _regenerator2 = _interopRequireDefault(_regenerator);
+
+var _asyncToGenerator2 = require('babel-runtime/helpers/asyncToGenerator');
+
+var _asyncToGenerator3 = _interopRequireDefault(_asyncToGenerator2);
+
+exports.default = Work;
+
+var _api = require('../libs/api');
+
+var api = _interopRequireWildcard(_api);
+
+var _util = require('../libs/util');
+
+var util = _interopRequireWildcard(_util);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function Work(app) {
+
+	var self = this;
+
+	this.name = 'work';
+	this.app = app;
+	this.$container = $('#work');
+	this.$body = this.$container.find('.work__body');
+	this.$like = this.$container.find('.work__like');
+	this.$close = this.$container.find('.work__close');
+	this.loading = false;
+	this.work = {};
+
+	(function constructor() {
+		try {
+			// check container
+			if (!(self.$container && self.$container.length)) {
+				throw 'Not found container';
+			}
+
+			// init filtering elements in body
+			if (self.$body && self.$body.length) {
+				filteringElementsInBody();
+			}
+
+			// init like event
+			if (self.$like && self.$like.length) {
+				self.$like.children('button').on('click', function () {
+					var $self = $(this);
+					if ($self.hasClass('on')) return false;
+					self.onLike(parseInt(this.dataset.srl)).then(function (cnt) {
+						$self.addClass('on');
+						$self.children('em').text(cnt);
+					});
+				});
+			}
+
+			// init close event
+			if (self.$close && self.$close.length) {
+				// TODO: close event
+			}
+		} catch (e) {
+			if (self.app.options.debug) {
+				console.error(e);
+			}
+		}
+	})();
+
+	/**
+  * filtering elements in body
+  * 우선 이미지 태그들을 찾아서 태그로 한번 씌우는 작업을 한다.
+  */
+	function filteringElementsInBody() {
+		var $images = self.$body.find('img');
+		$images.each(function () {
+			$(this).wrap('<span class="image"></span>');
+		});
+	}
+
+	/**
+  * on like
+  *
+  * @param {Number} srl
+  */
+	this.onLike = function () {
+		var _ref = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee(srl) {
+			var res;
+			return _regenerator2.default.wrap(function _callee$(_context) {
+				while (1) {
+					switch (_context.prev = _context.next) {
+						case 0:
+							if (srl) {
+								_context.next = 2;
+								break;
+							}
+
+							return _context.abrupt('return');
+
+						case 2:
+							_context.prev = 2;
+							_context.next = 5;
+							return api.get('/articles/' + srl + '/update', { type: 'star' });
+
+						case 5:
+							res = _context.sent;
+
+							if (res.success) {
+								_context.next = 8;
+								break;
+							}
+
+							throw 'Failed update like';
+
+						case 8:
+							util.setCookie('redgoose-like-' + srl, '1', 10, this.app.options.urlCookie);
+							return _context.abrupt('return', res.data.star);
+
+						case 12:
+							_context.prev = 12;
+							_context.t0 = _context['catch'](2);
+
+							alert(typeof _context.t0 === 'string' ? _context.t0 : 'Service error');
+
+						case 15:
+						case 'end':
+							return _context.stop();
+					}
+				}
+			}, _callee, this, [[2, 12]]);
+		}));
+
+		return function (_x) {
+			return _ref.apply(this, arguments);
+		};
+	}();
 }
-},{}],"Header/index.js":[function(require,module,exports) {
+},{"babel-runtime/regenerator":"../../node_modules/babel-runtime/regenerator/index.js","babel-runtime/helpers/asyncToGenerator":"../../node_modules/babel-runtime/helpers/asyncToGenerator.js","../libs/api":"libs/api.js","../libs/util":"libs/util.js"}],"Header/index.js":[function(require,module,exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -3349,9 +3507,9 @@ var _Index = require('./Index');
 
 var _Index2 = _interopRequireDefault(_Index);
 
-var _Detail = require('./Detail');
+var _Work = require('./Work');
 
-var _Detail2 = _interopRequireDefault(_Detail);
+var _Work2 = _interopRequireDefault(_Work);
 
 var _Header = require('./Header');
 
@@ -3391,7 +3549,7 @@ function Redgoose() {
 	this.name = 'redgoose';
 	// set instance
 	this.index = null;
-	this.detail = null;
+	this.work = null;
 	this.header = new _Header2.default(this);
 	this.history = new _History2.default(this);
 	// set etc
@@ -3410,9 +3568,9 @@ function Redgoose() {
 			this.index = new _Index2.default(this);
 			break;
 
-		case 'detail':
+		case 'work':
 			this.mode = 'view';
-			this.detail = new _Detail2.default(this);
+			this.work = new _Work2.default(this);
 			break;
 
 		default:
@@ -3427,7 +3585,7 @@ function Redgoose() {
 
 
 module.exports = Redgoose;
-},{"babel-runtime/helpers/extends":"../../node_modules/babel-runtime/helpers/extends.js","babel-runtime/helpers/classCallCheck":"../../node_modules/babel-runtime/helpers/classCallCheck.js","./Index":"Index/index.js","./Detail":"Detail/index.js","./Header":"Header/index.js","./History":"History.js","./defaultOptions":"defaultOptions.js","./libs/api":"libs/api.js","../css/app.scss":"../css/app.scss"}],"../../node_modules/parcel/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"babel-runtime/helpers/extends":"../../node_modules/babel-runtime/helpers/extends.js","babel-runtime/helpers/classCallCheck":"../../node_modules/babel-runtime/helpers/classCallCheck.js","./Index":"Index/index.js","./Work":"Work/index.js","./Header":"Header/index.js","./History":"History.js","./defaultOptions":"defaultOptions.js","./libs/api":"libs/api.js","../css/app.scss":"../css/app.scss"}],"../../node_modules/parcel/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 
@@ -3456,7 +3614,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = '' || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + '64397' + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + '49711' + '/');
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);
 

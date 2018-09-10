@@ -307,13 +307,13 @@ export default function Index(app) {
 
 	this.open = function()
 	{
-		//
+		// TODO
 		console.log('open work');
 	};
 
 	this.close = function()
 	{
-		//
+		// TODO
 		console.log('close work');
 	};
 
@@ -365,12 +365,16 @@ export default function Index(app) {
 
 			// off masonry
 			if (this.masonry) masonry(false);
+
 			// off scroll event
 			initScrollEvent(false);
+
 			// on loading
 			loadingForCategory(true);
+
 			// remove empty element
 			this.$index.children('.indexWorks__empty').remove();
+
 			// hide more
 			self.$more.addClass('indexMore--hide');
 
@@ -381,6 +385,7 @@ export default function Index(app) {
 				category: srl || '',
 				order: 'srl',
 				sort: 'desc',
+				size: parseInt(this.app.options.size) || 10,
 				ext_field: 'next_page',
 			});
 			if (!res.success) throw 404;
@@ -388,16 +393,24 @@ export default function Index(app) {
 
 			// make elements
 			let elements = element(res.index);
+			let $elements = $(elements);
+			// TODO: 목록에서 디테일 오픈 이벤트 만들기
+
 			// remove prev elements
 			this.$index.children('.indexWorks__item').remove();
+
 			// append elements
 			this.$index.append(elements);
+
 			// off loading
 			loadingForCategory(false);
+
 			// start masonry
 			masonry(true);
+
 			// on scroll event
 			initScrollEvent(true);
+
 			// update more button
 			if (res.nextPage)
 			{
@@ -455,6 +468,7 @@ export default function Index(app) {
 				page,
 				order: 'srl',
 				sort: 'desc',
+				size: parseInt(this.app.options.size) || 10,
 				ext_field: 'next_page',
 			};
 			if (this.nest.srl) params.nest = this.nest.srl;
@@ -476,6 +490,7 @@ export default function Index(app) {
 			// make new elements
 			let elements = element(res.index, true);
 			let $elements = $(elements);
+			// TODO: 목록에서 디테일 오픈 이벤트 만들기
 
 			// append
 			this.$index.append($elements);
