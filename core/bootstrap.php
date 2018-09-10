@@ -75,7 +75,6 @@ try {
 					'page' => Util::getPage(),
 					'size' => getenv('DEFAULT_INDEX_SIZE'),
 				]);
-				if (!($res && $res->success)) throw new Exception($res->message);
 
 				$title = 'redgoose';
 				if (isset($res->data->nest->name)) $title = $res->data->nest->name.' - '.$title;
@@ -98,7 +97,7 @@ try {
 			case 'article':
 				$res = Util::api('/articles/'.(int)$_params->srl, (object)[
 					'hit' => 0,
-					'ext_field' => 'category_name'
+					'ext_field' => 'category_name,nest_name'
 				]);
 				if (!($res && $res->success)) throw new Exception($res->message);
 				$res->data->regdate = Util::convertDate($res->data->regdate);
@@ -111,6 +110,9 @@ try {
 				switch ($_GET['mode'])
 				{
 					case 'popup':
+						$blade->render('article.popup', (object)[
+							'data' => $res->data,
+						]);
 						break;
 
 					default:

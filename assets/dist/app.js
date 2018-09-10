@@ -2612,13 +2612,13 @@ function Index(app) {
 			}
 
 			// init masonry
-			if (self.$index && self.$index.length) {
+			if (self.$index && self.$index.children('.indexWorks__item') && self.$index.children('.indexWorks__item').length) {
 				// on masonry
 				masonry(true);
-				// set page on first item
-				self.$index.children('.indexWorks__item').eq(0).attr('data-page', self.app.options.page || 1);
 				// scroll event
 				initScrollEvent(true);
+			} else {
+				self.$index.addClass('empty');
 			}
 
 			// init more button
@@ -2730,7 +2730,7 @@ function Index(app) {
 			var sizeSet = o.json.thumbnail && o.json.thumbnail.sizeSet ? o.json.thumbnail.sizeSet.split('*') : [1, 1];
 			var classname = (parseInt(sizeSet[0]) === 2 ? 'w2' : '') + ' ' + (parseInt(sizeSet[1]) === 2 ? 'h2' : '');
 			if (ready) classname += ' ready';
-			return '<div class="indexWorks__item' + (classname ? ' ' + classname.trim() : '') + '">\n\t\t\t\t<a href="/articles/' + o.srl + '" data-srl="' + o.srl + '">\n\t\t\t\t\t<img src="' + self.app.options.urlApi + '/' + o.json.thumbnail.path + '" alt="' + o.title + '">\n\t\t\t\t</a>\n\t\t\t</div>';
+			return '<div class="indexWorks__item' + (classname ? ' ' + classname.trim() : '') + '">\n\t\t\t\t<a href="/article/' + o.srl + '" data-srl="' + o.srl + '">\n\t\t\t\t\t<img src="' + self.app.options.urlApi + '/' + o.json.thumbnail.path + '" alt="' + o.title + '">\n\t\t\t\t</a>\n\t\t\t</div>';
 		}).join('');
 
 		return dom;
@@ -2799,6 +2799,8 @@ function Index(app) {
 		}
 
 		if (sw) {
+			// set page on first item
+			self.$index.children('.indexWorks__item').eq(0).attr('data-page', self.app.options.page || 1);
 			$(window).off('scroll.redgoose_index').on('scroll.redgoose_index', function () {
 				// 너무많은 스크롤 이벤트가 트리깅 하는것을 방지하기 위하여 셋 타임아웃을 걸어놓았다.
 				clearTimeout(self.scrollEvent);
@@ -2879,6 +2881,8 @@ function Index(app) {
 
 							// off masonry
 							if (this.masonry) masonry(false);
+							// off scroll event
+							initScrollEvent(false);
 							// on loading
 							loadingForCategory(true);
 							// remove empty element
@@ -2887,7 +2891,7 @@ function Index(app) {
 							self.$more.addClass('indexMore--hide');
 
 							// get datas
-							_context.next = 14;
+							_context.next = 15;
 							return api.get('/articles', {
 								nest: options.nest_srl,
 								field: 'srl,json,title',
@@ -2897,17 +2901,17 @@ function Index(app) {
 								ext_field: 'next_page'
 							});
 
-						case 14:
+						case 15:
 							res = _context.sent;
 
 							if (res.success) {
-								_context.next = 17;
+								_context.next = 18;
 								break;
 							}
 
 							throw 404;
 
-						case 17:
+						case 18:
 							res = res.data;
 
 							// make elements
@@ -2921,32 +2925,34 @@ function Index(app) {
 							loadingForCategory(false);
 							// start masonry
 							masonry(true);
+							// on scroll event
+							initScrollEvent(true);
 							// update more button
 							if (res.nextPage) {
 								self.$more.removeClass('indexMore--hide');
 								self.$more.children('button').attr('data-page', res.nextPage);
 							}
-							_context.next = 41;
+							_context.next = 43;
 							break;
 
-						case 26:
-							_context.prev = 26;
+						case 28:
+							_context.prev = 28;
 							_context.t0 = _context['catch'](3);
 							message = null;
 							_context.t1 = _context.t0;
-							_context.next = _context.t1 === 404 ? 32 : 34;
+							_context.next = _context.t1 === 404 ? 34 : 36;
 							break;
 
-						case 32:
-							message = 'Not found work.';
-							return _context.abrupt('break', 37);
-
 						case 34:
+							message = 'Not found work.';
+							return _context.abrupt('break', 39);
+
+						case 36:
 							console.error(_context.t0);
 							message = 'Service error.';
-							return _context.abrupt('break', 37);
+							return _context.abrupt('break', 39);
 
-						case 37:
+						case 39:
 							// make elements
 							_elements = '<div class="indexEmpty indexWorks__empty">\n\t\t\t\t<img src="' + options.urlRoot + '/assets/images/img-error.png" alt="error">\n\t\t\t\t<p>' + message + '</p>\n\t\t\t</div>';
 							// remove prev elements
@@ -2957,12 +2963,12 @@ function Index(app) {
 							// off loading
 							loadingForCategory(false);
 
-						case 41:
+						case 43:
 						case 'end':
 							return _context.stop();
 					}
 				}
-			}, _callee, this, [[3, 26]]);
+			}, _callee, this, [[3, 28]]);
 		}));
 
 		return function (_x2) {
@@ -3450,7 +3456,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = '' || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + '65408' + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + '64397' + '/');
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);
 

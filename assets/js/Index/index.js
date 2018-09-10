@@ -45,14 +45,16 @@ export default function Index(app) {
 			}
 
 			// init masonry
-			if (self.$index && self.$index.length)
+			if (self.$index && self.$index.children('.indexWorks__item') && self.$index.children('.indexWorks__item').length)
 			{
 				// on masonry
 				masonry(true);
-				// set page on first item
-				self.$index.children('.indexWorks__item').eq(0).attr('data-page', self.app.options.page || 1);
 				// scroll event
 				initScrollEvent(true);
+			}
+			else
+			{
+				self.$index.addClass('empty');
 			}
 
 			// init more button
@@ -188,7 +190,7 @@ export default function Index(app) {
 			let classname = `${parseInt(sizeSet[0]) === 2 ? 'w2' : ''} ${parseInt(sizeSet[1]) === 2 ? 'h2' : ''}`;
 			if (ready) classname += ' ready';
 			return `<div class="indexWorks__item${classname ? ' ' + classname.trim() : ''}">
-				<a href="/articles/${o.srl}" data-srl="${o.srl}">
+				<a href="/article/${o.srl}" data-srl="${o.srl}">
 					<img src="${self.app.options.urlApi}/${o.json.thumbnail.path}" alt="${o.title}">
 				</a>
 			</div>`;
@@ -279,6 +281,8 @@ export default function Index(app) {
 
 		if (sw)
 		{
+			// set page on first item
+			self.$index.children('.indexWorks__item').eq(0).attr('data-page', self.app.options.page || 1);
 			$(window).off('scroll.redgoose_index').on('scroll.redgoose_index', function() {
 				// 너무많은 스크롤 이벤트가 트리깅 하는것을 방지하기 위하여 셋 타임아웃을 걸어놓았다.
 				clearTimeout(self.scrollEvent);
@@ -361,6 +365,8 @@ export default function Index(app) {
 
 			// off masonry
 			if (this.masonry) masonry(false);
+			// off scroll event
+			initScrollEvent(false);
 			// on loading
 			loadingForCategory(true);
 			// remove empty element
@@ -390,6 +396,8 @@ export default function Index(app) {
 			loadingForCategory(false);
 			// start masonry
 			masonry(true);
+			// on scroll event
+			initScrollEvent(true);
 			// update more button
 			if (res.nextPage)
 			{
@@ -422,7 +430,7 @@ export default function Index(app) {
 			// off loading
 			loadingForCategory(false);
 		}
-	}
+	};
 
 	/**
 	 * change page
@@ -507,5 +515,6 @@ export default function Index(app) {
 			alert(message);
 			loadingForPage(false);
 		}
-	}
+	};
+
 }

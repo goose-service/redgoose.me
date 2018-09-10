@@ -46,8 +46,8 @@ if(!defined("__GOOSE__")){exit();}
 			</div>
 		</div>
 		<div id="index" class="indexWorks__index">
+			<div class="indexWorks__sizer"></div>
 			@if ($index && count($index))
-				<div class="indexWorks__sizer"></div>
 				@foreach($index as $k=>$item)
 				<div class="indexWorks__item{{$item->className ? ' '.$item->className : ''}}">
 					<a href="/article/{{$item->srl}}" data-srl="{{$item->srl}}">
