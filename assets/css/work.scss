@@ -173,6 +173,9 @@
 			th, td {}
 		}
 	}
+	a {
+		word-break: break-all;
+	}
 	code {
 		margin: 0 2px;
 		white-space: nowrap;
