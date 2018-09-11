@@ -2497,13 +2497,6 @@ var app = null;
 var init = exports.init = function init(_app) {
 	app = _app;
 
-	$.ajaxSetup({
-		beforeSend: function beforeSend(xhr) {
-			this.url = app.options.urlApi + this.url;
-			xhr.setRequestHeader('Authorization', app.options.token);
-		}
-	});
-
 	$(document).ajaxStart(function () {
 		console.warn('ajax start');
 	});
@@ -2520,26 +2513,29 @@ var get = exports.get = function () {
 				switch (_context.prev = _context.next) {
 					case 0:
 						_context.prev = 0;
-						_context.next = 3;
+
+						url = /^http/.test(url) ? url : app.options.urlApi + url;
+						_context.next = 4;
 						return $.ajax({
 							url: url + util.serialize(params, true),
-							type: 'get'
+							type: 'get',
+							headers: { 'Authorization': app.options.token }
 						});
 
-					case 3:
+					case 4:
 						return _context.abrupt('return', _context.sent);
 
-					case 6:
-						_context.prev = 6;
+					case 7:
+						_context.prev = 7;
 						_context.t0 = _context['catch'](0);
 						return _context.abrupt('return', null);
 
-					case 9:
+					case 10:
 					case 'end':
 						return _context.stop();
 				}
 			}
-		}, _callee, this, [[0, 6]]);
+		}, _callee, this, [[0, 7]]);
 	}));
 
 	return function get(_x, _x2) {
@@ -2620,12 +2616,14 @@ function Index(app) {
 				initCategoryEvents();
 			}
 
-			// init masonry
+			// init masonry and items event
 			if (self.$index && self.$index.children('.indexWorks__item') && self.$index.children('.indexWorks__item').length) {
 				// on masonry
 				masonry(true);
 				// scroll event
 				initScrollEvent(true);
+				// set items event
+				initItemsEvent(self.$index.children('.indexWorks__item'));
 			} else {
 				self.$index.addClass('empty');
 			}
@@ -2710,6 +2708,10 @@ function Index(app) {
 		}
 	}
 
+	/**
+  * init category event
+  * 모바일에서 카테고리 접기/펼치기 이벤트와 버튼을 클릭했을때 목록이 변하는 이벤트 설정
+  */
 	function initCategoryEvents() {
 		// toggle category list
 		self.$categories.children('.indexCategories__toggle').on('click', function () {
@@ -2721,7 +2723,7 @@ function Index(app) {
 		$categoryButtons.on('click', function () {
 			if ($(this).parent().hasClass('on')) return false;
 			var srl = parseInt(this.dataset.srl);
-			self.changeCategory(srl, true);
+			self.changeCategory(srl, true).then();
 			self.$categories.removeClass('active');
 			return false;
 		});
@@ -2732,7 +2734,7 @@ function Index(app) {
   *
   * @param {Array} index
   * @param {Boolean} ready
-  * @return String
+  * @return {Array}
   */
 	function element(index, ready) {
 		var dom = index.map(function (o, k) {
@@ -2741,8 +2743,12 @@ function Index(app) {
 			if (ready) classname += ' ready';
 			return '<div class="indexWorks__item' + (classname ? ' ' + classname.trim() : '') + '">\n\t\t\t\t<a href="/article/' + o.srl + '" data-srl="' + o.srl + '">\n\t\t\t\t\t<img src="' + self.app.options.urlApi + '/' + o.json.thumbnail.path + '" alt="' + o.title + '">\n\t\t\t\t</a>\n\t\t\t</div>';
 		}).join('');
+		var $dom = $(dom);
 
-		return dom;
+		// set items event
+		initItemsEvent($dom);
+
+		return $dom;
 	}
 
 	/**
@@ -2821,6 +2827,21 @@ function Index(app) {
 	}
 
 	/**
+  * init items event
+  * 목록의 아이템 이벤트 설정
+  */
+	function initItemsEvent($items) {
+		$items.each(function () {
+			var $button = $(this).children('a');
+			$button.on('click', function (e) {
+				e.preventDefault();
+				var srl = parseInt(this.dataset.srl);
+				self.open(srl).then();
+			});
+		});
+	}
+
+	/**
   * PUBLIC AREA
   */
 
@@ -2830,9 +2851,44 @@ function Index(app) {
 	};
 
 	this.open = function () {
-		// TODO
-		console.log('open work');
-	};
+		var _ref = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee(srl) {
+			return _regenerator2.default.wrap(function _callee$(_context) {
+				while (1) {
+					switch (_context.prev = _context.next) {
+						case 0:
+							try {
+								// TODO: 스크롤 위치 백업하기
+								// TODO: 히스토리 업데이트하기
+								// TODO: html class 이름 팝업용으로 추가
+								// TODO: 팝업용 엘리먼트를 스크립트로 만들던지 미리 만들어둔걸 셀렉터를 변수로 만들기
+								// TODO: 로딩 띄우기
+								// TODO: jquery로 엘리먼트를 바로 가져오기 `/article/{srl}?mode=popup`
+								// TODO: 데이터 검사하기
+								// TODO: 로딩 끄기
+								// TODO: 데이터를 팝업 화면에 집어넣기
+								// TODO: 이벤트 초기화 하기
+
+								// $.get('/article/85?mode=popup', function(data) {
+								// 	console.log(data);
+								// });
+
+								console.log('open work', srl);
+							} catch (e) {
+								// TODO: 오류 엘리먼트 만들어 넣기
+							}
+
+						case 1:
+						case 'end':
+							return _context.stop();
+					}
+				}
+			}, _callee, this);
+		}));
+
+		return function (_x) {
+			return _ref.apply(this, arguments);
+		};
+	}();
 
 	this.close = function () {
 		// TODO
@@ -2847,14 +2903,12 @@ function Index(app) {
   * @return {Promise}
   */
 	this.changeCategory = function () {
-		var _ref = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee(srl) {
+		var _ref2 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee2(srl) {
 			var useHistory = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
-
-			var options, $selected, url, title, res, elements, $elements, message, _elements;
-
-			return _regenerator2.default.wrap(function _callee$(_context) {
+			var options, $selected, url, title, res, $elements, message, elements;
+			return _regenerator2.default.wrap(function _callee2$(_context2) {
 				while (1) {
-					switch (_context.prev = _context.next) {
+					switch (_context2.prev = _context2.next) {
 						case 0:
 							options = this.app.options;
 
@@ -2868,7 +2922,7 @@ function Index(app) {
 								$selected = this.$categories.find('a').eq(0);
 							}
 
-							_context.prev = 3;
+							_context2.prev = 3;
 
 							// change active menu
 							this.$categories.find('li.on').removeClass('on');
@@ -2904,7 +2958,7 @@ function Index(app) {
 							self.$more.addClass('indexMore--hide');
 
 							// get datas
-							_context.next = 15;
+							_context2.next = 15;
 							return api.get('/articles', {
 								nest: options.nest_srl,
 								field: 'srl,json,title',
@@ -2916,10 +2970,10 @@ function Index(app) {
 							});
 
 						case 15:
-							res = _context.sent;
+							res = _context2.sent;
 
 							if (res.success) {
-								_context.next = 18;
+								_context2.next = 18;
 								break;
 							}
 
@@ -2929,16 +2983,14 @@ function Index(app) {
 							res = res.data;
 
 							// make elements
-							elements = element(res.index);
-							$elements = $(elements);
-							// TODO: 목록에서 디테일 오픈 이벤트 만들기
+							$elements = element(res.index, false);
 
 							// remove prev elements
 
 							this.$index.children('.indexWorks__item').remove();
 
 							// append elements
-							this.$index.append(elements);
+							this.$index.append($elements);
 
 							// off loading
 							loadingForCategory(false);
@@ -2954,47 +3006,47 @@ function Index(app) {
 								self.$more.removeClass('indexMore--hide');
 								self.$more.children('button').attr('data-page', res.nextPage);
 							}
-							_context.next = 44;
+							_context2.next = 43;
 							break;
 
-						case 29:
-							_context.prev = 29;
-							_context.t0 = _context['catch'](3);
+						case 28:
+							_context2.prev = 28;
+							_context2.t0 = _context2['catch'](3);
 							message = null;
-							_context.t1 = _context.t0;
-							_context.next = _context.t1 === 404 ? 35 : 37;
+							_context2.t1 = _context2.t0;
+							_context2.next = _context2.t1 === 404 ? 34 : 36;
 							break;
 
-						case 35:
+						case 34:
 							message = 'Not found work.';
-							return _context.abrupt('break', 40);
+							return _context2.abrupt('break', 39);
 
-						case 37:
-							console.error(_context.t0);
+						case 36:
+							console.error(_context2.t0);
 							message = 'Service error.';
-							return _context.abrupt('break', 40);
+							return _context2.abrupt('break', 39);
 
-						case 40:
+						case 39:
 							// make elements
-							_elements = '<div class="indexEmpty indexWorks__empty">\n\t\t\t\t<img src="' + options.urlRoot + '/assets/images/img-error.png" alt="error">\n\t\t\t\t<p>' + message + '</p>\n\t\t\t</div>';
+							elements = '<div class="indexEmpty indexWorks__empty">\n\t\t\t\t<img src="' + options.urlRoot + '/assets/images/img-error.png" alt="error">\n\t\t\t\t<p>' + message + '</p>\n\t\t\t</div>';
 							// remove prev elements
 
 							this.$index.children('.indexWorks__item').remove();
 							// append elements
-							this.$index.addClass('empty').append(_elements);
+							this.$index.addClass('empty').append(elements);
 							// off loading
 							loadingForCategory(false);
 
-						case 44:
+						case 43:
 						case 'end':
-							return _context.stop();
+							return _context2.stop();
 					}
 				}
-			}, _callee, this, [[3, 29]]);
+			}, _callee2, this, [[3, 28]]);
 		}));
 
-		return function (_x2) {
-			return _ref.apply(this, arguments);
+		return function (_x3) {
+			return _ref2.apply(this, arguments);
 		};
 	}();
 
@@ -3006,21 +3058,21 @@ function Index(app) {
   * @return {Promise}
   */
 	this.changePage = function () {
-		var _ref2 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee2(page, scroll) {
-			var params, res, elements, $elements, $firstElement, top, message;
-			return _regenerator2.default.wrap(function _callee2$(_context2) {
+		var _ref3 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee3(page, scroll) {
+			var params, res, $elements, $firstElement, top, message;
+			return _regenerator2.default.wrap(function _callee3$(_context3) {
 				while (1) {
-					switch (_context2.prev = _context2.next) {
+					switch (_context3.prev = _context3.next) {
 						case 0:
 							if (!this.$more.hasClass('indexMore--processing')) {
-								_context2.next = 2;
+								_context3.next = 2;
 								break;
 							}
 
-							return _context2.abrupt('return', false);
+							return _context3.abrupt('return', false);
 
 						case 2:
-							_context2.prev = 2;
+							_context3.prev = 2;
 
 							// on loading
 							loadingForPage(true);
@@ -3038,14 +3090,14 @@ function Index(app) {
 
 							if (this.nest.srl) params.nest = this.nest.srl;
 							if (this.category.srl) params.category = this.category.srl;
-							_context2.next = 9;
+							_context3.next = 9;
 							return api.get('/articles', params);
 
 						case 9:
-							res = _context2.sent;
+							res = _context3.sent;
 
 							if (res.success) {
-								_context2.next = 12;
+								_context3.next = 12;
 								break;
 							}
 
@@ -3062,9 +3114,7 @@ function Index(app) {
 							}
 
 							// make new elements
-							elements = element(res.index, true);
-							$elements = $(elements);
-							// TODO: 목록에서 디테일 오픈 이벤트 만들기
+							$elements = element(res.index, true);
 
 							// append
 
@@ -3090,40 +3140,40 @@ function Index(app) {
 
 							// off loading
 							loadingForPage(false);
-							_context2.next = 36;
+							_context3.next = 35;
 							break;
 
-						case 23:
-							_context2.prev = 23;
-							_context2.t0 = _context2['catch'](2);
+						case 22:
+							_context3.prev = 22;
+							_context3.t0 = _context3['catch'](2);
 							message = null;
-							_context2.t1 = _context2.t0;
-							_context2.next = _context2.t1 === 404 ? 29 : 31;
+							_context3.t1 = _context3.t0;
+							_context3.next = _context3.t1 === 404 ? 28 : 30;
 							break;
 
-						case 29:
+						case 28:
 							message = 'Not found work.';
-							return _context2.abrupt('break', 34);
+							return _context3.abrupt('break', 33);
 
-						case 31:
-							console.error(_context2.t0);
+						case 30:
+							console.error(_context3.t0);
 							message = 'Service error.';
-							return _context2.abrupt('break', 34);
+							return _context3.abrupt('break', 33);
 
-						case 34:
+						case 33:
 							alert(message);
 							loadingForPage(false);
 
-						case 36:
+						case 35:
 						case 'end':
-							return _context2.stop();
+							return _context3.stop();
 					}
 				}
-			}, _callee2, this, [[2, 23]]);
+			}, _callee3, this, [[2, 22]]);
 		}));
 
-		return function (_x3, _x4) {
-			return _ref2.apply(this, arguments);
+		return function (_x4, _x5) {
+			return _ref3.apply(this, arguments);
 		};
 	}();
 }
@@ -3614,7 +3664,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = '' || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + '49711' + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + '61187' + '/');
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);
 

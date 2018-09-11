@@ -7,14 +7,6 @@ export const init = function(_app)
 {
 	app = _app;
 
-	$.ajaxSetup({
-		beforeSend: function(xhr)
-		{
-			this.url = app.options.urlApi + this.url;
-			xhr.setRequestHeader('Authorization', app.options.token);
-		}
-	});
-
 	$(document).ajaxStart(function() {
 		console.warn('ajax start');
 	});
@@ -28,9 +20,11 @@ export const get = async function(url, params)
 {
 	try
 	{
+		url = (/^http/.test(url)) ? url : app.options.urlApi + url;
 		return await $.ajax({
 			url: url + util.serialize(params, true),
 			type: 'get',
+			headers: { 'Authorization': app.options.token },
 		});
 	}
 	catch(e)

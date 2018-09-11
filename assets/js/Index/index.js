@@ -44,13 +44,15 @@ export default function Index(app) {
 				initCategoryEvents();
 			}
 
-			// init masonry
+			// init masonry and items event
 			if (self.$index && self.$index.children('.indexWorks__item') && self.$index.children('.indexWorks__item').length)
 			{
 				// on masonry
 				masonry(true);
 				// scroll event
 				initScrollEvent(true);
+				// set items event
+				initItemsEvent(self.$index.children('.indexWorks__item'));
 			}
 			else
 			{
@@ -158,6 +160,10 @@ export default function Index(app) {
 		}
 	}
 
+	/**
+	 * init category event
+	 * 모바일에서 카테고리 접기/펼치기 이벤트와 버튼을 클릭했을때 목록이 변하는 이벤트 설정
+	 */
 	function initCategoryEvents()
 	{
 		// toggle category list
@@ -170,7 +176,7 @@ export default function Index(app) {
 		$categoryButtons.on('click', function() {
 			if ($(this).parent().hasClass('on')) return false;
 			const srl = parseInt(this.dataset.srl);
-			self.changeCategory(srl, true);
+			self.changeCategory(srl, true).then();
 			self.$categories.removeClass('active');
 			return false;
 		});
@@ -181,7 +187,7 @@ export default function Index(app) {
 	 *
 	 * @param {Array} index
 	 * @param {Boolean} ready
-	 * @return String
+	 * @return {Array}
 	 */
 	function element(index, ready)
 	{
@@ -195,8 +201,12 @@ export default function Index(app) {
 				</a>
 			</div>`;
 		}).join('');
+		let $dom = $(dom);
 
-		return dom;
+		// set items event
+		initItemsEvent($dom);
+
+		return $dom;
 	}
 
 	/**
@@ -296,6 +306,22 @@ export default function Index(app) {
 	}
 
 	/**
+	 * init items event
+	 * 목록의 아이템 이벤트 설정
+	 */
+	function initItemsEvent($items)
+	{
+		$items.each(function() {
+			const $button = $(this).children('a');
+			$button.on('click', function(e) {
+				e.preventDefault();
+				let srl = parseInt(this.dataset.srl);
+				self.open(srl).then();
+			});
+		});
+	}
+
+	/**
 	 * PUBLIC AREA
 	 */
 
@@ -305,10 +331,31 @@ export default function Index(app) {
 		console.log('more load works');
 	};
 
-	this.open = function()
+	this.open = async function(srl)
 	{
-		// TODO
-		console.log('open work');
+		try
+		{
+			// TODO: 스크롤 위치 백업하기
+			// TODO: 히스토리 업데이트하기
+			// TODO: html class 이름 팝업용으로 추가
+			// TODO: 팝업용 엘리먼트를 스크립트로 만들던지 미리 만들어둔걸 셀렉터를 변수로 만들기
+			// TODO: 로딩 띄우기
+			// TODO: jquery로 엘리먼트를 바로 가져오기 `/article/{srl}?mode=popup`
+			// TODO: 데이터 검사하기
+			// TODO: 로딩 끄기
+			// TODO: 데이터를 팝업 화면에 집어넣기
+			// TODO: 이벤트 초기화 하기
+
+			// $.get('/article/85?mode=popup', function(data) {
+			// 	console.log(data);
+			// });
+
+			console.log('open work', srl);
+		}
+		catch(e)
+		{
+			// TODO: 오류 엘리먼트 만들어 넣기
+		}
 	};
 
 	this.close = function()
@@ -392,15 +439,13 @@ export default function Index(app) {
 			res = res.data;
 
 			// make elements
-			let elements = element(res.index);
-			let $elements = $(elements);
-			// TODO: 목록에서 디테일 오픈 이벤트 만들기
+			let $elements = element(res.index, false);
 
 			// remove prev elements
 			this.$index.children('.indexWorks__item').remove();
 
 			// append elements
-			this.$index.append(elements);
+			this.$index.append($elements);
 
 			// off loading
 			loadingForCategory(false);
@@ -488,9 +533,7 @@ export default function Index(app) {
 			}
 
 			// make new elements
-			let elements = element(res.index, true);
-			let $elements = $(elements);
-			// TODO: 목록에서 디테일 오픈 이벤트 만들기
+			let $elements = element(res.index, true);
 
 			// append
 			this.$index.append($elements);

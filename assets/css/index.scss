@@ -1,24 +1,33 @@
 @import "./libs/valiables";
 @import "./libs/mixins";
 
-@mixin grid($size, $col, $padding) {
-	&__index {
+@mixin grid($size, $col, $padding, $type) {
+	@if $type == 'grid'
+	{
+		&__index {
+			width: $size * $col;
+		}
+		&__sizer {
+			width: $size;
+			height: $size;
+		}
+		&__item {
+			width: $size;
+			height: $size;
+			padding: $padding;
+			&.w2 {
+				width: $size * 2;
+			}
+			&.h2 {
+				height: $size * 2;
+			}
+		}
+	}
+	@elseif $type == 'header'
+	{
 		width: $size * $col;
-	}
-	&__sizer {
-		width: $size;
-		height: $size;
-	}
-	&__item {
-		width: $size;
-		height: $size;
-		padding: $padding;
-		&.w2 {
-			width: $size * 2;
-		}
-		&.h2 {
-			height: $size * 2;
-		}
+		padding-left: $padding;
+		padding-right: $padding;
 	}
 }
 
@@ -39,17 +48,18 @@
 // header
 .indexHeader {
 	margin: 0 auto 2.5vw;
+	box-sizing: border-box;
+	@include grid(32vw, 3, 2px, 'header');
 	h1 {
-		margin: 0;
-		padding: 0 1rem;
+		margin: 0 auto;
 		font-size: 22px;
 		font-weight: 600;
 		line-height: 1;
 	}
 
 	@include responsive(tablet) {
+		@include grid(24vw, 4, 4px, 'header');
 		h1 {
-			padding: 0 calc(2vw + 4px);
 			font-size: 30px;
 			letter-spacing: -.4px;
 		}
@@ -57,15 +67,10 @@
 	@include responsive(desktop) {
 		margin: 0 auto 20px;
 		max-width: $size-container-base;
-		h1 {
-			padding: 0 22px;
-		}
+		@include grid(23vw, 4, 4px, 'header');
 	}
 	@include responsive(desktop-large) {
 		margin: 0 auto 30px;
-		h1 {
-			padding: 0;
-		}
 	}
 }
 
@@ -168,7 +173,6 @@
 
 	@include responsive(tablet) {
 		margin: 0;
-		padding: 0 calc(2vw + 4px);
 		&__toggle {
 			display: none;
 		}
@@ -189,19 +193,13 @@
 			}
 		}
 	}
-	@include responsive(desktop) {
-		padding: 0 22px;
-	}
-	@include responsive(desktop-large) {
-		padding: 0;
-	}
 }
 
 // works
 .indexWorks {
 	$self: '.indexWorks';
 	min-height: 200px;
-	@include grid(32vw, 3, 2px);
+	@include grid(32vw, 3, 2px, 'grid');
 	&__index {
 		box-sizing: border-box;
 		margin: 0 auto;
@@ -252,7 +250,7 @@
 	}
 
 	@include responsive(tablet) {
-		@include grid(24vw, 4, 4px);
+		@include grid(24vw, 4, 4px, 'grid');
 		&__more {
 			$size: 64px;
 			margin: 30px 0 0;
@@ -263,22 +261,22 @@
 		}
 	}
 	@include responsive(desktop) {
-		@include grid(23vw, 4, 4px);
+		@include grid(23vw, 4, 4px, 'grid');
 		&__more {
 			margin: 30px 0 0;
 		}
 	}
 	@include responsive(desktop-large) {
-		@include grid(18vw, 5, 5px);
+		@include grid(18vw, 5, 5px, 'grid');
 		&__more {
 			margin: 40px 0 0;
 		}
 	}
 	@include responsive(max) {
-		@include grid(230px, 6, 5px);
+		@include grid(230px, 6, 5px, 'grid');
 	}
 	@include responsive(over) {
-		@include grid(230px, 8, 5px);
+		@include grid(230px, 8, 5px, 'grid');
 	}
 }
 
