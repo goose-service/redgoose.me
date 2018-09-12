@@ -97,3 +97,14 @@ if(!defined("__GOOSE__")){exit();}
 	</div>
 </article>
 @endsection
+
+@section('script')
+<script src="{{__ROOT__}}/assets/vendor/jquery-3.3.1.min.js"></script>
+<script src="{{__ROOT__}}/assets/dist/app.js"></script>
+<script>
+window.redgoose = new Redgoose('none', {
+	urlRoot: '{{__ROOT__}}',
+	debug: !!'{{getenv('USE_DEBUG')}}',
+});
+</script>
+@endsection

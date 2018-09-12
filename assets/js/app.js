@@ -31,23 +31,34 @@ class Redgoose {
 			...options
 		};
 
-		// init api
-		if (this.options.urlApi && this.options.token)
-		{
-			api.init(this);
-		}
-
 		// switching action
 		switch(type)
 		{
 			case 'index':
+				// change mode
 				this.mode = 'index';
+				// init api
+				if (this.options.urlApi && this.options.token)
+				{
+					api.init(this);
+				}
+				// play
 				this.index = new Index(this);
 				break;
 
 			case 'work':
+				// change mode
 				this.mode = 'view';
+				// init api
+				if (this.options.urlApi && this.options.token)
+				{
+					api.init(this);
+				}
+				// play
 				this.work = new Work(this);
+				break;
+
+			case 'none':
 				break;
 
 			default:
