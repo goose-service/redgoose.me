@@ -43,6 +43,7 @@
 					}
 					> div {
 						position: relative;
+						height: 0;
 					}
 					&:focus-within,
 					&:hover {
@@ -60,7 +61,7 @@
 				}
 			}
 			ol {
-				position: fixed;
+				position: absolute;
 				z-index: 2;
 				top: 45px;
 				left: 10px;

@@ -31,15 +31,49 @@ export default function History(app) {
 	{
 		let state = e.state || {};
 
-		switch(state.action)
+		try
 		{
-			case 'change-category':
-				self.app.index.changeCategory(state.srl || null, false);
-				return;
+			switch(state.action)
+			{
+				case 'change-category':
+					if (app.mode === 'work')
+					{
+						app.index.work.close(false).then();
+						return;
+					}
+					else if (app.mode === 'index')
+					{
+						if (app.index && state.category_srl)
+						{
+							app.index.changeCategory(state.category_srl || null, false);
+							return;
+						}
+					}
+					throw 'no params';
 
-			default:
-				window.location.reload();
-				break;
+				case 'open-work':
+					if (app.mode === 'index')
+					{
+						app.index.work.open(e.state.srl, e.state.title, false).then();
+						return;
+					}
+					return;
+
+				case 'none':
+					if (app.mode === 'work' && (app.index.work.$popup && app.index.work.$popup.length))
+					{
+						app.index.work.close(false).then();
+						return;
+					}
+					throw 'no page';
+
+				default:
+					throw 'none';
+			}
+		}
+		catch(e)
+		{
+			window.location.reload();
 		}
 	}
 

@@ -137,6 +137,13 @@ try {
 				break;
 
 			case 'page':
+				$_page = $_params->name;
+				// check page file
+				if (!file_exists(__PATH__.'/view/pages/'.$_page.'.blade.php'))
+				{
+					throw new Exception('Not found page', 404);
+				}
+				$blade->render('pages.'.$_page);
 				break;
 
 			case 'rss':

@@ -139,7 +139,7 @@ class Util {
 
 				$result[] = (object)[
 					'srl' => (int)$item->srl,
-					'title' => $item->title,
+					'title' => $item->title === '.' ? 'untitled work' : $item->title,
 					'image' => $item->json->thumbnail->path,
 					'className' => $size,
 				];

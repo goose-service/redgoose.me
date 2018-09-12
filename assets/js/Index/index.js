@@ -1,6 +1,5 @@
 import * as api from '../libs/api';
-import * as util from '../libs/util';
-import Work from "../Work";
+import IndexWork from './IndexWork';
 
 const SCROLL_OFFSET = 100; // 페이지가 변화되는 스크롤 y축 위치 offset
 const SCROLL_SPEED = 300; // 페이지 추가될때 스크롤 이동되는 속도
@@ -16,13 +15,13 @@ export default function Index(app) {
 
 	this.name = 'index';
 	this.app = app;
+	this.work = new IndexWork(app, this);
 	this.masonry = null;
 	this.index_selector = '#index';
 	this.$categories = $('#categories');
 	this.$index = $(this.index_selector);
 	this.$more = $('#index_button_more');
 	this.$loading = $('#index_loading');
-	this.$popup = null;
 	this.loading = null;
 	this.nest = {
 		srl: this.app.options.nest_srl,
@@ -35,65 +34,6 @@ export default function Index(app) {
 	};
 	this.scrollEvent = null;
 	this.scrollTop = 0;
-
-	(function constructor(){
-		try
-		{
-			if (!Masonry) throw 'Not found Masonry vendor';
-
-			// init toggle category event
-			if (self.$categories && self.$categories.length)
-			{
-				initCategoryEvents();
-			}
-
-			// init masonry and items event
-			if (self.$index && self.$index.children('.indexWorks__item') && self.$index.children('.indexWorks__item').length)
-			{
-				// on masonry
-				masonry(true);
-				// scroll event
-				initScrollEvent(true);
-				// set items event
-				initItemsEvent(self.$index.children('.indexWorks__item'));
-			}
-			else
-			{
-				self.$index.addClass('empty');
-			}
-
-			// init more button
-			if (self.$more && self.$more.length)
-			{
-				self.$more.children('button').on('click', function() {
-					let page = parseInt(this.dataset.page) || null;
-					if (!page) return false;
-					self.changePage(page, true);
-				});
-			}
-
-			// update history
-			if (!!self.nest.srl)
-			{
-				let url = `${self.app.options.urlRoot}/nest/${self.nest.id}${self.category.srl ? `/${self.category.srl}${window.location.search}` : ''}`;
-				let title = `${self.category.name ? `${self.category.name} - ` : ''}${self.nest.name} - ${self.app.options.title}`;
-				self.app.history.replace(
-					{
-						url,
-						title,
-						srl: self.category.srl ? self.category.srl : null,
-						action: 'change-category'
-					},
-					title,
-					url
-				);
-			}
-		}
-		catch(e)
-		{
-			console.error(e);
-		}
-	})();
 
 	/**
 	 * switching masonry
@@ -147,11 +87,11 @@ export default function Index(app) {
 	}
 
 	/**
-	 * switching loading for page
+	 * switching loading for change page
 	 *
 	 * @param {Boolean} sw
 	 */
-	function loadingForPage(sw)
+	function loadingForChangePage(sw)
 	{
 		if (sw)
 		{
@@ -319,155 +259,15 @@ export default function Index(app) {
 			$button.on('click', function(e) {
 				e.preventDefault();
 				let srl = parseInt(this.dataset.srl);
-				self.open(srl).then();
+				let title = $(this).find('img').attr('alt');
+				self.work.open(srl, title, true).then();
 			});
 		});
 	}
 
 	/**
-	 * make element for popup
-	 *
-	 * @return {Array}
-	 */
-	function popupElement()
-	{
-		let dom = (`<div class="popup">
-			<div class="popup__body"></div>
-			<div class="loading popup__loading">
-				<div class="loading__loader">
-					<div class="loading__shadow"></div>
-					<div class="loading__box"></div>
-				</div>
-			</div>
-			<nav class="popup__close">
-				<button type="button" title="close">
-					<div>
-						<img src="${self.app.options.urlRoot}/assets/images/ico-close.svg" class="pc" alt="close"/>
-						<img src="${self.app.options.urlRoot}/assets/images/ico-close2.svg" class="mobile" alt="close"/>
-					</div>
-				</button>
-			</nav>
-		</div>`);
-		let $dom = $(dom);
-
-		// init close event
-		$dom.children('.popup__close').on('click', self.close);
-
-		return $dom;
-	}
-
-	/**
 	 * PUBLIC AREA
 	 */
-
-	this.more = function()
-	{
-		//
-		console.log('more load works');
-	};
-
-	this.open = async function(srl)
-	{
-		try
-		{
-			// save scroll top
-			this.scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-
-			// TODO: 히스토리 업데이트하기
-
-			// destory masonry
-			if (this.masonry) masonry(false);
-
-			// off scroll event
-			initScrollEvent(false);
-
-			// change popup mode for html tag
-			$('html').addClass('mode-popup');
-
-			// make element and append
-			this.$popup = popupElement();
-			$('body').append(this.$popup);
-
-			// 빠르게 로딩심볼이 나오면 잔상이 남기 때문에 약간 늦춰서 보이도록 타임아웃을 검
-			let timer = setTimeout(function() {
-				if (this.$popup) this.$popup.children('.popup__loading').addClass('show');
-			}, 200);
-
-			// get work data
-			let work = await $.get(`/article/${srl}?mode=popup`);
-
-			// 로딩 타이머 끝나기전에 데이터를 불러왔으면 타임아웃을 클리어한다.
-			clearTimeout(timer);
-
-			// off loading
-			this.$popup.children('.popup__loading').remove();
-
-			// append work element
-			this.$popup.children('.popup__body').append(work);
-
-			// init work mode
-			this.app.mode = 'work';
-			this.app.work = new Work(this.app);
-		}
-		catch(e)
-		{
-			if (this.app.options.debug)
-			{
-				console.error(e);
-			}
-			// alert message
-			alert('Failed open work.');
-			// close window
-			this.close().then();
-		}
-	};
-
-	/**
-	 * close window
-	 */
-	this.close = async function()
-	{
-		try
-		{
-			if (!(self.$popup && self.$popup.length))
-			{
-				throw 'Failed to close window.';
-			}
-
-			// TODO: update history
-
-			// change mode and unset work
-			self.app.mode = 'index';
-			self.app.work = null;
-
-			// remove popup element
-			self.$popup.remove();
-			self.$popup = null;
-
-			// change popup mode for html tag
-			$('html').removeClass('mode-popup');
-
-			// reset masonry
-			if (!this.masonry) masonry(true);
-
-			// on scroll event
-			initScrollEvent(true);
-
-			// restore scrollY
-			window.scrollTo(0, self.scrollTop);
-		}
-		catch(e)
-		{
-			if (self.app.options.debug)
-			{
-				console.error(e);
-			}
-			if (e && typeof e === 'string')
-			{
-				alert(e);
-			}
-		}
-	};
 
 	/**
 	 * change category
@@ -478,7 +278,7 @@ export default function Index(app) {
 	 */
 	this.changeCategory = async function(srl, useHistory=false)
 	{
-		const { options } = this.app;
+		const { options } = self.app;
 
 		// set select element
 		let $selected = null;
@@ -494,11 +294,11 @@ export default function Index(app) {
 		try
 		{
 			// change active menu
-			this.$categories.find('li.on').removeClass('on');
+			self.$categories.find('li.on').removeClass('on');
 			$selected.parent().addClass('on');
 
 			// update value
-			this.category = {
+			self.category = {
 				srl: srl,
 				name: $selected.children('span').text(),
 			};
@@ -506,26 +306,23 @@ export default function Index(app) {
 			// update history
 			if (useHistory)
 			{
-				let url = `${options.urlRoot}/nest/${this.nest.id}${srl ? `/${srl}` : ''}`;
-				let title = `${this.category.name !== 'All' ? `${this.category.name} - ` : ''}${this.nest.name} - ${options.title}`;
-				this.app.history.push(
+				let url = `${options.urlRoot}/nest/${self.nest.id}${srl ? `/${srl}` : ''}`;
+				let title = `${self.category.name !== 'All' ? `${self.category.name} - ` : ''}${self.nest.name} - ${options.title}`;
+				self.app.history.push(
 					{ url, title, srl, action: 'change-category' },
 					title,
 					url
 				);
 			}
 
-			// off masonry
-			if (this.masonry) masonry(false);
-
-			// off scroll event
-			initScrollEvent(false);
+			// off events in index
+			self.toggleEvents(false);
 
 			// on loading
 			loadingForCategory(true);
 
 			// remove empty element
-			this.$index.children('.indexWorks__empty').remove();
+			self.$index.children('.indexWorks__empty').remove();
 
 			// hide more
 			self.$more.addClass('indexMore--hide');
@@ -537,7 +334,7 @@ export default function Index(app) {
 				category: srl || '',
 				order: 'srl',
 				sort: 'desc',
-				size: parseInt(this.app.options.size) || 10,
+				size: parseInt(self.app.options.size) || 10,
 				ext_field: 'next_page',
 			});
 			if (!res.success) throw 404;
@@ -547,19 +344,16 @@ export default function Index(app) {
 			let $elements = indexItemElement(res.index, false);
 
 			// remove prev elements
-			this.$index.children('.indexWorks__item').remove();
+			self.$index.children('.indexWorks__item').remove();
 
 			// append elements
-			this.$index.append($elements);
+			self.$index.append($elements);
 
 			// off loading
 			loadingForCategory(false);
 
-			// start masonry
-			masonry(true);
-
-			// on scroll event
-			initScrollEvent(true);
+			// on events in index
+			self.toggleEvents(true);
 
 			// update more button
 			if (res.nextPage)
@@ -587,9 +381,9 @@ export default function Index(app) {
 				<p>${message}</p>
 			</div>`;
 			// remove prev elements
-			this.$index.children('.indexWorks__item').remove();
+			self.$index.children('.indexWorks__item').remove();
 			// append elements
-			this.$index.addClass('empty').append(elements);
+			self.$index.addClass('empty').append(elements);
 			// off loading
 			loadingForCategory(false);
 		}
@@ -609,7 +403,7 @@ export default function Index(app) {
 		try
 		{
 			// on loading
-			loadingForPage(true);
+			loadingForChangePage(true);
 
 			// get data
 			let params = {
@@ -660,7 +454,7 @@ export default function Index(app) {
 			}
 
 			// off loading
-			loadingForPage(false);
+			loadingForChangePage(false);
 		}
 		catch(e)
 		{
@@ -676,8 +470,94 @@ export default function Index(app) {
 					break;
 			}
 			alert(message);
-			loadingForPage(false);
+			loadingForChangePage(false);
 		}
 	};
 
+	/**
+	 * toggle events
+	 *
+	 * @param {Boolean} sw
+	 */
+	this.toggleEvents = function(sw)
+	{
+		if (sw)
+		{
+			// reset masonry
+			if (!self.masonry) masonry(true);
+			// on scroll event
+			initScrollEvent(true);
+		}
+		else
+		{
+			// destroy masonry
+			if (self.masonry) masonry(false);
+			// off scroll event
+			initScrollEvent(false);
+		}
+	};
+
+	// constructor
+	(function constructor(){
+		try
+		{
+			if (!Masonry) throw 'Not found Masonry vendor';
+
+			// init toggle category event
+			if (self.$categories && self.$categories.length)
+			{
+				initCategoryEvents();
+			}
+
+			// init masonry and items event
+			if (self.$index && self.$index.children('.indexWorks__item') && self.$index.children('.indexWorks__item').length)
+			{
+				// init events
+				self.toggleEvents(true);
+				// set items event
+				initItemsEvent(self.$index.children('.indexWorks__item'));
+			}
+			else
+			{
+				self.$index.addClass('empty');
+			}
+
+			// init more button
+			if (self.$more && self.$more.length)
+			{
+				self.$more.children('button').on('click', function() {
+					let page = parseInt(this.dataset.page) || null;
+					if (!page) return false;
+					self.changePage(page, true).then();
+				});
+			}
+
+			// update history
+			let url = location.pathname + location.search;
+			let env = { url };
+			if (!!self.nest.srl)
+			{
+				env.title = `${self.category.name ? `${self.category.name} - ` : ''}${self.nest.name} - ${self.app.options.title}`;
+				env.category_srl = self.category.srl ? self.category.srl : null
+				env.action = 'change-category';
+			}
+			else
+			{
+				env.title = self.app.options.title;
+				env.action = 'none';
+			}
+			let srl = !!self.nest.srl ? (self.category.srl ? self.category.srl : null) : null;
+			self.app.history.replace(env, env.title, url);
+		}
+		catch(e)
+		{
+			if (app.options.debug) console.error(e);
+			$('.container').empty().html(`<article class="error">
+				<figure class="error__image">
+					<img src="${app.options.urlRoot}/assets/images/img-error.png" alt="error">
+				</figure>
+				<h1 class="error__message">Service error</h1>
+			</article>`);
+		}
+	})();
 }

@@ -9,9 +9,9 @@ if(!defined("__GOOSE__")){exit();}
 
 @section('meta')
 <title>{{ $title }}</title>
-<meta name="description" content="붉은거위의 개인작업물 라이브러리. Redgoose personal work library"/>
+<meta name="description" content="{{ getenv('DESCRIPTION') }}"/>
 <meta property="og:title" content="{{ $title }}"/>
-<meta property="og:description" content="붉은거위의 개인작업물 라이브러리. Redgoose personal work library">
+<meta property="og:description" content="{{ getenv('DESCRIPTION') }}">
 <meta property="og:image" content="{{ __API__ }}/usr/icons/redgoose_512x512x32.png">
 @endsection
 
@@ -49,11 +49,11 @@ if(!defined("__GOOSE__")){exit();}
 			<div class="indexWorks__sizer"></div>
 			@if ($index && count($index))
 				@foreach($index as $k=>$item)
-				<div class="indexWorks__item{{$item->className ? ' '.$item->className : ''}}">
-					<a href="/article/{{$item->srl}}" data-srl="{{$item->srl}}">
-						<img src="{{__API__}}/{{$item->image}}" alt="{{$item->title}}">
-					</a>
-				</div>
+					<div class="indexWorks__item{{$item->className ? ' '.$item->className : ''}}">
+						<a href="/article/{{$item->srl}}" data-srl="{{$item->srl}}">
+							<img src="{{__API__}}/{{$item->image}}" alt="{{$item->title}}">
+						</a>
+					</div>
 				@endforeach
 			@else
 				<div class="indexEmpty indexWorks__empty">

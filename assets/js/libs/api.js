@@ -7,13 +7,13 @@ export const init = function(_app)
 {
 	app = _app;
 
-	$(document).ajaxStart(function() {
-		console.warn('ajax start');
-	});
-
-	$(document).ajaxComplete(function() {
-		console.warn('ajax complete');
-	});
+	// TODO: 필요하다면 사용하기
+	// $(document).ajaxStart(function() {
+	// 	console.warn('ajax start');
+	// });
+	// $(document).ajaxComplete(function() {
+	// 	console.warn('ajax complete');
+	// });
 };
 
 export const get = async function(url, params)

@@ -63,7 +63,7 @@ if(!defined("__GOOSE__")){exit();}
 			<nav class="right">
 				<ul>
 					<li>
-						<a href="/about">
+						<a href="/page/about">
 							<span>About</span>
 						</a>
 					</li>
@@ -89,7 +89,6 @@ if(!defined("__GOOSE__")){exit();}
 		</div>
 	</footer>
 </main>
-@yield('popup')
 @yield('script')
 </body>
 </html>

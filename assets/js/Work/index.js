@@ -62,7 +62,7 @@ export default function Work(app) {
 		const $images = self.$body.find('img');
 		$images.each(function() {
 			// TODO: 예전 에디터에서 스타일 속성이 들어가있어 레이아웃이 틀어졌는데 글 본문을 많이 수정해야하기 때문에 임시방편으로 속성을 삭제하는것으로 처리
-			$(this).removeAttr('style');
+			//$(this).removeAttr('style');
 			$(this).wrap('<span class="image"></span>');
 		});
 	}
