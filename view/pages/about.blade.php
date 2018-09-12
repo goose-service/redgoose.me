@@ -59,28 +59,38 @@ if(!defined("__GOOSE__")){exit();}
 					<dd>html, css(scss), php, javascript(jQuery, react-js, react-native, vue.js, nuxt.js), markdown</dd>
 				</dl>
 			</section>
-		</div>
-		<div>
 			<section>
 				<h1>sns</h1>
 				<dl>
 					<dt>facebook</dt>
-					<dd><a href="https://www.facebook.com/redgoose.me" target="_blank">scripter@me.com</a></dd>
+					<dd>
+						<a href="https://www.facebook.com/redgoose.me" target="_blank">scripter@me.com</a>
+					</dd>
 					<dt>instagram</dt>
-					<dd><a href="https://www.instagram.com/redgoose.me" target="_blank">https://www.instagram.com/redgoose.me</a></dd>
+					<dd>
+						<a href="https://www.instagram.com/redgoose.me" target="_blank">https://www.instagram.com/redgoose.me</a>
+					</dd>
 					<dt>pinterest</dt>
-					<dd><a href="https://pinterest.com/redgooseme" target="_blank">https://pinterest.com/redgooseme</a></dd>
+					<dd>
+						<a href="https://pinterest.com/redgooseme" target="_blank">https://pinterest.com/redgooseme</a>
+					</dd>
 				</dl>
 			</section>
 			<section>
 				<h1>source code</h1>
 				<dl>
 					<dt>github</dt>
-					<dd><a href="https://github.com/redgoose-dev" target="_blank">https://github.com/redgoose-dev</a></dd>
+					<dd>
+						<a href="https://github.com/redgoose-dev" target="_blank">https://github.com/redgoose-dev</a>
+					</dd>
 					<dt>github gist</dt>
-					<dd><a href="https://gist.github.com/redgoose-dev">https://gist.github.com/redgoose-dev</a></dd>
+					<dd>
+						<a href="https://gist.github.com/redgoose-dev" target="_blank">https://gist.github.com/redgoose-dev</a>
+					</dd>
 					<dt>codepen</dt>
-					<dd><a href="http://codepen.io/redgoose" target="_blank">http://codepen.io/redgoose</a></dd>
+					<dd>
+						<a href="http://codepen.io/redgoose" target="_blank">http://codepen.io/redgoose</a>
+					</dd>
 				</dl>
 			</section>
 		</div>

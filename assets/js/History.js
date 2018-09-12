@@ -15,7 +15,6 @@ export default function History(app) {
 
 	(function constructor(){
 		if (!support()) return;
-
 		window.removeEventListener('popstate', onHook);
 		window.addEventListener('popstate', onHook);
 	})();
@@ -31,6 +30,13 @@ export default function History(app) {
 	{
 		let state = e.state || {};
 
+		function save()
+		{
+			self.env = state;
+			self.title = state.title;
+			self.url = state.url;
+		}
+
 		try
 		{
 			switch(state.action)
@@ -38,6 +44,7 @@ export default function History(app) {
 				case 'change-category':
 					if (app.mode === 'work')
 					{
+						save();
 						app.index.work.close(false).then();
 						return;
 					}
@@ -45,6 +52,7 @@ export default function History(app) {
 					{
 						if (app.index && state.category_srl)
 						{
+							save();
 							app.index.changeCategory(state.category_srl || null, false);
 							return;
 						}
@@ -54,7 +62,7 @@ export default function History(app) {
 				case 'open-work':
 					if (app.mode === 'index')
 					{
-						app.index.work.open(e.state.srl, e.state.title, false).then();
+						app.index.work.open(e.state.srl, e.state.title, false).then(save);
 						return;
 					}
 					return;
@@ -62,6 +70,7 @@ export default function History(app) {
 				case 'none':
 					if (app.mode === 'work' && (app.index.work.$popup && app.index.work.$popup.length))
 					{
+						save()
 						app.index.work.close(false).then();
 						return;
 					}

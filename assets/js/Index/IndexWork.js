@@ -62,14 +62,14 @@ export default function IndexWork(app, index)
 			index.scrollTop = window.pageYOffset || document.documentElement.scrollTop;
 
 			// push history
+			self.indexHistory = {
+				env: app.history.env,
+				title: app.history.title,
+				url: app.history.url
+			};
 			if (history)
 			{
 				// save index history
-				self.indexHistory = {
-					env: app.history.env,
-					title: app.history.title,
-					url: app.history.url
-				};
 				let url = `${app.options.urlRoot}/article/${srl}`;
 				let title = `${alt} - ${app.options.title}`;
 				app.history.push(
@@ -140,13 +140,13 @@ export default function IndexWork(app, index)
 			// push history
 			if (history)
 			{
-				this.indexHistory = null;
 				app.history.push(
 					self.indexHistory.env,
 					self.indexHistory.title,
 					self.indexHistory.url
 				);
 			}
+			self.indexHistory = null;
 
 			// change mode and unset work
 			app.mode = 'index';
