@@ -6,7 +6,7 @@ if(!defined("__GOOSE__")){exit();}
 ?>
 
 @section('contents')
-<article class="work" id="work">
+<article class="work work--hide" id="work">
 	<div class="work__wrap">
 		@if ($data)
 			<header class="workHeader work__header">
@@ -33,15 +33,6 @@ if(!defined("__GOOSE__")){exit();}
 			<div class="work__error">
 				<img src="{{__ROOT__}}/assets/images/img-error.png" alt="error">
 			</div>
-		@endif
-
-		@if ($mode === 'popup')
-			<nav class="workClose work__close">
-				<button type="button" id="work_close" title="close work" class="workClose">
-					<img src="{{ __ROOT__ }}/assets/images/ico-close.svg" class="workClose__icon workClose__icon--pc" alt="close"/>
-					<img src="{{ __ROOT__ }}/assets/images/ico-close2.svg" class="workClose__icon workClose__icon--mobile" alt="close"/>
-				</button>
-			</nav>
 		@endif
 	</div>
 </article>

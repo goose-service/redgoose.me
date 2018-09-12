@@ -1,3 +1,5 @@
+@import "./libs/valiables";
+
 .loading {
 	$self: '.loading';
 
@@ -7,7 +9,6 @@
 	width: 40%;
 	min-width: 300px;
 	margin: 0 auto;
-	display: none;
 
 	&__loader {
 		position: absolute;

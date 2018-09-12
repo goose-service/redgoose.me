@@ -71,8 +71,10 @@ class Util {
 	 * error
 	 *
 	 * @param Exception $error
+	 * @param Blade $blade
+	 * @throws Exception
 	 */
-	static public function error($error)
+	static public function error($error, $blade)
 	{
 		// debug
 		if (getenv('USE_DEBUG') === '1')
@@ -83,17 +85,22 @@ class Util {
 			]);
 		}
 
-		// TODO: print error page
 		switch ($error->getCode())
 		{
 			case 404:
-				var_dump('Not found page');
+				$message = 'Not found page';
 				break;
 			case 500:
 			default:
-				var_dump('Service error');
+				$message = 'Service error';
 				break;
 		}
+
+		// render
+		$blade->render($_GET['mode'] === 'popup' ? 'error.popup' : 'error.main', (object)[
+			'title' => getenv('TITLE'),
+			'message' => $message,
+		]);
 		exit;
 	}
 

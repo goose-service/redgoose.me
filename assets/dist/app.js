@@ -2542,7 +2542,151 @@ var get = exports.get = function () {
 		return _ref.apply(this, arguments);
 	};
 }();
-},{"babel-runtime/regenerator":"../../node_modules/babel-runtime/regenerator/index.js","babel-runtime/helpers/asyncToGenerator":"../../node_modules/babel-runtime/helpers/asyncToGenerator.js","./util":"libs/util.js"}],"Index/index.js":[function(require,module,exports) {
+},{"babel-runtime/regenerator":"../../node_modules/babel-runtime/regenerator/index.js","babel-runtime/helpers/asyncToGenerator":"../../node_modules/babel-runtime/helpers/asyncToGenerator.js","./util":"libs/util.js"}],"Work/index.js":[function(require,module,exports) {
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _regenerator = require('babel-runtime/regenerator');
+
+var _regenerator2 = _interopRequireDefault(_regenerator);
+
+var _asyncToGenerator2 = require('babel-runtime/helpers/asyncToGenerator');
+
+var _asyncToGenerator3 = _interopRequireDefault(_asyncToGenerator2);
+
+exports.default = Work;
+
+var _api = require('../libs/api');
+
+var api = _interopRequireWildcard(_api);
+
+var _util = require('../libs/util');
+
+var util = _interopRequireWildcard(_util);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function Work(app) {
+
+	var self = this;
+
+	this.name = 'work';
+	this.app = app;
+	this.$container = $('#work');
+	this.$body = this.$container.find('.work__body');
+	this.$like = this.$container.find('.work__like');
+	this.loading = false;
+	this.work = {};
+
+	(function constructor() {
+		try {
+			// check container
+			if (!(self.$container && self.$container.length)) {
+				throw 'Not found container';
+			}
+
+			// init filtering elements in body
+			if (self.$body && self.$body.length) {
+				filteringElementsInBody();
+			}
+
+			// init like event
+			if (self.$like && self.$like.length) {
+				self.$like.children('button').on('click', function () {
+					var $self = $(this);
+					if ($self.hasClass('on')) return false;
+					self.onLike(parseInt(this.dataset.srl)).then(function (cnt) {
+						$self.addClass('on');
+						$self.children('em').text(cnt);
+					});
+				});
+			}
+
+			// show page
+			self.$container.removeClass('work--hide');
+		} catch (e) {
+			if (self.app.options.debug) {
+				console.error(e);
+			}
+		}
+	})();
+
+	/**
+  * filtering elements in body
+  * 우선 이미지 태그들을 찾아서 태그로 한번 씌우는 작업을 한다.
+  */
+	function filteringElementsInBody() {
+		var $images = self.$body.find('img');
+		$images.each(function () {
+			// TODO: 예전 에디터에서 스타일 속성이 들어가있어 레이아웃이 틀어졌는데 글 본문을 많이 수정해야하기 때문에 임시방편으로 속성을 삭제하는것으로 처리
+			$(this).removeAttr('style');
+			$(this).wrap('<span class="image"></span>');
+		});
+	}
+
+	/**
+  * on like
+  *
+  * @param {Number} srl
+  */
+	this.onLike = function () {
+		var _ref = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee(srl) {
+			var res;
+			return _regenerator2.default.wrap(function _callee$(_context) {
+				while (1) {
+					switch (_context.prev = _context.next) {
+						case 0:
+							if (srl) {
+								_context.next = 2;
+								break;
+							}
+
+							return _context.abrupt('return');
+
+						case 2:
+							_context.prev = 2;
+							_context.next = 5;
+							return api.get('/articles/' + srl + '/update', { type: 'star' });
+
+						case 5:
+							res = _context.sent;
+
+							if (res.success) {
+								_context.next = 8;
+								break;
+							}
+
+							throw 'Failed update like';
+
+						case 8:
+							util.setCookie('redgoose-like-' + srl, '1', 10, this.app.options.urlCookie);
+							return _context.abrupt('return', res.data.star);
+
+						case 12:
+							_context.prev = 12;
+							_context.t0 = _context['catch'](2);
+
+							alert(typeof _context.t0 === 'string' ? _context.t0 : 'Service error');
+
+						case 15:
+						case 'end':
+							return _context.stop();
+					}
+				}
+			}, _callee, this, [[2, 12]]);
+		}));
+
+		return function (_x) {
+			return _ref.apply(this, arguments);
+		};
+	}();
+}
+},{"babel-runtime/regenerator":"../../node_modules/babel-runtime/regenerator/index.js","babel-runtime/helpers/asyncToGenerator":"../../node_modules/babel-runtime/helpers/asyncToGenerator.js","../libs/api":"libs/api.js","../libs/util":"libs/util.js"}],"Index/index.js":[function(require,module,exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2571,6 +2715,10 @@ var _util = require('../libs/util');
 
 var util = _interopRequireWildcard(_util);
 
+var _Work = require('../Work');
+
+var _Work2 = _interopRequireDefault(_Work);
+
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -2595,6 +2743,7 @@ function Index(app) {
 	this.$index = $(this.index_selector);
 	this.$more = $('#index_button_more');
 	this.$loading = $('#index_loading');
+	this.$popup = null;
 	this.loading = null;
 	this.nest = {
 		srl: this.app.options.nest_srl,
@@ -2606,6 +2755,7 @@ function Index(app) {
 		name: this.app.options.category_name
 	};
 	this.scrollEvent = null;
+	this.scrollTop = 0;
 
 	(function constructor() {
 		try {
@@ -2736,7 +2886,7 @@ function Index(app) {
   * @param {Boolean} ready
   * @return {Array}
   */
-	function element(index, ready) {
+	function indexItemElement(index, ready) {
 		var dom = index.map(function (o, k) {
 			var sizeSet = o.json.thumbnail && o.json.thumbnail.sizeSet ? o.json.thumbnail.sizeSet.split('*') : [1, 1];
 			var classname = (parseInt(sizeSet[0]) === 2 ? 'w2' : '') + ' ' + (parseInt(sizeSet[1]) === 2 ? 'h2' : '');
@@ -2842,6 +2992,21 @@ function Index(app) {
 	}
 
 	/**
+  * make element for popup
+  *
+  * @return {Array}
+  */
+	function popupElement() {
+		var dom = '<div class="popup">\n\t\t\t<div class="popup__body"></div>\n\t\t\t<div class="loading popup__loading">\n\t\t\t\t<div class="loading__loader">\n\t\t\t\t\t<div class="loading__shadow"></div>\n\t\t\t\t\t<div class="loading__box"></div>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t\t<nav class="popup__close">\n\t\t\t\t<button type="button" title="close">\n\t\t\t\t\t<div>\n\t\t\t\t\t\t<img src="' + self.app.options.urlRoot + '/assets/images/ico-close.svg" class="pc" alt="close"/>\n\t\t\t\t\t\t<img src="' + self.app.options.urlRoot + '/assets/images/ico-close2.svg" class="mobile" alt="close"/>\n\t\t\t\t\t</div>\n\t\t\t\t</button>\n\t\t\t</nav>\n\t\t</div>';
+		var $dom = $(dom);
+
+		// init close event
+		$dom.children('.popup__close').on('click', self.close);
+
+		return $dom;
+	}
+
+	/**
   * PUBLIC AREA
   */
 
@@ -2852,37 +3017,78 @@ function Index(app) {
 
 	this.open = function () {
 		var _ref = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee(srl) {
+			var timer, work;
 			return _regenerator2.default.wrap(function _callee$(_context) {
 				while (1) {
 					switch (_context.prev = _context.next) {
 						case 0:
-							try {
-								// TODO: 스크롤 위치 백업하기
-								// TODO: 히스토리 업데이트하기
-								// TODO: html class 이름 팝업용으로 추가
-								// TODO: 팝업용 엘리먼트를 스크립트로 만들던지 미리 만들어둔걸 셀렉터를 변수로 만들기
-								// TODO: 로딩 띄우기
-								// TODO: jquery로 엘리먼트를 바로 가져오기 `/article/{srl}?mode=popup`
-								// TODO: 데이터 검사하기
-								// TODO: 로딩 끄기
-								// TODO: 데이터를 팝업 화면에 집어넣기
-								// TODO: 이벤트 초기화 하기
+							_context.prev = 0;
 
-								// $.get('/article/85?mode=popup', function(data) {
-								// 	console.log(data);
-								// });
+							// save scroll top
+							this.scrollTop = window.pageYOffset || document.documentElement.scrollTop;
 
-								console.log('open work', srl);
-							} catch (e) {
-								// TODO: 오류 엘리먼트 만들어 넣기
+							// TODO: 히스토리 업데이트하기
+
+							// destory masonry
+							if (this.masonry) masonry(false);
+
+							// off scroll event
+							initScrollEvent(false);
+
+							// change popup mode for html tag
+							$('html').addClass('mode-popup');
+
+							// make element and append
+							this.$popup = popupElement();
+							$('body').append(this.$popup);
+
+							// 빠르게 로딩심볼이 나오면 잔상이 남기 때문에 약간 늦춰서 보이도록 타임아웃을 검
+							timer = setTimeout(function () {
+								if (this.$popup) this.$popup.children('.popup__loading').addClass('show');
+							}, 200);
+
+							// get work data
+
+							_context.next = 10;
+							return $.get('/article/' + srl + '?mode=popup');
+
+						case 10:
+							work = _context.sent;
+
+
+							// 로딩 타이머 끝나기전에 데이터를 불러왔으면 타임아웃을 클리어한다.
+							clearTimeout(timer);
+
+							// off loading
+							this.$popup.children('.popup__loading').remove();
+
+							// append work element
+							this.$popup.children('.popup__body').append(work);
+
+							// init work mode
+							this.app.mode = 'work';
+							this.app.work = new _Work2.default(this.app);
+							_context.next = 23;
+							break;
+
+						case 18:
+							_context.prev = 18;
+							_context.t0 = _context['catch'](0);
+
+							if (this.app.options.debug) {
+								console.error(_context.t0);
 							}
+							// alert message
+							alert('Failed open work.');
+							// close window
+							this.close().then();
 
-						case 1:
+						case 23:
 						case 'end':
 							return _context.stop();
 					}
 				}
-			}, _callee, this);
+			}, _callee, this, [[0, 18]]);
 		}));
 
 		return function (_x) {
@@ -2890,10 +3096,67 @@ function Index(app) {
 		};
 	}();
 
-	this.close = function () {
-		// TODO
-		console.log('close work');
-	};
+	/**
+  * close window
+  */
+	this.close = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee2() {
+		return _regenerator2.default.wrap(function _callee2$(_context2) {
+			while (1) {
+				switch (_context2.prev = _context2.next) {
+					case 0:
+						_context2.prev = 0;
+
+						if (self.$popup && self.$popup.length) {
+							_context2.next = 3;
+							break;
+						}
+
+						throw 'Failed to close window.';
+
+					case 3:
+
+						// TODO: update history
+
+						// change mode and unset work
+						self.app.mode = 'index';
+						self.app.work = null;
+
+						// remove popup element
+						self.$popup.remove();
+						self.$popup = null;
+
+						// change popup mode for html tag
+						$('html').removeClass('mode-popup');
+
+						// reset masonry
+						if (!this.masonry) masonry(true);
+
+						// on scroll event
+						initScrollEvent(true);
+
+						// restore scrollY
+						window.scrollTo(0, self.scrollTop);
+						_context2.next = 17;
+						break;
+
+					case 13:
+						_context2.prev = 13;
+						_context2.t0 = _context2['catch'](0);
+
+						if (self.app.options.debug) {
+							console.error(_context2.t0);
+						}
+						if (_context2.t0 && typeof _context2.t0 === 'string') {
+							alert(_context2.t0);
+						}
+
+					case 17:
+					case 'end':
+						return _context2.stop();
+				}
+			}
+		}, _callee2, this, [[0, 13]]);
+	}));
 
 	/**
   * change category
@@ -2903,12 +3166,12 @@ function Index(app) {
   * @return {Promise}
   */
 	this.changeCategory = function () {
-		var _ref2 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee2(srl) {
+		var _ref3 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee3(srl) {
 			var useHistory = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
 			var options, $selected, url, title, res, $elements, message, elements;
-			return _regenerator2.default.wrap(function _callee2$(_context2) {
+			return _regenerator2.default.wrap(function _callee3$(_context3) {
 				while (1) {
-					switch (_context2.prev = _context2.next) {
+					switch (_context3.prev = _context3.next) {
 						case 0:
 							options = this.app.options;
 
@@ -2922,7 +3185,7 @@ function Index(app) {
 								$selected = this.$categories.find('a').eq(0);
 							}
 
-							_context2.prev = 3;
+							_context3.prev = 3;
 
 							// change active menu
 							this.$categories.find('li.on').removeClass('on');
@@ -2958,7 +3221,7 @@ function Index(app) {
 							self.$more.addClass('indexMore--hide');
 
 							// get datas
-							_context2.next = 15;
+							_context3.next = 15;
 							return api.get('/articles', {
 								nest: options.nest_srl,
 								field: 'srl,json,title',
@@ -2970,10 +3233,10 @@ function Index(app) {
 							});
 
 						case 15:
-							res = _context2.sent;
+							res = _context3.sent;
 
 							if (res.success) {
-								_context2.next = 18;
+								_context3.next = 18;
 								break;
 							}
 
@@ -2983,7 +3246,7 @@ function Index(app) {
 							res = res.data;
 
 							// make elements
-							$elements = element(res.index, false);
+							$elements = indexItemElement(res.index, false);
 
 							// remove prev elements
 
@@ -3006,25 +3269,25 @@ function Index(app) {
 								self.$more.removeClass('indexMore--hide');
 								self.$more.children('button').attr('data-page', res.nextPage);
 							}
-							_context2.next = 43;
+							_context3.next = 43;
 							break;
 
 						case 28:
-							_context2.prev = 28;
-							_context2.t0 = _context2['catch'](3);
+							_context3.prev = 28;
+							_context3.t0 = _context3['catch'](3);
 							message = null;
-							_context2.t1 = _context2.t0;
-							_context2.next = _context2.t1 === 404 ? 34 : 36;
+							_context3.t1 = _context3.t0;
+							_context3.next = _context3.t1 === 404 ? 34 : 36;
 							break;
 
 						case 34:
 							message = 'Not found work.';
-							return _context2.abrupt('break', 39);
+							return _context3.abrupt('break', 39);
 
 						case 36:
-							console.error(_context2.t0);
+							console.error(_context3.t0);
 							message = 'Service error.';
-							return _context2.abrupt('break', 39);
+							return _context3.abrupt('break', 39);
 
 						case 39:
 							// make elements
@@ -3039,14 +3302,14 @@ function Index(app) {
 
 						case 43:
 						case 'end':
-							return _context2.stop();
+							return _context3.stop();
 					}
 				}
-			}, _callee2, this, [[3, 28]]);
+			}, _callee3, this, [[3, 28]]);
 		}));
 
 		return function (_x3) {
-			return _ref2.apply(this, arguments);
+			return _ref3.apply(this, arguments);
 		};
 	}();
 
@@ -3058,21 +3321,21 @@ function Index(app) {
   * @return {Promise}
   */
 	this.changePage = function () {
-		var _ref3 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee3(page, scroll) {
+		var _ref4 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee4(page, scroll) {
 			var params, res, $elements, $firstElement, top, message;
-			return _regenerator2.default.wrap(function _callee3$(_context3) {
+			return _regenerator2.default.wrap(function _callee4$(_context4) {
 				while (1) {
-					switch (_context3.prev = _context3.next) {
+					switch (_context4.prev = _context4.next) {
 						case 0:
 							if (!this.$more.hasClass('indexMore--processing')) {
-								_context3.next = 2;
+								_context4.next = 2;
 								break;
 							}
 
-							return _context3.abrupt('return', false);
+							return _context4.abrupt('return', false);
 
 						case 2:
-							_context3.prev = 2;
+							_context4.prev = 2;
 
 							// on loading
 							loadingForPage(true);
@@ -3090,14 +3353,14 @@ function Index(app) {
 
 							if (this.nest.srl) params.nest = this.nest.srl;
 							if (this.category.srl) params.category = this.category.srl;
-							_context3.next = 9;
+							_context4.next = 9;
 							return api.get('/articles', params);
 
 						case 9:
-							res = _context3.sent;
+							res = _context4.sent;
 
 							if (res.success) {
-								_context3.next = 12;
+								_context4.next = 12;
 								break;
 							}
 
@@ -3114,7 +3377,7 @@ function Index(app) {
 							}
 
 							// make new elements
-							$elements = element(res.index, true);
+							$elements = indexItemElement(res.index, true);
 
 							// append
 
@@ -3140,25 +3403,25 @@ function Index(app) {
 
 							// off loading
 							loadingForPage(false);
-							_context3.next = 35;
+							_context4.next = 35;
 							break;
 
 						case 22:
-							_context3.prev = 22;
-							_context3.t0 = _context3['catch'](2);
+							_context4.prev = 22;
+							_context4.t0 = _context4['catch'](2);
 							message = null;
-							_context3.t1 = _context3.t0;
-							_context3.next = _context3.t1 === 404 ? 28 : 30;
+							_context4.t1 = _context4.t0;
+							_context4.next = _context4.t1 === 404 ? 28 : 30;
 							break;
 
 						case 28:
 							message = 'Not found work.';
-							return _context3.abrupt('break', 33);
+							return _context4.abrupt('break', 33);
 
 						case 30:
-							console.error(_context3.t0);
+							console.error(_context4.t0);
 							message = 'Service error.';
-							return _context3.abrupt('break', 33);
+							return _context4.abrupt('break', 33);
 
 						case 33:
 							alert(message);
@@ -3166,163 +3429,18 @@ function Index(app) {
 
 						case 35:
 						case 'end':
-							return _context3.stop();
+							return _context4.stop();
 					}
 				}
-			}, _callee3, this, [[2, 22]]);
+			}, _callee4, this, [[2, 22]]);
 		}));
 
 		return function (_x4, _x5) {
-			return _ref3.apply(this, arguments);
+			return _ref4.apply(this, arguments);
 		};
 	}();
 }
-},{"babel-runtime/regenerator":"../../node_modules/babel-runtime/regenerator/index.js","babel-runtime/helpers/asyncToGenerator":"../../node_modules/babel-runtime/helpers/asyncToGenerator.js","babel-runtime/helpers/extends":"../../node_modules/babel-runtime/helpers/extends.js","../libs/api":"libs/api.js","../libs/util":"libs/util.js"}],"Work/index.js":[function(require,module,exports) {
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-	value: true
-});
-
-var _regenerator = require('babel-runtime/regenerator');
-
-var _regenerator2 = _interopRequireDefault(_regenerator);
-
-var _asyncToGenerator2 = require('babel-runtime/helpers/asyncToGenerator');
-
-var _asyncToGenerator3 = _interopRequireDefault(_asyncToGenerator2);
-
-exports.default = Work;
-
-var _api = require('../libs/api');
-
-var api = _interopRequireWildcard(_api);
-
-var _util = require('../libs/util');
-
-var util = _interopRequireWildcard(_util);
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function Work(app) {
-
-	var self = this;
-
-	this.name = 'work';
-	this.app = app;
-	this.$container = $('#work');
-	this.$body = this.$container.find('.work__body');
-	this.$like = this.$container.find('.work__like');
-	this.$close = this.$container.find('.work__close');
-	this.loading = false;
-	this.work = {};
-
-	(function constructor() {
-		try {
-			// check container
-			if (!(self.$container && self.$container.length)) {
-				throw 'Not found container';
-			}
-
-			// init filtering elements in body
-			if (self.$body && self.$body.length) {
-				filteringElementsInBody();
-			}
-
-			// init like event
-			if (self.$like && self.$like.length) {
-				self.$like.children('button').on('click', function () {
-					var $self = $(this);
-					if ($self.hasClass('on')) return false;
-					self.onLike(parseInt(this.dataset.srl)).then(function (cnt) {
-						$self.addClass('on');
-						$self.children('em').text(cnt);
-					});
-				});
-			}
-
-			// init close event
-			if (self.$close && self.$close.length) {
-				// TODO: close event
-			}
-		} catch (e) {
-			if (self.app.options.debug) {
-				console.error(e);
-			}
-		}
-	})();
-
-	/**
-  * filtering elements in body
-  * 우선 이미지 태그들을 찾아서 태그로 한번 씌우는 작업을 한다.
-  */
-	function filteringElementsInBody() {
-		var $images = self.$body.find('img');
-		$images.each(function () {
-			$(this).wrap('<span class="image"></span>');
-		});
-	}
-
-	/**
-  * on like
-  *
-  * @param {Number} srl
-  */
-	this.onLike = function () {
-		var _ref = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee(srl) {
-			var res;
-			return _regenerator2.default.wrap(function _callee$(_context) {
-				while (1) {
-					switch (_context.prev = _context.next) {
-						case 0:
-							if (srl) {
-								_context.next = 2;
-								break;
-							}
-
-							return _context.abrupt('return');
-
-						case 2:
-							_context.prev = 2;
-							_context.next = 5;
-							return api.get('/articles/' + srl + '/update', { type: 'star' });
-
-						case 5:
-							res = _context.sent;
-
-							if (res.success) {
-								_context.next = 8;
-								break;
-							}
-
-							throw 'Failed update like';
-
-						case 8:
-							util.setCookie('redgoose-like-' + srl, '1', 10, this.app.options.urlCookie);
-							return _context.abrupt('return', res.data.star);
-
-						case 12:
-							_context.prev = 12;
-							_context.t0 = _context['catch'](2);
-
-							alert(typeof _context.t0 === 'string' ? _context.t0 : 'Service error');
-
-						case 15:
-						case 'end':
-							return _context.stop();
-					}
-				}
-			}, _callee, this, [[2, 12]]);
-		}));
-
-		return function (_x) {
-			return _ref.apply(this, arguments);
-		};
-	}();
-}
-},{"babel-runtime/regenerator":"../../node_modules/babel-runtime/regenerator/index.js","babel-runtime/helpers/asyncToGenerator":"../../node_modules/babel-runtime/helpers/asyncToGenerator.js","../libs/api":"libs/api.js","../libs/util":"libs/util.js"}],"Header/index.js":[function(require,module,exports) {
+},{"babel-runtime/regenerator":"../../node_modules/babel-runtime/regenerator/index.js","babel-runtime/helpers/asyncToGenerator":"../../node_modules/babel-runtime/helpers/asyncToGenerator.js","babel-runtime/helpers/extends":"../../node_modules/babel-runtime/helpers/extends.js","../libs/api":"libs/api.js","../libs/util":"libs/util.js","../Work":"Work/index.js"}],"Header/index.js":[function(require,module,exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -3664,7 +3782,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = '' || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + '61187' + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + '61567' + '/');
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);
 

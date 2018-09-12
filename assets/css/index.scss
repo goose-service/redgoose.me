@@ -33,7 +33,7 @@
 
 // body
 .index {
-	margin: 15px 0 0;
+	margin: 20px 0 0;
 	&__header {}
 	&__works {}
 
@@ -350,6 +350,141 @@
 		img {
 			zoom: .5;
 			max-width: none;
+		}
+	}
+}
+
+// popup
+.mode-popup {
+	main {
+		display: none;
+	}
+}
+.popup {
+	&__body {
+		padding: 0;
+	}
+	&__close {
+		$size: 70px;
+		position: fixed;
+		right: 0;
+		bottom: 0;
+		box-sizing: border-box;
+		button {
+			display: block;
+			margin: 0;
+			padding: 10px 0 0 10px;
+			background: none;
+			border: none;
+			box-sizing: border-box;
+			cursor: pointer;
+			-webkit-tap-highlight-color: transparent;
+			user-select: none;
+			> div {
+				overflow: hidden;
+				width: $size;
+				height: $size;
+				&:before {
+					content: '';
+					display: block;
+					width: 0;
+					height: 0;
+					border: 60px solid transparent;
+					border-top-color: $color-key;
+					transform-origin: 50% 50%;
+					transform: rotateZ(-45deg) translateY(28px);
+					transition: border-top-color .2s ease-out, transform .15s ease-out;
+				}
+				img {
+					&.pc {
+						display: none;
+					}
+					&.mobile {
+						display: block;
+						position: absolute;
+						right: 12px;
+						bottom: 12px;
+						width: 12px;
+						height: 12px;
+						transition: transform .15s ease-out;
+					}
+				}
+				&:active {
+					&:before {
+						border-top-color: mix(#000, $color-key, 10%);
+						transform: rotateZ(-45deg) translate(0, 32px);
+					}
+					img {
+						&.mobile {
+							transform: scale(.75);
+						}
+					}
+				}
+			}
+		}
+	}
+	&__loading.loading {
+		position: fixed;
+		left: 0;
+		right: 0;
+		top: 0;
+		bottom: 0;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		height: auto;
+		transition: opacity .2s ease-out;
+		opacity: 0;
+		&.show {
+			opacity: 1;
+		}
+	}
+
+	@include responsive(tablet) {
+		&__body {
+			padding: 0 0 20px;
+		}
+		&__close {
+			$size: 24px;
+			top: 0;
+			bottom: auto;
+			button {
+				padding: 15px;
+				> div {
+					width: $size;
+					height: $size;
+					transition: transform .15s ease-out;
+					transform-origin: 50% 50%;
+					&:before {
+						display: none;
+					}
+					img {
+						&.pc {
+							display: block;
+							width: 100%;
+							height: 100%;
+						}
+						&.mobile {
+							display: none;
+						}
+					}
+				}
+				&:active {
+					> div {
+						transform: scale(.85, .85);
+					}
+				}
+			}
+		}
+	}
+	@include responsive(desktop) {
+		&__body {
+			padding: 0 0 30px;
+		}
+		&__close {
+			button {
+				padding: 25px;
+			}
 		}
 	}
 }

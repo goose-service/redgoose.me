@@ -28,12 +28,12 @@ if (getenv('TIMEZONE'))
 	date_default_timezone_set(getenv('TIMEZONE'));
 }
 
+// set blade
+$blade = new Blade(__PATH__.'/view', __PATH__.'/cache');
+
 // set router
 try {
 	$router = new Router();
-
-	// set blade
-	$blade = new Blade(__PATH__.'/view', __PATH__.'/cache');
 
 	// play route
 	if ($router->match)
@@ -99,7 +99,7 @@ try {
 					'hit' => Util::checkCookie('redgoose-hit-'.$_params->srl) ? 0 : 1,
 					'ext_field' => 'category_name,nest_name'
 				]);
-				if (!($res && $res->success)) throw new Exception($res->message);
+				if (!($res && $res->success)) throw new Exception($res->message, $res->code);
 				$res->data->regdate = Util::convertDate($res->data->regdate);
 
 				// add key in cookie
@@ -155,5 +155,5 @@ try {
 }
 catch (Exception $e)
 {
-	Util::error($e);
+	Util::error($e, $blade);
 }

@@ -1,5 +1,6 @@
 import * as api from '../libs/api';
 import * as util from '../libs/util';
+import Work from "../Work";
 
 const SCROLL_OFFSET = 100; // 페이지가 변화되는 스크롤 y축 위치 offset
 const SCROLL_SPEED = 300; // 페이지 추가될때 스크롤 이동되는 속도
@@ -21,6 +22,7 @@ export default function Index(app) {
 	this.$index = $(this.index_selector);
 	this.$more = $('#index_button_more');
 	this.$loading = $('#index_loading');
+	this.$popup = null;
 	this.loading = null;
 	this.nest = {
 		srl: this.app.options.nest_srl,
@@ -32,6 +34,7 @@ export default function Index(app) {
 		name: this.app.options.category_name
 	};
 	this.scrollEvent = null;
+	this.scrollTop = 0;
 
 	(function constructor(){
 		try
@@ -189,7 +192,7 @@ export default function Index(app) {
 	 * @param {Boolean} ready
 	 * @return {Array}
 	 */
-	function element(index, ready)
+	function indexItemElement(index, ready)
 	{
 		let dom = index.map(function(o, k) {
 			let sizeSet = (o.json.thumbnail && o.json.thumbnail.sizeSet) ? o.json.thumbnail.sizeSet.split('*') : [1,1];
@@ -322,6 +325,38 @@ export default function Index(app) {
 	}
 
 	/**
+	 * make element for popup
+	 *
+	 * @return {Array}
+	 */
+	function popupElement()
+	{
+		let dom = (`<div class="popup">
+			<div class="popup__body"></div>
+			<div class="loading popup__loading">
+				<div class="loading__loader">
+					<div class="loading__shadow"></div>
+					<div class="loading__box"></div>
+				</div>
+			</div>
+			<nav class="popup__close">
+				<button type="button" title="close">
+					<div>
+						<img src="${self.app.options.urlRoot}/assets/images/ico-close.svg" class="pc" alt="close"/>
+						<img src="${self.app.options.urlRoot}/assets/images/ico-close2.svg" class="mobile" alt="close"/>
+					</div>
+				</button>
+			</nav>
+		</div>`);
+		let $dom = $(dom);
+
+		// init close event
+		$dom.children('.popup__close').on('click', self.close);
+
+		return $dom;
+	}
+
+	/**
 	 * PUBLIC AREA
 	 */
 
@@ -335,33 +370,103 @@ export default function Index(app) {
 	{
 		try
 		{
-			// TODO: 스크롤 위치 백업하기
+			// save scroll top
+			this.scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
 			// TODO: 히스토리 업데이트하기
-			// TODO: html class 이름 팝업용으로 추가
-			// TODO: 팝업용 엘리먼트를 스크립트로 만들던지 미리 만들어둔걸 셀렉터를 변수로 만들기
-			// TODO: 로딩 띄우기
-			// TODO: jquery로 엘리먼트를 바로 가져오기 `/article/{srl}?mode=popup`
-			// TODO: 데이터 검사하기
-			// TODO: 로딩 끄기
-			// TODO: 데이터를 팝업 화면에 집어넣기
-			// TODO: 이벤트 초기화 하기
 
-			// $.get('/article/85?mode=popup', function(data) {
-			// 	console.log(data);
-			// });
+			// destory masonry
+			if (this.masonry) masonry(false);
 
-			console.log('open work', srl);
+			// off scroll event
+			initScrollEvent(false);
+
+			// change popup mode for html tag
+			$('html').addClass('mode-popup');
+
+			// make element and append
+			this.$popup = popupElement();
+			$('body').append(this.$popup);
+
+			// 빠르게 로딩심볼이 나오면 잔상이 남기 때문에 약간 늦춰서 보이도록 타임아웃을 검
+			let timer = setTimeout(function() {
+				if (this.$popup) this.$popup.children('.popup__loading').addClass('show');
+			}, 200);
+
+			// get work data
+			let work = await $.get(`/article/${srl}?mode=popup`);
+
+			// 로딩 타이머 끝나기전에 데이터를 불러왔으면 타임아웃을 클리어한다.
+			clearTimeout(timer);
+
+			// off loading
+			this.$popup.children('.popup__loading').remove();
+
+			// append work element
+			this.$popup.children('.popup__body').append(work);
+
+			// init work mode
+			this.app.mode = 'work';
+			this.app.work = new Work(this.app);
 		}
 		catch(e)
 		{
-			// TODO: 오류 엘리먼트 만들어 넣기
+			if (this.app.options.debug)
+			{
+				console.error(e);
+			}
+			// alert message
+			alert('Failed open work.');
+			// close window
+			this.close().then();
 		}
 	};
 
-	this.close = function()
+	/**
+	 * close window
+	 */
+	this.close = async function()
 	{
-		// TODO
-		console.log('close work');
+		try
+		{
+			if (!(self.$popup && self.$popup.length))
+			{
+				throw 'Failed to close window.';
+			}
+
+			// TODO: update history
+
+			// change mode and unset work
+			self.app.mode = 'index';
+			self.app.work = null;
+
+			// remove popup element
+			self.$popup.remove();
+			self.$popup = null;
+
+			// change popup mode for html tag
+			$('html').removeClass('mode-popup');
+
+			// reset masonry
+			if (!this.masonry) masonry(true);
+
+			// on scroll event
+			initScrollEvent(true);
+
+			// restore scrollY
+			window.scrollTo(0, self.scrollTop);
+		}
+		catch(e)
+		{
+			if (self.app.options.debug)
+			{
+				console.error(e);
+			}
+			if (e && typeof e === 'string')
+			{
+				alert(e);
+			}
+		}
 	};
 
 	/**
@@ -439,7 +544,7 @@ export default function Index(app) {
 			res = res.data;
 
 			// make elements
-			let $elements = element(res.index, false);
+			let $elements = indexItemElement(res.index, false);
 
 			// remove prev elements
 			this.$index.children('.indexWorks__item').remove();
@@ -533,7 +638,7 @@ export default function Index(app) {
 			}
 
 			// make new elements
-			let $elements = element(res.index, true);
+			let $elements = indexItemElement(res.index, true);
 
 			// append
 			this.$index.append($elements);

@@ -1,0 +1,35 @@
+@import "./libs/mixins";
+
+.error {
+	margin: 0;
+	padding: 40px 0 30px;
+	&__image {
+		padding: 0 30px;
+		img {
+			display: block;
+			margin: 0 auto;
+			width: 150px;
+		}
+	}
+	&__message {
+		margin: 20px 0 0;
+		text-align: center;
+		font-size: 18px;
+		font-weight: bold;
+		letter-spacing: -.25px;
+	}
+
+	@include responsive(mini) {
+		padding: 60px 0 40px;
+		&__image {
+			img {
+				width: 32vw;
+				max-width: 380px;
+			}
+		}
+		&__message {
+			margin: 24px 0 0;
+			font-size: 28px;
+		}
+	}
+}
