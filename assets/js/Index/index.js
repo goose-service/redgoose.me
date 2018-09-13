@@ -168,35 +168,40 @@ export default function Index(app) {
 		{
 			const { history } = self.app;
 
-			let url = new URL(window.location.href);
-			let urlParams = url.searchParams;
-			let urlPage = url.searchParams ? url.searchParams.get('page') : null;
-			urlPage = urlPage ? parseInt(urlPage) : 1;
-
-			if (page === urlPage) return;
-
-			if (page === 1)
+			try
 			{
-				urlParams.delete('page');
-			}
-			else
-			{
-				urlParams.set('page', page);
-			}
+				let url = new URL(window.location.href);
+				let urlParams = url.searchParams;
+				let urlPage = url.searchParams ? url.searchParams.get('page') : null;
+				urlPage = urlPage ? parseInt(urlPage) : 1;
 
-			let newUrl = location.pathname + (urlParams.toString() ? `?${urlParams.toString()}` : '');
+				if (page === urlPage) return;
 
-			// change default page
-			self.app.options.page = page;
-
-			history.replace(
+				if (page === 1)
 				{
-					...history.env,
-					...{ url: newUrl }
-				},
-				history.title,
-				newUrl
-			);
+					urlParams.delete('page');
+				}
+				else
+				{
+					urlParams.set('page', page);
+				}
+
+				let newUrl = location.pathname + (urlParams.toString() ? `?${urlParams.toString()}` : '');
+
+				// change default page
+				self.app.options.page = page;
+
+				history.replace(
+					{
+						...history.env,
+						...{ url: newUrl }
+					},
+					history.title,
+					newUrl
+				);
+			}
+			catch(e)
+			{}
 		}
 
 		function action()

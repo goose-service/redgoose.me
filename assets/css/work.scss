@@ -298,6 +298,7 @@
 			display: block;
 			margin: 0 auto;
 			width: 28px;
+			height: 28px;
 			transition: transform .3s cubic-bezier(.24, 1.35, .8, 1.22);
 			path {
 				fill: $color-key;
@@ -338,6 +339,7 @@
 		button {
 			svg {
 				width: 32px;
+				height: 32px;
 			}
 		}
 	}
