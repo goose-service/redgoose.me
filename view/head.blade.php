@@ -11,6 +11,7 @@
 <meta property="og:site_name" content="redgoose"/>
 <meta property="og:url" content="https://{{ $_SERVER['HTTP_HOST'] }}{{ $_SERVER['REQUEST_URI'] }}"/>
 <meta property="og:locale" content="ko_KR"/>
+<meta property="og:type" content="website"/>
 <meta property="fb:app_id" content="1619661748331088"/>
 
 <meta name="apple-mobile-web-app-capable" content="yes"/>
