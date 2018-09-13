@@ -11,17 +11,15 @@
 		margin: 0 auto;
 	}
 	&__header {
-		margin: 20px 0 0;
+		margin: 30px 0 0;
 	}
 	&__body {
-		margin: 20px 0 0;
+		margin: 30px 0 0;
 	}
 	&__like {
 		margin: 30px 0 0;
 	}
-	&__close {
-		//
-	}
+	&__close {}
 
 	@include responsive(mini) {
 		&__header {
@@ -71,6 +69,7 @@
 	}
 	h1 {
 		margin: 0;
+		padding: 0 1rem;
 		font-size: 1.5rem;
 		line-height: 1;
 		font-weight: 200;

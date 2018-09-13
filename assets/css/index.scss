@@ -359,6 +359,11 @@
 	main {
 		display: none;
 	}
+	body {
+		&:before {
+			display: none;
+		}
+	}
 }
 .popup {
 	&__body {
