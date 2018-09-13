@@ -170,7 +170,7 @@ export default function Index(app) {
 
 			let url = new URL(window.location.href);
 			let urlParams = url.searchParams;
-			let urlPage = url.searchParams.get('page');
+			let urlPage = url.searchParams ? url.searchParams.get('page') : null;
 			urlPage = urlPage ? parseInt(urlPage) : 1;
 
 			if (page === urlPage) return;

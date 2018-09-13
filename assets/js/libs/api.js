@@ -24,7 +24,9 @@ export const get = async function(url, params)
 		return await $.ajax({
 			url: url + util.serialize(params, true),
 			type: 'get',
-			headers: { 'Authorization': app.options.token },
+			headers: {
+				'Authorization': app.options.token
+			},
 		});
 	}
 	catch(e)

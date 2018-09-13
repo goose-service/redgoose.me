@@ -35,9 +35,73 @@ export default function IndexWork(app, index)
 		let $dom = $(dom);
 
 		// init close event
-		$dom.children('.popup__close').on('click', self.close);
+		$dom.children('.popup__close').on('click', () => self.close(true));
 
 		return $dom;
+	}
+
+	/**
+	 * keyboard event
+	 *
+	 * @param {Boolean} sw
+	 */
+	function keyboard(sw)
+	{
+		const $window = $(window);
+		const keymap = {
+			left: 37,
+			right: 39,
+			esc: 27,
+			cmd: 91,
+			ctrl: 17,
+		};
+		let ready = true;
+
+		function onKeyUp(e)
+		{
+			switch (e.keyCode)
+			{
+				case keymap.cmd:
+				case keymap.ctrl:
+					ready = true;
+					break;
+				case keymap.left:
+					if (ready) self.prev();
+					break;
+				case keymap.right:
+					if (ready) self.next();
+					break;
+				case keymap.esc:
+					if (app.mode === 'work') self.close(true).then();
+					break;
+			}
+		}
+
+		function onKeyDown(e)
+		{
+			switch (e.keyCode)
+			{
+				case keymap.left:
+				case keymap.right:
+					ready = true;
+					break;
+				default:
+					ready = false;
+					break;
+			}
+		}
+
+		if (sw)
+		{
+			// initial event
+			$window.off('keyup.redgoose keydown.redgoose');
+			$window.on('keyup.redgoose', onKeyUp);
+			$window.on('keydown.redgoose', onKeyDown);
+		}
+		else
+		{
+			$window.off('keyup.redgoose keydown.redgoose');
+		}
 	}
 
 	/**
@@ -109,6 +173,9 @@ export default function IndexWork(app, index)
 			// init work mode
 			app.mode = 'work';
 			app.work = new Work(app);
+
+			// start keyboard event
+			keyboard(true);
 		}
 		catch(e)
 		{
@@ -147,6 +214,9 @@ export default function IndexWork(app, index)
 				);
 			}
 			self.indexHistory = null;
+
+			// stop keyboard event
+			keyboard(false);
 
 			// change mode and unset work
 			app.mode = 'index';
