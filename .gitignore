@@ -1,8 +1,12 @@
 .idea/
-cache/
 node_modules/
 .AppleDouble/
+vendor/
+cache/
+!assets/vendor/
+assets/dist/
 
 .DS_Store
-*--user.*
 yarn.lock
+.env
+yarn-error.log

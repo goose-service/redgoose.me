@@ -1,17 +1,15 @@
 {
 	"presets": [
-		[
-			"env", {
-				"modules": false,
-				"debug": false,
-				"targets": {
-					"browsers": [ "last 2 Chrome versions" ]
-				}
-			}
-		],
-		"stage-0"
+		"env"
 	],
 	"plugins": [
-		"external-helpers"
+		"transform-object-rest-spread",
+		[
+			"transform-runtime",
+			{
+				"polyfill": false,
+				"regenerator": true
+			}
+		]
 	]
 }

@@ -1,83 +1,94 @@
+<!doctype html>
 <?php
 if(!defined("__GOOSE__")){exit();}
 ?>
-<!doctype html>
 <html lang="ko">
 <head>
 @include('head')
 </head>
 <body ontouchstart="">
-@if(!$error)
-	<main>
-		<!-- Header -->
-		<header class="layout-header">
-			<div class="layout-header__body">
-				<h1 class="logo layout-header__logo">
-					<a href="{{ __ROOT__ }}/" title="{{ $pref->meta->title }}">
-						<img src="{{ __ROOT__ }}/assets/img/img-logo.svg" alt="{{ $pref->meta->title }}" width="100"/>
-					</a>
-				</h1>
-				<nav class="layout-header__side layout-header__side-left">
-					<button type="button" class="toggle-gnb" title="Toggle menu">
-						<span><i></i></span>
-					</button>
-				</nav>
-			</div>
-			<nav class="gnb layout-header__gnb">
-				<ul class="gnb__dep-1">
-					@foreach($pref->nav as $item)
-					<li{!! ($_page == $item->name) ? ' class="active"' : '' !!}>
-						<a href="{{ $item->ext ? $item->url : __ROOT__.$item->url }}" target="{{ $item->target }}">
-							{{ $item->name }}
-						</a>
-						@if($item->child && count($item->child))
-						<div class="gnb__children">
-							<ul class="gnb__dep-2">
-								@foreach($item->child as $item2)
-								<li{!! ($_nest && ($_nest == $item2->name || $_nest == $item2->id)) ? ' class="active"' : '' !!}>
-									<a href="{{isset($item2->ext) ? $item2->url : __ROOT__.$item2->url}}">
-										{{ $item2->name }}
-									</a>
+<main>
+	<header class="header">
+		<div class="header__wrap" id="gnb">
+			<nav class="left">
+				<ul>
+					<li>
+						<a href="/nest/visual"><span>Works</span></a>
+						<div>
+							<ol>
+								<li{!!$nest_id === 'visual' ? ' class="on"' : ''!!}>
+									<a href="/nest/visual">Visual</a>
 								</li>
-								@endforeach
-							</ul>
+								<li{!!$nest_id === '3d' ? ' class="on"' : ''!!}>
+									<a href="/nest/3d">3D</a>
+								</li>
+								<li{!!$nest_id === 'develop' ? ' class="on"' : ''!!}>
+									<a href="/nest/develop">Develop</a>
+								</li>
+							</ol>
 						</div>
-						@endif
 					</li>
-					@endforeach
+					<li>
+						<a href="/nest/landscape"><span>Photos</span></a>
+						<div>
+							<ol>
+								<li{!!$nest_id === 'landscape' ? ' class="on"' : ''!!}>
+									<a href="/nest/landscape">Landscape</a>
+								</li>
+								<li{!!$nest_id === 'portrait' ? ' class="on"' : ''!!}>
+									<a href="/nest/portrait">Portrait</a>
+								</li>
+								<li{!!$nest_id === 'snap' ? ' class="on"' : ''!!}>
+									<a href="/nest/snap">Snap</a>
+								</li>
+								<li{!!$nest_id === 'composition' ? ' class="on"' : ''!!}>
+									<a href="/nest/composition">Composition</a>
+								</li>
+								<li{!!$nest_id === 'foreign' ? ' class="on"' : ''!!}>
+									<a href="/nest/foreign">Foreign countries</a>
+								</li>
+								<li{!!$nest_id === 'cosplay' ? ' class="on"' : ''!!}>
+									<a href="/nest/cosplay">Cosplay</a>
+								</li>
+							</ol>
+						</div>
+					</li>
 				</ul>
 			</nav>
-		</header>
-		<!-- // Header -->
-
-		<!-- Container -->
-		<div class="container">
-			@yield('contents')
+			<h1>
+				<a href="/">
+					<img src="{{__ROOT__}}/assets/images/ico-logo.svg" alt="redgoose">
+				</a>
+			</h1>
+			<nav class="right">
+				<ul>
+					<li>
+						<a href="/page/about">
+							<span>About</span>
+						</a>
+					</li>
+					<li>
+						<a href="https://note.redgoose.me" target="_blank">
+							<span>Note</span>
+						</a>
+					</li>
+				</ul>
+			</nav>
 		</div>
-		<!-- // Container -->
+	</header>
 
-		<!-- Footer -->
-		<footer class="layout-footer">
-			<p class="layout-footer__copyright">{{ $pref->copyright }}</p>
-		</footer>
-		<!-- // Footer -->
-	</main>
+	<div class="container">
+		@yield('contents')
+	</div>
 
-	@yield('popup')
-
-	<script src="{{__ROOT__}}/dist/vendors/jquery.min.js"></script>
-	<script src="{{__ROOT__}}/dist/vendors/masonry.pkgd.min.js"></script>
-	<script src="{{__ROOT__}}/dist/redgoose.js"></script>
-	@yield('script')
-	<script>
-	if ('serviceWorker' in navigator) {
-		navigator.serviceWorker
-			.register('/service-worker.js')
-			.then(function() { console.log('Service Worker Registered'); });
-	}
-	</script>
-@else
-	@yield('contents')
-@endif
+	<footer class="footer">
+		<div class="footer__wrap">
+			<p class="footer__copyright">
+				Copyright 2013-{{date('Y')}} redgoose. All right reserved.
+			</p>
+		</div>
+	</footer>
+</main>
+@yield('script')
 </body>
 </html>

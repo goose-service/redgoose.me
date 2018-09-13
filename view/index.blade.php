@@ -1,110 +1,97 @@
 <?php
 if(!defined("__GOOSE__")){exit();}
 
-/** @var int $_nest */
-/** @var int $_category */
-/** @var object $repo */
+/** @var array $index */
+/** @var int $nextPage */
 ?>
 
 @extends('layout')
 
+@section('meta')
+<title>{{ $title }}</title>
+<meta name="description" content="{{ getenv('DESCRIPTION') }}"/>
+<meta property="og:title" content="{{ $title }}"/>
+<meta property="og:description" content="{{ getenv('DESCRIPTION') }}">
+<meta property="og:image" content="{{ __API__ }}/usr/icons/redgoose_512x512x32.png">
+@endsection
+
 @section('contents')
 <article class="index">
-	<div class="index__wrap">
-		@if($repo->nest)
-		<header class="index__header">
-			<h1>{{ $repo->nest->name }}</h1>
-			@if($repo->categories)
-			<nav class="categories index__categories">
-				<button type="button" title="toggle category index" class="categories__toggle">
-					<img src="{{ __ROOT__ }}/assets/img/ico-arrow-down.svg" alt="">
+	<header class="indexHeader index__header">
+		<h1>{{$pageTitle}}</h1>
+		@if (isset($categories) && count($categories))
+			<nav class="indexCategories" id="categories">
+				<button type="button" class="indexCategories__toggle">
+					<img src="{{__ROOT__}}/assets/images/ico-arrow-down.svg" alt="icon">
 					<span>Category</span>
 				</button>
-				@if(count($repo->categories))
-				<ul class="categories__index">
-					@foreach($repo->categories as $item)
-					<li>
-						<a href="{{ __ROOT__ }}/nest/{{ $_nest ? $_nest.'/' : '' }}{{ $item->srl ? $item->srl.'/' : '' }}"{!! $item->active ? ' class="active"' : '' !!}>
-							{{ $item->name }}({{ $item->count_article }})
-						</a>
-					</li>
+				<ul class="indexCategories__index">
+					@foreach($categories as $k=>$item)
+						<li{!!($category_srl === $item->srl || (!$category_srl && !$item->srl)) ? ' class="on"' : ''!!}>
+							<a href="/nest/{{$nest_id}}{{$item->srl ? '/'.$item->srl : ''}}" data-srl="{{$item->srl}}">
+								<span>{{$item->name}}</span><em>{{$item->count_article}}</em>
+							</a>
+						</li>
 					@endforeach
 				</ul>
-				@endif
 			</nav>
-			@endif
-		</header>
 		@endif
+	</header>
 
-		<div class="index__articlesWrap">
-			@if ($repo->articles && count($repo->articles))
-			<div class="articles index__articles" id="articles">
-				<div class="grid-sizer"></div>
-				@foreach($repo->articles as $k=>$item)
-
-				<?php
-				$page = isset($_GET['page']) ? $_GET['page'] : 1;
-				?>
-				<div class="grid-item{{ $item->size_className ? ' '.$item->size_className : '' }}"{{ $classPage = $k === 0 ? ' data-page='.$page : '' }}>
-					<a href="{{__ROOT__}}/article/{{$_nest ? $_nest.'/' : ''}}{{$item->srl}}/" data-srl="{{$item->srl}}" title="{{$item->title}}">
-						<figure style="background-image: url('{{ __GOOSE_ROOT__ }}/{{ $item->json->thumbnail->path }}')">
-							{{ $item->title }}
-						</figure>
-					</a>
-				</div>
+	<div class="indexWorks index__works">
+		<div class="loading indexWorks__loading" id="index_loading">
+			<div class="loading__loader">
+				<div class="loading__shadow"></div>
+				<div class="loading__box"></div>
+			</div>
+		</div>
+		<div id="index" class="indexWorks__index">
+			<div class="indexWorks__sizer"></div>
+			@if ($index && count($index))
+				@foreach($index as $k=>$item)
+					<div class="indexWorks__item{{$item->className ? ' '.$item->className : ''}}">
+						<a href="/article/{{$item->srl}}" data-srl="{{$item->srl}}">
+							<img src="{{__API__}}/{{$item->image}}" alt="{{$item->title}}">
+						</a>
+					</div>
 				@endforeach
-			</div>
 			@else
-			<div class="empty-article">
-				<div class="empty-article__wrap">
-					<img src="{{ __ROOT__ }}/assets/img/ico-warning.svg" width="80" alt="empty"/>
-					<p>No article</p>
+				<div class="indexEmpty indexWorks__empty">
+					<img src="{{__ROOT__}}/assets/images/img-error.png" alt="error">
+					<p>Not found work.</p>
 				</div>
-			</div>
 			@endif
 		</div>
 
-		@if($repo->nextpage)
-		<?php
-		$address = (($_nest) ? 'nest/' . $_nest . '/' : '') . (($_nest && $_category) ? $_category . '/' : '');
-		?>
-		<nav class="loadMore index__loadMore">
-			<a href="{{ __ROOT__ }}/{{ $address }}?page={{ $repo->nextpage }}" data-next="{{ $repo->nextpage }}" title="load more articles">
-				<span>
-					<img src="{{ __ROOT__ }}/assets/img/ico-loadMore.svg" width="24" alt="plus"/>
-				</span>
-			</a>
+		<nav class="indexMore indexWorks__more {{!$nextPage ? 'indexMore--hide' : ''}}" id="index_button_more">
+			<button type="button" data-page="{{$nextPage}}">
+				<img src="{{__ROOT__}}/assets/images/ico-load-more.svg" alt="load more">
+			</button>
 		</nav>
-		@endif
 	</div>
 </article>
 @endsection
 
-@section('popup')
-<div class="popupArticle" id="popupArticle"></div>
-@endsection
-
 @section('script')
+<script src="{{__ROOT__}}/assets/vendor/jquery-3.3.1.min.js"></script>
+<script src="{{__ROOT__}}/assets/vendor/masonry.pkgd.min.js"></script>
+<script src="{{__ROOT__}}/assets/dist/app.js"></script>
 <script>
-var redgoose = new Redgoose({
-	root: '{{ __ROOT__ }}',
-	gooseRoot: '{{ __GOOSE_ROOT__ }}',
-	title: '{{ $pref->meta->title }}',
-	dev: !!'{{ DEBUG }}',
-});
-redgoose.header.init();
-redgoose.index.init({
-	nest_srl: '{{ $_nest }}',
-	category_srl: '{{ $_category }}',
-	size: parseInt('{{ __DEFAULT_ITEM_COUNT__ }}'),
-	title: '{{ $title }}',
+window.redgoose = new Redgoose('index', {
+	title: '{{getenv('TITLE')}}',
+	urlRoot: '{{__ROOT__}}',
+	urlApi: '{{__API__}}',
+	urlCookie: '{{getenv('PATH_COOKIE')}}',
+	token: '{{getenv('TOKEN_PUBLIC')}}',
+	size: parseInt('{{getenv('DEFAULT_INDEX_SIZE')}}'),
+	app_srl: parseInt('{{getenv('DEFAULT_APP_SRL')}}'),
+	nest_srl: parseInt('{{$nest_srl}}'),
+	nest_id: '{{$nest_id}}',
+	nest_name: '{{$pageTitle}}',
+	category_srl: '{{$category_srl}}',
+	category_name: '{{$category_name}}',
+	page: '{{$page}}',
+	debug: !!'{{getenv('USE_DEBUG')}}',
 });
 </script>
-@endsection
-
-@section('meta')
-<meta property="og:description" content="{{ $pref->meta->description }}">
-@if ($appPref->isUserIcons)
-<meta property="og:image" content="{{ __GOOSE_ROOT__ }}/vendor/icons--user/redgoose_512x512x32.png">
-@endif
 @endsection

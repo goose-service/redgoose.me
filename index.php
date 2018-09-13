@@ -1,16 +1,16 @@
 <?php
-header("content-type:text/html; charset=utf-8");
-session_cache_expire(30);
-session_start();
+/**
+ * redgoose.me service
+ *
+ * @package redgoose.me
+ * @author redgoose <https://redgoose.me>
+ */
 
-if (is_file('index--user.php'))
-{
-	require_once('index--user.php');
-}
-else
-{
-	echo "not exist 'index--user.php' file";
-	exit;
-}
+// set keyword `__GOOSE__`
+define('__GOOSE__', true);
 
-require_once(__PWD__ . '/core/bootstrap.php');
+// set path for global
+define('__PATH__', __DIR__);
+
+// bootstrap
+require_once 'core/bootstrap.php';

@@ -1,0 +1,20 @@
+{
+    "name": "redgoose/redgoose.me",
+    "authors": [
+        {
+            "name": "redgoose",
+            "email": "scripter@me.com"
+        }
+    ],
+    "require": {
+        "vlucas/phpdotenv": "^2.5",
+        "altorouter/altorouter": "^1.2",
+        "eftec/bladeone": "^3.8",
+        "erusev/parsedown": "^1.7"
+    },
+    "autoload": {
+        "psr-4": {
+            "Core\\": "core/"
+        }
+    }
+}

@@ -1,242 +1,166 @@
 <?php
-if(!defined("__GOOSE__")){exit();}
+namespace Core;
+use Dotenv\Dotenv, Exception;
 
-@error_reporting(E_ALL ^ E_NOTICE);
-@ini_set("display_errors", (is_bool(DEBUG) && DEBUG) ? 1 : 0);
+if (!defined('__GOOSE__')) exit();
 
+// load autoload
+require __PATH__.'/./vendor/autoload.php';
 
-// check localhost
-define('__IS_LOCAL__', (preg_match("/(192.168)/", $_SERVER['REMOTE_ADDR']) || ($_SERVER['REMOTE_ADDR'] === "::1")) ? true : false);
+// set dotenv
+try
+{
+	$dotenv = new Dotenv(__PATH__);
+	$dotenv->load();
+}
+catch(Exception $e)
+{
+	throw new Exception('.env error');
+}
 
+// set values
+define('__ROOT__', getenv('PATH_RELATIVE'));
+define('__API__', getenv('PATH_API'));
 
-// load program files
-require_once(__PWD__.'/vendor/Router/AltoRouter.php');
-require_once(__PWD__.'/vendor/BladeOne/BladeOne.php');
-require_once(__PWD__.'/core/Util.class.php');
-require_once(__PWD__.'/core/func.php');
-
-Use eftec\bladeone;
+// set default timezone
+if (getenv('TIMEZONE'))
+{
+	date_default_timezone_set(getenv('TIMEZONE'));
+}
 
 // set blade
-$blade = new bladeone\BladeOne(__PWD__.'view', __PWD__.'cache');
+$blade = new Blade(__PATH__.'/view', __PATH__.'/cache');
 
-// set preferences
-$pref = externalApi('/json/'.__JSON_SRL_PREFERENCE__);
-if (!$pref)
-{
-	echo $blade->run('error', [
-		'error' => true,
-		'code' => 500,
-		'message' => DEBUG ? 'no pref data' : 'Service error',
-		'title' => 'redgoose',
-	]);
-	exit;
-}
-else
-{
-	$pref = $pref->json;
-}
+// set router
+try {
+	$router = new Router();
 
-// set app preference
-$appPref = (object)[
-	'isUserIcons' => is_dir(__PWD__ . 'assets/icons/')
-];
-
-// router
-$router = new AltoRouter();
-$router->setBasePath(__ROOT__);
-require_once('map.php');
-
-if ($router->match())
-{
-	$match = $router->match();
-	$_target = $match['target'];
-	$_params = (object)$match['params'];
-	$_method = $_SERVER['REQUEST_METHOD'];
-
-	// init api
-	require_once('API.class.php');
-	$api = new API();
-
-	if ($_method === 'POST')
+	// play route
+	if ($router->match)
 	{
-		require_once('ajax.php');
-		exit;
-	}
-	else if ($_method === 'GET')
-	{
+		$_target = $router->match['target'];
+		$_params = (object)$router->match['params'];
+		$_method = $_SERVER['REQUEST_METHOD'];
+
 		switch($_target)
 		{
 			case 'index':
-				// get data
-				$repo = $api->index((object)[
-					'app_srl' => __APP_SRL__,
-					'nest_id' => null,
-					'category_srl' => null,
-					'page' => $_GET['page'],
-					'print_data' => 'article,nav_more',
-					'root' => __ROOT__,
-					'size' => __DEFAULT_ITEM_COUNT__
+				// get articles
+				$res = Util::api('/articles', (object)[
+					'field' => 'srl,json,title',
+					'order' => 'regdate',
+					'sort' => 'desc',
+					'app' => getenv('DEFAULT_APP_SRL'),
+					'size' => getenv('DEFAULT_INDEX_SIZE'),
+					'page' => Util::getPage(),
+					'ext_field' => 'next_page',
 				]);
+				if (!($res && $res->success)) throw new Exception($res->message);
 
-				// check error
-				if ($repo->state == 'error')
-				{
-					echo $blade->run('error', [
-						'error' => true,
-						'code' => 500,
-						'message' => DEBUG ? 'Error index data' : 'Service error',
-						'title' => $pref->meta->title,
-					]);
-					exit;
-				}
-
-				// render
-				echo $blade->run('index', [
-					'pref' => $pref,
-					'appPref' => $appPref,
-					'title' => $pref->meta->title,
-					'repo' => $repo
+				// render page
+				$blade->render('index', (object)[
+					'title' => getenv('TITLE'),
+					'pageTitle' => 'Newstest works',
+					'index' => Util::getWorksData($res->data->index),
+					'page' => Util::getPage(),
+					'nextPage' => $res->data->nextPage,
 				]);
 				break;
 
-			case 'nest':
-				$_nest = $_params->nest;
-				$_category = (int)$_params->category;
-				$_page = getGnbActive($pref->nav, $_nest);
-
-				// get data
-				$repo = $api->index((object)[
-					'app_srl' => __APP_SRL__,
-					'nest_id' => $_nest,
-					'category_srl' => $_category,
-					'page' => $_GET['page'],
-					'print_data' => 'nest,article,category,nav_more',
-					'root' => __ROOT__,
-					'size' => __DEFAULT_ITEM_COUNT__
+			case 'index/nest':
+				$res = Util::api('/external/redgoose-me-nest', (object)[
+					'nest_id' => $_params->id,
+					'category_srl' => $_params->srl,
+					'ext_field' => 'item_all,count_article',
+					'page' => Util::getPage(),
+					'size' => getenv('DEFAULT_INDEX_SIZE'),
 				]);
 
-				// check error
-				if ($repo->state == 'error')
-				{
-					echo $blade->run('error', [
-						'error' => true,
-						'code' => 500,
-						'message' => DEBUG ? 'Error index data' : 'Service error',
-						'title' => $pref->meta->title,
-					]);
-					exit;
-				}
-
-				// set title
-				$title = $pref->meta->title;
-				$title .= ($_nest) ? ' / ' . $repo->nest->name : '';
-				$title .= ($repo->category_name) ? ' / ' . $repo->category_name : '';
-
-				// render
-				echo $blade->run('index', [
-					'pref' => $pref,
-					'appPref' => $appPref,
+				$title = 'redgoose';
+				if (isset($res->data->nest->name)) $title = $res->data->nest->name.' - '.$title;
+				if ($res->data->category) $title = $res->data->category->name.' - '.$title;
+				// render page
+				$blade->render('index', (object)[
 					'title' => $title,
-					'_page' => $_page,
-					'_nest' => $_nest,
-					'_category' => $_category,
-					'repo' => $repo
+					'pageTitle' => $res->data->nest->name,
+					'nest_id' => $_params->id,
+					'nest_srl' => $res->data->nest->srl,
+					'category_srl' => $_params->srl,
+					'category_name' => isset($res->data->category->name) ? $res->data->category->name : null,
+					'index' => Util::getWorksData($res->data->works),
+					'categories' => $res->data->categories,
+					'page' => Util::getPage(),
+					'nextPage' => $res->data->nextPage,
 				]);
 				break;
 
 			case 'article':
-				$_nest = $_params->nest;
-				$_category = (int)$_params->category;
-				$_article = (int)$_params->article;
-
-				// set print data
-				$printData = $_GET['get'] ? $_GET['get'] : ('' . ($_nest ? ',nest' : '') . ($_nest && $_category ? ',category' : ''));
-				$printData = preg_replace("/^,/", '', $printData);
-
-				// get article
-				$repo = $api->article((object)[
-					'app_srl' => __APP_SRL__,
-					'article_srl' => $_article,
-					'updateHit' => !isCookieKey( 'redgoose-hit-'.$_article ),
-					'print_data' => $printData,
+				$res = Util::api('/articles/'.(int)$_params->srl, (object)[
+					'hit' => Util::checkCookie('redgoose-hit-'.$_params->srl) ? 0 : 1,
+					'ext_field' => 'category_name,nest_name'
 				]);
+				if (!($res && $res->success)) throw new Exception($res->message, $res->code);
+				$res->data->regdate = Util::convertDate($res->data->regdate);
 
-				// select render file
+				// add key in cookie
+				if (!Util::checkCookie('redgoose-hit-'.$_params->srl))
+				{
+					Util::setCookie('redgoose-hit-'.$_params->srl, '1', 7);
+				}
+
+				// parse markdown
+				$parsedown = new \Parsedown();
+				$res->data->content = $parsedown->text($res->data->content);
+
+				// render page
 				switch ($_GET['mode'])
 				{
 					case 'popup':
-						$renderFile = 'article.popup';
+						$blade->render('work.popup', (object)[
+							'data' => $res->data,
+							'onLike' => Util::checkCookie('redgoose-like-'.$_params->srl),
+							'mode' => 'popup'
+						]);
 						break;
+
 					default:
-						$renderFile = 'article.view';
+						$blade->render('work.detail', (object)[
+							'title' => ($res->data->title === '.' ? 'Untitled work' : $res->data->title).' - '.getenv('TITLE'),
+							'description' => Util::contentToShortText($res->data->content),
+							'image' => __API__.'/'.$res->data->json->thumbnail->path,
+							'data' => $res->data,
+							'onLike' => Util::checkCookie('redgoose-like-'.$_params->srl),
+							'mode' => 'default'
+						]);
 						break;
 				}
-
-				// set title
-				$title = $pref->meta->title . (($repo->article->title) ? ' / ' . $repo->article->title : '');
-
-				// render
-				echo $blade->run($renderFile, [
-					'pref' => $pref,
-					'appPref' => $appPref,
-					'title' => $title,
-					'_nest' => $_nest,
-					'_category' => $_category,
-					'_article' => $_article,
-					'onLike' => isCookieKey( 'redgoose-like-'.$_article ),
-					'repo' => $repo
-				]);
 				break;
 
 			case 'page':
-				$_page = $_params->page;
-
+				$_page = $_params->name;
 				// check page file
-				if (!file_exists(__PWD__.'view/pages/'.$_page.'.blade.php'))
+				if (!file_exists(__PATH__.'/view/pages/'.$_page.'.blade.php'))
 				{
-					echo $blade->run('error', [
-						'error' => true,
-						'code' => 404,
-						'message' => 'Not found page',
-						'title' => $pref->meta->title,
-					]);
-					exit;
+					throw new Exception('Not found page', 404);
 				}
-				echo $blade->run('pages.'.$_page, [
-					'_page' => $_page,
-					'pref' => $pref,
-					'appPref' => $appPref,
-					'title' => $pref->meta->title
-				]);
-				break;
-
-			case 'ajax':
-				require_once('ajax.php');
+				$blade->render('pages.'.$_page);
 				break;
 
 			case 'rss':
-				require_once('rss.php');
 				break;
 
 			default:
-				echo $blade->run('error', [
-					'error' => true,
-					'code' => 404,
-					'message' => 'Not found page',
-					'title' => $pref->meta->title,
-				]);
-				exit;
+				throw new Exception('Not found page', 404);
+				break;
 		}
 	}
+	else
+	{
+		throw new Exception('Not found page', 404);
+	}
+
 }
-else
+catch (Exception $e)
 {
-	echo $blade->run('error', [
-		'error' => true,
-		'code' => 404,
-		'message' => 'Not found page',
-		'title' => $pref->meta->title,
-	]);
-	exit;
+	Util::error($e, $blade);
 }

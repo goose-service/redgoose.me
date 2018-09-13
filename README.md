@@ -1,25 +1,32 @@
-# redgoose-v3
+# redgoose-v4
 
-redgoose.me ver.3
+redgoose.me ver.4
 
+## 설치하기
 
-## index--user.php
+저장소를 클론 받으면 다음 명령어로 실행해줘야함.
 
-루트에 `index--user.php`파일을 만들어 다음과 같은 내용으로 설정값을 넣어준다.
-
-```php
-<?php
-define('__GOOSE__', true);
-define('__GOOSE_ROOT__', '/goose');
-define('__URL__', 'http://localhost/redgoose.me');
-define('__PWD__', dirname(__FILE__) . '/');
-define('__GOOSE_LIB__', '../goose/bootstrap/lib.php');
-define('__ROOT__', '/redgoose.me');
-define('__COOKIE_ROOT__', '/redgoose.me');
-define('DEBUG', true);
-
-define('__APP_SRL__', 1);
-define('__DEFAULT_ITEM_COUNT__', 40);
-define('__JSON_SRL_PREFERENCE__', 2);
-define('__THUMBNAIL_LARGE_SIZE__', '470,510,610');
+```bash
+yarn install
+yarn run setup
 ```
+
+## 개발하기
+
+```bash
+yarn run start # 개발서버 시작 (php)
+yarn run watch # css, js watch
+```
+
+## 배포하기
+
+```bash
+yarn run build
+```
+
+## 할일목록
+
+- [ ] about 페이지 작업
+- [ ] 테스트 (인터랙션, 오류발생시키기 등등..)
+- [ ] 배포설정하기
+- [ ] 배포하기
