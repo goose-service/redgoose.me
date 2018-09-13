@@ -13,7 +13,7 @@ case "$1" in
 		start
 		;;
 
-	install)
+	setup)
 		# make cache directory
 		if [ ! -d cache ]; then
 			mkdir cache
@@ -36,7 +36,7 @@ case "$1" in
 		;;
 
 	*)
-		echo "Usage: ./action.sh {start}" >&2
+		echo "Usage: ./action.sh {setup|start|watch|build}" >&2
 		exit 3
 		;;
 esac

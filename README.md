@@ -7,6 +7,7 @@ redgoose.me ver.4
 저장소를 클론 받으면 다음 명령어로 실행해줘야함.
 
 ```bash
+composer install
 yarn install
 yarn run setup
 ```
