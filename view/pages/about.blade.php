@@ -89,7 +89,7 @@ if(!defined("__GOOSE__")){exit();}
 					</dd>
 					<dt>codepen</dt>
 					<dd>
-						<a href="http://codepen.io/redgoose" target="_blank">http://codepen.io/redgoose</a>
+						<a href="https://codepen.io/redgoose" target="_blank">https://codepen.io/redgoose</a>
 					</dd>
 				</dl>
 			</section>
