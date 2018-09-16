@@ -183,9 +183,6 @@
 				border-bottom-width: 2px;
 			}
 		}
-		tbody {
-			th, td {}
-		}
 	}
 	a {
 		word-break: break-all;
@@ -237,6 +234,12 @@
 			height: 100%;
 			margin: 0;
 		}
+	}
+	embed {
+		display: block;
+		max-width: 100%;
+		margin: 2rem auto 1rem;
+		background: #eee;
 	}
 
 	> * {
