@@ -69,6 +69,7 @@ try {
 
 			case 'index/nest':
 				$res = Util::api('/external/redgoose-me-nest', (object)[
+					'app_srl' => getenv('DEFAULT_APP_SRL'),
 					'nest_id' => $_params->id,
 					'category_srl' => $_params->srl,
 					'ext_field' => 'item_all,count_article',

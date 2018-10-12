@@ -334,6 +334,7 @@ export default function Index(app) {
 
 			// get datas
 			let res = await api.get('/articles', {
+				app: options.app_srl,
 				nest: options.nest_srl,
 				field: 'srl,json,title',
 				category: srl || '',
