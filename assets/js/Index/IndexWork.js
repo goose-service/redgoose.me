@@ -135,7 +135,7 @@ export default function IndexWork(app, index)
 			{
 				// save index history
 				let url = `${app.options.urlRoot}/article/${srl}`;
-				let title = `${alt} - ${app.options.title}`;
+				let title = `${alt} on ${app.options.title}`;
 				app.history.push(
 					{ url, title, srl, action: 'open-work' },
 					title,
