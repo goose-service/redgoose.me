@@ -126,7 +126,7 @@ try {
 
 					default:
 						$blade->render('work.detail', (object)[
-							'title' => ($res->data->title === '.' ? 'Untitled work' : $res->data->title).' - '.getenv('TITLE'),
+							'title' => ($res->data->title === '.' ? 'Untitled work' : $res->data->title).' on '.getenv('TITLE'),
 							'description' => Util::contentToShortText($res->data->content),
 							'image' => __API__.'/'.$res->data->json->thumbnail->path,
 							'data' => $res->data,
