@@ -72,7 +72,7 @@ export default function IndexWork(app, index)
 					if (ready) self.next();
 					break;
 				case keymap.esc:
-					if (app.mode === 'work') self.close(true).then();
+					if (app.mode === 'work') self.close(true);
 					break;
 			}
 		}
@@ -110,9 +110,8 @@ export default function IndexWork(app, index)
 	 * @param {int} srl
 	 * @param {String} alt
 	 * @param {Boolean} history
-	 * @return {Promise}
 	 */
-	this.open = async function(srl, alt, history=false)
+	this.open = function(srl, alt, history=false)
 	{
 		if (!(srl && alt))
 		{
@@ -159,23 +158,23 @@ export default function IndexWork(app, index)
 			}, 200);
 
 			// get work data
-			let work = await $.get(`/article/${srl}?mode=popup`);
+			$.get(`/article/${srl}?mode=popup`).then(function(work) {
+				// 로딩 타이머 끝나기전에 데이터를 불러왔으면 타임아웃을 클리어한다.
+				clearTimeout(timer);
 
-			// 로딩 타이머 끝나기전에 데이터를 불러왔으면 타임아웃을 클리어한다.
-			clearTimeout(timer);
+				// off loading
+				self.$popup.children('.popup__loading').remove();
 
-			// off loading
-			self.$popup.children('.popup__loading').remove();
+				// append work element
+				self.$popup.children('.popup__body').append(work);
 
-			// append work element
-			self.$popup.children('.popup__body').append(work);
+				// init work mode
+				app.mode = 'work';
+				app.work = new Work(app);
 
-			// init work mode
-			app.mode = 'work';
-			app.work = new Work(app);
-
-			// start keyboard event
-			keyboard(true);
+				// start keyboard event
+				keyboard(true);
+			});
 		}
 		catch(e)
 		{
@@ -185,7 +184,7 @@ export default function IndexWork(app, index)
 			alert('Failed open work.');
 
 			// close window
-			self.close(true).then();
+			self.close(true);
 		}
 	};
 
@@ -193,9 +192,8 @@ export default function IndexWork(app, index)
 	 * close
 	 *
 	 * @param {Boolean} history
-	 * @return {Promise}
 	 */
-	this.close = async function(history=false)
+	this.close = function(history=false)
 	{
 		try
 		{

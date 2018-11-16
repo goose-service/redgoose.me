@@ -34,10 +34,12 @@ export default function Work(app) {
 				self.$like.children('button').on('click', function() {
 					const $self = $(this);
 					if ($self.hasClass('on')) return false;
-					self.onLike(parseInt(this.dataset.srl)).then(function(cnt) {
-						$self.addClass('on');
-						$self.children('em').text(cnt);
-					});
+					self.onLike(parseInt(this.dataset.srl))
+						.then(function(cnt) {
+							$self.addClass('on');
+							$self.children('em').text(cnt);
+						})
+						.catch(alert);
 				});
 			}
 
@@ -61,8 +63,6 @@ export default function Work(app) {
 	{
 		const $images = self.$body.find('img');
 		$images.each(function() {
-			// TODO: 예전 에디터에서 스타일 속성이 들어가있어 레이아웃이 틀어졌는데 글 본문을 많이 수정해야하기 때문에 임시방편으로 속성을 삭제하는것으로 처리
-			//$(this).removeAttr('style');
 			$(this).wrap('<span class="image"></span>');
 		});
 	}
@@ -72,21 +72,20 @@ export default function Work(app) {
 	 *
 	 * @param {Number} srl
 	 */
-	this.onLike = async function(srl)
+	this.onLike = function(srl)
 	{
-		if (!srl) return;
-
-		try
-		{
-			let res = await api.get(`/articles/${srl}/update`, { type: 'star' });
-			if (!res.success) throw 'Failed update like';
-			util.setCookie(`redgoose-like-${srl}`, '1', 10, this.app.options.urlCookie);
-			return res.data.star;
-		}
-		catch(e)
-		{
-			alert(typeof e === 'string' ? e : 'Service error');
-		}
+		return new Promise((resolve, reject) => {
+			if (!srl) reject();
+			api.get(`/articles/${srl}/update`, { type: 'star' })
+				.then((res) => {
+					if (!res.success) reject('Failed update like');
+					util.setCookie(`redgoose-like-${srl}`, '1', 10, this.app.options.urlCookie);
+					resolve(res.data.star);
+				})
+				.catch((e) => {
+					reject(typeof e === 'string' ? e : 'Service error');
+				});
+		});
 	}
 
 }

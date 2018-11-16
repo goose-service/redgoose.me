@@ -45,7 +45,8 @@ export default function History(app) {
 					if (app.mode === 'work')
 					{
 						save();
-						app.index.work.close(false).then();
+						app.index.work.close(false);
+						document.title = self.title;
 						return;
 					}
 					else if (app.mode === 'index')
@@ -70,8 +71,9 @@ export default function History(app) {
 				case 'none':
 					if (app.mode === 'work' && (app.index.work.$popup && app.index.work.$popup.length))
 					{
-						save()
-						app.index.work.close(false).then();
+						save();
+						app.index.work.close(false);
+						document.title = self.title;
 						return;
 					}
 					throw 'no page';

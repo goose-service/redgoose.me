@@ -7,7 +7,6 @@ export const init = function(_app)
 {
 	app = _app;
 
-	// TODO: 필요하다면 사용하기
 	// $(document).ajaxStart(function() {
 	// 	console.warn('ajax start');
 	// });
@@ -16,21 +15,18 @@ export const init = function(_app)
 	// });
 };
 
-export const get = async function(url, params)
+export const get = function(url, params)
 {
-	try
-	{
+	return new Promise((resolve, reject) => {
 		url = (/^http/.test(url)) ? url : app.options.urlApi + url;
-		return await $.ajax({
+		$.ajax({
 			url: url + util.serialize(params, true),
 			type: 'get',
 			headers: {
 				'Authorization': app.options.token
 			},
-		});
-	}
-	catch(e)
-	{
-		return null;
-	}
+		})
+			.then(resolve)
+			.catch(() => resolve(null));
+	});
 };

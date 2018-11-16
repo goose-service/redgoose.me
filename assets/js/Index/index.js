@@ -119,7 +119,7 @@ export default function Index(app) {
 		$categoryButtons.on('click', function() {
 			if ($(this).parent().hasClass('on')) return false;
 			const srl = parseInt(this.dataset.srl);
-			self.changeCategory(srl, true).then();
+			self.changeCategory(srl, true);
 			self.$categories.removeClass('active');
 			return false;
 		});
@@ -265,7 +265,7 @@ export default function Index(app) {
 				e.preventDefault();
 				let srl = parseInt(this.dataset.srl);
 				let title = $(this).find('img').attr('alt');
-				self.work.open(srl, title, true).then();
+				self.work.open(srl, title, true);
 			});
 		});
 	}
@@ -279,9 +279,8 @@ export default function Index(app) {
 	 *
 	 * @param {Number} srl
 	 * @param {Boolean} useHistory
-	 * @return {Promise}
 	 */
-	this.changeCategory = async function(srl, useHistory=false)
+	this.changeCategory = function(srl, useHistory=false)
 	{
 		const { options } = self.app;
 
@@ -333,7 +332,7 @@ export default function Index(app) {
 			self.$more.addClass('indexMore--hide');
 
 			// get datas
-			let res = await api.get('/articles', {
+			api.get('/articles', {
 				app: options.app_srl,
 				nest: options.nest_srl,
 				field: 'srl,json,title',
@@ -342,31 +341,32 @@ export default function Index(app) {
 				sort: 'desc',
 				size: parseInt(self.app.options.size) || 10,
 				ext_field: 'next_page',
+			}).then((res) => {
+				if (!res.success) throw 404;
+				res = res.data;
+
+				// make elements
+				let $elements = indexItemElement(res.index, false);
+
+				// remove prev elements
+				self.$index.children('.indexWorks__item').remove();
+
+				// append elements
+				self.$index.append($elements);
+
+				// off loading
+				loadingForCategory(false);
+
+				// on events in index
+				self.toggleEvents(true);
+
+				// update more button
+				if (res.nextPage)
+				{
+					self.$more.removeClass('indexMore--hide');
+					self.$more.children('button').attr('data-page', res.nextPage);
+				}
 			});
-			if (!res.success) throw 404;
-			res = res.data;
-
-			// make elements
-			let $elements = indexItemElement(res.index, false);
-
-			// remove prev elements
-			self.$index.children('.indexWorks__item').remove();
-
-			// append elements
-			self.$index.append($elements);
-
-			// off loading
-			loadingForCategory(false);
-
-			// on events in index
-			self.toggleEvents(true);
-
-			// update more button
-			if (res.nextPage)
-			{
-				self.$more.removeClass('indexMore--hide');
-				self.$more.children('button').attr('data-page', res.nextPage);
-			}
 		}
 		catch(e)
 		{
@@ -402,7 +402,7 @@ export default function Index(app) {
 	 * @param {Boolean} scroll use scroll
 	 * @return {Promise}
 	 */
-	this.changePage = async function(page, scroll)
+	this.changePage = function(page, scroll)
 	{
 		if (this.$more.hasClass('indexMore--processing')) return false;
 
@@ -423,44 +423,46 @@ export default function Index(app) {
 			};
 			if (this.nest.srl) params.nest = this.nest.srl;
 			if (this.category.srl) params.category = this.category.srl;
-			let res = await api.get('/articles', params);
-			if (!res.success) throw 404;
-			res = res.data;
 
-			// update more button
-			if (res.nextPage)
-			{
-				this.$more.children('button').attr('data-page', res.nextPage);
-			}
-			else
-			{
-				this.$more.addClass('indexMore--hide');
-			}
+			api.get('/articles', params).then((res) => {
+				if (!res.success) throw 404;
+				res = res.data;
 
-			// make new elements
-			let $elements = indexItemElement(res.index, true);
+				// update more button
+				if (res.nextPage)
+				{
+					this.$more.children('button').attr('data-page', res.nextPage);
+				}
+				else
+				{
+					this.$more.addClass('indexMore--hide');
+				}
 
-			// append
-			this.$index.append($elements);
-			if (this.masonry) this.masonry.appended($elements);
+				// make new elements
+				let $elements = indexItemElement(res.index, true);
 
-			// play block animation
-			$elements.each(function(key) {
-				setTimeout(() => {
-					$(this).removeClass('ready');
-				}, BLOCK_DELAY * key);
+				// append
+				this.$index.append($elements);
+				if (this.masonry) this.masonry.appended($elements);
+
+				// play block animation
+				$elements.each(function(key) {
+					setTimeout(() => {
+						$(this).removeClass('ready');
+					}, BLOCK_DELAY * key);
+				});
+
+				if (scroll)
+				{
+					let $firstElement = $elements.eq(0);
+					let top = $firstElement.offset().top - SCROLL_OFFSET;
+					$firstElement.attr('data-page', page);
+					$("html, body").stop().animate({ scrollTop: top }, SCROLL_SPEED, 'swing');
+				}
+
+				// off loading
+				loadingForChangePage(false);
 			});
-
-			if (scroll)
-			{
-				let $firstElement = $elements.eq(0);
-				let top = $firstElement.offset().top - SCROLL_OFFSET;
-				$firstElement.attr('data-page', page);
-				$("html, body").stop().animate({ scrollTop: top }, SCROLL_SPEED, 'swing');
-			}
-
-			// off loading
-			loadingForChangePage(false);
 		}
 		catch(e)
 		{
@@ -534,7 +536,7 @@ export default function Index(app) {
 				self.$more.children('button').on('click', function() {
 					let page = parseInt(this.dataset.page) || null;
 					if (!page) return false;
-					self.changePage(page, true).then();
+					self.changePage(page, true);
 				});
 			}
 
