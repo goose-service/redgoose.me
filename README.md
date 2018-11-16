@@ -24,10 +24,3 @@ yarn run watch # css, js watch
 ```bash
 yarn run build
 ```
-
-## 할일목록
-
-- [ ] about 페이지 작업
-- [ ] 테스트 (인터랙션, 오류발생시키기 등등..)
-- [ ] 배포설정하기
-- [ ] 배포하기
