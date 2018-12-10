@@ -7,12 +7,25 @@ body {
 		display: block;
 		height: $size-header-height-min;
 	}
-	@include responsive(mini) {
+	@include responsive(tablet) {
 		&:before {
 			height: $size-header-height-mini;
 		}
 	}
 }
+
+// page title
+.page-title {
+	position: absolute;
+	width: 0;
+	height: 0;
+	overflow: hidden;
+	font-size: 2px;
+	visibility: hidden;
+	left: -100px;
+	top: -100px;
+}
+
 // header
 .header {
 	position: fixed;
@@ -133,8 +146,7 @@ body {
 			}
 			&.right {}
 		}
-		h1 {
-			margin: 0;
+		.logo {
 			a {
 				position: relative;
 				z-index: 2;
@@ -157,7 +169,7 @@ body {
 			transform: scaleY(.5);
 		}
 	}
-	@include responsive(mini) {
+	@include responsive(tablet) {
 		height: $size-header-height-mini;
 		&__wrap {
 			nav {
@@ -176,7 +188,7 @@ body {
 					right: auto;
 				}
 			}
-			h1 {
+			.logo {
 				a {
 					padding: 0 20px;
 				}
@@ -192,8 +204,9 @@ body {
 
 // container
 .container {
-	@include responsive(mini) {
-		padding: 24px 0 0;
+	padding: 20px 0 0;
+	@include responsive(tablet) {
+		padding-top: 50px;
 	}
 }
 

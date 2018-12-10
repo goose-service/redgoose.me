@@ -1,21 +1,1571 @@
-parcelRequire=function(e,r,n,t){var i="function"==typeof parcelRequire&&parcelRequire,o="function"==typeof require&&require;function u(n,t){if(!r[n]){if(!e[n]){var f="function"==typeof parcelRequire&&parcelRequire;if(!t&&f)return f(n,!0);if(i)return i(n,!0);if(o&&"string"==typeof n)return o(n);var c=new Error("Cannot find module '"+n+"'");throw c.code="MODULE_NOT_FOUND",c}p.resolve=function(r){return e[n][1][r]||r},p.cache={};var l=r[n]=new u.Module(n);e[n][0].call(l.exports,p,l,l.exports,this)}return r[n].exports;function p(e){return u(p.resolve(e))}}u.isParcelRequire=!0,u.Module=function(e){this.id=e,this.bundle=u,this.exports={}},u.modules=e,u.cache=r,u.parent=i,u.register=function(r,n){e[r]=[function(e,r){r.exports=n},{}]};for(var f=0;f<n.length;f++)u(n[f]);if(n.length){var c=u(n[n.length-1]);"object"==typeof exports&&"undefined"!=typeof module?module.exports=c:"function"==typeof define&&define.amd?define(function(){return c}):t&&(this[t]=c)}return u}({"JJek":[function(require,module,exports) {
-"use strict";Object.defineProperty(exports,"__esModule",{value:!0}),exports.sleep=t,exports.serialize=o,exports.setCookie=n,exports.isTouchDevice=void 0;var e=function(){try{return document.createEvent("TouchEvent"),!0}catch(e){return!1}};function t(){var e=arguments.length>0&&void 0!==arguments[0]?arguments[0]:1e3,t=arguments.length>1&&void 0!==arguments[1]?arguments[1]:null,o=arguments.length>2&&void 0!==arguments[2]?arguments[2]:null;return new Promise(function(n){var i=this;o?(clearTimeout(o),o=setTimeout(function(){n(t,o)},e)):setTimeout(function(){n(t,i)},e)})}function o(e){var t,o=arguments.length>1&&void 0!==arguments[1]&&arguments[1],n=[];for(var i in e)e.hasOwnProperty(i)&&n.push(encodeURIComponent(i)+"="+encodeURIComponent(e[i]));return(t=n.join("&"))&&o?"?".concat(t):t}function n(e){var t=arguments.length>1&&void 0!==arguments[1]?arguments[1]:"1",o=arguments.length>2&&void 0!==arguments[2]?arguments[2]:7,n=arguments.length>3&&void 0!==arguments[3]?arguments[3]:"/",i=new Date;i.setTime(i.getTime()+24*o*60*60*1e3),document.cookie="".concat(e,"=").concat(t,";expires=").concat(i.toUTCString(),";path=").concat(n)}exports.isTouchDevice=e;
-},{}],"m9T2":[function(require,module,exports) {
-"use strict";Object.defineProperty(exports,"__esModule",{value:!0}),exports.get=exports.init=void 0;var e=t(require("./util"));function t(e){if(e&&e.__esModule)return e;var t={};if(null!=e)for(var r in e)if(Object.prototype.hasOwnProperty.call(e,r)){var n=Object.defineProperty&&Object.getOwnPropertyDescriptor?Object.getOwnPropertyDescriptor(e,r):{};n.get||n.set?Object.defineProperty(t,r,n):t[r]=e[r]}return t.default=e,t}var r=null,n=function(e){r=e};exports.init=n;var o=function(t,n){return new Promise(function(o,i){t=/^http/.test(t)?t:r.options.urlApi+t,$.ajax({url:t+e.serialize(n,!0),type:"get",headers:{Authorization:r.options.token}}).then(o).catch(function(){return o(null)})})};exports.get=o;
-},{"./util":"JJek"}],"jNf+":[function(require,module,exports) {
-"use strict";Object.defineProperty(exports,"__esModule",{value:!0}),exports.default=r;var e=i(require("../libs/api")),t=i(require("../libs/util"));function i(e){if(e&&e.__esModule)return e;var t={};if(null!=e)for(var i in e)if(Object.prototype.hasOwnProperty.call(e,i)){var r=Object.defineProperty&&Object.getOwnPropertyDescriptor?Object.getOwnPropertyDescriptor(e,i):{};r.get||r.set?Object.defineProperty(t,i,r):t[i]=e[i]}return t.default=e,t}function r(i){var r=this;this.name="work",this.app=i,this.$container=$("#work"),this.$body=this.$container.find(".work__body"),this.$like=this.$container.find(".work__like"),this.loading=!1,this.work={},function(){try{if(!r.$container||!r.$container.length)throw"Not found container";r.$body&&r.$body.length&&r.$body.find("img").each(function(){$(this).wrap('<span class="image"></span>')}),r.$like&&r.$like.length&&r.$like.children("button").on("click",function(){var e=$(this);if(e.hasClass("on"))return!1;r.onLike(parseInt(this.dataset.srl)).then(function(t){e.addClass("on"),e.children("em").text(t)}).catch(alert)}),r.$container.removeClass("work--hide")}catch(e){r.app.options.debug&&console.error(e)}}(),this.onLike=function(i){var r=this;return new Promise(function(n,o){i||o(),e.get("/articles/".concat(i,"/update"),{type:"star"}).then(function(e){e.success||o("Failed update like"),t.setCookie("redgoose-like-".concat(i),"1",10,r.app.options.urlCookie),n(e.data.star)}).catch(function(e){o("string"==typeof e?e:"Service error")})})}}
-},{"../libs/api":"m9T2","../libs/util":"JJek"}],"Ihg/":[function(require,module,exports) {
-"use strict";Object.defineProperty(exports,"__esModule",{value:!0}),exports.default=e;var t=o(require("../Work"));function o(t){return t&&t.__esModule?t:{default:t}}function e(o,e){if(o&&e){var n=this;this.$popup=null,this.indexHistory=null,this.open=function(i,l){var p,r,c=arguments.length>2&&void 0!==arguments[2]&&arguments[2];if(i&&l)try{if(e.scrollTop=window.pageYOffset||document.documentElement.scrollTop,n.indexHistory={env:o.history.env,title:o.history.title,url:o.history.url},c){var d="".concat(o.options.urlRoot,"/article/").concat(i),a="".concat(l," on ").concat(o.options.title);o.history.push({url:d,title:a,srl:i,action:"open-work"},a,d)}e.toggleEvents(!1),$("html").addClass("mode-popup"),n.$popup=(p='<div class="popup">\n\t\t\t<div class="popup__body"></div>\n\t\t\t<div class="loading popup__loading">\n\t\t\t\t<div class="loading__loader">\n\t\t\t\t\t<div class="loading__shadow"></div>\n\t\t\t\t\t<div class="loading__box"></div>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t\t<nav class="popup__close">\n\t\t\t\t<button type="button" title="close">\n\t\t\t\t\t<div>\n\t\t\t\t\t\t<img src="'.concat(o.options.urlRoot,'/assets/images/ico-close.svg" class="pc" alt="close"/>\n\t\t\t\t\t\t<img src="').concat(o.options.urlRoot,'/assets/images/ico-close2.svg" class="mobile" alt="close"/>\n\t\t\t\t\t</div>\n\t\t\t\t</button>\n\t\t\t</nav>\n\t\t</div>'),(r=$(p)).children(".popup__close").on("click",function(){return n.close(!0)}),r),$("body").append(n.$popup);var u=setTimeout(function(){n.$popup&&n.$popup.children(".popup__loading").addClass("show")},200);$.get("/article/".concat(i,"?mode=popup")).then(function(e){clearTimeout(u),n.$popup.children(".popup__loading").remove(),n.$popup.children(".popup__body").append(e),o.mode="work",o.work=new t.default(o),s(!0)})}catch(v){o.options.debug&&console.error(v),alert("Failed open work."),n.close(!0)}else alert("Not found work number or title")},this.close=function(){var t=arguments.length>0&&void 0!==arguments[0]&&arguments[0];try{if(!n.$popup||!n.$popup.length)throw"Failed to close window.";t&&o.history.push(n.indexHistory.env,n.indexHistory.title,n.indexHistory.url),n.indexHistory=null,s(!1),o.mode="index",o.work=null,n.$popup.remove(),n.$popup=null,$("html").removeClass("mode-popup"),e.toggleEvents(!0),window.scrollTo(0,e.scrollTop)}catch(i){o.options.debug&&console.error(i),i&&"string"==typeof i&&alert(i)}}}function s(t){var e=$(window),s={left:37,right:39,esc:27,cmd:91,ctrl:17},i=!0;t?(e.off("keyup.redgoose keydown.redgoose"),e.on("keyup.redgoose",function(t){switch(t.keyCode){case s.cmd:case s.ctrl:i=!0;break;case s.left:i&&n.prev();break;case s.right:i&&n.next();break;case s.esc:"work"===o.mode&&n.close(!0)}}),e.on("keydown.redgoose",function(t){switch(t.keyCode){case s.left:case s.right:i=!0;break;default:i=!1}})):e.off("keyup.redgoose keydown.redgoose")}}
-},{"../Work":"jNf+"}],"A5W8":[function(require,module,exports) {
-"use strict";Object.defineProperty(exports,"__esModule",{value:!0}),exports.default=d;var e=r(require("../libs/api")),t=n(require("./IndexWork"));function n(e){return e&&e.__esModule?e:{default:e}}function r(e){if(e&&e.__esModule)return e;var t={};if(null!=e)for(var n in e)if(Object.prototype.hasOwnProperty.call(e,n)){var r=Object.defineProperty&&Object.getOwnPropertyDescriptor?Object.getOwnPropertyDescriptor(e,n):{};r.get||r.set?Object.defineProperty(t,n,r):t[n]=e[n]}return t.default=e,t}function o(e){for(var t=1;t<arguments.length;t++){var n=null!=arguments[t]?arguments[t]:{},r=Object.keys(n);"function"==typeof Object.getOwnPropertySymbols&&(r=r.concat(Object.getOwnPropertySymbols(n).filter(function(e){return Object.getOwnPropertyDescriptor(n,e).enumerable}))),r.forEach(function(t){a(e,t,n[t])})}return e}function a(e,t,n){return t in e?Object.defineProperty(e,t,{value:n,enumerable:!0,configurable:!0,writable:!0}):e[t]=n,e}var i=100,s=300,c=100,l=60;function d(n){var r=this;function a(e){e?(r.$index.addClass("masonry").removeClass("empty"),r.masonry=new Masonry(r.index_selector,{itemSelector:".indexWorks__item",columnWidth:".indexWorks__sizer",transitionDuration:0,hiddenStyle:{},visibleStyle:{}})):(r.$index.removeClass("masonry"),r.masonry.destroy(),r.masonry=null)}function d(e){e?r.loading=setTimeout(function(){r.$loading.addClass("loading--show")},100):(r.loading&&(clearTimeout(r.loading),r.loading=null),r.$loading.removeClass("loading--show"))}function p(e){e?r.$more.addClass("indexMore--processing"):r.$more.removeClass("indexMore--processing")}function g(e,t){var n=e.map(function(e,n){var o=e.json.thumbnail&&e.json.thumbnail.sizeSet?e.json.thumbnail.sizeSet.split("*"):[1,1],a="".concat(2===parseInt(o[0])?"w2":""," ").concat(2===parseInt(o[1])?"h2":"");return t&&(a+=" ready"),'<div class="indexWorks__item'.concat(a?" "+a.trim():"",'">\n\t\t\t\t<a href="/article/').concat(e.srl,'" data-srl="').concat(e.srl,'">\n\t\t\t\t\t<img src="').concat(r.app.options.urlApi,"/").concat(e.json.thumbnail.path,'" alt="').concat(e.title,'">\n\t\t\t\t</a>\n\t\t\t</div>')}).join(""),o=$(n);return u(o),o}function h(e){function t(){var e=r.$index.children("[data-page]"),t=$(this).scrollTop(),n=null;if(!e.length)return!1;t+$(this).height()===$(document).height()?n=e.eq(e.length-1)?e.eq(e.length-1):null:(e.each(function(e){t>=$(this).offset().top-(i+5)&&(n=$(this))}),n||(n=e.eq(0))),function(e){var t=r.app.history;try{var n=new URL(window.location.href),a=n.searchParams,i=n.searchParams?n.searchParams.get("page"):null;if(e===(i=i?parseInt(i):1))return;1===e?a.delete("page"):a.set("page",e);var s=location.pathname+(a.toString()?"?".concat(a.toString()):"");r.app.options.page=e,t.replace(o({},t.env,{url:s}),t.title,s)}catch(c){}}(n&&n.length?n.data("page"):1)}e?(r.$index.children(".indexWorks__item").eq(0).attr("data-page",r.app.options.page||1),$(window).off("scroll.redgoose_index").on("scroll.redgoose_index",function(){clearTimeout(r.scrollEvent),r.scrollEvent=setTimeout(t,c)})):$(window).off("scroll.redgoose_index")}function u(e){e.each(function(){$(this).children("a").on("click",function(e){e.preventDefault();var t=parseInt(this.dataset.srl),n=$(this).find("img").attr("alt");r.work.open(t,n,!0)})})}this.name="index",this.app=n,this.work=new t.default(n,this),this.masonry=null,this.index_selector="#index",this.$categories=$("#categories"),this.$index=$(this.index_selector),this.$more=$("#index_button_more"),this.$loading=$("#index_loading"),this.loading=null,this.nest={srl:this.app.options.nest_srl,id:this.app.options.nest_id,name:this.app.options.nest_name},this.category={srl:this.app.options.category_srl,name:this.app.options.category_name},this.scrollEvent=null,this.scrollTop=0,this.changeCategory=function(t){var n=arguments.length>1&&void 0!==arguments[1]&&arguments[1],o=r.app.options,a=null;a=t?this.$categories.find("a[data-srl=".concat(t,"]")):this.$categories.find("a").eq(0);try{if(r.$categories.find("li.on").removeClass("on"),a.parent().addClass("on"),r.category={srl:t,name:a.children("span").text()},n){var i="".concat(o.urlRoot,"/nest/").concat(r.nest.id).concat(t?"/".concat(t):""),s="".concat("All"!==r.category.name?"".concat(r.category.name," - "):"").concat(r.nest.name," - ").concat(o.title);r.app.history.push({url:i,title:s,srl:t,action:"change-category"},s,i)}r.toggleEvents(!1),d(!0),r.$index.children(".indexWorks__empty").remove(),r.$more.addClass("indexMore--hide"),e.get("/articles",{app:o.app_srl,nest:o.nest_srl,field:"srl,json,title",category:t||"",order:"srl",sort:"desc",size:parseInt(r.app.options.size)||10,ext_field:"next_page"}).then(function(e){if(!e.success)throw 404;var t=g((e=e.data).index,!1);r.$index.children(".indexWorks__item").remove(),r.$index.append(t),d(!1),r.toggleEvents(!0),e.nextPage&&(r.$more.removeClass("indexMore--hide"),r.$more.children("button").attr("data-page",e.nextPage))})}catch(p){var c=null;switch(p){case 404:c="Not found work.";break;default:console.error(p),c="Service error."}var l='<div class="indexEmpty indexWorks__empty">\n\t\t\t\t<img src="'.concat(o.urlRoot,'/assets/images/img-error.png" alt="error">\n\t\t\t\t<p>').concat(c,"</p>\n\t\t\t</div>");r.$index.children(".indexWorks__item").remove(),r.$index.addClass("empty").append(l),d(!1)}},this.changePage=function(t,n){var r=this;if(this.$more.hasClass("indexMore--processing"))return!1;try{p(!0);var o={field:"srl,json,title",app:this.app.options.app_srl,page:t,order:"srl",sort:"desc",size:parseInt(this.app.options.size)||10,ext_field:"next_page"};this.nest.srl&&(o.nest=this.nest.srl),this.category.srl&&(o.category=this.category.srl),e.get("/articles",o).then(function(e){if(!e.success)throw 404;(e=e.data).nextPage?r.$more.children("button").attr("data-page",e.nextPage):r.$more.addClass("indexMore--hide");var o=g(e.index,!0);if(r.$index.append(o),r.masonry&&r.masonry.appended(o),o.each(function(e){var t=this;setTimeout(function(){$(t).removeClass("ready")},l*e)}),n){var a=o.eq(0),c=a.offset().top-i;a.attr("data-page",t),$("html, body").stop().animate({scrollTop:c},s,"swing")}p(!1)})}catch(c){var a=null;switch(c){case 404:a="Not found work.";break;default:console.error(c),a="Service error."}alert(a),p(!1)}},this.toggleEvents=function(e){e?(r.masonry||a(!0),h(!0)):(r.masonry&&a(!1),h(!1))},function(){try{if(!Masonry)throw"Not found Masonry vendor";r.$categories&&r.$categories.length&&(r.$categories.children(".indexCategories__toggle").on("click",function(){$(this).parent().toggleClass("active")}),r.$categories.find("a").on("click",function(){if($(this).parent().hasClass("on"))return!1;var e=parseInt(this.dataset.srl);return r.changeCategory(e,!0),r.$categories.removeClass("active"),!1})),r.$index&&r.$index.children(".indexWorks__item")&&r.$index.children(".indexWorks__item").length?(r.toggleEvents(!0),u(r.$index.children(".indexWorks__item"))):r.$index.addClass("empty"),r.$more&&r.$more.length&&r.$more.children("button").on("click",function(){var e=parseInt(this.dataset.page)||null;if(!e)return!1;r.changePage(e,!0)});var e=location.pathname+location.search,t={url:e};r.nest.srl?(t.title="".concat(r.category.name?"".concat(r.category.name," - "):"").concat(r.nest.name," - ").concat(r.app.options.title),t.category_srl=r.category.srl?r.category.srl:null,t.action="change-category"):(t.title=r.app.options.title,t.action="none");r.nest.srl&&r.category.srl&&r.category.srl;r.app.history.replace(t,t.title,e)}catch(o){n.options.debug&&console.error(o),$(".container").empty().html('<article class="error">\n\t\t\t\t<figure class="error__image">\n\t\t\t\t\t<img src="'.concat(n.options.urlRoot,'/assets/images/img-error.png" alt="error">\n\t\t\t\t</figure>\n\t\t\t\t<h1 class="error__message">Service error</h1>\n\t\t\t</article>'))}}()}
-},{"../libs/api":"m9T2","./IndexWork":"Ihg/"}],"Hheu":[function(require,module,exports) {
-"use strict";Object.defineProperty(exports,"__esModule",{value:!0}),exports.default=r;var e=t(require("../libs/util"));function t(e){if(e&&e.__esModule)return e;var t={};if(null!=e)for(var r in e)if(Object.prototype.hasOwnProperty.call(e,r)){var i=Object.defineProperty&&Object.getOwnPropertyDescriptor?Object.getOwnPropertyDescriptor(e,r):{};i.get||i.set?Object.defineProperty(t,r,i):t[r]=e[r]}return t.default=e,t}function r(t){var r=this;this.name="header",this.app=t,this.$nav=$("#gnb"),r.$nav.find("ul > li > a").on("click",function(){return!(e.isTouchDevice()&&$(this).next().length)})}
-},{"../libs/util":"JJek"}],"6vyF":[function(require,module,exports) {
-"use strict";function t(t){var e=this,i=$("head > title");function n(i){var n=i.state||{};function o(){e.env=n,e.title=n.title,e.url=n.url}try{switch(n.action){case"change-category":if("work"===t.mode)return o(),t.index.work.close(!1),void(document.title=e.title);if("index"===t.mode&&t.index&&n.category_srl)return o(),void t.index.changeCategory(n.category_srl||null,!1);throw"no params";case"open-work":return"index"===t.mode?void t.index.work.open(i.state.srl,i.state.title,!1).then(o):void 0;case"none":if("work"===t.mode&&t.index.work.$popup&&t.index.work.$popup.length)return o(),t.index.work.close(!1),void(document.title=e.title);throw"no page";default:throw"none"}}catch(i){window.location.reload()}}function o(){return!!history.pushState}this.name="history",this.app=t,this.env=null,this.title=null,this.url=null,o()&&(window.removeEventListener("popstate",n),window.addEventListener("popstate",n)),this.push=function(t,e,n){o()&&n&&(this.env=t,this.title=e,this.url=n,e&&i.text(e),history.pushState(t||null,e||n,n))},this.replace=function(t,e,n){o()&&n&&(this.env=t,this.title=e,this.url=n,e&&i.text(e),history.replaceState(t||null,e||n,n))}}Object.defineProperty(exports,"__esModule",{value:!0}),exports.default=t;
-},{}],"nsZl":[function(require,module,exports) {
-"use strict";Object.defineProperty(exports,"__esModule",{value:!0}),exports.default=void 0;var e={};exports.default=e;
-},{}],"NE2i":[function(require,module,exports) {
+// modules are defined as an array
+// [ module function, map of requires ]
+//
+// map of requires is short require name -> numeric require
+//
+// anything defined in a previous bundle is accessed via the
+// orig method which is the require for previous bundles
 
-},{}],"A2T1":[function(require,module,exports) {
-"use strict";var e=u(require("./Index")),t=u(require("./Work")),r=u(require("./Header")),i=u(require("./History")),n=u(require("./defaultOptions")),o=s(require("./libs/api"));function s(e){if(e&&e.__esModule)return e;var t={};if(null!=e)for(var r in e)if(Object.prototype.hasOwnProperty.call(e,r)){var i=Object.defineProperty&&Object.getOwnPropertyDescriptor?Object.getOwnPropertyDescriptor(e,r):{};i.get||i.set?Object.defineProperty(t,r,i):t[r]=e[r]}return t.default=e,t}function u(e){return e&&e.__esModule?e:{default:e}}function a(e){for(var t=1;t<arguments.length;t++){var r=null!=arguments[t]?arguments[t]:{},i=Object.keys(r);"function"==typeof Object.getOwnPropertySymbols&&(i=i.concat(Object.getOwnPropertySymbols(r).filter(function(e){return Object.getOwnPropertyDescriptor(r,e).enumerable}))),i.forEach(function(t){l(e,t,r[t])})}return e}function l(e,t,r){return t in e?Object.defineProperty(e,t,{value:r,enumerable:!0,configurable:!0,writable:!0}):e[t]=r,e}function c(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}require("../css/app.scss");var f=function s(){var u=arguments.length>0&&void 0!==arguments[0]?arguments[0]:"index",l=arguments.length>1&&void 0!==arguments[1]?arguments[1]:{};switch(c(this,s),this.name="redgoose",this.index=null,this.work=null,this.header=new r.default(this),this.history=new i.default(this),this.mode=null,this.options=a({},n.default,l),u){case"index":this.mode="index",this.options.urlApi&&this.options.token&&o.init(this),this.index=new e.default(this);break;case"work":this.mode="view",this.options.urlApi&&this.options.token&&o.init(this),this.work=new t.default(this);break;case"none":break;default:this.mode="error",console.error("Error initialize")}};module.exports=f;
-},{"./Index":"A5W8","./Work":"jNf+","./Header":"Hheu","./History":"6vyF","./defaultOptions":"nsZl","./libs/api":"m9T2","../css/app.scss":"NE2i"}]},{},["A2T1"], "Redgoose")
+// eslint-disable-next-line no-global-assign
+parcelRequire = (function (modules, cache, entry, globalName) {
+  // Save the require from previous bundle to this closure if any
+  var previousRequire = typeof parcelRequire === 'function' && parcelRequire;
+  var nodeRequire = typeof require === 'function' && require;
+
+  function newRequire(name, jumped) {
+    if (!cache[name]) {
+      if (!modules[name]) {
+        // if we cannot find the module within our internal map or
+        // cache jump to the current global require ie. the last bundle
+        // that was added to the page.
+        var currentRequire = typeof parcelRequire === 'function' && parcelRequire;
+        if (!jumped && currentRequire) {
+          return currentRequire(name, true);
+        }
+
+        // If there are other bundles on this page the require from the
+        // previous one is saved to 'previousRequire'. Repeat this as
+        // many times as there are bundles until the module is found or
+        // we exhaust the require chain.
+        if (previousRequire) {
+          return previousRequire(name, true);
+        }
+
+        // Try the node require function if it exists.
+        if (nodeRequire && typeof name === 'string') {
+          return nodeRequire(name);
+        }
+
+        var err = new Error('Cannot find module \'' + name + '\'');
+        err.code = 'MODULE_NOT_FOUND';
+        throw err;
+      }
+
+      localRequire.resolve = resolve;
+      localRequire.cache = {};
+
+      var module = cache[name] = new newRequire.Module(name);
+
+      modules[name][0].call(module.exports, localRequire, module, module.exports, this);
+    }
+
+    return cache[name].exports;
+
+    function localRequire(x){
+      return newRequire(localRequire.resolve(x));
+    }
+
+    function resolve(x){
+      return modules[name][1][x] || x;
+    }
+  }
+
+  function Module(moduleName) {
+    this.id = moduleName;
+    this.bundle = newRequire;
+    this.exports = {};
+  }
+
+  newRequire.isParcelRequire = true;
+  newRequire.Module = Module;
+  newRequire.modules = modules;
+  newRequire.cache = cache;
+  newRequire.parent = previousRequire;
+  newRequire.register = function (id, exports) {
+    modules[id] = [function (require, module) {
+      module.exports = exports;
+    }, {}];
+  };
+
+  for (var i = 0; i < entry.length; i++) {
+    newRequire(entry[i]);
+  }
+
+  if (entry.length) {
+    // Expose entry point to Node, AMD or browser globals
+    // Based on https://github.com/ForbesLindesay/umd/blob/master/template.js
+    var mainExports = newRequire(entry[entry.length - 1]);
+
+    // CommonJS
+    if (typeof exports === "object" && typeof module !== "undefined") {
+      module.exports = mainExports;
+
+    // RequireJS
+    } else if (typeof define === "function" && define.amd) {
+     define(function () {
+       return mainExports;
+     });
+
+    // <script>
+    } else if (globalName) {
+      this[globalName] = mainExports;
+    }
+  }
+
+  // Override the current require with this new one
+  return newRequire;
+})({"libs/util.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.sleep = sleep;
+exports.serialize = serialize;
+exports.setCookie = setCookie;
+exports.isTouchDevice = void 0;
+
+/**
+ * check touch device
+ *
+ * @return {Boolean}
+ */
+var isTouchDevice = function isTouchDevice() {
+  try {
+    document.createEvent('TouchEvent');
+    return true;
+  } catch (e) {
+    return false;
+  }
+};
+/**
+ * sleep
+ *
+ * @param {Number} delay
+ * @param params
+ * @param {Number} timer
+ * @return {Promise}
+ */
+
+
+exports.isTouchDevice = isTouchDevice;
+
+function sleep() {
+  var delay = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1000;
+  var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+  var timer = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
+  return new Promise(function (resolve) {
+    var _this = this;
+
+    if (timer) {
+      clearTimeout(timer);
+      timer = setTimeout(function () {
+        resolve(params, timer);
+      }, delay);
+    } else {
+      setTimeout(function () {
+        resolve(params, _this);
+      }, delay);
+    }
+  });
+}
+/**
+ * serialize
+ * object to parameter
+ *
+ * @param {Object} obj
+ * @param {Boolean} usePrefix
+ * @return {String}
+ */
+
+
+function serialize(obj) {
+  var usePrefix = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+  var str = [];
+  var res = '';
+
+  for (var p in obj) {
+    if (obj.hasOwnProperty(p)) {
+      str.push(encodeURIComponent(p) + '=' + encodeURIComponent(obj[p]));
+    }
+  }
+
+  res = str.join('&');
+  return res && usePrefix ? "?".concat(res) : res;
+}
+/**
+ * set cookie
+ *
+ * @param {String} key
+ * @param {String} value
+ * @param {Number} day
+ * @param {String} path
+ */
+
+
+function setCookie(key) {
+  var value = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '1';
+  var day = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 7;
+  var path = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : '/';
+  var date = new Date();
+  date.setTime(date.getTime() + day * 24 * 60 * 60 * 1000);
+  document.cookie = "".concat(key, "=").concat(value, ";expires=").concat(date.toUTCString(), ";path=").concat(path);
+}
+},{}],"libs/api.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.get = exports.init = void 0;
+
+var util = _interopRequireWildcard(require("./util"));
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+
+/** @property {Redgoose} app */
+var app = null;
+
+var init = function init(_app) {
+  app = _app; // $(document).ajaxStart(function() {
+  // 	console.warn('ajax start');
+  // });
+  // $(document).ajaxComplete(function() {
+  // 	console.warn('ajax complete');
+  // });
+};
+
+exports.init = init;
+
+var get = function get(url, params) {
+  return new Promise(function (resolve, reject) {
+    url = /^http/.test(url) ? url : app.options.urlApi + url;
+    $.ajax({
+      url: url + util.serialize(params, true),
+      type: 'get',
+      headers: {
+        'Authorization': app.options.token
+      }
+    }).then(resolve).catch(function () {
+      return resolve(null);
+    });
+  });
+};
+
+exports.get = get;
+},{"./util":"libs/util.js"}],"Work/index.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = Work;
+
+var api = _interopRequireWildcard(require("../libs/api"));
+
+var util = _interopRequireWildcard(require("../libs/util"));
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+
+function Work(app) {
+  var self = this;
+  this.name = 'work';
+  this.app = app;
+  this.$container = $('#work');
+  this.$body = this.$container.find('.work__body');
+  this.$like = this.$container.find('.work__like');
+  this.loading = false;
+  this.work = {};
+
+  (function constructor() {
+    try {
+      // check container
+      if (!(self.$container && self.$container.length)) {
+        throw 'Not found container';
+      } // init filtering elements in body
+
+
+      if (self.$body && self.$body.length) {
+        filteringElementsInBody();
+      } // init like event
+
+
+      if (self.$like && self.$like.length) {
+        self.$like.children('button').on('click', function () {
+          var $self = $(this);
+          if ($self.hasClass('on')) return false;
+          self.onLike(parseInt(this.dataset.srl)).then(function (cnt) {
+            $self.addClass('on');
+            $self.children('em').text(cnt);
+          }).catch(alert);
+        });
+      } // show page
+
+
+      self.$container.removeClass('work--hide');
+    } catch (e) {
+      if (self.app.options.debug) {
+        console.error(e);
+      }
+    }
+  })();
+  /**
+   * filtering elements in body
+   * 우선 이미지 태그들을 찾아서 태그로 한번 씌우는 작업을 한다.
+   */
+
+
+  function filteringElementsInBody() {
+    var $images = self.$body.find('img');
+    $images.each(function () {
+      $(this).wrap('<span class="image"></span>');
+    });
+  }
+  /**
+   * on like
+   *
+   * @param {Number} srl
+   */
+
+
+  this.onLike = function (srl) {
+    var _this = this;
+
+    return new Promise(function (resolve, reject) {
+      if (!srl) reject();
+      api.get("/articles/".concat(srl, "/update"), {
+        type: 'star'
+      }).then(function (res) {
+        if (!res.success) reject('Failed update like');
+        util.setCookie("redgoose-like-".concat(srl), '1', 10, _this.app.options.urlCookie);
+        resolve(res.data.star);
+      }).catch(function (e) {
+        reject(typeof e === 'string' ? e : 'Service error');
+      });
+    });
+  };
+}
+},{"../libs/api":"libs/api.js","../libs/util":"libs/util.js"}],"Index/IndexWork.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = IndexWork;
+
+var _Work = _interopRequireDefault(require("../Work"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function IndexWork(app, index) {
+  if (!(app && index)) return;
+  var self = this;
+  this.$popup = null;
+  this.indexHistory = null;
+  /**
+   * make element for popup
+   *
+   * @return {Array}
+   */
+
+  function popupElement() {
+    var dom = "<div class=\"popup\">\n\t\t\t<div class=\"popup__body\"></div>\n\t\t\t<div class=\"loading popup__loading\">\n\t\t\t\t<div class=\"loading__loader\">\n\t\t\t\t\t<div class=\"loading__shadow\"></div>\n\t\t\t\t\t<div class=\"loading__box\"></div>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t\t<nav class=\"popup__close\">\n\t\t\t\t<button type=\"button\" title=\"close\">\n\t\t\t\t\t<div>\n\t\t\t\t\t\t<img src=\"".concat(app.options.urlRoot, "/assets/images/ico-close.svg\" class=\"pc\" alt=\"close\"/>\n\t\t\t\t\t\t<img src=\"").concat(app.options.urlRoot, "/assets/images/ico-close2.svg\" class=\"mobile\" alt=\"close\"/>\n\t\t\t\t\t</div>\n\t\t\t\t</button>\n\t\t\t</nav>\n\t\t</div>");
+    var $dom = $(dom); // init close event
+
+    $dom.children('.popup__close').on('click', function () {
+      return self.close(true);
+    });
+    return $dom;
+  }
+  /**
+   * keyboard event
+   *
+   * @param {Boolean} sw
+   */
+
+
+  function keyboard(sw) {
+    var $window = $(window);
+    var keymap = {
+      left: 37,
+      right: 39,
+      esc: 27,
+      cmd: 91,
+      ctrl: 17
+    };
+    var ready = true;
+
+    function onKeyUp(e) {
+      switch (e.keyCode) {
+        case keymap.cmd:
+        case keymap.ctrl:
+          ready = true;
+          break;
+
+        case keymap.left:
+          if (ready) self.prev();
+          break;
+
+        case keymap.right:
+          if (ready) self.next();
+          break;
+
+        case keymap.esc:
+          if (app.mode === 'work') self.close(true);
+          break;
+      }
+    }
+
+    function onKeyDown(e) {
+      switch (e.keyCode) {
+        case keymap.left:
+        case keymap.right:
+          ready = true;
+          break;
+
+        default:
+          ready = false;
+          break;
+      }
+    }
+
+    if (sw) {
+      // initial event
+      $window.off('keyup.redgoose keydown.redgoose');
+      $window.on('keyup.redgoose', onKeyUp);
+      $window.on('keydown.redgoose', onKeyDown);
+    } else {
+      $window.off('keyup.redgoose keydown.redgoose');
+    }
+  }
+  /**
+   * open
+   *
+   * @param {int} srl
+   * @param {String} alt
+   * @param {Boolean} history
+   */
+
+
+  this.open = function (srl, alt) {
+    var history = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
+
+    if (!(srl && alt)) {
+      alert('Not found work number or title');
+      return;
+    }
+
+    try {
+      // save scroll top
+      index.scrollTop = window.pageYOffset || document.documentElement.scrollTop; // push history
+
+      self.indexHistory = {
+        env: app.history.env,
+        title: app.history.title,
+        url: app.history.url
+      };
+
+      if (history) {
+        // save index history
+        var url = "".concat(app.options.urlRoot, "/article/").concat(srl);
+        var title = "".concat(alt, " on ").concat(app.options.title);
+        app.history.push({
+          url: url,
+          title: title,
+          srl: srl,
+          action: 'open-work'
+        }, title, url);
+      } // off events in index
+
+
+      index.toggleEvents(false); // change popup mode for html tag
+
+      $('html').addClass('mode-popup'); // make element and append
+
+      self.$popup = popupElement();
+      $('body').append(self.$popup); // 빠르게 로딩심볼이 나오면 잔상이 남기 때문에 약간 늦춰서 보이도록 타임아웃을 검
+
+      var timer = setTimeout(function () {
+        if (self.$popup) self.$popup.children('.popup__loading').addClass('show');
+      }, 200); // get work data
+
+      $.get("/article/".concat(srl, "?mode=popup")).then(function (work) {
+        // 로딩 타이머 끝나기전에 데이터를 불러왔으면 타임아웃을 클리어한다.
+        clearTimeout(timer); // off loading
+
+        self.$popup.children('.popup__loading').remove(); // append work element
+
+        self.$popup.children('.popup__body').append(work); // init work mode
+
+        app.mode = 'work';
+        app.work = new _Work.default(app); // start keyboard event
+
+        keyboard(true);
+      });
+    } catch (e) {
+      if (app.options.debug) console.error(e); // alert message
+
+      alert('Failed open work.'); // close window
+
+      self.close(true);
+    }
+  };
+  /**
+   * close
+   *
+   * @param {Boolean} history
+   */
+
+
+  this.close = function () {
+    var history = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
+
+    try {
+      if (!(self.$popup && self.$popup.length)) {
+        throw 'Failed to close window.';
+      } // push history
+
+
+      if (history) {
+        app.history.push(self.indexHistory.env, self.indexHistory.title, self.indexHistory.url);
+      }
+
+      self.indexHistory = null; // stop keyboard event
+
+      keyboard(false); // change mode and unset work
+
+      app.mode = 'index';
+      app.work = null; // remove popup element
+
+      self.$popup.remove();
+      self.$popup = null; // change popup mode for html tag
+
+      $('html').removeClass('mode-popup'); // on events in index
+
+      index.toggleEvents(true); // restore scrollY
+
+      window.scrollTo(0, index.scrollTop);
+    } catch (e) {
+      if (app.options.debug) {
+        console.error(e);
+      }
+
+      if (e && typeof e === 'string') {
+        alert(e);
+      }
+    }
+  };
+}
+},{"../Work":"Work/index.js"}],"Index/index.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = Index;
+
+var api = _interopRequireWildcard(require("../libs/api"));
+
+var _IndexWork = _interopRequireDefault(require("./IndexWork"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; var ownKeys = Object.keys(source); if (typeof Object.getOwnPropertySymbols === 'function') { ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) { return Object.getOwnPropertyDescriptor(source, sym).enumerable; })); } ownKeys.forEach(function (key) { _defineProperty(target, key, source[key]); }); } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+var SCROLL_OFFSET = 100; // 페이지가 변화되는 스크롤 y축 위치 offset
+
+var SCROLL_SPEED = 300; // 페이지 추가될때 스크롤 이동되는 속도
+
+var SCROLL_DELAY = 100; // 스크롤 이벤트가 트리거까지 대기시간
+
+var BLOCK_DELAY = 60; // 아이템들이 추가될때 fade in 딜레이 간격
+
+/**
+ * Index class
+ */
+
+function Index(app) {
+  var self = this;
+  this.name = 'index';
+  this.app = app;
+  this.work = new _IndexWork.default(app, this);
+  this.masonry = null;
+  this.index_selector = '#index';
+  this.$categories = $('#categories');
+  this.$index = $(this.index_selector);
+  this.$more = $('#index_button_more');
+  this.$loading = $('#index_loading');
+  this.loading = null;
+  this.nest = {
+    srl: this.app.options.nest_srl,
+    id: this.app.options.nest_id,
+    name: this.app.options.nest_name
+  };
+  this.category = {
+    srl: this.app.options.category_srl,
+    name: this.app.options.category_name
+  };
+  this.scrollEvent = null;
+  this.scrollTop = 0;
+  /**
+   * switching masonry
+   *
+   * @param {Boolean} sw
+   */
+
+  function masonry(sw) {
+    if (sw) {
+      self.$index.addClass('masonry').removeClass('empty');
+      self.masonry = new Masonry(self.index_selector, {
+        itemSelector: '.indexWorks__item',
+        columnWidth: '.indexWorks__sizer',
+        transitionDuration: 0,
+        hiddenStyle: {},
+        visibleStyle: {}
+      });
+    } else {
+      self.$index.removeClass('masonry');
+      self.masonry.destroy();
+      self.masonry = null;
+    }
+  }
+  /**
+   * switching loading for category
+   *
+   * @param {Boolean} sw
+   */
+
+
+  function loadingForCategory(sw) {
+    if (sw) {
+      // this.loading
+      self.loading = setTimeout(function () {
+        self.$loading.addClass('loading--show');
+      }, 100);
+    } else {
+      if (self.loading) {
+        clearTimeout(self.loading);
+        self.loading = null;
+      }
+
+      self.$loading.removeClass('loading--show');
+    }
+  }
+  /**
+   * switching loading for change page
+   *
+   * @param {Boolean} sw
+   */
+
+
+  function loadingForChangePage(sw) {
+    if (sw) {
+      self.$more.addClass('indexMore--processing');
+    } else {
+      self.$more.removeClass('indexMore--processing');
+    }
+  }
+  /**
+   * init category event
+   * 모바일에서 카테고리 접기/펼치기 이벤트와 버튼을 클릭했을때 목록이 변하는 이벤트 설정
+   */
+
+
+  function initCategoryEvents() {
+    // toggle category list
+    self.$categories.children('.indexCategories__toggle').on('click', function () {
+      $(this).parent().toggleClass('active');
+    }); // change category
+
+    var $categoryButtons = self.$categories.find('a');
+    $categoryButtons.on('click', function () {
+      if ($(this).parent().hasClass('on')) return false;
+      var srl = parseInt(this.dataset.srl);
+      self.changeCategory(srl, true);
+      self.$categories.removeClass('active');
+      return false;
+    });
+  }
+  /**
+   * make index element
+   *
+   * @param {Array} index
+   * @param {Boolean} ready
+   * @return {Array}
+   */
+
+
+  function indexItemElement(index, ready) {
+    var dom = index.map(function (o, k) {
+      var sizeSet = o.json.thumbnail && o.json.thumbnail.sizeSet ? o.json.thumbnail.sizeSet.split('*') : [1, 1];
+      var classname = "".concat(parseInt(sizeSet[0]) === 2 ? 'w2' : '', " ").concat(parseInt(sizeSet[1]) === 2 ? 'h2' : '');
+      if (ready) classname += ' ready';
+      return "<div class=\"indexWorks__item".concat(classname ? ' ' + classname.trim() : '', "\">\n\t\t\t\t<a href=\"/article/").concat(o.srl, "\" data-srl=\"").concat(o.srl, "\">\n\t\t\t\t\t<img src=\"").concat(self.app.options.urlApi, "/").concat(o.json.thumbnail.path, "\" alt=\"").concat(o.title, "\">\n\t\t\t\t</a>\n\t\t\t</div>");
+    }).join('');
+    var $dom = $(dom); // set items event
+
+    initItemsEvent($dom);
+    return $dom;
+  }
+  /**
+   * 스크롤을할때 주소에 페이지 번호가 변하는 기능을 초기화 한다.
+   *
+   * @param {Boolean} sw 이벤트 리스너를 껏다켜는 스위치
+   */
+
+
+  function initScrollEvent(sw) {
+    /**
+     * 현재 주소를 분석하여 새로운 `page`값이 적용된 url을 만들어서 `history.replace` 실행한다.
+     *
+     * @param {Number} page
+     */
+    function updatePage(page) {
+      var history = self.app.history;
+
+      try {
+        var url = new URL(window.location.href);
+        var urlParams = url.searchParams;
+        var urlPage = url.searchParams ? url.searchParams.get('page') : null;
+        urlPage = urlPage ? parseInt(urlPage) : 1;
+        if (page === urlPage) return;
+
+        if (page === 1) {
+          urlParams.delete('page');
+        } else {
+          urlParams.set('page', page);
+        }
+
+        var newUrl = location.pathname + (urlParams.toString() ? "?".concat(urlParams.toString()) : ''); // change default page
+
+        self.app.options.page = page;
+        history.replace(_objectSpread({}, history.env, {
+          url: newUrl
+        }), history.title, newUrl);
+      } catch (e) {}
+    }
+
+    function action() {
+      var $el = self.$index.children('[data-page]');
+      var top = $(this).scrollTop();
+      var $current = null;
+      if (!$el.length) return false;
+
+      if (top + $(this).height() === $(document).height()) {
+        $current = $el.eq($el.length - 1) ? $el.eq($el.length - 1) : null;
+      } else {
+        $el.each(function (key) {
+          if (top >= $(this).offset().top - (SCROLL_OFFSET + 5)) {
+            $current = $(this);
+          }
+        });
+
+        if (!$current) {
+          $current = $el.eq(0);
+        }
+      } // update page
+
+
+      var page = $current && $current.length ? $current.data('page') : 1;
+      updatePage(page);
+    }
+
+    if (sw) {
+      // set page on first item
+      self.$index.children('.indexWorks__item').eq(0).attr('data-page', self.app.options.page || 1);
+      $(window).off('scroll.redgoose_index').on('scroll.redgoose_index', function () {
+        // 너무많은 스크롤 이벤트가 트리깅 하는것을 방지하기 위하여 셋 타임아웃을 걸어놓았다.
+        clearTimeout(self.scrollEvent);
+        self.scrollEvent = setTimeout(action, SCROLL_DELAY);
+      });
+    } else {
+      $(window).off('scroll.redgoose_index');
+    }
+  }
+  /**
+   * init items event
+   * 목록의 아이템 이벤트 설정
+   */
+
+
+  function initItemsEvent($items) {
+    $items.each(function () {
+      var $button = $(this).children('a');
+      $button.on('click', function (e) {
+        e.preventDefault();
+        var srl = parseInt(this.dataset.srl);
+        var title = $(this).find('img').attr('alt');
+        self.work.open(srl, title, true);
+      });
+    });
+  }
+  /**
+   * PUBLIC AREA
+   */
+
+  /**
+   * change category
+   *
+   * @param {Number} srl
+   * @param {Boolean} useHistory
+   */
+
+
+  this.changeCategory = function (srl) {
+    var useHistory = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+    var options = self.app.options; // set select element
+
+    var $selected = null;
+
+    if (srl) {
+      $selected = this.$categories.find("a[data-srl=".concat(srl, "]"));
+    } else {
+      $selected = this.$categories.find('a').eq(0);
+    }
+
+    try {
+      // change active menu
+      self.$categories.find('li.on').removeClass('on');
+      $selected.parent().addClass('on'); // update value
+
+      self.category = {
+        srl: srl,
+        name: $selected.children('span').text()
+      }; // update history
+
+      if (useHistory) {
+        var url = "".concat(options.urlRoot, "/nest/").concat(self.nest.id).concat(srl ? "/".concat(srl) : '');
+        var title = "".concat(self.category.name !== 'All' ? "".concat(self.category.name, " - ") : '').concat(self.nest.name, " - ").concat(options.title);
+        self.app.history.push({
+          url: url,
+          title: title,
+          srl: srl,
+          action: 'change-category'
+        }, title, url);
+      } // off events in index
+
+
+      self.toggleEvents(false); // on loading
+
+      loadingForCategory(true); // remove empty element
+
+      self.$index.children('.indexWorks__empty').remove(); // hide more
+
+      self.$more.addClass('indexMore--hide'); // get datas
+
+      api.get('/articles', {
+        app: options.app_srl,
+        nest: options.nest_srl,
+        field: 'srl,json,title',
+        category: srl || '',
+        order: 'srl',
+        sort: 'desc',
+        size: parseInt(self.app.options.size) || 10,
+        ext_field: 'next_page'
+      }).then(function (res) {
+        if (!res.success) throw 404;
+        res = res.data; // make elements
+
+        var $elements = indexItemElement(res.index, false); // remove prev elements
+
+        self.$index.children('.indexWorks__item').remove(); // append elements
+
+        self.$index.append($elements); // off loading
+
+        loadingForCategory(false); // on events in index
+
+        self.toggleEvents(true); // update more button
+
+        if (res.nextPage) {
+          self.$more.removeClass('indexMore--hide');
+          self.$more.children('button').attr('data-page', res.nextPage);
+        }
+      });
+    } catch (e) {
+      var message = null;
+
+      switch (e) {
+        case 404:
+          message = 'Not found work.';
+          break;
+
+        default:
+          console.error(e);
+          message = 'Service error.';
+          break;
+      } // make elements
+
+
+      var elements = "<div class=\"indexEmpty indexWorks__empty\">\n\t\t\t\t<img src=\"".concat(options.urlRoot, "/assets/images/img-error.png\" alt=\"error\">\n\t\t\t\t<p>").concat(message, "</p>\n\t\t\t</div>"); // remove prev elements
+
+      self.$index.children('.indexWorks__item').remove(); // append elements
+
+      self.$index.addClass('empty').append(elements); // off loading
+
+      loadingForCategory(false);
+    }
+  };
+  /**
+   * change page
+   *
+   * @param {Number} page
+   * @param {Boolean} scroll use scroll
+   * @return {Promise}
+   */
+
+
+  this.changePage = function (page, scroll) {
+    var _this = this;
+
+    if (this.$more.hasClass('indexMore--processing')) return false;
+
+    try {
+      // on loading
+      loadingForChangePage(true); // get data
+
+      var params = {
+        field: 'srl,json,title',
+        app: this.app.options.app_srl,
+        page: page,
+        order: 'srl',
+        sort: 'desc',
+        size: parseInt(this.app.options.size) || 10,
+        ext_field: 'next_page'
+      };
+      if (this.nest.srl) params.nest = this.nest.srl;
+      if (this.category.srl) params.category = this.category.srl;
+      api.get('/articles', params).then(function (res) {
+        if (!res.success) throw 404;
+        res = res.data; // update more button
+
+        if (res.nextPage) {
+          _this.$more.children('button').attr('data-page', res.nextPage);
+        } else {
+          _this.$more.addClass('indexMore--hide');
+        } // make new elements
+
+
+        var $elements = indexItemElement(res.index, true); // append
+
+        _this.$index.append($elements);
+
+        if (_this.masonry) _this.masonry.appended($elements); // play block animation
+
+        $elements.each(function (key) {
+          var _this2 = this;
+
+          setTimeout(function () {
+            $(_this2).removeClass('ready');
+          }, BLOCK_DELAY * key);
+        });
+
+        if (scroll) {
+          var $firstElement = $elements.eq(0);
+          var top = $firstElement.offset().top - SCROLL_OFFSET;
+          $firstElement.attr('data-page', page);
+          $("html, body").stop().animate({
+            scrollTop: top
+          }, SCROLL_SPEED, 'swing');
+        } // off loading
+
+
+        loadingForChangePage(false);
+      });
+    } catch (e) {
+      var message = null;
+
+      switch (e) {
+        case 404:
+          message = 'Not found work.';
+          break;
+
+        default:
+          console.error(e);
+          message = 'Service error.';
+          break;
+      }
+
+      alert(message);
+      loadingForChangePage(false);
+    }
+  };
+  /**
+   * toggle events
+   *
+   * @param {Boolean} sw
+   */
+
+
+  this.toggleEvents = function (sw) {
+    if (sw) {
+      // reset masonry
+      if (!self.masonry) masonry(true); // on scroll event
+
+      initScrollEvent(true);
+    } else {
+      // destroy masonry
+      if (self.masonry) masonry(false); // off scroll event
+
+      initScrollEvent(false);
+    }
+  }; // constructor
+
+
+  (function constructor() {
+    try {
+      if (!Masonry) throw 'Not found Masonry vendor'; // init toggle category event
+
+      if (self.$categories && self.$categories.length) {
+        initCategoryEvents();
+      } // init masonry and items event
+
+
+      if (self.$index && self.$index.children('.indexWorks__item') && self.$index.children('.indexWorks__item').length) {
+        // init events
+        self.toggleEvents(true); // set items event
+
+        initItemsEvent(self.$index.children('.indexWorks__item'));
+      } else {
+        self.$index.addClass('empty');
+      } // init more button
+
+
+      if (self.$more && self.$more.length) {
+        self.$more.children('button').on('click', function () {
+          var page = parseInt(this.dataset.page) || null;
+          if (!page) return false;
+          self.changePage(page, true);
+        });
+      } // update history
+
+
+      var url = location.pathname + location.search;
+      var env = {
+        url: url
+      };
+
+      if (!!self.nest.srl) {
+        env.title = "".concat(self.category.name ? "".concat(self.category.name, " - ") : '').concat(self.nest.name, " - ").concat(self.app.options.title);
+        env.category_srl = self.category.srl ? self.category.srl : null;
+        env.action = 'change-category';
+      } else {
+        env.title = self.app.options.title;
+        env.action = 'none';
+      }
+
+      var srl = !!self.nest.srl ? self.category.srl ? self.category.srl : null : null;
+      self.app.history.replace(env, env.title, url);
+    } catch (e) {
+      if (app.options.debug) console.error(e);
+      $('.container').empty().html("<article class=\"error\">\n\t\t\t\t<figure class=\"error__image\">\n\t\t\t\t\t<img src=\"".concat(app.options.urlRoot, "/assets/images/img-error.png\" alt=\"error\">\n\t\t\t\t</figure>\n\t\t\t\t<h1 class=\"error__message\">Service error</h1>\n\t\t\t</article>"));
+    }
+  })();
+}
+},{"../libs/api":"libs/api.js","./IndexWork":"Index/IndexWork.js"}],"Header/index.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = Header;
+
+var util = _interopRequireWildcard(require("../libs/util"));
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+
+/**
+ * Header class
+ */
+function Header(app) {
+  var self = this;
+  this.name = 'header';
+  this.app = app;
+  this.$nav = $('#gnb');
+
+  (function constructor() {
+    // init navigation
+    initNavigation();
+  })();
+
+  function initNavigation() {
+    var $buttons = self.$nav.find('ul > li > a');
+    $buttons.on('click', function () {
+      // 하위메뉴가 있고 터치 디바이스라면 클릭진행을 막는다.
+      return !(util.isTouchDevice() && $(this).next().length);
+    });
+  }
+}
+},{"../libs/util":"libs/util.js"}],"History.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = History;
+
+/**
+ * History class
+ */
+function History(app) {
+  var self = this;
+  var $title = $('head > title');
+  this.name = 'history';
+  this.app = app;
+  this.env = null;
+  this.title = null;
+  this.url = null;
+
+  (function constructor() {
+    if (!support()) return;
+    window.removeEventListener('popstate', onHook);
+    window.addEventListener('popstate', onHook);
+  })();
+  /**
+   * on hook history
+   *
+   * @param {String} e.state.url
+   * @param {String} e.state.title
+   * @param {String} e.state.action
+   */
+
+
+  function onHook(e) {
+    var state = e.state || {};
+
+    function save() {
+      self.env = state;
+      self.title = state.title;
+      self.url = state.url;
+    }
+
+    try {
+      switch (state.action) {
+        case 'change-category':
+          if (app.mode === 'work') {
+            save();
+            app.index.work.close(false);
+            document.title = self.title;
+            return;
+          } else if (app.mode === 'index') {
+            if (app.index && state.category_srl) {
+              save();
+              app.index.changeCategory(state.category_srl || null, false);
+              return;
+            }
+          }
+
+          throw 'no params';
+
+        case 'open-work':
+          if (app.mode === 'index') {
+            app.index.work.open(e.state.srl, e.state.title, false).then(save);
+            return;
+          }
+
+          return;
+
+        case 'none':
+          if (app.mode === 'work' && app.index.work.$popup && app.index.work.$popup.length) {
+            save();
+            app.index.work.close(false);
+            document.title = self.title;
+            return;
+          }
+
+          throw 'no page';
+
+        default:
+          throw 'none';
+      }
+    } catch (e) {
+      window.location.reload();
+    }
+  }
+  /**
+   * check support history
+   *
+   * @Return {Boolean}
+   */
+
+
+  function support() {
+    return !!history.pushState;
+  }
+  /**
+   * PUBLIC AREA
+   */
+
+  /**
+   * push state
+   *
+   * @param {Object} env
+   * @param {String} title
+   * @param {String} url
+   */
+
+
+  this.push = function (env, title, url) {
+    if (!(support() && url)) return; // save member values
+
+    this.env = env;
+    this.title = title;
+    this.url = url; // change title
+
+    if (title) $title.text(title); // update history
+
+    history.pushState(env || null, title || url, url);
+  };
+  /**
+   * replace state
+   *
+   * @param {Object} env
+   * @param {String} title
+   * @param {String} url
+   */
+
+
+  this.replace = function (env, title, url) {
+    if (!(support() && url)) return; // save member values
+
+    this.env = env;
+    this.title = title;
+    this.url = url; // change title
+
+    if (title) $title.text(title); // update history
+
+    history.replaceState(env || null, title || url, url);
+  };
+}
+},{}],"defaultOptions.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+var _default = {//
+};
+exports.default = _default;
+},{}],"../../node_modules/parcel/src/builtins/bundle-url.js":[function(require,module,exports) {
+var bundleURL = null;
+
+function getBundleURLCached() {
+  if (!bundleURL) {
+    bundleURL = getBundleURL();
+  }
+
+  return bundleURL;
+}
+
+function getBundleURL() {
+  // Attempt to find the URL of the current script and use that as the base URL
+  try {
+    throw new Error();
+  } catch (err) {
+    var matches = ('' + err.stack).match(/(https?|file|ftp):\/\/[^)\n]+/g);
+
+    if (matches) {
+      return getBaseURL(matches[0]);
+    }
+  }
+
+  return '/';
+}
+
+function getBaseURL(url) {
+  return ('' + url).replace(/^((?:https?|file|ftp):\/\/.+)\/[^/]+$/, '$1') + '/';
+}
+
+exports.getBundleURL = getBundleURLCached;
+exports.getBaseURL = getBaseURL;
+},{}],"../../node_modules/parcel/src/builtins/css-loader.js":[function(require,module,exports) {
+var bundle = require('./bundle-url');
+
+function updateLink(link) {
+  var newLink = link.cloneNode();
+
+  newLink.onload = function () {
+    link.remove();
+  };
+
+  newLink.href = link.href.split('?')[0] + '?' + Date.now();
+  link.parentNode.insertBefore(newLink, link.nextSibling);
+}
+
+var cssTimeout = null;
+
+function reloadCSS() {
+  if (cssTimeout) {
+    return;
+  }
+
+  cssTimeout = setTimeout(function () {
+    var links = document.querySelectorAll('link[rel="stylesheet"]');
+
+    for (var i = 0; i < links.length; i++) {
+      if (bundle.getBaseURL(links[i].href) === bundle.getBundleURL()) {
+        updateLink(links[i]);
+      }
+    }
+
+    cssTimeout = null;
+  }, 50);
+}
+
+module.exports = reloadCSS;
+},{"./bundle-url":"../../node_modules/parcel/src/builtins/bundle-url.js"}],"../css/app.scss":[function(require,module,exports) {
+var reloadCSS = require('_css_loader');
+
+module.hot.dispose(reloadCSS);
+module.hot.accept(reloadCSS);
+},{"_css_loader":"../../node_modules/parcel/src/builtins/css-loader.js"}],"app.js":[function(require,module,exports) {
+"use strict";
+
+var _Index = _interopRequireDefault(require("./Index"));
+
+var _Work = _interopRequireDefault(require("./Work"));
+
+var _Header = _interopRequireDefault(require("./Header"));
+
+var _History = _interopRequireDefault(require("./History"));
+
+var _defaultOptions = _interopRequireDefault(require("./defaultOptions"));
+
+var api = _interopRequireWildcard(require("./libs/api"));
+
+require("../css/app.scss");
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; var ownKeys = Object.keys(source); if (typeof Object.getOwnPropertySymbols === 'function') { ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) { return Object.getOwnPropertyDescriptor(source, sym).enumerable; })); } ownKeys.forEach(function (key) { _defineProperty(target, key, source[key]); }); } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Redgoose =
+/**
+ * constructor
+ *
+ * @param {String} type
+ * @param {Object} options
+ */
+function Redgoose() {
+  var type = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'index';
+  var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+
+  _classCallCheck(this, Redgoose);
+
+  this.name = 'redgoose'; // set instance
+
+  this.index = null;
+  this.work = null;
+  this.header = new _Header.default(this);
+  this.history = new _History.default(this); // set etc
+
+  this.mode = null;
+  this.options = _objectSpread({}, _defaultOptions.default, options); // switching action
+
+  switch (type) {
+    case 'index':
+      // change mode
+      this.mode = 'index'; // init api
+
+      if (this.options.urlApi && this.options.token) {
+        api.init(this);
+      } // play
+
+
+      this.index = new _Index.default(this);
+      break;
+
+    case 'work':
+      // change mode
+      this.mode = 'view'; // init api
+
+      if (this.options.urlApi && this.options.token) {
+        api.init(this);
+      } // play
+
+
+      this.work = new _Work.default(this);
+      break;
+
+    case 'none':
+      break;
+
+    default:
+      this.mode = 'error';
+      console.error('Error initialize');
+      break;
+  }
+};
+
+module.exports = Redgoose;
+},{"./Index":"Index/index.js","./Work":"Work/index.js","./Header":"Header/index.js","./History":"History.js","./defaultOptions":"defaultOptions.js","./libs/api":"libs/api.js","../css/app.scss":"../css/app.scss"}],"../../node_modules/parcel/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+var global = arguments[3];
+var OVERLAY_ID = '__parcel__error__overlay__';
+var OldModule = module.bundle.Module;
+
+function Module(moduleName) {
+  OldModule.call(this, moduleName);
+  this.hot = {
+    data: module.bundle.hotData,
+    _acceptCallbacks: [],
+    _disposeCallbacks: [],
+    accept: function (fn) {
+      this._acceptCallbacks.push(fn || function () {});
+    },
+    dispose: function (fn) {
+      this._disposeCallbacks.push(fn);
+    }
+  };
+  module.bundle.hotData = null;
+}
+
+module.bundle.Module = Module;
+var parent = module.bundle.parent;
+
+if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
+  var hostname = "" || location.hostname;
+  var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "63098" + '/');
+
+  ws.onmessage = function (event) {
+    var data = JSON.parse(event.data);
+
+    if (data.type === 'update') {
+      console.clear();
+      data.assets.forEach(function (asset) {
+        hmrApply(global.parcelRequire, asset);
+      });
+      data.assets.forEach(function (asset) {
+        if (!asset.isNew) {
+          hmrAccept(global.parcelRequire, asset.id);
+        }
+      });
+    }
+
+    if (data.type === 'reload') {
+      ws.close();
+
+      ws.onclose = function () {
+        location.reload();
+      };
+    }
+
+    if (data.type === 'error-resolved') {
+      console.log('[parcel] ✨ Error resolved');
+      removeErrorOverlay();
+    }
+
+    if (data.type === 'error') {
+      console.error('[parcel] 🚨  ' + data.error.message + '\n' + data.error.stack);
+      removeErrorOverlay();
+      var overlay = createErrorOverlay(data);
+      document.body.appendChild(overlay);
+    }
+  };
+}
+
+function removeErrorOverlay() {
+  var overlay = document.getElementById(OVERLAY_ID);
+
+  if (overlay) {
+    overlay.remove();
+  }
+}
+
+function createErrorOverlay(data) {
+  var overlay = document.createElement('div');
+  overlay.id = OVERLAY_ID; // html encode message and stack trace
+
+  var message = document.createElement('div');
+  var stackTrace = document.createElement('pre');
+  message.innerText = data.error.message;
+  stackTrace.innerText = data.error.stack;
+  overlay.innerHTML = '<div style="background: black; font-size: 16px; color: white; position: fixed; height: 100%; width: 100%; top: 0px; left: 0px; padding: 30px; opacity: 0.85; font-family: Menlo, Consolas, monospace; z-index: 9999;">' + '<span style="background: red; padding: 2px 4px; border-radius: 2px;">ERROR</span>' + '<span style="top: 2px; margin-left: 5px; position: relative;">🚨</span>' + '<div style="font-size: 18px; font-weight: bold; margin-top: 20px;">' + message.innerHTML + '</div>' + '<pre>' + stackTrace.innerHTML + '</pre>' + '</div>';
+  return overlay;
+}
+
+function getParents(bundle, id) {
+  var modules = bundle.modules;
+
+  if (!modules) {
+    return [];
+  }
+
+  var parents = [];
+  var k, d, dep;
+
+  for (k in modules) {
+    for (d in modules[k][1]) {
+      dep = modules[k][1][d];
+
+      if (dep === id || Array.isArray(dep) && dep[dep.length - 1] === id) {
+        parents.push(k);
+      }
+    }
+  }
+
+  if (bundle.parent) {
+    parents = parents.concat(getParents(bundle.parent, id));
+  }
+
+  return parents;
+}
+
+function hmrApply(bundle, asset) {
+  var modules = bundle.modules;
+
+  if (!modules) {
+    return;
+  }
+
+  if (modules[asset.id] || !bundle.parent) {
+    var fn = new Function('require', 'module', 'exports', asset.generated.js);
+    asset.isNew = !modules[asset.id];
+    modules[asset.id] = [fn, asset.deps];
+  } else if (bundle.parent) {
+    hmrApply(bundle.parent, asset);
+  }
+}
+
+function hmrAccept(bundle, id) {
+  var modules = bundle.modules;
+
+  if (!modules) {
+    return;
+  }
+
+  if (!modules[id] && bundle.parent) {
+    return hmrAccept(bundle.parent, id);
+  }
+
+  var cached = bundle.cache[id];
+  bundle.hotData = {};
+
+  if (cached) {
+    cached.hot.data = bundle.hotData;
+  }
+
+  if (cached && cached.hot && cached.hot._disposeCallbacks.length) {
+    cached.hot._disposeCallbacks.forEach(function (cb) {
+      cb(bundle.hotData);
+    });
+  }
+
+  delete bundle.cache[id];
+  bundle(id);
+  cached = bundle.cache[id];
+
+  if (cached && cached.hot && cached.hot._acceptCallbacks.length) {
+    cached.hot._acceptCallbacks.forEach(function (cb) {
+      cb();
+    });
+
+    return true;
+  }
+
+  return getParents(global.parcelRequire, id).some(function (id) {
+    return hmrAccept(global.parcelRequire, id);
+  });
+}
+},{}]},{},["../../node_modules/parcel/src/builtins/hmr-runtime.js","app.js"], "Redgoose")
+//# sourceMappingURL=/app.map

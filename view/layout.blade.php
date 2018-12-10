@@ -7,6 +7,7 @@ if(!defined("__GOOSE__")){exit();}
 @include('head')
 </head>
 <body ontouchstart="">
+<h1 class="page-title">{{$pageTitle}}</h1>
 <main>
 	<header class="header">
 		<div class="header__wrap" id="gnb">
@@ -55,11 +56,9 @@ if(!defined("__GOOSE__")){exit();}
 					</li>
 				</ul>
 			</nav>
-			<h1>
-				<a href="/">
-					<img src="{{__ROOT__}}/assets/images/ico-logo.svg" alt="redgoose">
-				</a>
-			</h1>
+			<div class="logo">
+				<a href="/"><img src="{{__ROOT__}}/assets/images/ico-logo.svg" alt="redgoose"></a>
+			</div>
 			<nav class="right">
 				<ul>
 					<li>

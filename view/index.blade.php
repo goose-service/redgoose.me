@@ -18,7 +18,7 @@ if(!defined("__GOOSE__")){exit();}
 @section('contents')
 <article class="index">
 	<header class="indexHeader index__header">
-		<h1>{{$pageTitle}}</h1>
+		<h2>{{$pageTitle}}</h2>
 		@if (isset($categories) && count($categories))
 			<nav class="indexCategories" id="categories">
 				<button type="button" class="indexCategories__toggle">

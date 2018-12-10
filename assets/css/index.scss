@@ -1,73 +1,61 @@
 @import "./libs/valiables";
 @import "./libs/mixins";
 
-@mixin grid($size, $col, $padding, $type) {
-	@if $type == 'grid'
-	{
-		&__index {
-			width: $size * $col;
-		}
-		&__sizer {
-			width: $size;
-			height: $size;
-		}
-		&__item {
-			width: $size;
-			height: $size;
-			padding: $padding;
-			&.w2 {
-				width: $size * 2;
-			}
-			&.h2 {
-				height: $size * 2;
-			}
-		}
-	}
-	@elseif $type == 'header'
-	{
+@mixin grid($size, $col, $padding) {
+	&__index {
 		width: $size * $col;
-		padding-left: $padding;
-		padding-right: $padding;
+	}
+	&__sizer {
+		width: $size;
+		height: $size;
+	}
+	&__item {
+		width: $size;
+		height: $size;
+		padding: $padding;
+		&.w2 {
+			width: $size * 2;
+		}
+		&.h2 {
+			height: $size * 2;
+		}
 	}
 }
 
 // body
 .index {
-	margin: 15px 0 0;
+	margin: 0;
 	&__header {}
 	&__works {}
 
 	@include responsive(tablet) {
-		margin: 20px 0 0;
-	}
-	@include responsive(desktop) {
-		margin: 30px 0 0;
+		margin: 0;
 	}
 }
 
 // header
 .indexHeader {
-	margin: 0 auto 2.5vw;
+	margin: 0 auto 10px;
 	box-sizing: border-box;
-	@include grid(32vw, 3, 2px, 'header');
-	h1 {
-		margin: 0 auto;
+	h2 {
+		margin: 0 auto 15px;
 		font-size: 22px;
 		font-weight: 600;
 		line-height: 1;
+		text-align: center;
 	}
 
 	@include responsive(tablet) {
-		@include grid(24vw, 4, 4px, 'header');
-		h1 {
+		margin-bottom: 20px;
+		h2 {
+			margin-bottom: 5px;
 			font-size: 30px;
 			letter-spacing: -.4px;
 		}
 	}
 	@include responsive(desktop) {
-		margin: 0 auto 20px;
+		margin: 0 auto 30px;
 		max-width: $size-container-base;
-		@include grid(23vw, 4, 4px, 'header');
 	}
 	@include responsive(desktop-large) {
 		margin: 0 auto 30px;
@@ -102,14 +90,15 @@
 		}
 		img {
 			width: 10px;
-			margin: 0 5px 0 0;
+			margin: 0 2px 0 0;
 			transition: transform .3s ease-out;
 		}
 		span {
 			margin: -1px 0 0;
-			font-size: 13px;
+			font-size: 12px;
 			letter-spacing: .5px;
 			font-weight: bold;
+			font-family: $font-eng;
 		}
 	}
 	&__index {
@@ -178,15 +167,16 @@
 		}
 		&__index {
 			display: flex;
+			justify-content: center;
 			background: none;
-			padding: 0;
+			padding: 0 30px;
 			margin: 8px -6px 0;
 			li {
 				width: auto;
 			}
 			a {
 				padding: 2px 6px;
-				font-size: 12px;
+				font-size: 11px;
 				&:hover {
 					text-decoration: underline;
 				}
@@ -199,7 +189,7 @@
 .indexWorks {
 	$self: '.indexWorks';
 	min-height: 200px;
-	@include grid(32vw, 3, 2px, 'grid');
+	@include grid(32vw, 3, 2px);
 	&__index {
 		box-sizing: border-box;
 		margin: 0 auto;
@@ -250,7 +240,7 @@
 	}
 
 	@include responsive(tablet) {
-		@include grid(24vw, 4, 4px, 'grid');
+		@include grid(24vw, 4, 4px);
 		&__more {
 			$size: 64px;
 			margin: 30px 0 0;
@@ -261,22 +251,22 @@
 		}
 	}
 	@include responsive(desktop) {
-		@include grid(23vw, 4, 4px, 'grid');
+		@include grid(23vw, 4, 4px);
 		&__more {
 			margin: 30px 0 0;
 		}
 	}
 	@include responsive(desktop-large) {
-		@include grid(18vw, 5, 5px, 'grid');
+		@include grid(18vw, 5, 5px);
 		&__more {
 			margin: 40px 0 0;
 		}
 	}
 	@include responsive(max) {
-		@include grid(230px, 6, 5px, 'grid');
+		@include grid(230px, 6, 5px);
 	}
 	@include responsive(over) {
-		@include grid(230px, 8, 5px, 'grid');
+		@include grid(230px, 8, 5px);
 	}
 }
 

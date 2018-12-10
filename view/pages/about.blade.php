@@ -37,7 +37,7 @@ if(!defined("__GOOSE__")){exit();}
 	<div class="about__metas">
 		<div>
 			<section>
-				<h1>information</h1>
+				<h3>information</h3>
 				<dl>
 					<dt>position</dt>
 					<dd>frond-end engineer, visual creator</dd>
@@ -51,7 +51,7 @@ if(!defined("__GOOSE__")){exit();}
 				</dl>
 			</section>
 			<section>
-				<h1>skill</h1>
+				<h3>skill</h3>
 				<dl>
 					<dt>use tools</dt>
 					<dd>photoshop, cinema4d, illustrator, webstorm, phpstorm, sketch, github, github client, zeplin, paw, trello</dd>
@@ -60,7 +60,7 @@ if(!defined("__GOOSE__")){exit();}
 				</dl>
 			</section>
 			<section>
-				<h1>sns</h1>
+				<h3>sns</h3>
 				<dl>
 					<dt>facebook</dt>
 					<dd>
@@ -77,7 +77,7 @@ if(!defined("__GOOSE__")){exit();}
 				</dl>
 			</section>
 			<section>
-				<h1>source code</h1>
+				<h3>source code</h3>
 				<dl>
 					<dt>github</dt>
 					<dd>

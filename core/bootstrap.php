@@ -78,8 +78,8 @@ try {
 				]);
 
 				$title = 'redgoose';
-				if (isset($res->data->nest->name)) $title = $res->data->nest->name.' - '.$title;
-				if ($res->data->category) $title = $res->data->category->name.' - '.$title;
+				if (isset($res->data->nest->name)) $title = $res->data->nest->name.' / '.$title;
+				if ($res->data->category) $title = $res->data->category->name.' / '.$title;
 				// render page
 				$blade->render('index', (object)[
 					'title' => $title,
@@ -127,6 +127,7 @@ try {
 					default:
 						$blade->render('work.detail', (object)[
 							'title' => ($res->data->title === '.' ? 'Untitled work' : $res->data->title).' on '.getenv('TITLE'),
+							'pageTitle' => $res->data->title === '.' ? 'Untitled work' : $res->data->title,
 							'description' => Util::contentToShortText($res->data->content),
 							'image' => __API__.'/'.$res->data->json->thumbnail->path,
 							'data' => $res->data,
