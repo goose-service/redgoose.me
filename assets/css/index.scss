@@ -435,6 +435,13 @@
 		}
 	}
 
+	.work {
+		padding-top: 20px;
+		&__header {
+			margin-top: 0;
+		}
+	}
+
 	@include responsive(tablet) {
 		&__body {
 			padding: 0 0 20px;
@@ -471,6 +478,10 @@
 				}
 			}
 		}
+
+		.work {
+			padding-top: 30px;
+		}
 	}
 	@include responsive(desktop) {
 		&__body {
@@ -480,6 +491,10 @@
 			button {
 				padding: 25px;
 			}
+		}
+
+		.work {
+			padding-top: 40px;
 		}
 	}
 }
