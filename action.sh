@@ -18,6 +18,8 @@ case "$1" in
 		if [ ! -d cache ]; then
 			mkdir cache
 			chmod 707 cache
+			mkdir cache/view
+			chmod 707 cache/view
 		fi
 		# copy .env
 		if [ ! -f .env ]; then
@@ -27,12 +29,12 @@ case "$1" in
 
 		# watch js,css
 	watch)
-		parcel watch assets/js/app.js --global Redgoose --no-autoinstall --out-dir assets/dist --cache-dir cache/parcel
+		parcel watch assets/js/app.js --no-autoinstall --out-dir assets/dist --cache-dir cache/parcel
 		;;
 
 	build)
 		rm -rf assets/dist
-		parcel build assets/js/app.js --global Redgoose --no-source-maps --out-dir assets/dist --cache-dir cache/parcel
+		parcel build assets/js/app.js --no-source-maps --out-dir assets/dist --cache-dir cache/parcel
 		;;
 
 	*)

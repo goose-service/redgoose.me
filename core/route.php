@@ -18,4 +18,6 @@ return [
 
 	[ 'GET', '/rss', 'rss' ],
 
+	[ 'POST', '/on-like/[i:srl]', 'on-like' ],
+
 ];

@@ -1,0 +1,36 @@
+@import "./normalize";
+@import "./libs/valiables";
+@import "./libs/mixins";
+@import "./fonts";
+
+body {
+	margin: 0;
+	min-width: 320px;
+	-webkit-text-size-adjust: 100%;
+	color: $color-text-base;
+	text-size-adjust: 100%;
+	background: $color-bg;
+}
+
+body, button, input, textarea, select {
+	font-family: $font-system;
+	text-size-adjust: none;
+	font-size: 1rem;
+	line-height: 1.54;
+}
+a {
+	color: $color-key;
+}
+code,
+kbd,
+pre,
+samp {
+	font-family: $font-console;
+}
+
+// load contents
+@import "./layout";
+@import "./index";
+@import "./detail";
+@import "./error";
+@import "./pages";

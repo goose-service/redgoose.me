@@ -1,0 +1,20 @@
+$dir: '../fonts';
+
+// mixins
+@mixin font-loader-circular($weight-name, $weight)
+{
+	@font-face {
+		font-family: 'Circular';
+		font-style: normal;
+		font-weight: $weight;
+		src: url('#{$dir}/circular/CircularStd-#{$weight-name}.woff2') format('woff2'),
+			url('#{$dir}/circular/CircularStd-#{$weight-name}.woff') format('woff');
+	}
+}
+
+
+// load fonts
+@include font-loader-circular('Book', 400);
+@include font-loader-circular('Medium', 500);
+@include font-loader-circular('Bold', 600);
+@include font-loader-circular('Black', 900);
