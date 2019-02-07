@@ -3,19 +3,24 @@
   "name": "redgoose",
   "icons": [
     {
-      "src": "https://goose.redgoose.me/usr/icons/redgoose_48x48x32.png",
+      "src": "/assets/images/redgoose_48x48.png",
       "type": "image/png",
       "sizes": "48x48"
     },
     {
-      "src": "https://goose.redgoose.me/usr/icons/redgoose_96x96x32.png",
+      "src": "/assets/images/redgoose_96x96.png",
       "type": "image/png",
       "sizes": "96x96"
     },
     {
-      "src": "https://goose.redgoose.me/usr/icons/redgoose_256x256x32.png",
+      "src": "/assets/images/redgoose_192x192.png",
       "type": "image/png",
       "sizes": "192x192"
+    },
+    {
+      "src": "/assets/images/redgoose_256x256.png",
+      "type": "image/png",
+      "sizes": "256x256"
     }
   ],
   "start_url": "/",

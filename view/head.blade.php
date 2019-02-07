@@ -20,10 +20,10 @@
 
 @yield('meta')
 
-<link rel="shortcut icon" href="{{ __API__ }}/usr/icons/favicon.ico"/>
-<link rel="icon" type="image/x-icon" href="{{ __API__ }}/usr/icons/redgoose_256x256x32.png"/>
-<link rel="apple-touch-icon" href="{{ __API__ }}/usr/icons/redgoose_app_256x256x32.png"/>
-<link rel="apple-touch-startup-image" href="{{ __API__ }}/usr/icons/redgoose_app_256x256x32.png"/>
+<link rel="shortcut icon" href="{{ __ROOT__ }}/assets/images/favicon.ico"/>
+<link rel="icon" type="image/x-icon" href="{{ __ROOT__ }}/assets/images/redgoose_192x192.png"/>
+<link rel="apple-touch-icon" href="{{ __ROOT__ }}/assets/images/redgoose_192x192.png"/>
+<link rel="apple-touch-startup-image" href="{{ __ROOT__ }}/assets/images/redgoose_192x192.png"/>
 
 <link rel="stylesheet" href="{{ __ROOT__ }}/assets/dist/app.css" media="screen"/>
 <link rel="manifest" href="{{ __ROOT__ }}/manifest.json"/>
