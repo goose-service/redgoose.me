@@ -2,6 +2,7 @@
 node_modules/
 .AppleDouble/
 vendor/
+!assets/vendor/
 cache/
 assets/dist/*.map
 

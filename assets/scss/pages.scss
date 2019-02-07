@@ -114,6 +114,17 @@
 			}
 		}
 	}
+
+	@include responsive(tablet) {
+		&__header {
+			h2 {
+				font-size: 36px;
+				line-height: 1.15;
+				letter-spacing: -1.5px;
+			}
+		}
+	}
+
 	@include responsive(desktop) {
 		&__metas {
 			section {
