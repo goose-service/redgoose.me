@@ -26,48 +26,48 @@ if(!defined("__GOOSE__")){exit();}
 			<nav class="layout-header__menus">
 				<ul>
 					<li>
-						<a href="/nest/visual"><span>Works</span></a>
+						<a href="/nest/visual/"><span>Works</span></a>
 						<div>
 							<ol>
 								<li{!!$nest_id === 'visual' ? ' class="on"' : ''!!}>
-									<a href="/nest/visual">Visual</a>
+									<a href="/nest/visual/">Visual</a>
 								</li>
 								<li{!!$nest_id === '3d' ? ' class="on"' : ''!!}>
-									<a href="/nest/3d">3D</a>
+									<a href="/nest/3d/">3D</a>
 								</li>
 								<li{!!$nest_id === 'develop' ? ' class="on"' : ''!!}>
-									<a href="/nest/develop">Development</a>
+									<a href="/nest/develop/">Development</a>
 								</li>
 							</ol>
 						</div>
 					</li>
 					<li>
-						<a href="/nest/landscape"><span>Photos</span></a>
+						<a href="/nest/landscape/"><span>Photos</span></a>
 						<div>
 							<ol>
 								<li{!!$nest_id === 'landscape' ? ' class="on"' : ''!!}>
-									<a href="/nest/landscape">Landscape</a>
+									<a href="/nest/landscape/">Landscape</a>
 								</li>
 								<li{!!$nest_id === 'portrait' ? ' class="on"' : ''!!}>
-									<a href="/nest/portrait">Portrait</a>
+									<a href="/nest/portrait/">Portrait</a>
 								</li>
 								<li{!!$nest_id === 'snap' ? ' class="on"' : ''!!}>
-									<a href="/nest/snap">Snap</a>
+									<a href="/nest/snap/">Snap</a>
 								</li>
 								<li{!!$nest_id === 'composition' ? ' class="on"' : ''!!}>
-									<a href="/nest/composition">Composition</a>
+									<a href="/nest/composition/">Composition</a>
 								</li>
 								<li{!!$nest_id === 'foreign' ? ' class="on"' : ''!!}>
-									<a href="/nest/foreign">Foreign countries</a>
+									<a href="/nest/foreign/">Foreign countries</a>
 								</li>
 								<li{!!$nest_id === 'cosplay' ? ' class="on"' : ''!!}>
-									<a href="/nest/cosplay">Cosplay</a>
+									<a href="/nest/cosplay/">Cosplay</a>
 								</li>
 							</ol>
 						</div>
 					</li>
 					<li>
-						<a href="/page/about"><span>About</span></a>
+						<a href="/page/about/"><span>About</span></a>
 					</li>
 					<li>
 						<a href="https://note.redgoose.me" target="_blank"><span>Note</span></a>

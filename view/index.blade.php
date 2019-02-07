@@ -33,7 +33,7 @@ if(!defined("__GOOSE__")){exit();}
 				<ul>
 					@foreach($categories as $k=>$item)
 						<li{!!($category_srl === $item->srl || (!$category_srl && !$item->srl)) ? ' class="on"' : ''!!}>
-							<a href="/nest/{{$nest_id}}{{$item->srl ? '/'.$item->srl : ''}}" data-srl="{{$item->srl}}">
+							<a href="/nest/{{$nest_id}}{{$item->srl ? '/'.$item->srl : ''}}/" data-srl="{{$item->srl}}">
 								<span>{{$item->name}}</span>
 								@if ($item->srl)
 									<em>{{$item->count_article}}</em>
