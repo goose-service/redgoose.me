@@ -27,9 +27,9 @@ case "$1" in
 		fi
 		;;
 
-		# watch js,css
+	# watch js,css
 	watch)
-		parcel watch assets/js/app.js --no-autoinstall --out-dir assets/dist --cache-dir cache/parcel
+		parcel watch assets/js/app.js --no-autoinstall --out-dir assets/dist --cache-dir cache/parcel --public-url /assets/dist
 		;;
 
 	build)
