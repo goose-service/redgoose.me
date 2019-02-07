@@ -296,10 +296,9 @@
 					height: 20vw;
 					overflow: hidden;
 					transform: translateZ(0);
-				img {
+					img {
 						transition: transform 300ms ease-out;
 						transform-origin: 50% 50%;
-						image-rendering: crisp-edges;
 						backface-visibility: hidden;
 					}
 				}
