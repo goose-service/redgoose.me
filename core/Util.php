@@ -97,7 +97,7 @@ class Util {
 		}
 
 		// render
-		$blade->render($_GET['mode'] === 'popup' ? 'error.popup' : 'error.main', (object)[
+		$blade->render('error', (object)[
 			'title' => getenv('TITLE'),
 			'message' => $message,
 		]);
@@ -128,20 +128,12 @@ class Util {
 		{
 			if ($item->json && $item->json->thumbnail)
 			{
-				$size = '';
-				if ($item->json->thumbnail->sizeSet)
-				{
-					$size = explode('*', $item->json->thumbnail->sizeSet);
-					$size[0] = $size[0] ? 'w'.$size[0] : '';
-					$size[1] = $size[1] ? 'h'.$size[1] : '';
-					$size = implode(' ', $size);
-				}
-
 				$result[] = (object)[
 					'srl' => (int)$item->srl,
 					'title' => $item->title === '.' ? 'untitled work' : $item->title,
 					'image' => $item->json->thumbnail->path,
-					'className' => $size,
+					'categoryName' => $item->category_name,
+					'nestName' => $item->nest_name,
 				];
 			}
 		}
@@ -231,4 +223,26 @@ class Util {
 		);
 	}
 
+	/**
+	 * make pagination
+	 * 모바일과 데스크탑 네비게이션 객체를 만들어준다.
+	 *
+	 * @param int $total
+	 * @param int $page
+	 * @param int $size
+	 * @param array $params
+	 * @return object
+	 */
+	static public function makePagination($total, $page, $size, $params=[])
+	{
+		$instance_mobile = new Paginate($total, $page, $params, $size, 3);
+		$instance_desktop = new Paginate($total, $page, $params, $size, 10);
+		$result = (object)[
+			'total' => $total,
+			'page' => $page,
+			'mobile' => $instance_mobile->createNavigation('mobile'),
+			'desktop' => $instance_desktop->createNavigation('desktop'),
+		];
+		return $result;
+	}
 }

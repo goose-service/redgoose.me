@@ -1,8 +1,10 @@
 <?php
 if(!defined("__GOOSE__")){exit();}
 
+/** @var string $title */
+/** @var string $pageTitle */
 /** @var array $index */
-/** @var int $nextPage */
+/** @var object $paginate */
 ?>
 
 @extends('layout')
@@ -17,81 +19,76 @@ if(!defined("__GOOSE__")){exit();}
 
 @section('contents')
 <article class="index">
-	<header class="indexHeader index__header">
+	<header class="index__header">
 		<h2>{{$pageTitle}}</h2>
 		@if (isset($categories) && count($categories))
-			<nav class="indexCategories" id="categories">
-				<button type="button" class="indexCategories__toggle">
-					<img src="{{__ROOT__}}/assets/images/ico-arrow-down.svg" alt="icon">
-					<span>Category</span>
-				</button>
-				<ul class="indexCategories__index">
+		<nav class="index__categories">
+			<button type="button">
+				<span>
+					<em>Categories</em>
+					<img src="{{__ROOT__}}/assets/images/ico-arrow-down.svg" alt="arrow">
+				</span>
+			</button>
+			<nav>
+				<ul>
 					@foreach($categories as $k=>$item)
 						<li{!!($category_srl === $item->srl || (!$category_srl && !$item->srl)) ? ' class="on"' : ''!!}>
 							<a href="/nest/{{$nest_id}}{{$item->srl ? '/'.$item->srl : ''}}" data-srl="{{$item->srl}}">
-								<span>{{$item->name}}</span><em>{{$item->count_article}}</em>
+								<span>{{$item->name}}</span>
+								@if ($item->srl)
+									<em>{{$item->count_article}}</em>
+								@endif
 							</a>
 						</li>
 					@endforeach
 				</ul>
 			</nav>
+		</nav>
 		@endif
 	</header>
-
-	<div class="indexWorks index__works">
-		<div class="loading indexWorks__loading" id="index_loading">
-			<div class="loading__loader">
-				<div class="loading__shadow"></div>
-				<div class="loading__box"></div>
-			</div>
-		</div>
-		<div id="index" class="indexWorks__index">
-			<div class="indexWorks__sizer"></div>
-			@if ($index && count($index))
+	<div class="index__works">
+		@if ($index && count($index))
+			<ul>
 				@foreach($index as $k=>$item)
-					<div class="indexWorks__item{{$item->className ? ' '.$item->className : ''}}">
-						<a href="/article/{{$item->srl}}" data-srl="{{$item->srl}}">
-							<img src="{{__API__}}/{{$item->image}}" alt="{{$item->title}}">
+					<li>
+						<a href="/article/{{$item->srl}}">
+							<figure>
+								<img src="{{__API__}}/{{$item->image}}" alt="{{$item->title}}">
+							</figure>
+							<div>
+								<strong>{{$item->title}}</strong>
+								@if (isset($item->nestName) || isset($item->categoryName))
+									<span>
+										@if (isset($item->nestName))
+											<em>{{$item->nestName}}</em>
+										@endif
+										@if (isset($item->categoryName))
+											<em>{{$item->categoryName}}</em>
+										@endif
+									</span>
+								@endif
+							</div>
 						</a>
-					</div>
+					</li>
 				@endforeach
-			@else
-				<div class="indexEmpty indexWorks__empty">
-					<img src="{{__ROOT__}}/assets/images/img-error.png" alt="error">
-					<p>Not found work.</p>
-				</div>
-			@endif
-		</div>
-
-		<nav class="indexMore indexWorks__more {{!$nextPage ? 'indexMore--hide' : ''}}" id="index_button_more">
-			<button type="button" data-page="{{$nextPage}}">
-				<img src="{{__ROOT__}}/assets/images/ico-load-more.svg" alt="load more">
-			</button>
-		</nav>
+			</ul>
+		@else
+			<div class="empty">
+				<img src="{{__ROOT__}}/assets/images/img-error.png" alt="error">
+				<p>Not found work.</p>
+			</div>
+		@endif
+		@if ($paginate->total > 0)
+			<div class="index__paginate">
+				{!! $paginate->mobile !!}
+				{!! $paginate->desktop !!}
+			</div>
+		@endif
 	</div>
 </article>
 @endsection
 
 @section('script')
 <script src="{{__ROOT__}}/assets/vendor/jquery-3.3.1.min.js"></script>
-<script src="{{__ROOT__}}/assets/vendor/masonry.pkgd.min.js"></script>
 <script src="{{__ROOT__}}/assets/dist/app.js"></script>
-<script>
-window.redgoose = new Redgoose('index', {
-	title: '{{getenv('TITLE')}}',
-	urlRoot: '{{__ROOT__}}',
-	urlApi: '{{__API__}}',
-	urlCookie: '{{getenv('PATH_COOKIE')}}',
-	token: '{{getenv('TOKEN_PUBLIC')}}',
-	size: parseInt('{{getenv('DEFAULT_INDEX_SIZE')}}'),
-	app_srl: parseInt('{{getenv('DEFAULT_APP_SRL')}}'),
-	nest_srl: parseInt('{{$nest_srl}}'),
-	nest_id: '{{$nest_id}}',
-	nest_name: '{{$pageTitle}}',
-	category_srl: '{{$category_srl}}',
-	category_name: '{{$category_name}}',
-	page: '{{$page}}',
-	debug: !!'{{getenv('USE_DEBUG')}}',
-});
-</script>
 @endsection

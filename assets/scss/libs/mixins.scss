@@ -1,0 +1,36 @@
+@import "./valiables";
+
+// responsive
+@mixin responsive($range)
+{
+	@if $range == mobile-large
+	{
+		@media (min-width: 480px) { @content; }
+	}
+	@else if $range == tablet
+	{
+		@media (min-width: #{$size-screen-tablet}) { @content; }
+	}
+	@else if $range == desktop
+	{
+		@media (min-width: #{$size-screen-desktop}) { @content; }
+	}
+	@else if $range == max
+	{
+		@media (min-width: #{$size-container-max}) { @content; }
+	}
+}
+
+// retina display
+@mixin retina()
+{
+	@media (-webkit-min-device-pixel-ratio: 2) { @content; }
+}
+
+// single line text
+@mixin text-single-line()
+{
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}

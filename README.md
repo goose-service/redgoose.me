@@ -1,6 +1,6 @@
-# redgoose-v4
+# redgoose-v5
 
-redgoose.me ver.4
+redgoose.me ver.5
 
 ## 설치하기
 

@@ -8,10 +8,22 @@ if(!defined("__GOOSE__")){exit();}
 </head>
 <body ontouchstart="">
 <h1 class="page-title">{{$pageTitle}}</h1>
+</body>
 <main>
-	<header class="header">
-		<div class="header__wrap" id="gnb">
-			<nav class="left">
+	<header class="layout-header">{{--on-menu--}}
+		<div class="layout-header__wrap">
+			<div class="layout-header__logo">
+				<a href="{{__ROOT__}}/">
+					<img src="{{__ROOT__}}/assets/images/ico-logo@2x.png" alt="redgoose">
+				</a>
+			</div>
+			<nav class="layout-header__buttons">
+				<button type="button" title="toggle menu" class="button--menu">
+					<img src="{{__ROOT__}}/assets/images/ico-menu.svg" alt="menu">
+					<img src="{{__ROOT__}}/assets/images/ico-close.svg" alt="close menu">
+				</button>
+			</nav>
+			<nav class="layout-header__menus">
 				<ul>
 					<li>
 						<a href="/nest/visual"><span>Works</span></a>
@@ -24,7 +36,7 @@ if(!defined("__GOOSE__")){exit();}
 									<a href="/nest/3d">3D</a>
 								</li>
 								<li{!!$nest_id === 'develop' ? ' class="on"' : ''!!}>
-									<a href="/nest/develop">Develop</a>
+									<a href="/nest/develop">Development</a>
 								</li>
 							</ol>
 						</div>
@@ -54,38 +66,21 @@ if(!defined("__GOOSE__")){exit();}
 							</ol>
 						</div>
 					</li>
-				</ul>
-			</nav>
-			<div class="logo">
-				<a href="/"><img src="{{__ROOT__}}/assets/images/ico-logo.svg" alt="redgoose"></a>
-			</div>
-			<nav class="right">
-				<ul>
 					<li>
-						<a href="/page/about">
-							<span>About</span>
-						</a>
+						<a href="/page/about"><span>About</span></a>
 					</li>
 					<li>
-						<a href="https://note.redgoose.me" target="_blank">
-							<span>Note</span>
-						</a>
+						<a href="https://note.redgoose.me" target="_blank"><span>Note</span></a>
 					</li>
 				</ul>
 			</nav>
 		</div>
 	</header>
-
 	<div class="container">
 		@yield('contents')
 	</div>
-
-	<footer class="footer">
-		<div class="footer__wrap">
-			<p class="footer__copyright">
-				Copyright 2013-{{date('Y')}} redgoose. All right reserved.
-			</p>
-		</div>
+	<footer class="layout-footer">
+		<p class="layout-footer__copyright">Copyright 2013-{{date('Y')}} redgoose. All right reserved.</p>
 	</footer>
 </main>
 @yield('script')

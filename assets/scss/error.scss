@@ -1,0 +1,21 @@
+@import "./libs/valiables";
+@import "./libs/mixins";
+
+.error {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 80px 0;
+	img {
+		display: block;
+		width: 180px;
+		max-width: 100%;
+	}
+	h2 {
+		margin: 30px 0 0;
+		text-align: center;
+		font-family: $font-circular;
+		font-size: 1.25rem;
+		font-weight: 600;
+	}
+}

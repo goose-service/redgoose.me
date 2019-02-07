@@ -1,1 +1,7 @@
-<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 8 4"><title>ico-arrow-down</title><path d="M8,0,4,4,0,0Z" transform="translate(0)" style="fill:#111"/></svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="12" height="6" viewBox="0 0 12 6">
+    <g fill="none" fill-rule="evenodd">
+        <path fill="#FAFBFC" d="M-339-151H36V897h-375z"/>
+        <path fill="#EEE" d="M-339-19H36v44h-375z"/>
+        <path fill="#222" d="M12 0L6 6 0 0z"/>
+    </g>
+</svg>
