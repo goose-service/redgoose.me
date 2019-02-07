@@ -51,7 +51,7 @@ if(!defined("__GOOSE__")){exit();}
 			<ul>
 				@foreach($index as $k=>$item)
 					<li>
-						<a href="/article/{{$item->srl}}">
+						<a href="/article/{{$item->srl}}/">
 							<figure>
 								<img src="{{__API__}}/{{$item->image}}" alt="{{$item->title}}">
 							</figure>
