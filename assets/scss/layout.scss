@@ -29,6 +29,68 @@ main {
 	overflow: hidden;
 }
 
+// page back button
+.page-back-button {
+	display: none;
+
+	@media all and (display-mode: standalone) {
+		display: block;
+		position: fixed;
+		z-index: 2;
+		left: 0;
+		bottom: 0;
+		width: 72px;
+		height: 72px;
+		padding: 0;
+		margin: 0;
+		border: none;
+		cursor: pointer;
+		font-size: 0;
+		box-sizing: border-box;
+		user-select: none;
+		-webkit-tap-highlight-color: transparent;
+		background: transparent;
+		outline: none;
+		.bg {
+			position: absolute;
+			left: 0;
+			bottom: 0;
+			display: block;
+			width: 62px;
+			height: 62px;
+			box-sizing: border-box;
+			transform-origin: 0 100%;
+			transition: transform 150ms ease-out;
+			path {
+				color: $color-key;
+				transition: color 150ms ease-out;
+			}
+		}
+		.icon {
+			display: block;
+			position: absolute;
+			left: 6px;
+			bottom: 6px;
+			width: 28px;
+			height: 28px;
+			box-sizing: border-box;
+			transition: transform 150ms ease-out;
+			transform-origin: 50% 50%;
+		}
+		&:active {
+			.bg {
+				transform: scale(.85, .85);
+				path {
+					color: mix($color-sub, $color-key, 50%);
+				}
+			}
+			.icon {
+				transform: scale(.75, .75) translate(-6px, 6px);
+			}
+		}
+	}
+}
+
 // header
 .layout-header {
 	$self: '.layout-header';
@@ -63,6 +125,7 @@ main {
 		a {
 			display: block;
 			padding: 5px;
+			-webkit-tap-highlight-color: transparent;
 		}
 		img {
 			display: block;
@@ -173,7 +236,7 @@ main {
 					}
 					a {
 						display: block;
-						padding: 4px 15px 4px 0;
+						padding: 8px 15px 8px 0;
 						box-sizing: border-box;
 						color: #fff;
 						font-family: $font-circular;
@@ -181,8 +244,9 @@ main {
 						font-size: 13px;
 						font-weight: 400;
 						text-decoration: none;
+						-webkit-tap-highlight-color: transparent;
 						&:active {
-							opacity: .75;
+							opacity: .3;
 						}
 					}
 				}
@@ -190,6 +254,20 @@ main {
 		}
 	}
 
+	@media (orientation: landscape) {
+		&.on-menu {
+			#{$self} {
+				&__menus {
+					padding-top: 15px;
+					ol {
+						li {
+							width: 33.33333%;
+						}
+					}
+				}
+			}
+		}
+	}
 	@include responsive(tablet) {
 		height: $size-header-height-desktop;
 		padding: 0 $size-side-padding-desktop;

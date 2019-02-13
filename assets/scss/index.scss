@@ -24,7 +24,7 @@
 		}
 	}
 	&__categories {
-		margin: 10px 0 -20px;
+		margin: 15px 0 -20px;
 		button {
 			width: 100%;
 			display: block;
@@ -34,8 +34,8 @@
 			border: none;
 			background: none;
 			background: #eee;
-			outline: none;
 			cursor: pointer;
+			-webkit-tap-highlight-color: transparent;
 			&:active {
 				opacity: .75;
 			}
@@ -124,6 +124,13 @@
 
 		@include responsive(mobile-large) {
 			margin: 10px -#{$size-side-padding} 0;
+			&.open {
+				nav {
+					li {
+						width: 33.33333%;
+					}
+				}
+			}
 		}
 		@include responsive(tablet) {
 			margin: 2px auto 10px;
@@ -205,6 +212,7 @@
 				display: block;
 				text-decoration: none;
 				padding: 0 0 10px;
+				-webkit-tap-highlight-color: transparent;
 			}
 			figure {
 				position: relative;
@@ -351,8 +359,10 @@
 			}
 			a {
 				text-decoration: none;
+				-webkit-tap-highlight-color: transparent;
 				&:active {
-					background: #f4f4f4;
+					background: #ddd;
+					border-radius: 2px;
 				}
 			}
 			strong {

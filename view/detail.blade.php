@@ -61,6 +61,7 @@ if(!defined("__GOOSE__")){exit();}
 		@endif
 	</div>
 </article>
+@include('back-button')
 @endsection
 
 @section('script')

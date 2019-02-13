@@ -10,6 +10,7 @@ body {
 	color: $color-text-base;
 	text-size-adjust: 100%;
 	background: $color-bg;
+	-webkit-touch-callout: none;
 }
 
 body, button, input, textarea, select {

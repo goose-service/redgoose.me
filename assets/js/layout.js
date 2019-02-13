@@ -40,6 +40,16 @@ function initNavigation()
 	});
 }
 
+/**
+ * initial back button event for standalone
+ */
+function initBackButton()
+{
+	$('.page-back-button').on('click', function() {
+		history.back();
+	});
+}
+
 export default function()
 {
 	// toggle navigation
@@ -47,4 +57,7 @@ export default function()
 
 	// initial navigation
 	initNavigation();
+
+	// initial back button event
+	initBackButton();
 }
