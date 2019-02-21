@@ -208,12 +208,6 @@
 				padding: 0 0 20px;
 				box-sizing: border-box;
 			}
-			a {
-				display: block;
-				text-decoration: none;
-				padding: 0 0 10px;
-				-webkit-tap-highlight-color: transparent;
-			}
 			figure {
 				position: relative;
 				margin: 0;
@@ -227,14 +221,21 @@
 					top: 50%;
 					display: block;
 					width: 100%;
-					transform: translate(-50%, -50%);
+					transform: translate(-50%, -50%) scale(1);
+					transform-origin: 50% 50%;
+					transition: transform 200ms ease-out 50ms;
 					@supports (object-fit: cover) {
 						left: 0;
 						top: 0;
 						width: 100%;
 						height: 100%;
 						object-fit: cover;
-						transform: none;
+						transform: scale(1);
+					}
+				}
+				&:active {
+					img {
+						transform: scale(1.1);
 					}
 				}
 			}
@@ -265,6 +266,12 @@
 					}
 				}
 			}
+			a {
+				display: block;
+				text-decoration: none;
+				padding: 0 0 10px;
+				-webkit-tap-highlight-color: transparent;
+			}
 		}
 
 		@include responsive(mobile-large) {
@@ -290,18 +297,6 @@
 				li {
 					width: 33.3333%;
 				}
-				a {
-					&:hover {
-						figure {
-							img {
-								transform: scale(1.1) translate(-45%, -45%);
-								@supports (object-fit: cover) {
-									transform: scale(1.1);
-								}
-							}
-						}
-					}
-				}
 				figure {
 					box-sizing: border-box;
 					height: 20vw;
@@ -311,6 +306,14 @@
 						transition: transform 300ms ease-out;
 						transform-origin: 50% 50%;
 						backface-visibility: hidden;
+					}
+					&:hover {
+						img {
+							transform: scale(1.1) translate(-45%, -45%);
+							@supports (object-fit: cover) {
+								transform: scale(1.1);
+							}
+						}
 					}
 				}
 			}
