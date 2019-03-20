@@ -67,7 +67,7 @@ try {
 				// render page
 				$blade->render('index', (object)[
 					'title' => getenv('TITLE'),
-					'pageTitle' => 'Newstest works',
+					'pageTitle' => 'Newest works',
 					'index' => Util::getWorksData($res->data->index),
 					'paginate' => $paginate,
 				]);
