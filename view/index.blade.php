@@ -53,7 +53,9 @@ if(!defined("__GOOSE__")){exit();}
 					<li>
 						<a href="/article/{{$item->srl}}/">
 							<figure>
+								@if (isset($item->image))
 								<img src="{{__API__}}/{{$item->image}}" alt="{{$item->title}}">
+								@endif
 							</figure>
 							<div>
 								<strong>{{$item->title}}</strong>

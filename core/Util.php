@@ -126,7 +126,7 @@ class Util {
 
 		foreach ($index as $key=>$item)
 		{
-			if ($item->json && $item->json->thumbnail)
+			if ($item->json)
 			{
 				$result[] = (object)[
 					'srl' => (int)$item->srl,

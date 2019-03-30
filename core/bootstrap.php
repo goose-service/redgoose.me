@@ -51,7 +51,7 @@ try {
 
 				// get articles
 				$res = Util::api('/articles', (object)[
-					'field' => 'srl,nest_srl,category_srl,json,title',
+					'field' => 'srl,type,nest_srl,category_srl,json,title',
 					'order' => 'regdate',
 					'sort' => 'desc',
 					'app' => getenv('DEFAULT_APP_SRL'),
