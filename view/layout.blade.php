@@ -36,7 +36,7 @@ if(!defined("__GOOSE__")){exit();}
 									<a href="/nest/3d/">3D</a>
 								</li>
 								<li{!!$nest_id === 'develop' ? ' class="on"' : ''!!}>
-									<a href="/nest/develop/">Development</a>
+									<a href="/nest/develop/">Develop</a>
 								</li>
 							</ol>
 						</div>
