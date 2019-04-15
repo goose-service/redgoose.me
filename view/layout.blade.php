@@ -33,10 +33,7 @@ if(!defined("__GOOSE__")){exit();}
 									<a href="/nest/visual/">Visual</a>
 								</li>
 								<li{!!$nest_id === '3d' ? ' class="on"' : ''!!}>
-									<a href="/nest/3d/">3D</a>
-								</li>
-								<li{!!$nest_id === 'develop' ? ' class="on"' : ''!!}>
-									<a href="/nest/develop/">Develop</a>
+									<a href="/nest/tools/">Tools</a>
 								</li>
 							</ol>
 						</div>
@@ -57,8 +54,8 @@ if(!defined("__GOOSE__")){exit();}
 								<li{!!$nest_id === 'composition' ? ' class="on"' : ''!!}>
 									<a href="/nest/composition/">Composition</a>
 								</li>
-								<li{!!$nest_id === 'foreign' ? ' class="on"' : ''!!}>
-									<a href="/nest/foreign/">Foreign countries</a>
+								<li{!!$nest_id === 'foreign-countries' ? ' class="on"' : ''!!}>
+									<a href="/nest/foreign-countries/">Foreign countries</a>
 								</li>
 								<li{!!$nest_id === 'cosplay' ? ' class="on"' : ''!!}>
 									<a href="/nest/cosplay/">Cosplay</a>
