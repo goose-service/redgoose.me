@@ -75,7 +75,7 @@ if(!defined("__GOOSE__")){exit();}
 				@endforeach
 			</ul>
 		@else
-			<div class="empty">
+			<div class="index__empty">
 				<img src="{{__ROOT__}}/assets/images/img-error.png" alt="error">
 				<p>Not found work.</p>
 			</div>

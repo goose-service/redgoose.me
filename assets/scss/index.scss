@@ -407,6 +407,21 @@
 			}
 		}
 	}
+	&__empty {
+		padding: 50px 0;
+		img {
+			width: 180px;
+			max-width: 100%;
+			display: block;
+			margin: 0 auto;
+		}
+		p {
+			margin: 30px 0 0;
+			text-align: center;
+			font-size: 1rem;
+			font-weight: 600;
+		}
+	}
 
 	@include responsive(mobile-large) {
 		padding: 0 $size-side-padding;
