@@ -32,8 +32,8 @@ if(!defined("__GOOSE__")){exit();}
 								<li{!!$nest_id === 'visual' ? ' class="on"' : ''!!}>
 									<a href="/nest/visual/">Visual</a>
 								</li>
-								<li{!!$nest_id === '3d' ? ' class="on"' : ''!!}>
-									<a href="/nest/tools/">Tools</a>
+								<li{!!$nest_id === 'tool' ? ' class="on"' : ''!!}>
+									<a href="/nest/tool/">Tool & Service</a>
 								</li>
 							</ol>
 						</div>
