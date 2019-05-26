@@ -57,9 +57,6 @@ if(!defined("__GOOSE__")){exit();}
 								<li{!!$nest_id === 'foreign-countries' ? ' class="on"' : ''!!}>
 									<a href="/nest/foreign-countries/">Foreign countries</a>
 								</li>
-								<li{!!$nest_id === 'cosplay' ? ' class="on"' : ''!!}>
-									<a href="/nest/cosplay/">Cosplay</a>
-								</li>
 							</ol>
 						</div>
 					</li>
