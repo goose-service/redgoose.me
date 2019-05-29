@@ -53,7 +53,6 @@ try {
 				$res = Util::api('/articles', (object)[
 					'field' => 'srl,type,nest_srl,category_srl,json,title,order',
 					'order' => '`order` desc, `srl` desc',
-					//'sort' => 'desc',
 					'app' => getenv('DEFAULT_APP_SRL'),
 					'size' => $size,
 					'page' => $page,
