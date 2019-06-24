@@ -30,22 +30,7 @@ function toggleLikeButtonEvent()
 	});
 }
 
-/**
- * filtering elements in body
- * 우선 이미지 태그들을 찾아서 태그로 한번 씌우는 작업을 한다.
- */
-function filteringElementsInBody()
-{
-	const $body = $detail.find('.detail__body');
-	const $images = $body.find('img');
-	$images.each(function() {
-		$(this).wrap('<span class="image"></span>');
-	});
-}
-
-
 export default function()
 {
 	toggleLikeButtonEvent();
-	filteringElementsInBody();
 }
