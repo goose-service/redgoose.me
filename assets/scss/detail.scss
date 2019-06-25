@@ -68,9 +68,7 @@
 				transform-origin: 50% 50%;
 			}
 			h1, h2, h3 {
-				& + * > .image:first-child,
 				& + * > img:first-child,
-				& + .image,
 				& + img {
 					margin-top: 1rem;
 				}
