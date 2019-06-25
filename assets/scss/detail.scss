@@ -198,12 +198,16 @@
 			display: block;
 			margin: 0 auto;
 			padding: 10px 10px;
-			border: none;
+			border: 1px solid transparent;
 			background: none;
 			font-size: 0;
 			-webkit-tap-highlight-color: transparent;
-			border-radius: 0;
 			cursor: pointer;
+			outline: none;
+			width: 90px;
+			height: 90px;
+			border-radius: 50%;
+			transition: box-shadow 100ms ease-out;
 			span {
 				display: block;
 			}
@@ -256,6 +260,10 @@
 					}
 				}
 			}
+			&:focus {
+				border-color: rgba($color-key, .5);
+				box-shadow: 0 0 15px 0 rgba($color-key,.2);
+			}
 		}
 
 	}
@@ -297,15 +305,17 @@
 			}
 		}
 		&__body {
-			margin: 30px 0 0;
-			& {
+			margin: 40px 0 0;
+			img {
+				max-width: 100vw;
+			}
+		}
+	}
+	@include responsive(desktop) {
+		@include retina() {
+			&__body {
 				img {
-					max-width: 100vw;
-				}
-				@include retina() {
-					img {
-						zoom: .75;
-					}
+					zoom: .75;
 				}
 			}
 		}
