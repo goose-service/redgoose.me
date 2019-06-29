@@ -310,6 +310,11 @@
 		}
 	}
 	@include responsive(desktop) {
+		&__body {
+			img {
+				max-width: 90vw;
+			}
+		}
 		@include retina() {
 			&__body {
 				img {
