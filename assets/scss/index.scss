@@ -294,12 +294,9 @@
 			max-width: $size-container-max;
 			margin: 30px auto 0;
 			> ul {
-				li {
-					width: 33.3333%;
-				}
 				figure {
 					box-sizing: border-box;
-					height: 20vw;
+					height: 28vw;
 					overflow: hidden;
 					transform: translateZ(0);
 					img {
@@ -428,6 +425,9 @@
 	}
 	@include responsive(tablet) {
 		margin-top: 50px;
+		padding: 0 $size-side-padding-desktop + 20px;
+	}
+	@include responsive(desktop) {
 		padding: 0 $size-side-padding-desktop;
 	}
 }
