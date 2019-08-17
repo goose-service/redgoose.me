@@ -26,7 +26,11 @@ if(!defined("__GOOSE__")){exit();}
 			<button type="button">
 				<span>
 					<em>Categories</em>
-					<img src="{{__ROOT__}}/assets/images/ico-arrow-down.svg" alt="arrow">
+					<svg xmlns="http://www.w3.org/2000/svg" width="12" height="6" viewBox="0 0 12 6">
+						<g fill="none" fill-rule="evenodd">
+							<path fill="currentColor" d="M12 0L6 6 0 0z"></path>
+						</g>
+					</svg>
 				</span>
 			</button>
 			<nav>

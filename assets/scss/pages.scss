@@ -114,7 +114,6 @@
 			}
 		}
 	}
-
 	@include responsive(tablet) {
 		&__header {
 			h2 {
@@ -124,7 +123,6 @@
 			}
 		}
 	}
-
 	@include responsive(desktop) {
 		&__metas {
 			section {
@@ -143,6 +141,22 @@
 						margin: 0 0 0 90px;
 						padding: 4px 0 0;
 						line-height: 20px;
+					}
+				}
+			}
+		}
+	}
+	@include dark-mode() {
+		&__metas {
+			section {
+				> h3 {
+					&:after {
+						background: #999;
+					}
+				}
+				> dl {
+					> dt {
+						color: #fff;
 					}
 				}
 			}

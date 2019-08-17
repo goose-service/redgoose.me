@@ -61,7 +61,7 @@ class Paginate {
 				$str = ($prev_block == 1) ? "" : "page=$prev_block";
 				$amp = ($this->tails && $str) ? "&" : "";
 				$str = ($str || $this->tails) ? "?".$this->tails.$amp.$str : "";
-				$op .= "<a href=\"./$str\" class=\"prev\">Prev</a>\n";
+				$op .= "<a href=\"./$str\" title=\"Prev\" class=\"prev\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\"><path fill=\"currentColor\" d=\"M15.41 16.59L10.83 12l4.58-4.59L14 6l-6 6 6 6z\"/></svg></a>\n";
 			}
 			else
 			{
@@ -87,7 +87,7 @@ class Paginate {
 			{
 				$next_block = ($this->block + 1) * $this->scale + 1;
 				$amp = ($this->tails) ? '&' : '';
-				$op .= "<a href=\"./?{$this->tails}{$amp}page={$next_block}\" class=\"next\">Next</a>\n";
+				$op .= "<a href=\"./?{$this->tails}{$amp}page={$next_block}\" title=\"Next\" class=\"next\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\"><path fill=\"currentColor\" d=\"M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z\"/></svg></a>\n";
 			}
 			else
 			{

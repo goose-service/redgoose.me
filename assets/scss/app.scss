@@ -11,6 +11,10 @@ body {
 	text-size-adjust: 100%;
 	background: $color-bg;
 	-webkit-touch-callout: none;
+	@include dark-mode() {
+		color: $color-dark-text-base;
+		background: $color-dark-bg;
+	}
 }
 
 body, button, input, textarea, select {
@@ -21,6 +25,9 @@ body, button, input, textarea, select {
 }
 a {
 	color: $color-key;
+	@include dark-mode() {
+		color: $color-dark-key;
+	}
 }
 code,
 kbd,

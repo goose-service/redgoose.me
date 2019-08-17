@@ -321,4 +321,42 @@
 			}
 		}
 	}
+	@include dark-mode() {
+		&__header {
+			p {
+				color: #888;
+			}
+		}
+		&__body {
+			& {
+				code {
+					color: #aa74ff;
+				}
+				pre {
+					background: mix(#000, $color-dark-bg, 25%);
+					> code {
+						color: mix(#000, $color-dark-text-base, 25%);
+					}
+				}
+				blockquote {
+					background: mix(#000, $color-dark-bg, 25%);
+					color: mix(#000, $color-dark-text-base, 25%);
+					&:after {
+						background: #8661cd;
+					}
+				}
+			}
+		}
+		&__like {
+			button {
+				em {
+					color: mix(#000, $color-dark-text-base, 50%);
+				}
+				&:focus {
+					border-color: rgba($color-dark-key, .5);
+					box-shadow: 0 0 15px 0 rgba($color-dark-key,.2);
+				}
+			}
+		}
+	}
 }
