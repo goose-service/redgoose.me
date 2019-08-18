@@ -456,6 +456,9 @@
     }
     &__works {
       > ul {
+        figure {
+          background: #111;
+        }
         div {
           strong {
             color: $color-dark-text-base;
