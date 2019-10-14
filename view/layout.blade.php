@@ -1,6 +1,7 @@
 <!doctype html>
 <?php
 if(!defined("__GOOSE__")){exit();}
+$nest_id = isset($nest_id) ? $nest_id : null;
 ?>
 <html lang="ko">
 <head>

@@ -24,8 +24,8 @@ if(!defined("__GOOSE__")){exit();}
 		@if ($data)
 			<header class="detail__header">
 				<p>
-					@if($data->nest_name)<span>{{ $data->nest_name }}</span>@endif
-					@if($data->category_name)<span>{{ $data->category_name }}</span>@endif
+					@if(isset($data->nest_name))<span>{{ $data->nest_name }}</span>@endif
+					@if(isset($data->category_name))<span>{{ $data->category_name }}</span>@endif
 				</p>
 				<h2>{{ ($data->title == '.') ? 'Untitled work' : $data->title }}</h2>
 			</header>
