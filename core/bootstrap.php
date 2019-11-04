@@ -54,17 +54,21 @@ try {
       case 'index':
         $page = Util::getPage();
         $size = (int)getenv('DEFAULT_INDEX_SIZE');
+        $randomSize = 8;
 
         // get articles
-        $res = Util::api('/articles', (object)[
+        $res = Util::api('/external/redgoose-me', (object)[
           'field' => 'srl,type,nest_srl,category_srl,json,title,order',
           'order' => '`order` desc, `srl` desc',
           'app' => getenv('DEFAULT_APP_SRL'),
           'size' => $size,
           'page' => $page,
           'ext_field' => 'category_name,nest_name',
+          'random_date' => '1 year',
+          'random_field' => 'order',
+          'random_count' => $page === 1 ? $randomSize : 0,
+          'shuffle' => $page === 1,
         ]);
-
         if (!($res && $res->success)) throw new Exception($res->message);
 
         // make pagination

@@ -134,6 +134,7 @@ class Util {
 					'image' => $item->json->thumbnail->path,
 					'categoryName' => $item->category_name,
 					'nestName' => $item->nest_name,
+          'styleType' => $item->styleType,
 				];
 			}
 		}
