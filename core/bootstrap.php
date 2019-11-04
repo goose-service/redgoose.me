@@ -18,6 +18,12 @@ catch(Exception $e)
   throw new Exception('.env error');
 }
 
+// ini_set
+if (getenv('USE_DEBUG') === '1')
+{
+  error_reporting(E_ALL & ~E_NOTICE);
+}
+
 // set values
 define('__ROOT__', getenv('PATH_RELATIVE'));
 define('__API__', getenv('PATH_API'));
@@ -86,7 +92,7 @@ try {
         ]);
 
         // make pagination
-        $paginate = Util::makePagination($res->data->total, $page, $size);
+        $paginate = Util::makePagination($res->data->works->total, $page, $size);
 
         $title = 'redgoose';
         if (isset($res->data->nest->name)) $title = $res->data->nest->name.' / '.$title;
@@ -98,7 +104,7 @@ try {
           'nest_srl' => $res->data->nest->srl,
           'category_srl' => $_params->srl,
           'categories' => $res->data->categories,
-          'index' => Util::getWorksData($res->data->works),
+          'index' => Util::getWorksData($res->data->works->index),
           'paginate' => $paginate,
         ]);
         break;
