@@ -12,9 +12,21 @@ main {
     background: #fff;
   }
 
+  @media (orientation: landscape) {
+    &:before {
+      display: none;
+    }
+  }
   @include responsive(tablet) {
     &:before {
       height: $size-header-height-desktop;
+    }
+  }
+  @include responsive(desktop) {
+    @media (orientation: landscape) {
+      &:before {
+        display: block;
+      }
     }
   }
   @include dark-mode() {
@@ -202,6 +214,7 @@ main {
   }
 
   @media (orientation: landscape) {
+    position: relative;
     &.on-menu {
       #{$self} {
         &__menus {
@@ -330,6 +343,11 @@ main {
           }
         }
       }
+    }
+  }
+  @include responsive(desktop) {
+    @media (orientation: landscape) {
+      position: fixed;
     }
   }
   @include dark-mode() {

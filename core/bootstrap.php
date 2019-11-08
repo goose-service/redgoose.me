@@ -70,7 +70,6 @@ try {
           'random_merge' => false,
           'shuffle' => false,
         ]);
-        // TODO: 랜덤이 하루에 한번씩 실행되는게 좋아보임
         if (!($res && $res->success)) throw new Exception($res->message);
 
         $tmpArticles = Util::getWorksData($res->data->index);
