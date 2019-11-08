@@ -246,4 +246,12 @@ class Util {
 		];
 		return $result;
 	}
+
+	/**
+	 * set plain text header
+   */
+	static public function headerPlain()
+  {
+    header('Content-Type: application/json,text/plane;charset=UTF-8');
+  }
 }

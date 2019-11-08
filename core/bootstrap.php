@@ -67,9 +67,17 @@ try {
           'random_date' => '1 year',
           'random_field' => 'order',
           'random_count' => $page === 1 ? $randomSize : 0,
-          'shuffle' => $page === 1,
+          'random_merge' => false,
+          'shuffle' => false,
         ]);
+        // TODO: 랜덤이 하루에 한번씩 실행되는게 좋아보임
         if (!($res && $res->success)) throw new Exception($res->message);
+
+        $tmpArticles = Util::getWorksData($res->data->index);
+        $articles = (object)[
+          'head' => array_slice($tmpArticles, 0,4),
+          'body' => array_slice($tmpArticles, 4)
+        ];
 
         // make pagination
         $paginate = Util::makePagination($res->data->total, $page, $size);
@@ -78,7 +86,9 @@ try {
         $blade->render('index', (object)[
           'title' => getenv('TITLE'),
           'pageTitle' => 'Newest works',
-          'index' => Util::getWorksData($res->data->index),
+          'count' => count($tmpArticles),
+          'index' => $articles,
+          'randomIndex' => Util::getWorksData($res->data->random),
           'paginate' => $paginate,
         ]);
         break;
@@ -101,7 +111,7 @@ try {
         $title = 'redgoose';
         if (isset($res->data->nest->name)) $title = $res->data->nest->name.' / '.$title;
         // render page
-        $blade->render('index', (object)[
+        $blade->render('index-nest', (object)[
           'title' => $title,
           'pageTitle' => $res->data->nest->name,
           'nest_id' => $_params->id,
