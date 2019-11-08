@@ -587,4 +587,23 @@
   &__title {
     font-size: 0;
   }
+  &__index {
+    margin-top: 0;
+  }
+
+  @include responsive(mobile-large) {
+    &__index {
+      margin-top: 20px;
+    }
+  }
+  @include responsive(tablet) {
+    &__index {
+      margin-top: 60px;
+    }
+  }
+  @include responsive(max) {
+    &__index {
+      margin-top: 70px;
+    }
+  }
 }
