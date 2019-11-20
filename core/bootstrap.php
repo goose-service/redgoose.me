@@ -68,6 +68,7 @@ try {
           'random_field' => 'order',
           'random_count' => $page === 1 ? $randomSize : 0,
           'random_merge' => false,
+          'random_range' => 'YmdH',
           'shuffle' => false,
         ]);
         if (!($res && $res->success)) throw new Exception($res->message);
