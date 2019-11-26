@@ -216,7 +216,13 @@
   }
   &__work {
     box-sizing: border-box;
-    figure {
+    .wrap {
+      display: block;
+      text-decoration: none;
+      padding: 0 0 10px;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .image {
       position: relative;
       margin: 0;
       overflow: hidden;
@@ -245,38 +251,38 @@
         }
       }
     }
-    div {
+    .caption {
       padding: 12px 20px 0;
       text-align: center;
-      strong {
-        display: block;
-        font-size: .875rem;
-        color: $color-text-base;
-        font-weight: 600;
-        line-height: 1.25;
-        @include text-single-line();
-      }
-      span {
-        display: block;
-        margin: 1px 0 0;
-        font-family: $font-circular;
-        font-size: .625rem;
-        color: #999;
-        em {
-          font-style: normal;
-          &:nth-child(n+2) {
-            &:before {
-              content: ' / ';
-            }
+    }
+    .title {
+      display: block;
+      font-size: .875rem;
+      color: $color-text-base;
+      font-weight: 600;
+      line-height: 1.25;
+      @include text-single-line();
+    }
+    .metas {
+      display: block;
+      margin: 1px 0 0;
+      font-family: $font-circular;
+      font-size: .625rem;
+      color: #999;
+      em {
+        font-style: normal;
+        &:nth-child(n+2) {
+          &:before {
+            content: ' / ';
           }
         }
       }
     }
-    a {
+    .regdate {
       display: block;
-      text-decoration: none;
-      padding: 0 0 10px;
-      -webkit-tap-highlight-color: transparent;
+      font-style: normal;
+      font-size: .625rem;
+      color: #999;
     }
   }
   &__random-works {
@@ -387,7 +393,7 @@
       }
     }
     &__work {
-      div {
+      .caption {
         padding: 10px 0 0;
         text-align: left;
       }
@@ -414,7 +420,7 @@
       }
     }
     &__work {
-      figure {
+      .image {
         box-sizing: border-box;
         overflow: hidden;
         transform: translateZ(0);
@@ -545,16 +551,17 @@
       }
     }
     &__work {
-      figure {
+      .image {
         background: #111;
       }
-      div {
-        strong {
-          color: $color-dark-text-base;
-        }
-        span {
-          color: #666;
-        }
+      .title {
+        color: $color-dark-text-base;
+      }
+      .metas {
+        color: #666;
+      }
+      .regdate {
+        color: #777;
       }
     }
     &__paginate {

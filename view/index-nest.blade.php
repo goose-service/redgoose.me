@@ -56,43 +56,34 @@ if(!defined("__GOOSE__")){exit();}
   </header>
   <div class="index__works index--head">
     @if ($index && count($index))
-      <ul>
-        @foreach($index as $k=>$item)
-          <li class="index__work">
-            <a href="/article/{{$item->srl}}/">
-              <figure>
-                @if (isset($item->image))
-                  <img src="{{__API__}}/{{$item->image}}" alt="{{$item->title}}">
-                @endif
-              </figure>
-              <div>
-                <strong>{{$item->title}}</strong>
-                @if (isset($item->nestName) || isset($item->categoryName))
-                  <span>
-                @if (isset($item->nestName))
-                      <em>{{$item->nestName}}</em>
-                    @endif
-                    @if (isset($item->categoryName))
-                      <em>{{$item->categoryName}}</em>
-                    @endif
-              </span>
-                @endif
-              </div>
-            </a>
-          </li>
-        @endforeach
-      </ul>
-      @else
-      <div class="index__empty">
-        <img src="{{__ROOT__}}/assets/images/img-error.png" alt="error">
-        <p>Not found work.</p>
-      </div>
+    <ul>
+      @foreach($index as $k=>$item)
+      <li class="index__work">
+        <a href="/article/{{$item->srl}}/" class="wrap">
+          <figure class="image">
+            @if (isset($item->image))
+            <img src="{{__API__}}/{{$item->image}}" alt="{{$item->title}}">
+            @endif
+          </figure>
+          <div class="caption">
+            <strong class="title">{{$item->title}}</strong>
+            <em class="regdate">{{$item->regdate}}</em>
+          </div>
+        </a>
+      </li>
+      @endforeach
+    </ul>
+    @else
+    <div class="index__empty">
+      <img src="{{__ROOT__}}/assets/images/img-error.png" alt="error">
+      <p>Not found work.</p>
+    </div>
     @endif
     @if ($paginate->total > 0)
-      <div class="index__paginate">
-        {!! $paginate->mobile !!}
-        {!! $paginate->desktop !!}
-      </div>
+    <div class="index__paginate">
+      {!! $paginate->mobile !!}
+      {!! $paginate->desktop !!}
+    </div>
     @endif
   </div>
 </article>
