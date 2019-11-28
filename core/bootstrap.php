@@ -103,6 +103,7 @@ try {
           'category_srl' => $_params->srl,
           'page' => Util::getPage(),
           'size' => getenv('DEFAULT_INDEX_SIZE'),
+          'order' => '`order` desc, `srl` desc',
         ]);
 
         // make pagination
