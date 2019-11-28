@@ -348,6 +348,9 @@
 						background: #8661cd;
 					}
 				}
+				hr {
+					background: #666;
+				}
 			}
 		}
 		&__like {
@@ -358,6 +361,15 @@
 				&:focus {
 					border-color: rgba($color-dark-key, .5);
 					box-shadow: 0 0 15px 0 rgba($color-dark-key,.2);
+				}
+			}
+		}
+	}
+	@include retina() {
+		&__body {
+			& {
+				hr {
+					transform: scaleY(.5);
 				}
 			}
 		}
