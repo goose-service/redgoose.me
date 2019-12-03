@@ -11,12 +11,12 @@
 ?>
 
 
-<rss version="2.0" xmlns:atom=“http://www.w3.org/2005/Atom”>
+<rss version="2.0">
   <channel>
     <title>{{ $title }}</title>
     <description>{{ $description }}</description>
     <link>{{ $url }}</link>
-    <language>ko-kr</language>
+    <language>ko</language>
     <copyright>Copyright 2013-{{date('Y')}} redgoose. All right reserved.</copyright>
     <webMaster>scripter@me.com (redgoose)</webMaster>
     @if(isset($articles) && count($articles))
@@ -32,6 +32,5 @@
     </item>
     @endforeach
     @endif
-    <atom:link href="{{ $url }}/rss" rel="self" type="application/rss+xml" />
   </channel>
 </rss>
