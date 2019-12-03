@@ -249,10 +249,30 @@ class Util {
   }
 
   /**
-   * set plain text header
+   * set header
+   *
+   * @param string $type
    */
-  static public function headerPlain()
+  static public function setHeader($type=null)
   {
-    header('Content-Type: application/json,text/plane;charset=UTF-8');
+    switch($type)
+    {
+      case 'xml':
+        header('Content-Type:application/rss+xml; charset=utf-8');
+        break;
+      case 'rss':
+        header("Content-Type: application/rss+xml; charset=utf-8");
+        header('Content-Type: text/xml; charset=utf-8');
+        break;
+      case 'json':
+        header('Content-Type:application/json,text/plane; charset=utf-8');
+        break;
+      case 'text':
+        header('Content-Type:text/plain; charset=utf-8');
+        break;
+      default:
+        header('Content-Type:text/html; charset=utf-8');
+        break;
+    }
   }
 }

@@ -20,7 +20,7 @@
 
 @yield('meta')
 
-<link rel="shortcut icon" href="{{ __ROOT__ }}/assets/images/favicon.ico"/>
+<link rel="shortcut icon" href="{{ __ROOT__ }}/favicon.ico"/>
 <link rel="icon" type="image/x-icon" href="{{ __ROOT__ }}/assets/images/redgoose_192x192.png"/>
 <link rel="apple-touch-icon" href="{{ __ROOT__ }}/assets/images/redgoose_192x192.png"/>
 <link rel="apple-touch-startup-image" href="{{ __ROOT__ }}/assets/images/redgoose_192x192.png"/>
