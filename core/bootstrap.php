@@ -189,7 +189,7 @@ try {
           $data->articles[] = (object)[
             'srl' => $item->srl,
             'title' => htmlspecialchars($item->title),
-            'date' => date_format(date_create($item->order), 'D, d M Y H:i:s T'),
+            'date' => date_format(date_create($item->order), 'D, d M Y'),
             'content' => $parsedown->text($item->content),
             'thumbnail' => isset($item->json->thumbnail->path) ? __API__.'/'.$item->json->thumbnail->path : null,
           ];

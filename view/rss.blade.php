@@ -11,14 +11,14 @@
 ?>
 
 
-<rss version="2.0">
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>{{ $title }}</title>
     <description>{{ $description }}</description>
     <link>{{ $url }}</link>
     <language>ko-kr</language>
     <copyright>Copyright 2013-{{date('Y')}} redgoose. All right reserved.</copyright>
-    <webMaster>scripter@me.com</webMaster>
+    <webMaster>scripter@me.com (redgoose)</webMaster>
     @if(isset($articles) && count($articles))
     @foreach($articles as $item)
     <item>
