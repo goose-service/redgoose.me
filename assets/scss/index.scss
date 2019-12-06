@@ -267,10 +267,10 @@
     }
     .metas {
       display: block;
-      margin: 1px 0 0;
+      margin: 2px 0 0;
       font-family: $font-circular;
       font-size: .625rem;
-      color: #999;
+      color: #888;
       em {
         font-style: normal;
         &:nth-child(n+2) {
@@ -301,7 +301,7 @@
       top: 0;
       bottom: 0;
       transform: translateX(-50%);
-      background: rgba(#000, .5);
+      background: rgba(#000, .05);
     }
     > ul {
       margin: 0;
@@ -574,10 +574,15 @@
         color: $color-dark-text-base;
       }
       .metas {
-        color: #666;
+        color: #777;
       }
       .regdate {
         color: #777;
+      }
+    }
+    &__random-works {
+      &:before {
+        background: rgba(#000, .5);
       }
     }
     &__paginate {
