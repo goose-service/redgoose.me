@@ -253,6 +253,7 @@
           }
         }
       }
+      &:active,
       &:focus {
         background: rgba(#000, .05);
         svg {
@@ -359,6 +360,7 @@
         em {
           color: mix(#000, $color-dark-text-base, 50%);
         }
+        &:active,
         &:focus {
           background: rgba(#000, .15);
         }
