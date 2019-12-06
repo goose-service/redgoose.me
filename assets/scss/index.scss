@@ -26,6 +26,7 @@
   }
   &__categories {
     margin: 15px 0 -20px;
+    user-select: none;
     button {
       width: 100%;
       display: block;
@@ -37,6 +38,7 @@
       background: #eee;
       cursor: pointer;
       -webkit-tap-highlight-color: transparent;
+      outline: none;
       &:active {
         opacity: .75;
       }
@@ -334,8 +336,7 @@
         color: $color-text-base;
         font-weight: 500;
         box-sizing: border-box;
-      }
-      a {
+        user-select: none;
         text-decoration: none;
         -webkit-tap-highlight-color: transparent;
         &:active {

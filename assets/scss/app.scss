@@ -16,7 +16,6 @@ body {
 		background: $color-dark-bg;
 	}
 }
-
 body, button, input, textarea, select {
 	font-family: $font-system;
 	text-size-adjust: none;
@@ -34,6 +33,11 @@ kbd,
 pre,
 samp {
 	font-family: $font-console;
+}
+
+::selection {
+	background: $color-key;
+	color: #fff;
 }
 
 // load contents

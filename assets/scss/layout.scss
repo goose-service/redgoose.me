@@ -84,6 +84,7 @@ main {
       display: block;
       padding: 5px;
       -webkit-tap-highlight-color: transparent;
+      user-select: none;
     }
     img {
       display: block;
@@ -104,6 +105,7 @@ main {
       border: none;
       background: none;
       cursor: pointer;
+      outline: none;
       svg {
         position: absolute;
         left: 50%;
@@ -130,6 +132,7 @@ main {
   }
   &__menus {
     display: none;
+    user-select: none;
   }
   &.on-menu {
     #{$self} {
@@ -418,6 +421,7 @@ main {
     font-size: 10px;
     font-weight: 400;
     color: #575757;
+    user-select: none;
   }
 
   @include responsive(tablet) {

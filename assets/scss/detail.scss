@@ -204,6 +204,7 @@
       height: 90px;
       border-radius: 50%;
       transition: box-shadow 100ms ease-out, background-color 250ms ease-out;
+      user-select: none;
       span {
         display: block;
       }
