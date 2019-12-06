@@ -1,9 +1,8 @@
+import $ from 'cash-dom';
 import * as util from "./util";
 
 const $html = $('html');
-const $body = $('body');
 const $header = $('.layout-header');
-let saveScrollPosition = 0;
 
 /**
  * toggle navigation
@@ -16,11 +15,9 @@ function toggleNavigation()
 		{
 			$header.removeClass('on-menu');
 			$html.removeClass('not-scroll');
-			$body.scrollTop(saveScrollPosition);
 		}
 		else
 		{
-			saveScrollPosition = $html.scrollTop() || $body.scrollTop();
 			$header.addClass('on-menu');
 			$html.addClass('not-scroll');
 		}

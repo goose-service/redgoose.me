@@ -92,7 +92,7 @@ try {
         'pageTitle' => 'Newest works',
         'count' => count($tmpArticles),
         'index' => $articles,
-        'randomIndex' => Util::getWorksData($res->data->random),
+        'randomIndex' => (isset($res->data->random)) ? Util::getWorksData($res->data->random) : [],
         'paginate' => $paginate,
       ]);
       break;

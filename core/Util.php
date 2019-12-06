@@ -122,8 +122,9 @@ class Util {
    */
   static public function getWorksData($index)
   {
-    $result = [];
+    if (!(isset($index) && count($index))) return null;
 
+    $result = [];
     foreach ($index as $key=>$item)
     {
       $obj = (object)[];
@@ -139,7 +140,6 @@ class Util {
         $result[] = $obj;
       }
     }
-
     return $result;
   }
 

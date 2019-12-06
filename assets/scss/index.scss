@@ -287,12 +287,25 @@
     }
   }
   &__random-works {
+    position: relative;
     margin: 0 0;
+    padding: 36px 0 0;
+    &:before {
+      content: '';
+      display: block;
+      position: absolute;
+      left: 50%;
+      width: 100vw;
+      top: 0;
+      bottom: 0;
+      transform: translateX(-50%);
+      background: rgba(#000, .5);
+    }
     > ul {
       margin: 0;
       padding: 0;
       list-style: none;
-      @include horizontal-scroll-wrap(20px, 10px);
+      @include horizontal-scroll-wrap(20px, 16px);
       li {
         @include horizontal-scroll-item(20px, 20px);
       }
@@ -464,7 +477,8 @@
     }
     &__random-works {
       max-width: $size-container-max;
-      margin: 0 auto 0;
+      margin: 16px auto 56px;
+      padding: 48px 0 16px;
       > ul {
         margin: 0 -10px;
         overflow: visible;

@@ -56,6 +56,7 @@ if(!defined("__GOOSE__")){exit();}
         @endforeach
       </ul>
     </div>
+    @if($randomIndex && count($randomIndex))
     <div class="index__random-works">
       <ul>
         @foreach($randomIndex as $k=>$item)
@@ -84,6 +85,7 @@ if(!defined("__GOOSE__")){exit();}
         @endforeach
       </ul>
     </div>
+    @endif
     <div class="index__works index--body">
       <ul>
         @foreach($index->body as $k=>$item)
@@ -126,9 +128,4 @@ if(!defined("__GOOSE__")){exit();}
     @endif
   </div>
 </article>
-@endsection
-
-@section('script')
-<script src="{{__ROOT__}}/assets/vendor/jquery-3.3.1.min.js"></script>
-<script src="{{__ROOT__}}/assets/dist/app.js"></script>
 @endsection

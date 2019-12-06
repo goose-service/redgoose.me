@@ -1,6 +1,4 @@
-<?php
-if(!defined("__GOOSE__")){exit();}
-?>
+<?php if(!defined("__GOOSE__")){exit();} ?>
 
 @extends('layout')
 
@@ -101,12 +99,10 @@ if(!defined("__GOOSE__")){exit();}
 @endsection
 
 @section('script')
-<script src="{{__ROOT__}}/assets/vendor/jquery-3.3.1.min.js"></script>
 <script>
 window.app = {
 	mode: 'about',
 	url: '{{__URL__}}',
 };
 </script>
-<script src="{{__ROOT__}}/assets/dist/app.js"></script>
 @endsection

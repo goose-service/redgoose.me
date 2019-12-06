@@ -1,4 +1,4 @@
-const $html = $('html');
+import $ from 'cash-dom';
 
 /**
  * toggle category on mobile
