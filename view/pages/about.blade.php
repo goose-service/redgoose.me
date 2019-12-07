@@ -53,7 +53,7 @@
 					<h3>skill</h3>
 					<dl>
 						<dt>use tools</dt>
-						<dd>photoshop, cinema4d, illustrator, webstorm, phpstorm, sketch, github, github client, zeplin, paw, trello</dd>
+						<dd>photoshop, cinema4d, illustrator, webstorm, phpstorm, sketch, github client, zeplin, paw, trello, capture one pro</dd>
 						<dt>programing</dt>
 						<dd>html, css(scss), php, javascript(jQuery, react-js, react-native, vue.js, nuxt.js), markdown</dd>
 					</dl>
