@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c6faa3c78126399fb6bf8fdbe1d1c05e",
+    "content-hash": "3e8fa92d715a196621707d9321953a4c",
     "packages": [
         {
             "name": "altorouter/altorouter",
@@ -210,6 +210,47 @@
                 "type"
             ],
             "time": "2015-07-25T16:39:46+00:00"
+        },
+        {
+            "name": "redgoose/paginate",
+            "version": "1.0.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/redgoose-dev/paginate.git",
+                "reference": "10ba1acbdce91c74a2f463e6c1311b4199a7d8df"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/redgoose-dev/paginate/zipball/10ba1acbdce91c74a2f463e6c1311b4199a7d8df",
+                "reference": "10ba1acbdce91c74a2f463e6c1311b4199a7d8df",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.2.0"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "src/Paginate.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "redgoose",
+                    "email": "scripter@me.com"
+                }
+            ],
+            "description": "paginate navigation class",
+            "homepage": "https://github.com/redgoose-dev/paginate",
+            "keywords": [
+                "navigation",
+                "paginate"
+            ],
+            "time": "2019-12-09T18:51:19+00:00"
         },
         {
             "name": "symfony/polyfill-ctype",

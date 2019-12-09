@@ -1,6 +1,6 @@
 <?php
 namespace Core;
-use Exception;
+use Exception, redgoose\Paginate;
 
 /**
  * Util
@@ -237,14 +237,20 @@ class Util {
    */
   static public function makePagination($total, $page, $size, $params=[])
   {
-    $instance_mobile = new Paginate($total, $page, $params, $size, 3);
-    $instance_desktop = new Paginate($total, $page, $params, $size, 10);
     $result = (object)[
       'total' => $total,
       'page' => $page,
-      'mobile' => $instance_mobile->createNavigation('mobile'),
-      'desktop' => $instance_desktop->createNavigation('desktop'),
     ];
+  	$paginate = new Paginate((object)[
+  	  'total' => $total,
+      'page' => $page,
+      'size' => $size,
+      'params' => $params,
+      'scale' => 3,
+    ]);
+  	$result->mobile = $paginate->createElements(['paginate', 'paginate--mobile']);
+    $paginate->update((object)[ 'scale' => 10 ]);
+    $result->desktop = $paginate->createElements(['paginate', 'paginate--desktop']);
     return $result;
   }
 

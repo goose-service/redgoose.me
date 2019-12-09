@@ -322,7 +322,7 @@
   &__paginate {
     $size: 38px;
     margin: 10px 0 0;
-    nav {
+    .paginate {
       align-items: center;
       justify-content: center;
       strong,
@@ -348,28 +348,30 @@
       strong {
         color: $color-key;
       }
-      .prev,
-      .next {
+      &__prev,
+      &__next {
         font-size: 0;
         svg {
           display: block;
         }
       }
-    }
-    .mobile {
-      display: flex;
-    }
-    .desktop {
-      display: none;
+      &--mobile {
+        display: flex;
+      }
+      &--desktop {
+        display: none;
+      }
     }
 
     @include responsive(tablet) {
       margin: 10px 0 0;
-      .mobile {
-        display: none;
-      }
-      .desktop {
-        display: flex;
+      .paginate {
+        &--mobile {
+          display: none;
+        }
+        &--desktop {
+          display: flex;
+        }
       }
     }
   }
@@ -587,7 +589,7 @@
       }
     }
     &__paginate {
-      nav {
+      .paginate {
         a {
           color: $color-dark-text-base;
           &:active {

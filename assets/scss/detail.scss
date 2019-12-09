@@ -98,11 +98,24 @@
         }
       }
       hr {
-        margin: 2rem 0;
-        padding: 0;
+        display: block;
+        margin: 3rem 0;
+        padding: 0 0 10px;
         border: none;
-        height: 1px;
-        background: #ddd;
+        &:after {
+          content: '...';
+          position: relative;
+          display: block;
+          top: -10px;
+          text-align: center;
+          font-family: Georgia, Cambria, "Times New Roman", Times, serif;
+          font-size: 20px;
+          text-indent: 10px;
+          letter-spacing: 8px;
+          font-weight: 800;
+          line-height: 1;
+          color: $color-text-base;
+        }
       }
       table {
         margin: 1rem 0;
@@ -351,7 +364,9 @@
           }
         }
         hr {
-          background: #666;
+          &:after {
+            color: $color-dark-text-base;
+          }
         }
       }
     }
@@ -363,15 +378,6 @@
         &:active,
         &:focus {
           background: rgba(#000, .15);
-        }
-      }
-    }
-  }
-  @include retina() {
-    &__body {
-      & {
-        hr {
-          transform: scaleY(.5);
         }
       }
     }
