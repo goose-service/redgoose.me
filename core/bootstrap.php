@@ -1,6 +1,6 @@
 <?php
 namespace Core;
-use Dotenv\Dotenv, Exception;
+use Dotenv\Dotenv, redgoose\Console, redgoose\RestAPI, Exception;
 
 if (!defined('__GOOSE__')) exit();
 
@@ -53,6 +53,15 @@ try {
   $_params = (object)$router->match['params'];
   $_method = $_SERVER['REQUEST_METHOD'];
 
+  // init rest api
+  $api = new RestAPI((object)[
+    'url' => getenv('PATH_API'),
+    'outputType' => 'json',
+    'headers' => ['Authorization: ' . getenv('TOKEN_PUBLIC')],
+    'timeout' => 30,
+    'debug' => false,
+  ]);
+
   switch($_target)
   {
     case 'index':
@@ -61,7 +70,7 @@ try {
       $randomSize = 8;
 
       // get articles
-      $res = Util::api('/external/redgoose-me', (object)[
+      $res = $api->call('get', '/external/redgoose-me', (object)[
         'field' => 'srl,type,nest_srl,category_srl,json,title,order',
         'order' => '`order` desc, `srl` desc',
         'app' => getenv('DEFAULT_APP_SRL'),
@@ -75,6 +84,8 @@ try {
         'random_range' => 'YmdH',
         'shuffle' => false,
       ]);
+      if (!isset($res->response)) throw new Exception($res->message, $res->code);
+      $res = $res->response;
       if (!($res && $res->success)) throw new Exception($res->message);
 
       $tmpArticles = Util::getWorksData($res->data->index);
@@ -96,11 +107,12 @@ try {
         'paginate' => $paginate,
       ]);
       break;
+
     case 'index/nest':
       $page = Util::getPage();
       $size = (int)getenv('DEFAULT_INDEX_SIZE');
 
-      $res = Util::api('/external/redgoose-me-nest', (object)[
+      $res = $api->call('get', '/external/redgoose-me-nest', (object)[
         'app_srl' => getenv('DEFAULT_APP_SRL'),
         'nest_id' => $_params->id,
         'category_srl' => $_params->srl,
@@ -108,6 +120,9 @@ try {
         'size' => getenv('DEFAULT_INDEX_SIZE'),
         'order' => '`order` desc, `srl` desc',
       ]);
+      if (!isset($res->response)) throw new Exception($res->message, $res->code);
+      $res = $res->response;
+      if (!($res && $res->success)) throw new Exception($res->message);
 
       // make pagination
       $paginate = Util::makePagination($res->data->works->total, $page, $size);
@@ -126,12 +141,15 @@ try {
         'paginate' => $paginate,
       ]);
       break;
+
     case 'article':
-      $res = Util::api('/articles/'.(int)$_params->srl, (object)[
+      $res = $api->call('get', '/articles/'.(int)$_params->srl, (object)[
         'app' => getenv('DEFAULT_APP_SRL'),
         'hit' => Util::checkCookie('redgoose-hit-'.$_params->srl) ? 0 : 1,
         'ext_field' => 'category_name,nest_name'
       ]);
+      if (!isset($res->response)) throw new Exception($res->message, $res->code);
+      $res = $res->response;
       if (!($res && $res->success)) throw new Exception($res->message, $res->code);
       $res->data->regdate = Util::convertDate($res->data->regdate);
 
@@ -155,6 +173,7 @@ try {
         'onLike' => Util::checkCookie('redgoose-star-'.$_params->srl),
       ]);
       break;
+
     case 'page':
       $_page = $_params->name;
       // check page file
@@ -164,6 +183,7 @@ try {
       }
       $blade->render('pages.'.$_page);
       break;
+
     case 'rss':
       $data = (object)[
         'url' => __URL__,
@@ -172,12 +192,15 @@ try {
         'link' => __URL__,
       ];
       // get data
-      $res = Util::api('/articles', (object)[
+      $res = $api->call('get', '/articles', (object)[
         'app' => getenv('DEFAULT_APP_SRL'),
         'field' => 'srl,type,nest_srl,category_srl,json,title,content,order',
         'size' => getenv('DEFAULT_RSS_SIZE'),
         'order' => '`order` desc, `srl` desc',
       ]);
+      if (!isset($res->response)) throw new Exception($res->message, $res->code);
+      $res = $res->response;
+
       // make articles
       if ($res->success && isset($res->data->index) && count($res->data->index))
       {
@@ -200,13 +223,18 @@ try {
       // render
       $blade->render('rss', $data);
       break;
+
     case 'on-like':
-      $res = Util::api(
+      $res = $api->call(
+        'get',
         '/articles/'.(int)$_params->srl.'/update',
         (object)[ 'type' => 'star' ]
       );
+      if (!isset($res->response)) throw new Exception($res->message, $res->code);
+      $res = $res->response;
       echo json_encode($res);
       break;
+
     default:
       throw new Exception('Not found page', 404);
       break;

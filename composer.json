@@ -11,7 +11,9 @@
         "altorouter/altorouter": "^1.2.0",
         "eftec/bladeone": "^3.19",
         "erusev/parsedown": "^1.7.1",
-        "redgoose/paginate": "^1.0"
+        "redgoose/paginate": "^1.0",
+        "redgoose/console": "^1.0",
+        "redgoose/restapi": "^1.0"
     },
     "autoload": {
         "psr-4": {

@@ -1,10 +1,10 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3e8fa92d715a196621707d9321953a4c",
+    "content-hash": "d73c0a3893f9b0c53711191af7e5639a",
     "packages": [
         {
             "name": "altorouter/altorouter",
@@ -167,16 +167,16 @@
         },
         {
             "name": "phpoption/phpoption",
-            "version": "1.6.0",
+            "version": "1.6.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/schmittjoh/php-option.git",
-                "reference": "f4e7a6a1382183412246f0d361078c29fb85089e"
+                "reference": "a8593bf5176bf3d3f2966942c530be19b44ec87c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/schmittjoh/php-option/zipball/f4e7a6a1382183412246f0d361078c29fb85089e",
-                "reference": "f4e7a6a1382183412246f0d361078c29fb85089e",
+                "url": "https://api.github.com/repos/schmittjoh/php-option/zipball/a8593bf5176bf3d3f2966942c530be19b44ec87c",
+                "reference": "a8593bf5176bf3d3f2966942c530be19b44ec87c",
                 "shasum": ""
             },
             "require": {
@@ -217,19 +217,55 @@
                 "php",
                 "type"
             ],
-            "time": "2019-11-30T20:20:49+00:00"
+            "time": "2019-12-11T13:45:14+00:00"
+        },
+        {
+            "name": "redgoose/console",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/redgoose-dev/php-console.git",
+                "reference": "1bb8dfd58260745939c805bcf1450c4f00051f25"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/redgoose-dev/php-console/zipball/1bb8dfd58260745939c805bcf1450c4f00051f25",
+                "reference": "1bb8dfd58260745939c805bcf1450c4f00051f25",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.2.0"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "src/Console.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "redgoose",
+                    "email": "scripter@me.com"
+                }
+            ],
+            "description": "use javascript `console.log()` interface",
+            "time": "2019-12-12T05:33:32+00:00"
         },
         {
             "name": "redgoose/paginate",
             "version": "1.0.3",
             "source": {
                 "type": "git",
-                "url": "https://github.com/redgoose-dev/paginate.git",
+                "url": "https://github.com/redgoose-dev/php-paginate.git",
                 "reference": "10ba1acbdce91c74a2f463e6c1311b4199a7d8df"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/redgoose-dev/paginate/zipball/10ba1acbdce91c74a2f463e6c1311b4199a7d8df",
+                "url": "https://api.github.com/repos/redgoose-dev/php-paginate/zipball/10ba1acbdce91c74a2f463e6c1311b4199a7d8df",
                 "reference": "10ba1acbdce91c74a2f463e6c1311b4199a7d8df",
                 "shasum": ""
             },
@@ -259,6 +295,43 @@
                 "paginate"
             ],
             "time": "2019-12-09T18:51:19+00:00"
+        },
+        {
+            "name": "redgoose/restapi",
+            "version": "1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/redgoose-dev/php-restapi.git",
+                "reference": "2f6d60486c110ad7463539d916b9c4bcac7b58be"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/redgoose-dev/php-restapi/zipball/2f6d60486c110ad7463539d916b9c4bcac7b58be",
+                "reference": "2f6d60486c110ad7463539d916b9c4bcac7b58be",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.2.0",
+                "redgoose/console": "^1.0"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "src/RestAPI.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "redgoose",
+                    "email": "scripter@me.com"
+                }
+            ],
+            "description": "RestAPI interface",
+            "time": "2019-12-12T06:18:30+00:00"
         },
         {
             "name": "symfony/polyfill-ctype",

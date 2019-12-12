@@ -9,65 +9,6 @@ use Exception, redgoose\Paginate;
 class Util {
 
   /**
-   * request api interface
-   *
-   * @param string $url
-   * @param string $params
-   * @param string $method
-   * @param boolean $useExternalApi
-   * @return object
-   * @throws Exception
-   */
-  static public function api($url, $params=null, $method='get', $useExternalApi=false)
-  {
-    try
-    {
-      $params = $params ? '?'.http_build_query($params) : '';
-
-      // set prefix url
-      $prefix = ($useExternalApi) ? '' : getenv('PATH_API');
-
-      $ch = curl_init();
-      curl_setopt($ch, CURLOPT_URL, $prefix.$url.$params);
-      curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-      curl_setopt($ch, CURLOPT_POST, ($method === 'post'));
-      curl_setopt($ch, CURLOPT_HTTPHEADER, ['Authorization: ' . getenv('TOKEN_PUBLIC')]);
-      $response = curl_exec($ch);
-      $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-      curl_close($ch);
-
-      if (!$response)
-      {
-        throw new Exception('no response');
-      }
-
-      return json_decode($response);
-    }
-    catch(Exception $e)
-    {
-      return null;
-    }
-  }
-
-  /**
-   * print console.log in javascript
-   *
-   * @param string|object|array|boolean $src
-   */
-  static public function console($src=null)
-  {
-    try
-    {
-      $source = json_encode($src);
-    }
-    catch(Exception $e)
-    {
-      $source = 'Parsing error';
-    }
-    echo "<script>console.log(".$source.");</script>";
-  }
-
-  /**
    * error
    *
    * @param Exception $error
