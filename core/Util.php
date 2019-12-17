@@ -1,6 +1,6 @@
 <?php
 namespace Core;
-use Exception, redgoose\Paginate;
+use Exception, redgoose\Paginate, redgoose\Console;
 
 /**
  * Util
@@ -13,14 +13,13 @@ class Util {
    *
    * @param Exception $error
    * @param Blade $blade
-   * @throws Exception
    */
   static public function error($error, $blade)
   {
     // debug
     if (getenv('USE_DEBUG') === '1')
     {
-      self::console((object)[
+      Console::log((object)[
         'message' => $error->getMessage(),
         'code' => $error->getCode(),
       ]);
@@ -37,11 +36,16 @@ class Util {
         break;
     }
 
-    // render
-    $blade->render('error', (object)[
-      'title' => getenv('TITLE'),
-      'message' => $message,
-    ]);
+    try
+    {
+      // render
+      $blade->render('error', (object)[
+        'title' => getenv('TITLE'),
+        'message' => $message,
+      ]);
+    }
+    catch(Exception $e)
+    {}
     exit;
   }
 

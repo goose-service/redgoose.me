@@ -1,6 +1,6 @@
 <?php
 namespace Core;
-use Dotenv\Dotenv, redgoose\Console, redgoose\RestAPI, Exception;
+use Dotenv\Dotenv, redgoose\Console, redgoose\RestAPI, Exception, Parsedown;
 
 if (!defined('__GOOSE__')) exit();
 
@@ -51,7 +51,6 @@ try {
   // play route
   $_target = $router->match['target'];
   $_params = (object)$router->match['params'];
-  $_method = $_SERVER['REQUEST_METHOD'];
 
   // init rest api
   $api = new RestAPI((object)[
@@ -70,7 +69,7 @@ try {
       $randomSize = 8;
 
       // get articles
-      $res = $api->call('get', '/external/redgoose-me', (object)[
+      $res = $api->call('get', '/external/redgoose-me/', (object)[
         'field' => 'srl,type,nest_srl,category_srl,json,title,order',
         'order' => '`order` desc, `srl` desc',
         'app' => getenv('DEFAULT_APP_SRL'),
@@ -86,7 +85,7 @@ try {
       ]);
       if (!isset($res->response)) throw new Exception($res->message, $res->code);
       $res = $res->response;
-      if (!($res && $res->success)) throw new Exception($res->message);
+      if (!($res && $res->success)) throw new Exception($res->message, $res->code);
 
       $tmpArticles = Util::getWorksData($res->data->index);
       $articles = (object)[
@@ -112,7 +111,7 @@ try {
       $page = Util::getPage();
       $size = (int)getenv('DEFAULT_INDEX_SIZE');
 
-      $res = $api->call('get', '/external/redgoose-me-nest', (object)[
+      $res = $api->call('get', '/external/redgoose-me-nest/', (object)[
         'app_srl' => getenv('DEFAULT_APP_SRL'),
         'nest_id' => $_params->id,
         'category_srl' => $_params->srl,
@@ -143,7 +142,7 @@ try {
       break;
 
     case 'article':
-      $res = $api->call('get', '/articles/'.(int)$_params->srl, (object)[
+      $res = $api->call('get', '/articles/'.(int)$_params->srl.'/', (object)[
         'app' => getenv('DEFAULT_APP_SRL'),
         'hit' => Util::checkCookie('redgoose-hit-'.$_params->srl) ? 0 : 1,
         'ext_field' => 'category_name,nest_name'
@@ -160,7 +159,7 @@ try {
       }
 
       // parse markdown
-      $parsedown = new \Parsedown();
+      $parsedown = new Parsedown();
       $res->data->content = $parsedown->text($res->data->content);
 
       // render page
@@ -192,7 +191,7 @@ try {
         'link' => __URL__,
       ];
       // get data
-      $res = $api->call('get', '/articles', (object)[
+      $res = $api->call('get', '/articles/', (object)[
         'app' => getenv('DEFAULT_APP_SRL'),
         'field' => 'srl,type,nest_srl,category_srl,json,title,content,order',
         'size' => getenv('DEFAULT_RSS_SIZE'),
@@ -205,7 +204,7 @@ try {
       if ($res->success && isset($res->data->index) && count($res->data->index))
       {
         // parse markdown
-        $parsedown = new \Parsedown();
+        $parsedown = new Parsedown();
         $data->articles = [];
         foreach($res->data->index as $k=>$item)
         {
@@ -227,7 +226,7 @@ try {
     case 'on-like':
       $res = $api->call(
         'get',
-        '/articles/'.(int)$_params->srl.'/update',
+        '/articles/'.(int)$_params->srl.'/update/',
         (object)[ 'type' => 'star' ]
       );
       if (!isset($res->response)) throw new Exception($res->message, $res->code);
