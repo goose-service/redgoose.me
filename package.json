@@ -12,7 +12,8 @@
     "build": "./action.sh build"
   },
   "dependencies": {
-    "cash-dom": "^4.1.5"
+    "cash-dom": "^4.1.5",
+    "redgoose-content-body": "https://github.com/redgoose-dev/redgoose-content-body.git"
   },
   "devDependencies": {
     "autoprefixer": "^9.7.2",

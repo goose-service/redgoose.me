@@ -6,7 +6,6 @@
 body {
 	margin: 0;
 	min-width: 320px;
-	-webkit-text-size-adjust: 100%;
 	color: $color-text-base;
 	text-size-adjust: 100%;
 	background: $color-bg;
@@ -16,7 +15,11 @@ body {
 		background: $color-dark-bg;
 	}
 }
-body, button, input, textarea, select {
+body,
+button,
+input,
+textarea,
+select {
 	font-family: $font-system;
 	text-size-adjust: none;
 	font-size: 1rem;
