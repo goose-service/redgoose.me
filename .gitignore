@@ -4,7 +4,7 @@ node_modules/
 vendor/
 !assets/vendor/
 cache/
-assets/dist/*.map
+assets/dist/
 
 .DS_Store
 yarn.lock
