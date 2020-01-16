@@ -52,9 +52,10 @@
       em {
         display: flex;
         font-family: $font-circular;
-        font-size: .875rem;
+        font-size: 14px;
         font-weight: 500;
         font-style: normal;
+        letter-spacing: -.25px;
       }
       svg {
         display: block;
@@ -320,7 +321,7 @@
     }
   }
   &__paginate {
-    $size: 38px;
+    $size: 48px;
     margin: 10px 0 0;
     .paginate {
       align-items: center;
@@ -333,7 +334,7 @@
         width: $size;
         height: $size;
         font-family: $font-circular;
-        font-size: 13px;
+        font-size: 14px;
         color: $color-text-base;
         font-weight: 500;
         box-sizing: border-box;
@@ -463,6 +464,17 @@
         margin-right: -70px;
       }
     }
+    &__paginate {
+      $size: 38px;
+      .paginate {
+        strong,
+        a {
+          width: $size;
+          height: $size;
+          font-size: 13px;
+        }
+      }
+    }
   }
   @include responsive(desktop) {
     padding: 0 $size-side-padding-desktop;
@@ -547,7 +559,7 @@
           color: $color-dark-text-base;
         }
         svg {
-          color: #999;
+          color: #ccc;
         }
       }
       &.open {

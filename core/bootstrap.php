@@ -136,6 +136,7 @@ try {
         'nest_srl' => $res->data->nest->srl,
         'category_srl' => $_params->srl,
         'categories' => $res->data->categories,
+        'categoryName' => isset($res->data->category->name) ? $res->data->category->name : null,
         'index' => Util::getWorksData($res->data->works->index),
         'paginate' => $paginate,
       ]);

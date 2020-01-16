@@ -9,12 +9,13 @@ if(!defined("__GOOSE__")){exit();}
 /** @var string $pageTitle */
 /** @var array $index */
 /** @var object $paginate */
+/** @var string $categoryName */
 ?>
 
 @extends('layout')
 
 @section('meta')
-<title>{{ $title }}</title>
+<title>{{$title}}</title>
 <meta name="description" content="{{ getenv('DESCRIPTION') }}"/>
 <meta property="og:title" content="{{ $title }}"/>
 <meta property="og:description" content="{{ getenv('DESCRIPTION') }}">
@@ -29,7 +30,7 @@ if(!defined("__GOOSE__")){exit();}
     <nav class="index__categories">
       <button type="button">
         <span>
-          <em>Categories</em>
+          <em>Categories / {{$categoryName ? $categoryName : 'All'}}</em>
           <svg xmlns="http://www.w3.org/2000/svg" width="12" height="6" viewBox="0 0 12 6">
             <g fill="none" fill-rule="evenodd">
               <path fill="currentColor" d="M12 0L6 6 0 0z"></path>
