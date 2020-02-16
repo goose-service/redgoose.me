@@ -118,6 +118,7 @@ try {
         'page' => Util::getPage(),
         'size' => getenv('DEFAULT_INDEX_SIZE'),
         'order' => '`order` desc, `srl` desc',
+        'ext_field' => 'count_article',
       ]);
       if (!isset($res->response)) throw new Exception($res->message, $res->code);
       $res = $res->response;
