@@ -29,7 +29,7 @@ if(!defined("__GOOSE__")){exit();}
         </p>
         <h2>{{ ($data->title == '.') ? 'Untitled work' : $data->title }}</h2>
       </header>
-      <div class="detail__body redgoose-body">
+      <div class="detail__body redgoose-body redgoose-body--dark">
         {!! $data->content !!}
       </div>
       <nav class="detail__like">

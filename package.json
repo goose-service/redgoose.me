@@ -1,6 +1,6 @@
 {
   "name": "redgoose.me",
-  "version": "5.1.1",
+  "version": "5.1.2",
   "main": "index.js",
   "repository": "https://gitlab.com/redgoose-me/redgoose.me.git",
   "author": "redgoose <scripter@me.com>",
@@ -12,15 +12,15 @@
     "build": "./action.sh build"
   },
   "dependencies": {
-    "cash-dom": "^4.1.5",
+    "cash-dom": "^6.0.2",
     "redgoose-content-body": "https://github.com/redgoose-dev/redgoose-content-body.git"
   },
   "devDependencies": {
-    "autoprefixer": "^9.7.2",
+    "autoprefixer": "^9.7.4",
     "cssnano": "^4.1.10",
-    "node-sass": "^4.13.0",
+    "node-sass": "^4.13.1",
     "parcel": "^1.12.4",
-    "postcss-modules": "^1.4.1",
+    "postcss-modules": "^1.5.0",
     "postcss-preset-env": "^6.7.0"
   }
 }
