@@ -608,6 +608,11 @@
             background: mix($color-dark-bg, #000, 75%);
           }
         }
+        strong {
+          &:active {
+            background: transparent;
+          }
+        }
       }
     }
 
