@@ -10,7 +10,7 @@ require __PATH__.'/./vendor/autoload.php';
 // set dotenv
 try
 {
-  $dotenv = Dotenv::create(__PATH__);
+  $dotenv = Dotenv::createImmutable(__PATH__);
   $dotenv->load();
 }
 catch(Exception $e)
