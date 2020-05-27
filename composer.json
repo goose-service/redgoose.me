@@ -7,12 +7,12 @@
         }
     ],
     "require": {
-        "vlucas/phpdotenv": "^3.3.2",
+        "vlucas/phpdotenv": "^3.6.5",
         "altorouter/altorouter": "^1.2.0",
-        "eftec/bladeone": "^3.19",
-        "erusev/parsedown": "^1.7.1",
+        "eftec/bladeone": "^3.44.2",
+        "erusev/parsedown": "^1.7.4",
         "redgoose/paginate": "^1.0",
-        "redgoose/console": "^1.0",
+        "redgoose/console": "^1.0.1",
         "redgoose/restapi": "^1.0"
     },
     "autoload": {
