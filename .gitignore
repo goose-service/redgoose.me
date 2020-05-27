@@ -9,3 +9,4 @@ cache/
 yarn.lock
 .env
 yarn-error.log
+composer.lock
