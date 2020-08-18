@@ -3,10 +3,10 @@
 @extends('layout')
 
 @section('meta')
-<title>{{ getenv('TITLE') }}</title>
-<meta name="description" content="{{ getenv('DESCRIPTION') }}"/>
-<meta property="og:title" content="{{ getenv('TITLE') }}"/>
-<meta property="og:description" content="{{ getenv('DESCRIPTION') }}">
+<title>{{ $_ENV['TITLE'] }}</title>
+<meta name="description" content="{{ $_ENV['DESCRIPTION'] }}"/>
+<meta property="og:title" content="{{ $_ENV['TITLE'] }}"/>
+<meta property="og:description" content="{{ $_ENV['DESCRIPTION'] }}">
 <meta property="og:image" content="{{ __API__ }}/usr/icons/og-redgoose.jpg">
 @endsection
 

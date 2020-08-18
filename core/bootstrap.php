@@ -19,20 +19,20 @@ catch(Exception $e)
 }
 
 // ini_set
-if (getenv('USE_DEBUG') === '1')
+if ($_ENV['USE_DEBUG'] === '1')
 {
   error_reporting(E_ALL & ~E_NOTICE);
 }
 
 // set values
-define('__ROOT__', getenv('PATH_RELATIVE'));
-define('__API__', getenv('PATH_API'));
-define('__URL__', getenv('PATH_URL'));
+define('__ROOT__', $_ENV['PATH_RELATIVE']);
+define('__API__', $_ENV['PATH_API']);
+define('__URL__', $_ENV['PATH_URL']);
 
 // set default timezone
-if (getenv('TIMEZONE'))
+if ($_ENV['TIMEZONE'])
 {
-  date_default_timezone_set(getenv('TIMEZONE'));
+  date_default_timezone_set($_ENV['TIMEZONE']);
 }
 
 // set blade
@@ -54,9 +54,9 @@ try {
 
   // init rest api
   $api = new RestAPI((object)[
-    'url' => getenv('PATH_API'),
+    'url' => $_ENV['PATH_API'],
     'outputType' => 'json',
-    'headers' => ['Authorization: ' . getenv('TOKEN_PUBLIC')],
+    'headers' => ['Authorization: ' . $_ENV['TOKEN_PUBLIC']],
     'timeout' => 30,
     'debug' => false,
   ]);
@@ -65,14 +65,14 @@ try {
   {
     case 'index':
       $page = Util::getPage();
-      $size = (int)getenv('DEFAULT_INDEX_SIZE');
+      $size = (int)$_ENV['DEFAULT_INDEX_SIZE'];
       $randomSize = 8;
 
       // get articles
       $res = $api->call('get', '/external/redgoose-me/', (object)[
         'field' => 'srl,type,nest_srl,category_srl,json,title,order',
         'order' => '`order` desc, `srl` desc',
-        'app' => getenv('DEFAULT_APP_SRL'),
+        'app' => $_ENV['DEFAULT_APP_SRL'],
         'size' => $size,
         'page' => $page,
         'ext_field' => 'category_name,nest_name',
@@ -98,7 +98,7 @@ try {
 
       // render page
       $blade->render('index', (object)[
-        'title' => getenv('TITLE'),
+        'title' => $_ENV['TITLE'],
         'pageTitle' => 'Newest works',
         'count' => count($tmpArticles),
         'index' => $articles,
@@ -109,14 +109,14 @@ try {
 
     case 'index/nest':
       $page = Util::getPage();
-      $size = (int)getenv('DEFAULT_INDEX_SIZE');
+      $size = (int)$_ENV['DEFAULT_INDEX_SIZE'];
 
       $res = $api->call('get', '/external/redgoose-me-nest/', (object)[
-        'app_srl' => getenv('DEFAULT_APP_SRL'),
+        'app_srl' => $_ENV['DEFAULT_APP_SRL'],
         'nest_id' => $_params->id,
         'category_srl' => $_params->srl,
         'page' => Util::getPage(),
-        'size' => getenv('DEFAULT_INDEX_SIZE'),
+        'size' => $_ENV['DEFAULT_INDEX_SIZE'],
         'order' => '`order` desc, `srl` desc',
         'ext_field' => 'count_article',
       ]);
@@ -145,7 +145,7 @@ try {
 
     case 'article':
       $res = $api->call('get', '/articles/'.(int)$_params->srl.'/', (object)[
-        'app' => getenv('DEFAULT_APP_SRL'),
+        'app' => $_ENV['DEFAULT_APP_SRL'],
         'hit' => Util::checkCookie('redgoose-hit-'.$_params->srl) ? 0 : 1,
         'ext_field' => 'category_name,nest_name'
       ]);
@@ -166,7 +166,7 @@ try {
 
       // render page
       $blade->render('detail', (object)[
-        'title' => ($res->data->title === '.' ? 'Untitled work' : $res->data->title).' on '.getenv('TITLE'),
+        'title' => ($res->data->title === '.' ? 'Untitled work' : $res->data->title).' on '.$_ENV['TITLE'],
         'pageTitle' => $res->data->title === '.' ? 'Untitled work' : $res->data->title,
         'description' => Util::contentToShortText($res->data->content),
         'image' => __API__.'/'.$res->data->json->thumbnail->path,
@@ -188,15 +188,15 @@ try {
     case 'rss':
       $data = (object)[
         'url' => __URL__,
-        'title' => getenv('TITLE'),
-        'description' => getenv('DESCRIPTION'),
+        'title' => $_ENV['TITLE'],
+        'description' => $_ENV['DESCRIPTION'],
         'link' => __URL__,
       ];
       // get data
       $res = $api->call('get', '/articles/', (object)[
-        'app' => getenv('DEFAULT_APP_SRL'),
+        'app' => $_ENV['DEFAULT_APP_SRL'],
         'field' => 'srl,type,nest_srl,category_srl,json,title,content,order',
-        'size' => getenv('DEFAULT_RSS_SIZE'),
+        'size' => $_ENV['DEFAULT_RSS_SIZE'],
         'order' => '`order` desc, `srl` desc',
       ]);
       if (!isset($res->response)) throw new Exception($res->message, $res->code);

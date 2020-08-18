@@ -17,7 +17,7 @@ class Util {
   static public function error($error, $blade)
   {
     // debug
-    if (getenv('USE_DEBUG') === '1')
+    if ($_ENV['USE_DEBUG'] === '1')
     {
       Console::log((object)[
         'message' => $error->getMessage(),
@@ -40,7 +40,7 @@ class Util {
     {
       // render
       $blade->render('error', (object)[
-        'title' => getenv('TITLE'),
+        'title' => $_ENV['TITLE'],
         'message' => $message,
       ]);
     }
@@ -80,8 +80,8 @@ class Util {
         $obj->image = $item->json->thumbnail->path;
         if ($item->category_name) $obj->categoryName = $item->category_name;
         if ($item->nest_name) $obj->nestName = $item->nest_name;
-        if ($item->styleType) $obj->styleType = $item->styleType;
-        if ($item->order) $obj->regdate = $item->order;
+        if (isset($item->styleType)) $obj->styleType = $item->styleType;
+        if (isset($item->order)) $obj->regdate = $item->order;
         $result[] = $obj;
       }
     }
@@ -166,7 +166,7 @@ class Util {
       $key,
       $value,
       time() + 3600 * 24 * $day,
-      getenv('PATH_COOKIE')
+      $_ENV['PATH_COOKIE']
     );
   }
 

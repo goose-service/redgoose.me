@@ -16,9 +16,9 @@ if(!defined("__GOOSE__")){exit();}
 
 @section('meta')
 <title>{{$title}}</title>
-<meta name="description" content="{{ getenv('DESCRIPTION') }}"/>
+<meta name="description" content="{{ $_ENV['DESCRIPTION'] }}"/>
 <meta property="og:title" content="{{ $title }}"/>
-<meta property="og:description" content="{{ getenv('DESCRIPTION') }}">
+<meta property="og:description" content="{{ $_ENV['DESCRIPTION'] }}">
 <meta property="og:image" content="{{ __API__ }}/usr/icons/og-redgoose.jpg">
 @endsection
 
