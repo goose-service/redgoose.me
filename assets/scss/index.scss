@@ -538,12 +538,18 @@
     --size-intro-margin-top: 0px;
   }
   @include responsive(mobile-large) {
-    --size-intro-margin-top: var(--size-side-padding);
+    &__index {
+      --size-intro-margin-top: var(--size-side-padding);
+    }
   }
   @include responsive(tablet) {
-    --size-intro-margin-top: 60px;
+    &__index {
+      --size-intro-margin-top: 64px;
+    }
   }
   @include responsive(max) {
-    --size-intro-margin-top: 70px;
+    &__index {
+      --size-intro-margin-top: 72px;
+    }
   }
 }
