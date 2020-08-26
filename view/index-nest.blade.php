@@ -24,11 +24,11 @@ if(!defined("__GOOSE__")){exit();}
 
 @section('contents')
 <article class="index">
-  <header class="index__header">
-    <h2>{{$pageTitle}}</h2>
+  <header class="index-header">
+    <h2 class="index-header__title">{{$pageTitle}}</h2>
     @if (isset($categories) && count($categories))
-    <nav class="index__categories">
-      <button type="button">
+    <nav class="index-categories">
+      <button type="button" class="index-categories__toggle-button">
         <span>
           <em>Categories / {{$categoryName ? $categoryName : 'All'}}</em>
           <svg xmlns="http://www.w3.org/2000/svg" width="12" height="6" viewBox="0 0 12 6">
@@ -41,45 +41,47 @@ if(!defined("__GOOSE__")){exit();}
       <nav>
         <ul>
           @foreach($categories as $k=>$item)
-            <li{!!($category_srl === $item->srl || (!$category_srl && !$item->srl)) ? ' class="on"' : ''!!}>
-              <a href="/nest/{{$nest_id}}{{$item->srl ? '/'.$item->srl : ''}}/" data-srl="{{$item->srl}}">
-                <span>{{$item->name}}</span>
-                <em>{{$item->count_article}}</em>
-              </a>
-            </li>
+          <li{!!($category_srl === $item->srl || (!$category_srl && !$item->srl)) ? ' class="on"' : ''!!}>
+            <a href="/nest/{{$nest_id}}{{$item->srl ? '/'.$item->srl : ''}}/" data-srl="{{$item->srl}}">
+              <span>{{$item->name}}</span>
+              <em>{{$item->count_article}}</em>
+            </a>
+          </li>
           @endforeach
         </ul>
       </nav>
     </nav>
     @endif
   </header>
-  <div class="index__works index--head">
+  <div class="index-works index-works--head">
     @if ($index && count($index))
-    <ul>
+    <ul class="index-works__list">
       @foreach($index as $k=>$item)
-      <li class="index__work">
-        <a href="/article/{{$item->srl}}/" class="wrap">
-          <figure class="image">
+      <li class="index-work">
+        <a href="/article/{{$item->srl}}/" class="index-work__wrap">
+          <figure class="index-work__image">
             @if (isset($item->image))
             <img src="{{__API__}}/{{$item->image}}" alt="{{$item->title}}">
             @endif
           </figure>
-          <div class="caption">
-            <strong class="title">{{$item->title}}</strong>
-            <em class="regdate">{{$item->regdate}}</em>
+          <div class="index-work__caption">
+            <strong>{{$item->title}}</strong>
+            <span>
+              <em>{{$item->regdate}}</em>
+            </span>
           </div>
         </a>
       </li>
       @endforeach
     </ul>
     @else
-    <div class="index__empty">
+    <div class="index-empty">
       <img src="{{__ROOT__}}/assets/images/img-error.png" alt="error">
       <p>Not found work.</p>
     </div>
     @endif
-    @if ($paginate->total > 0)
-    <div class="index__paginate">
+    @if ($paginate && $paginate->total > 0)
+    <div class="index-paginate">
       {!! $paginate->mobile !!}
       {!! $paginate->desktop !!}
     </div>

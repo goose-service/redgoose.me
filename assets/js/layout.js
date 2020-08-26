@@ -9,18 +9,30 @@ const $header = $('.layout-header');
  */
 function toggleNavigation()
 {
-	const $button = $('.button--menu');
+	const $button = $header.find('.layout-header__buttons > button');
+	const $navigation = $header.find('.header-navigation');
+	const $dropdownContents = $header.find('.header-navigation, .layout-header__buttons > button');
+	$dropdownContents.on('click', (e) => e.stopPropagation());
 	$button.on('click', function() {
-		if ($header.hasClass('on-menu'))
+		const $self = $(this);
+		$html.off('click.headerButtons');
+		if ($self.hasClass('navigation'))
 		{
-			$header.removeClass('on-menu');
-			$html.removeClass('not-scroll');
+			if ($self.hasClass('on'))
+			{
+				$self.removeClass('on');
+				$navigation.removeClass('on');
+			}
+			else
+			{
+				$self.addClass('on');
+				$navigation.addClass('on');
+			}
 		}
-		else
-		{
-			$header.addClass('on-menu');
-			$html.addClass('not-scroll');
-		}
+		$html.on('click.headerButtons', () => {
+			$navigation.removeClass('on');
+			$self.removeClass('on');
+		});
 	});
 }
 
@@ -29,7 +41,7 @@ function toggleNavigation()
  */
 function initNavigation()
 {
-	let $buttons = $header.find('.layout-header__menus > ul > li > a');
+	let $buttons = $header.find('.header-navigation > ul > li > a');
 	$buttons.on('click', function() {
 		// 하위메뉴가 있고 터치 디바이스라면 클릭진행을 막는다.
 		if ($(window).width() < 768) return true;
@@ -41,7 +53,6 @@ export default function()
 {
 	// toggle navigation
 	toggleNavigation();
-
 	// initial navigation
 	initNavigation();
 }

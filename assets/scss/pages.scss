@@ -1,8 +1,8 @@
-@import "./libs/valiables";
-@import "./libs/mixins";
+@import "./mixins";
 
 .about {
-	padding: 50px $size-side-padding 40px;
+	--color-about-metas-section-title: #111;
+	padding: 50px var(--size-side-padding) 40px;
 
 	&__wrap {
 		max-width: 920px;
@@ -12,13 +12,13 @@
 		text-align: center;
 		p {
 			margin: 0;
-			font-family: $font-circular;
+			font-family: var(--font-circular);
 			font-size: 11px;
-			color: #aaa;
+			color: var(--color-text-blur);
 		}
 		h2 {
 			margin: 2px 0 0;
-			font-family: $font-circular;
+			font-family: var(--font-circular);
 			font-size: 32px;
 			font-weight: 600;
 			line-height: 1;
@@ -53,16 +53,17 @@
 			}
 			> h3 {
 				margin: 0;
-				font-family: $font-circular;
+				font-family: var(--font-circular);
 				font-size: 22px;
 				letter-spacing: -.5px;
 				font-weight: 600;
+				color: var(--color-about-metas-section-title);
 				&:after {
 					content: '';
 					display: block;
 					width: 12px;
 					height: 1px;
-					background: #111;
+					background: var(--color-text-blur);
 				}
 			}
 			> dl {
@@ -71,28 +72,30 @@
 				line-height: 20px;
 				> dt {
 					margin-top: 12px;
-					font-family: $font-circular;
+					font-family: var(--font-circular);
 					font-weight: 500;
 					font-size: 15px;
-					color: #111;
+					color: var(--color-about-metas-section-title);
 				}
 				> dd {
 					margin: 5px 0 0;
-					font-family: $font-circular;
+					font-family: var(--font-circular);
 				}
 			}
 		}
 	}
 
 	@include responsive(tablet) {
-		padding: 50px 50px 0;
+		padding-top: 50px;
+		padding-bottom: 0;
 		&__header {
 			p {
 				font-size: 12px;
 			}
-			h1 {
-				font-size: 40px;
-				letter-spacing: -.5px;
+			h2 {
+				font-size: 36px;
+				line-height: 1.15;
+				letter-spacing: -1.5px;
 			}
 		}
 		&__profile {
@@ -115,15 +118,6 @@
 			}
 		}
 	}
-	@include responsive(tablet) {
-		&__header {
-			h2 {
-				font-size: 36px;
-				line-height: 1.15;
-				letter-spacing: -1.5px;
-			}
-		}
-	}
 	@include responsive(desktop) {
 		&__metas {
 			section {
@@ -135,7 +129,6 @@
 						width: 90px;
 						font-size: 12px;
 						line-height: 20px;
-						color: #666;
 						font-weight: 400;
 					}
 					> dd {
@@ -148,19 +141,7 @@
 		}
 	}
 	@include dark-mode() {
-		&__metas {
-			section {
-				> h3 {
-					&:after {
-						background: #999;
-					}
-				}
-				> dl {
-					> dt {
-						color: #fff;
-					}
-				}
-			}
-		}
+		--color-about-metas-section-title: #fff;
+		--color-about-metas-section-sub-title: #fff;
 	}
 }

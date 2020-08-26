@@ -1,5 +1,4 @@
-@import "./libs/valiables";
-@import "./libs/mixins";
+@import "./mixins";
 
 body {
   overflow-x: hidden;
@@ -8,31 +7,8 @@ main {
   &:before {
     content: '';
     display: block;
-    height: $size-header-height;
-    background: #fff;
-  }
-
-  @media (orientation: landscape) {
-    &:before {
-      display: none;
-    }
-  }
-  @include responsive(tablet) {
-    &:before {
-      height: $size-header-height-desktop;
-    }
-  }
-  @include responsive(desktop) {
-    @media (orientation: landscape) {
-      &:before {
-        display: block;
-      }
-    }
-  }
-  @include dark-mode() {
-    &:before {
-      background: #222;
-    }
+    height: var(--size-header-height);
+    background: var(--color-bg);
   }
 }
 
@@ -51,14 +27,14 @@ main {
 
 // header
 .layout-header {
-  $self: '.layout-header';
-
+  --color-header-button-fill: #222;
+  --color-header-line: #ccc;
   z-index: 3;
   position: fixed;
   left: 0;
   right: 0;
   top: 0;
-  height: $size-header-height;
+  height: var(--size-header-height);
   box-sizing: border-box;
   &:before {
     content: '';
@@ -67,19 +43,39 @@ main {
     right: 0;
     top: 0;
     bottom: 0;
-    background: rgba(#fff,.9);
+    background: rgba(255,255,255,.9);
     @supports (backdrop-filter: blur(15px)) {
-      background: rgba(#fff,.4);
-      backdrop-filter: blur(15px);
+      background: rgba(#fff,.75);
+      backdrop-filter: blur(12px);
     }
   }
-
+  &:after {
+    content: '';
+    display: block;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: var(--color-header-line);
+    height: 1px;
+    transform: scaleY(.5);
+    transform-origin: 0 100%;
+    pointer-events: none;
+  }
+  &__wrap {
+    position: relative;
+    box-sizing: border-box;
+    height: 100%;
+    max-width: 1024px;
+    margin: 0 auto;
+  }
   &__logo {
     position: absolute;
     left: 50%;
     top: 0;
-    margin: 0 0 0 -#{(76px + 10px) * .5};
+    margin: 0;
     z-index: 2;
+    transform: translateX(-50%);
     a {
       display: block;
       padding: 5px;
@@ -97,8 +93,8 @@ main {
       position: absolute;
       top: 0;
       bottom: 0;
-      width: $size-header-height;
-      height: $size-header-height;
+      width: var(--size-header-height);
+      height: var(--size-header-height);
       margin: 0;
       padding: 0;
       box-sizing: border-box;
@@ -111,141 +107,58 @@ main {
         left: 50%;
         top: 50%;
         transform: translate(-50%, -50%);
-        color: #222;
+        transform-origin: 50% 50%;
+        color: var(--color-header-button-fill);
+        transition: transform 200ms ease-out;
         &:nth-child(1) {
-          opacity: 1;
+          transform: translate(-50%, -50%) scale(1);
         }
         &:nth-child(2) {
-          opacity: 0;
+          transform: translate(-50%, -50%) scale(0);
         }
-      }
-      &.button--menu {
-        left: 0;
       }
       &:active {
-        background: #f4f4f4;
-        @supports (backdrop-filter: blur(15px)) {
-          background: rgba(#f4f4f4, .75);
-        }
-      }
-    }
-  }
-  &__menus {
-    display: none;
-    user-select: none;
-  }
-  &.on-menu {
-    #{$self} {
-      &__buttons {
-        > button {
-          &.button--menu {
-            svg {
-              &:nth-child(1) {
-                opacity: 0;
-              }
-              &:nth-child(2) {
-                opacity: 1;
-              }
-            }
+        svg {
+          &:nth-child(1) {
+            transform: translate(-50%, -50%) scale(.75);
           }
         }
       }
-      &__menus {
-        display: block;
-        position: absolute;
+      &.navigation {
         left: 0;
+      }
+      &.search {
         right: 0;
-        top: $size-header-height;
-        box-sizing: border-box;
-        padding: 24px $size-side-padding 30px;
-        background: $color-key;
-        @include color-linear-gradient($color-key, #CC5B40, #7B2A79);
-        box-shadow: 0 2px 10px rgba(0,0,0,.5);
-        @supports (backdrop-filter: blur(15px)) {
-          background: rgba($color-key, .8);
-          backdrop-filter: blur(15px);
-          box-shadow: 0 2px 10px rgba(0,0,0,.3);
-        }
-        ul {
-          margin: 0;
-          padding: 0;
-          list-style: none;
-          > li {
-            &:nth-child(n+2) {
-              margin-top: 15px;
-            }
-            > a {
-              display: block;
-              font-family: $font-circular;
-              font-size: 18px;
-              font-weight: 600;
-              color: #fff;
-              text-decoration: none;
-              &:active {
-                opacity: .75;
-              }
-            }
+      }
+      &.on {
+        svg {
+          &:nth-child(1) {
+            transform: translate(-50%, -50%) scale(0);
+          }
+          &:nth-child(2) {
+            transform: translate(-50%, -50%) scale(1);
           }
         }
-        ol {
-          margin: 6px 0 0;
-          padding: 0;
-          list-style: none;
-          display: flex;
-          flex-wrap: wrap;
-          li {
-            width: 50%;
-          }
-          a {
-            display: block;
-            padding: 8px 15px 8px 0;
-            box-sizing: border-box;
-            color: #fff;
-            font-family: $font-circular;
-            line-height: 1.42;
-            font-size: 13px;
-            font-weight: 400;
-            text-decoration: none;
-            -webkit-tap-highlight-color: transparent;
-            &:active {
-              opacity: .3;
+        &:active {
+          svg {
+            &:nth-child(2) {
+              transform: translate(-50%, -50%) scale(.75);
             }
           }
         }
       }
     }
   }
-
   @media (orientation: landscape) {
-    position: relative;
-    &.on-menu {
-      #{$self} {
-        &__menus {
-          padding-top: 15px;
-          ol {
-            li {
-              width: 33.33333%;
-            }
-          }
-        }
-      }
-    }
+    position: absolute;
   }
   @include responsive(tablet) {
-    height: $size-header-height-desktop;
-    padding: 0 $size-side-padding-desktop;
-
-    &__wrap {
-      position: relative;
-      height: 100%;
-      box-sizing: border-box;
-      max-width: $size-screen-desktop;
-      margin: 0 auto;
-    }
+    padding: 0 var(--size-side-padding);
     &__logo {
-      left: 20px;
-      top: 8px;
+      left: 24px;
+      top: 6px;
       margin: 0;
+      transform: none;
       a {
         padding: 0;
       }
@@ -256,97 +169,6 @@ main {
     &__buttons {
       display: none;
     }
-    &__menus,
-    &.on-menu #{$self}__menus {
-      display: block;
-      position: absolute;
-      left: auto;
-      right: 0;
-      top: 0;
-      height: $size-header-height-desktop;
-      background: none;
-      margin: 0 -4px 0 0;
-      padding: 0;
-      overflow: visible;
-      box-shadow: 0 0 0;
-      ul {
-        display: flex;
-        align-items: center;
-        height: 100%;
-        margin: 0;
-        padding: 0;
-        list-style: none;
-        > li {
-          &:nth-child(n+2) {
-            margin-top: 0;
-          }
-          > a {
-            display: flex;
-            height: $size-header-height-desktop;
-            align-items: center;
-            box-sizing: border-box;
-            padding: 0 25px;
-            font-family: $font-circular;
-            font-weight: 600;
-            font-size: .875rem;
-            color: $color-text-base;
-            text-decoration: none;
-          }
-          > div {
-            position: relative;
-            display: none;
-          }
-          &:focus-within,
-          &:hover {
-            > a {
-              background: $color-bg;
-              color: $color-key;
-            }
-            > div {
-              display: block;
-            }
-          }
-          &.on {
-            > a {
-              color: $color-key;
-            }
-          }
-        }
-      }
-      ol {
-        margin: 0;
-        padding: 15px 0;
-        list-style: none;
-        position: absolute;
-        left: 0;
-        top: 0;
-        min-width: 120px;
-        border-bottom-left-radius: 4px;
-        border-bottom-right-radius: 4px;
-        background: $color-key;
-        > li {
-          width: auto;
-          > a {
-            font-family: $font-circular;
-            display: block;
-            padding: 4px 25px;
-            color: #fff;
-            font-size: .75rem;
-            font-weight: 500;
-            text-decoration: none;
-            white-space: nowrap;
-            &:hover {
-              text-decoration: underline;
-            }
-          }
-          &.on {
-            > a {
-              text-decoration: underline;
-            }
-          }
-        }
-      }
-    }
   }
   @include responsive(desktop) {
     @media (orientation: landscape) {
@@ -354,57 +176,210 @@ main {
     }
   }
   @include dark-mode() {
+    --color-header-button-fill: #fff;
+    --color-header-line: #333;
     &:before {
       background: rgba(#000,.9);
       @supports (backdrop-filter: blur(15px)) {
         background: rgba(#000,.65);
       }
     }
-    &__buttons {
-      > button {
-        svg {
-          color: #fff;
-        }
+  }
+}
+.header-navigation {
+  display: block;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: var(--size-header-height);
+  box-sizing: border-box;
+  padding: 24px var(--size-side-padding) 30px;
+  @include color-linear-gradient(var(--color-key), #CC5B40, #7B2A79);
+  box-shadow: 0 2px 10px rgba(0,0,0,.3);
+  opacity: 0;
+  pointer-events: none;
+  user-select: none;
+  transition: opacity 200ms ease-out;
+  @supports (backdrop-filter: blur(15px)) {
+    background: rgba(var(--rgb-key),.8);
+    backdrop-filter: blur(15px);
+    box-shadow: 0 2px 10px rgba(0,0,0,.3);
+  }
+  ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    > li {
+      &:nth-child(n+2) {
+        margin-top: 15px;
+      }
+      > a {
+        display: block;
+        font-family: var(--font-circular);
+        font-size: 18px;
+        font-weight: 600;
+        color: #fff;
+        text-decoration: none;
+        transition: opacity 200ms ease-out;
+        -webkit-tap-highlight-color: transparent;
         &:active {
-          background: #333;
-          @supports (backdrop-filter: blur(15px)) {
-            background: rgba(#333, .75);
+          opacity: .5;
+        }
+      }
+    }
+  }
+  ol {
+    margin: 6px 0 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    a {
+      display: block;
+      padding: 7px 15px 7px 0;
+      box-sizing: border-box;
+      color: #fff;
+      font-family: var(--font-circular);
+      line-height: 1.42;
+      font-size: 13px;
+      font-weight: 400;
+      text-decoration: none;
+      -webkit-tap-highlight-color: transparent;
+      transition: opacity 200ms ease-out;
+      &:active {
+        opacity: .5;
+      }
+    }
+  }
+  &.on {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  @include responsive(tablet) {
+    display: block;
+    position: absolute;
+    left: auto;
+    right: 0;
+    top: 0;
+    height: var(--size-header-height);
+    background: none;
+    margin: 0;
+    padding: 0;
+    box-shadow: 0 0 0;
+    transition: none;
+    opacity: 1;
+    pointer-events: auto;
+    @supports (backdrop-filter: blur(0px)) {
+      backdrop-filter: blur(0px);
+    }
+    ul {
+      display: flex;
+      align-items: center;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      > li {
+        height: 100%;
+        &:nth-child(n+2) {
+          margin-top: 0;
+        }
+        > a {
+          display: flex;
+          height: 100%;
+          align-items: center;
+          box-sizing: border-box;
+          padding: 0 24px;
+          font-family: var(--font-circular);
+          font-weight: 600;
+          font-size: .875rem;
+          color: var(--color-text);
+          text-decoration: none;
+          transition: color 200ms ease-out, background 200ms ease-out;
+          &:active {
+            opacity: 1;
           }
-          svg {
-            color: #ccc;
+        }
+        > div {
+          position: relative;
+          > ol {
+            opacity: 0;
+            pointer-events: none;
+          }
+        }
+        &:focus-within,
+        &:hover {
+          > a {
+            background: rgba(255,255,255,.75);
+            color: var(--color-key);
+          }
+          > div {
+            > ol {
+              opacity: 1;
+              pointer-events: auto;
+            }
+          }
+        }
+        &.on {
+          > a {
+            color: var(--color-key);
           }
         }
       }
     }
-    @include responsive(tablet) {
-      &__menus,
-      &.on-menu #{$self}__menus {
-        ul {
-          > li {
-            > a {
-              color: $color-dark-text-base;
-            }
-            &:focus-within,
+    ol {
+      display: block;
+      margin: 0;
+      padding: 16px 0;
+      list-style: none;
+      position: absolute;
+      left: 0;
+      top: 0;
+      min-width: 120px;
+      border-bottom-left-radius: 4px;
+      border-bottom-right-radius: 4px;
+      background: rgba(var(--rgb-key),.95);
+      transition: opacity 200ms ease-out;
+      > li {
+        > a {
+          font-family: var(--font-circular);
+          display: block;
+          padding: 4px 25px;
+          color: #fff;
+          font-size: .75rem;
+          font-weight: 500;
+          text-decoration: none;
+          white-space: nowrap;
+          &:hover,
+          &:active {
+            opacity: .5;
+          }
+        }
+        &.on {
+          > a {
+            text-decoration: underline;
             &:hover {
-              > a {
-                background: $color-dark-bg;
-                color: #fff;
-              }
-            }
-            &.on {
-              > a {
-                color: #fff;
-              }
+              opacity: 1;
             }
           }
         }
-        ol {
-          @include color-linear-gradient(
-            $color-dark-key,
-            $color-dark-key,
-            mix(#3C0AEE,$color-dark-key,40%)
-          );
+      }
+    }
+  }
+  @include dark-mode() {
+    @include responsive(tablet) {
+      ul {
+        > li {
+          &:focus-within,
+          &:hover {
+            > a {
+              background: rgba(30,30,30,.5);
+            }
+          }
         }
+      }
+      ol {
+        @include color-linear-gradient(rgba(var(--rgb-key),.95), rgba(var(--rgb-key),.95), rgba(0,133,113,.95));
       }
     }
   }
@@ -412,7 +387,7 @@ main {
 
 // footer
 .layout-footer {
-  margin: 50px 0 0;
+  margin: 44px 0 0;
   padding: 0 0 20px;
   box-sizing: border-box;
   &__copyright {
@@ -420,16 +395,10 @@ main {
     margin: 0;
     font-size: 10px;
     font-weight: 400;
-    color: #575757;
+    color: var(--color-text-blur);
     user-select: none;
   }
-
   @include responsive(tablet) {
     margin: 70px 0 0;
-  }
-  @include dark-mode() {
-    &__copyright {
-      color: mix($color-dark-text-base, #000, 50%);
-    }
   }
 }

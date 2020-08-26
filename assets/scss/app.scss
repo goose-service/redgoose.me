@@ -1,45 +1,64 @@
 @import "./normalize";
-@import "./libs/valiables";
-@import "./libs/mixins";
+@import "./mixins";
 @import "./fonts";
+
+:root {
+	--color-text: #222;
+	--color-text-blur: #777;
+	--color-key: #b31f37;
+	--rgb-key: 179,31,55;
+	--color-sub: #380AEF;
+	--color-bg: #fafbfc;
+	--size-side-padding: 24px;
+	--size-header-height: 48px;
+	--font-base: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+	--font-eng: Helvetica, Arial, sans-serif;
+	--font-circular: 'Circular', Helvetica, Arial, sans-serif;
+	--font-code: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
+	@include dark-mode() {
+		--color-text: #d8d8d8;
+		--color-text-blur: #777;
+		--color-key: #1ccd5c;
+		--rgb-key: 28,205,92;
+		--color-sub: #826cef;
+		--color-bg: #222;
+	}
+	@include responsive(tablet) {
+		--size-side-padding: 54px;
+		--size-header-height: 54px;
+	}
+}
 
 body {
 	margin: 0;
 	min-width: 320px;
-	color: $color-text-base;
+	color: var(--color-text);
 	text-size-adjust: 100%;
-	background: $color-bg;
+	background: var(--color-bg);
 	-webkit-touch-callout: none;
-	@include dark-mode() {
-		color: $color-dark-text-base;
-		background: $color-dark-bg;
-	}
 }
 body,
 button,
 input,
 textarea,
 select {
-	font-family: $font-system;
+	font-family: var(--font-base);
 	text-size-adjust: none;
 	font-size: 1rem;
 	line-height: 1.54;
 }
 a {
-	color: $color-key;
-	@include dark-mode() {
-		color: $color-dark-key;
-	}
+	color: var(--color-key);
 }
 code,
 kbd,
 pre,
 samp {
-	font-family: $font-console;
+	font-family: var(--font-code);
 }
 
 ::selection {
-	background: $color-key;
+	background: var(--color-key);
 	color: #fff;
 }
 

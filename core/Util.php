@@ -76,10 +76,10 @@ class Util {
       if ($item->json)
       {
         $obj->srl = (int)$item->srl;
-        $obj->title = $item->title === '.' ? 'untitled work' : $item->title;
-        $obj->image = $item->json->thumbnail->path;
-        if ($item->category_name) $obj->categoryName = $item->category_name;
-        if ($item->nest_name) $obj->nestName = $item->nest_name;
+        $obj->title = (isset($item->title) && $item->title === '.') ? 'untitled work' : $item->title;
+        $obj->image = isset($item->json->thumbnail->path) ? $item->json->thumbnail->path : null;
+        if (isset($item->category_name)) $obj->categoryName = $item->category_name;
+        if (isset($item->nest_name)) $obj->nestName = $item->nest_name;
         if (isset($item->styleType)) $obj->styleType = $item->styleType;
         if (isset($item->order)) $obj->regdate = $item->order;
         $result[] = $obj;

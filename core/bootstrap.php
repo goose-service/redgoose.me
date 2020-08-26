@@ -87,23 +87,27 @@ try {
       $res = $res->response;
       if (!($res && $res->success)) throw new Exception($res->message, $res->code);
 
+      // convert articles
       $tmpArticles = Util::getWorksData($res->data->index);
       $articles = (object)[
-        'head' => array_slice($tmpArticles, 0,4),
-        'body' => array_slice($tmpArticles, 4)
+        'head' => $tmpArticles ? array_slice($tmpArticles, 0,4) : [],
+        'body' => $tmpArticles ? array_slice($tmpArticles, 4) : [],
       ];
 
       // make pagination
-      $paginate = Util::makePagination($res->data->total, $page, $size);
+      if ($tmpArticles && count($tmpArticles) > 0)
+      {
+        $paginate = Util::makePagination($res->data->total, $page, $size);
+      }
 
       // render page
       $blade->render('index', (object)[
         'title' => $_ENV['TITLE'],
         'pageTitle' => 'Newest works',
-        'count' => count($tmpArticles),
+        'count' => $tmpArticles ? count($tmpArticles) : 0,
         'index' => $articles,
         'randomIndex' => (isset($res->data->random)) ? Util::getWorksData($res->data->random) : [],
-        'paginate' => $paginate,
+        'paginate' => isset($paginate) ? $paginate : null,
       ]);
       break;
 
@@ -113,8 +117,8 @@ try {
 
       $res = $api->call('get', '/external/redgoose-me-nest/', (object)[
         'app_srl' => $_ENV['DEFAULT_APP_SRL'],
-        'nest_id' => $_params->id,
-        'category_srl' => $_params->srl,
+        'nest_id' => isset($_params->id) ? $_params->id : '',
+        'category_srl' => isset($_params->srl) ? $_params->srl : null,
         'page' => Util::getPage(),
         'size' => $_ENV['DEFAULT_INDEX_SIZE'],
         'order' => '`order` desc, `srl` desc',
@@ -125,7 +129,10 @@ try {
       if (!($res && $res->success)) throw new Exception($res->message);
 
       // make pagination
-      $paginate = Util::makePagination($res->data->works->total, $page, $size);
+      if (isset($res->data->works->index) && count($res->data->works->index) > 0)
+      {
+        $paginate = Util::makePagination($res->data->works->total, $page, $size);
+      }
 
       $title = 'redgoose';
       if (isset($res->data->nest->name)) $title = $res->data->nest->name.' / '.$title;
@@ -135,11 +142,11 @@ try {
         'pageTitle' => $res->data->nest->name,
         'nest_id' => $_params->id,
         'nest_srl' => $res->data->nest->srl,
-        'category_srl' => $_params->srl,
+        'category_srl' => isset($_params->srl) ? $_params->srl : null,
         'categories' => $res->data->categories,
         'categoryName' => isset($res->data->category->name) ? $res->data->category->name : null,
         'index' => Util::getWorksData($res->data->works->index),
-        'paginate' => $paginate,
+        'paginate' => isset($paginate) ? $paginate : null,
       ]);
       break;
 

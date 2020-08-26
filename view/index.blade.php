@@ -28,20 +28,20 @@ if(!defined("__GOOSE__")){exit();}
   <h2 class="intro__title">Intro page</h2>
   <div class="index intro__index">
     @if ($count)
-    <div class="index__works index--head">
-      <ul>
+    <div class="index-works index-works--head">
+      <ul class="index-works__list">
         @foreach($index->head as $k=>$item)
-        <li class="index__work">
-          <a href="/article/{{$item->srl}}/" class="wrap">
-            <figure class="image">
+        <li class="index-work">
+          <a href="/article/{{$item->srl}}/" class="index-work__wrap">
+            <figure class="index-work__image">
               @if (isset($item->image))
               <img src="{{__API__}}/{{$item->image}}" alt="{{$item->title}}">
               @endif
             </figure>
-            <div class="caption">
-              <strong class="title">{{$item->title}}</strong>
+            <div class="index-work__caption">
+              <strong>{{$item->title}}</strong>
               @if (isset($item->nestName) || isset($item->categoryName))
-              <span class="metas">
+              <span>
                 @if (isset($item->nestName))
                 <em>{{$item->nestName}}</em>
                 @endif
@@ -57,20 +57,20 @@ if(!defined("__GOOSE__")){exit();}
       </ul>
     </div>
     @if($randomIndex && count($randomIndex))
-    <div class="index__random-works">
-      <ul>
+    <div class="index-random-works">
+      <ul class="index-random-works__list">
         @foreach($randomIndex as $k=>$item)
-        <li class="index__work">
-          <a href="/article/{{$item->srl}}/" class="wrap">
-            <figure class="image">
+        <li class="index-work index-random-works__item">
+          <a href="/article/{{$item->srl}}/" class="index-work__wrap">
+            <figure class="index-work__image">
               @if (isset($item->image))
               <img src="{{__API__}}/{{$item->image}}" alt="{{$item->title}}">
               @endif
             </figure>
-            <div class="caption">
-              <strong class="title">{{$item->title}}</strong>
+            <div class="index-work__caption">
+              <strong>{{$item->title}}</strong>
               @if (isset($item->nestName) || isset($item->categoryName))
-              <span class="metas">
+              <span>
                 @if (isset($item->nestName))
                 <em>{{$item->nestName}}</em>
                 @endif
@@ -86,20 +86,20 @@ if(!defined("__GOOSE__")){exit();}
       </ul>
     </div>
     @endif
-    <div class="index__works index--body">
-      <ul>
+    <div class="index-works index-works--body">
+      <ul class="index-works__list">
         @foreach($index->body as $k=>$item)
-        <li class="index__work">
-          <a href="/article/{{$item->srl}}/" class="wrap">
-            <figure class="image">
+        <li class="index-work">
+          <a href="/article/{{$item->srl}}/" class="index-work__wrap">
+            <figure class="index-work__image">
               @if (isset($item->image))
               <img src="{{__API__}}/{{$item->image}}" alt="{{$item->title}}">
               @endif
             </figure>
-            <div class="caption">
-              <strong class="title">{{$item->title}}</strong>
+            <div class="index-work__caption">
+              <strong>{{$item->title}}</strong>
               @if (isset($item->nestName) || isset($item->categoryName))
-              <span class="metas">
+              <span>
                 @if (isset($item->nestName))
                 <em>{{$item->nestName}}</em>
                 @endif
@@ -115,13 +115,13 @@ if(!defined("__GOOSE__")){exit();}
       </ul>
     </div>
     @else
-    <div class="index__empty">
+    <div class="index-empty">
       <img src="{{__ROOT__}}/assets/images/img-error.png" alt="error">
       <p>Not found work.</p>
     </div>
     @endif
-    @if ($paginate->total > 0)
-    <div class="index__paginate">
+    @if ($paginate && $paginate->total > 0)
+    <div class="index-paginate">
       {!! $paginate->mobile !!}
       {!! $paginate->desktop !!}
     </div>

@@ -33,7 +33,7 @@ if(!defined("__GOOSE__")){exit();}
         {!! $data->content !!}
       </div>
       <nav class="detail__like">
-        <button type="button" title="on like" data-srl="{{$data->srl}}"{!! $onLike ? ' disabled' : '' !!}>
+        <button type="button" title="on like" data-srl="{{$data->srl}}"{!! $onLike ? ' disabled' : '' !!} class="button-like">
           <span>
             <svg xmlns="http://www.w3.org/2000/svg" width="38" height="38" viewBox="0 0 38 38">
               <defs>

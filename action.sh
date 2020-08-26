@@ -27,27 +27,8 @@ case "$1" in
     fi
     ;;
 
-  # watch js,css
-  watch)
-    parcel watch assets/js/app.js \
-      --no-autoinstall \
-      --out-dir assets/dist \
-      --cache-dir cache/parcel \
-      --public-url /assets/dist
-    ;;
-
-  build)
-    rm -rf assets/dist
-    parcel build assets/js/app.js \
-      --no-source-maps \
-      --out-dir assets/dist \
-      --public-url ./ \
-      --cache-dir \
-      cache/parcel
-    ;;
-
   *)
-    echo "Usage: ./action.sh {setup|start|watch|build}" >&2
+    echo "Usage: ./action.sh {setup|start}" >&2
     exit 3
     ;;
 

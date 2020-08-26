@@ -1,11 +1,9 @@
-@import "./libs/valiables";
-@import "./libs/mixins";
+@import "./mixins";
 @import "~redgoose-content-body";
 
 .detail {
   margin: 40px 0 0;
-  padding: 0 $size-side-padding;
-
+  padding: 0 var(--size-side-padding);
   &__header {
     text-align: center;
     p {
@@ -14,7 +12,7 @@
       font-size: 0;
       span {
         display: inline-block;
-        font-family: $font-circular;
+        font-family: var(--font-circular);
         font-size: .625rem;
         &:nth-child(n+2):before {
           content: '/';
@@ -39,91 +37,6 @@
   &__like {
     margin: 40px 0 0;
     text-align: center;
-    button {
-      display: block;
-      margin: 0 auto;
-      padding: 10px 10px;
-      border: none;
-      background: transparent;
-      font-size: 0;
-      -webkit-tap-highlight-color: transparent;
-      cursor: pointer;
-      outline: none;
-      width: 90px;
-      height: 90px;
-      border-radius: 50%;
-      transition: box-shadow 100ms ease-out, background-color 250ms ease-out;
-      user-select: none;
-      span {
-        display: block;
-      }
-      svg {
-        display: block;
-        margin: 0 auto;
-        width: 38px;
-        height: 38px;
-        transition: transform 300ms cubic-bezier(.24, 1.35, .8, 1.22);
-        .step-1 {
-          color: #EB6635;
-        }
-        .step-2 {
-          color: #B31E36;
-        }
-        .step-3 {
-          color: #3422FF;
-        }
-      }
-      em {
-        display: block;
-        margin: -2px 0 0;
-        font-style: normal;
-        font-family: $font-circular;
-        font-size: 11px;
-        font-weight: 400;
-        color: #aaa;
-        transition: opacity 150ms ease-out;
-      }
-      &:disabled {
-        cursor: default;
-        svg {
-          .step-1 {
-            color: #ddd;
-          }
-          .step-2 {
-            color: #bbb;
-          }
-          .step-3 {
-            color: #aaa;
-          }
-        }
-        &:focus {
-          outline: none;
-        }
-        &:active {
-          svg {
-            transform: none;
-          }
-        }
-      }
-      &:active,
-      &:focus {
-        background: rgba(#000, .05);
-        svg {
-          transform: scale(1.4) translateY(6px);
-        }
-        em {
-          opacity: 0;
-        }
-      }
-      &:disabled {
-        &:active {
-          background: none;
-          em {
-            opacity: 1;
-          }
-        }
-      }
-    }
   }
   &__error {
     display: flex;
@@ -138,16 +51,13 @@
     p {
       margin: 30px 0 0;
       text-align: center;
-      font-family: $font-circular;
+      font-family: var(--font-circular);
       font-size: 1rem;
       font-weight: 400;
     }
   }
-
   @include responsive(tablet) {
     margin: 50px 0 0;
-    padding: 0 $size-side-padding-desktop;
-
     &__wrap {
       max-width: 768px;
       margin: 0 auto;
@@ -175,29 +85,100 @@
         color: #fff;
       }
     }
-    &__like {
-      button {
-        em {
-          color: mix(#000, $color-dark-text-base, 50%);
-        }
-        &:disabled {
-          svg {
-            .step-1 {
-              color: #666;
-            }
-            .step-2 {
-              color: #444;
-            }
-            .step-3 {
-              color: #333;
-            }
-          }
-        }
-        &:active,
-        &:focus {
-          background: rgba(#000, .15);
-        }
+  }
+}
+
+.button-like {
+  --color-like-step-1: #EB6635;
+  --color-like-step-2: #B31E36;
+  --color-like-step-3: #3422FF;
+  display: block;
+  margin: 0 auto;
+  padding: 10px;
+  border: none;
+  background: transparent;
+  font-size: 0;
+  -webkit-tap-highlight-color: transparent;
+  cursor: pointer;
+  outline: none;
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  transition: box-shadow 100ms ease-out, background-color 250ms ease-out;
+  user-select: none;
+  span {
+    display: block;
+  }
+  svg {
+    display: block;
+    margin: 0 auto;
+    width: 38px;
+    height: 38px;
+    transition: transform 300ms cubic-bezier(.24, 1.35, .8, 1.22);
+    .step-1 {
+      color: var(--color-like-step-1);
+    }
+    .step-2 {
+      color: var(--color-like-step-2);
+    }
+    .step-3 {
+      color: var(--color-like-step-3);
+    }
+  }
+  em {
+    display: block;
+    margin: -2px 0 0;
+    font-style: normal;
+    font-family: var(--font-circular);
+    font-size: 11px;
+    font-weight: 400;
+    color: var(--color-text-blur);
+    transition: opacity 150ms ease-out;
+  }
+  &:disabled {
+    --color-like-step-1: #ddd;
+    --color-like-step-2: #bbb;
+    --color-like-step-3: #aaa;
+    cursor: default;
+    &:focus {
+      outline: none;
+    }
+    &:active {
+      svg {
+        transform: none;
       }
+    }
+  }
+  &:active,
+  &:focus {
+    background: rgba(#000, .05);
+    svg {
+      transform: scale(1.4) translateY(6px);
+    }
+    em {
+      opacity: 0;
+    }
+  }
+  &:disabled {
+    &:active {
+      background: none;
+      em {
+        opacity: 1;
+      }
+    }
+  }
+  @include dark-mode() {
+    --color-like-step-1: #8ef01f;
+    --color-like-step-2: var(--color-key);
+    --color-like-step-3: #033615;
+    &:disabled {
+      --color-like-step-1: #666;
+      --color-like-step-2: #444;
+      --color-like-step-3: #333;
+    }
+    &:active,
+    &:focus {
+      background: rgba(#000, .15);
     }
   }
 }

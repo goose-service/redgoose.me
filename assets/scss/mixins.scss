@@ -1,5 +1,3 @@
-@import "./valiables";
-
 // responsive
 @mixin responsive($range)
 {
@@ -9,15 +7,15 @@
   }
   @else if $range == tablet
   {
-    @media (min-width: #{$size-screen-tablet}) { @content; }
+    @media (min-width: 768px) { @content; }
   }
   @else if $range == desktop
   {
-    @media (min-width: #{$size-screen-desktop}) { @content; }
+    @media (min-width: 1024px) { @content; }
   }
   @else if $range == max
   {
-    @media (min-width: #{$size-container-max}) { @content; }
+    @media (min-width: 1440px) { @content; }
   }
 }
 
@@ -39,7 +37,6 @@
 @mixin color-linear-gradient($matt-color, $start, $end, $direction:'vertical')
 {
   background: $matt-color;
-
   @if $direction == 'horizontal'
   {
     background: linear-gradient(to right, $start, $end);

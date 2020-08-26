@@ -16,7 +16,7 @@ function toggleLikeButtonEvent()
     $self.prop('disabled', true);
 
     // request like
-    util.ajax(`/on-like/${app.srl}`, 'post').then(function(res) {
+    util.ajax(`/on-like/${app.srl}/`, 'post').then(function(res) {
       try
       {
         res = JSON.parse(res);

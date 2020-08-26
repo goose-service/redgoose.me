@@ -5,7 +5,6 @@ import detail from './detail';
 // css
 import '../scss/app.scss';
 
-
 // layout
 layout();
 index();

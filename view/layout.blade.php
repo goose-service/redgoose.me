@@ -11,7 +11,7 @@ $nest_id = isset($nest_id) ? $nest_id : null;
 <h1 class="page-title">{{$pageTitle}}</h1>
 </body>
 <main>
-  <header class="layout-header">{{--on-menu--}}
+  <header class="layout-header">
     <div class="layout-header__wrap">
       <div class="layout-header__logo">
         <a href="{{__ROOT__}}/">
@@ -19,7 +19,7 @@ $nest_id = isset($nest_id) ? $nest_id : null;
         </a>
       </div>
       <nav class="layout-header__buttons">
-        <button type="button" title="toggle menu" class="button--menu">
+        <button type="button" title="toggle menu" class="navigation">
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
             <path fill="currentColor" fill-rule="nonzero" d="M3 18h18v-2H3v2zm0-5h10v-2H3v2zm0-7v2h14V6H3z"/>
           </svg>
@@ -28,7 +28,7 @@ $nest_id = isset($nest_id) ? $nest_id : null;
           </svg>
         </button>
       </nav>
-      <nav class="layout-header__menus">
+      <nav class="header-navigation">
         <ul>
           <li>
             <a href="/nest/visual/"><span>Works</span></a>
