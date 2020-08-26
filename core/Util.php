@@ -226,4 +226,15 @@ class Util {
         break;
     }
   }
+
+  /**
+   * get navigation data
+   *
+   * @return array
+   */
+  static public function getNavigation()
+  {
+    return require_once __PATH__.'/core/navigation.php';
+  }
+
 }

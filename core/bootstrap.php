@@ -108,6 +108,7 @@ try {
         'index' => $articles,
         'randomIndex' => (isset($res->data->random)) ? Util::getWorksData($res->data->random) : [],
         'paginate' => isset($paginate) ? $paginate : null,
+        'navigation' => Util::getNavigation(),
       ]);
       break;
 
@@ -147,6 +148,7 @@ try {
         'categoryName' => isset($res->data->category->name) ? $res->data->category->name : null,
         'index' => Util::getWorksData($res->data->works->index),
         'paginate' => isset($paginate) ? $paginate : null,
+        'navigation' => Util::getNavigation(),
       ]);
       break;
 
@@ -179,6 +181,7 @@ try {
         'image' => __API__.'/'.$res->data->json->thumbnail->path,
         'data' => $res->data,
         'onLike' => Util::checkCookie('redgoose-star-'.$_params->srl),
+        'navigation' => Util::getNavigation(),
       ]);
       break;
 
@@ -189,7 +192,9 @@ try {
       {
         throw new Exception('Not found page', 404);
       }
-      $blade->render('pages.'.$_page);
+      $blade->render('pages.'.$_page, (object)[
+        'navigation' => Util::getNavigation(),
+      ]);
       break;
 
     case 'rss':
@@ -245,7 +250,6 @@ try {
 
     default:
       throw new Exception('Not found page', 404);
-      break;
   }
 }
 catch (Exception $e)

@@ -1,6 +1,14 @@
 <!doctype html>
 <?php
 if(!defined("__GOOSE__")){exit();}
+
+/**
+ * layout
+ */
+
+/** @var array $navigation */
+/** @var string $pageTitle */
+
 $nest_id = isset($nest_id) ? $nest_id : null;
 ?>
 <html lang="ko">
@@ -30,47 +38,22 @@ $nest_id = isset($nest_id) ? $nest_id : null;
       </nav>
       <nav class="header-navigation">
         <ul>
-          <li>
-            <a href="/nest/visual/"><span>Works</span></a>
+          @foreach ($navigation as $key=>$nav)
+          <li class="{{isset($nav->active) && $nav->active ? 'on' : ''}}">
+            <a href="{{$nav->link}}" target="{{$nav->target}}">{{$nav->label}}</a>
+            @if (isset($nav->children) && count($nav->children) > 0)
             <div>
               <ol>
-                <li{!!$nest_id === 'visual' ? ' class="on"' : ''!!}>
-                  <a href="/nest/visual/">Visual</a>
+                @foreach ($nav->children as $key2=>$nav2)
+                <li class="{{isset($nav2->active) && $nav2->active ? 'on' : ''}}">
+                  <a href="{{$nav2->link}}" target="{{$nav2->target}}">{{$nav2->label}}</a>
                 </li>
-                <li{!!$nest_id === 'tool' ? ' class="on"' : ''!!}>
-                  <a href="/nest/tool/">Tool & Service</a>
-                </li>
+                @endforeach
               </ol>
             </div>
+            @endif
           </li>
-          <li>
-            <a href="/nest/landscape/"><span>Photos</span></a>
-            <div>
-              <ol>
-                <li{!!$nest_id === 'landscape' ? ' class="on"' : ''!!}>
-                  <a href="/nest/landscape/">Landscape</a>
-                </li>
-                <li{!!$nest_id === 'portrait' ? ' class="on"' : ''!!}>
-                  <a href="/nest/portrait/">Portrait</a>
-                </li>
-                <li{!!$nest_id === 'snap' ? ' class="on"' : ''!!}>
-                  <a href="/nest/snap/">Snap</a>
-                </li>
-                <li{!!$nest_id === 'composition' ? ' class="on"' : ''!!}>
-                  <a href="/nest/composition/">Composition</a>
-                </li>
-                <li{!!$nest_id === 'foreign-countries' ? ' class="on"' : ''!!}>
-                  <a href="/nest/foreign-countries/">Foreign countries</a>
-                </li>
-              </ol>
-            </div>
-          </li>
-          <li>
-            <a href="/page/about/"><span>About</span></a>
-          </li>
-          <li>
-            <a href="https://note.redgoose.me" target="_blank"><span>Note</span></a>
-          </li>
+          @endforeach
         </ul>
       </nav>
     </div>
