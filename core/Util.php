@@ -17,7 +17,7 @@ class Util {
   static public function error($error, $blade)
   {
     // debug
-    if ($_ENV['USE_DEBUG'] === '1')
+    if ($_ENV['APP_USE_DEBUG'] === '1')
     {
       Console::log((object)[
         'message' => $error->getMessage(),
@@ -40,7 +40,7 @@ class Util {
     {
       // render
       $blade->render('error', (object)[
-        'title' => $_ENV['TITLE'],
+        'title' => $_ENV['APP_TITLE'],
         'message' => $message,
       ]);
     }
@@ -166,7 +166,7 @@ class Util {
       $key,
       $value,
       time() + 3600 * 24 * $day,
-      $_ENV['PATH_COOKIE']
+      $_ENV['APP_PATH_COOKIE']
     );
   }
 
