@@ -3,10 +3,10 @@ namespace Core;
 use Exception, redgoose\Paginate, redgoose\Console;
 
 /**
- * Util
+ * AppUtil
  */
 
-class Util {
+class AppUtil {
 
   /**
    * error

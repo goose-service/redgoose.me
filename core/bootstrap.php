@@ -40,7 +40,7 @@ $blade = new Blade(__PATH__.'/view', __PATH__.'/cache/view');
 
 // set router
 try {
-  $router = new Router();
+  $router = new AppRouter();
 
   // not found page
   if (!$router->match)
@@ -64,7 +64,7 @@ try {
   switch($_target)
   {
     case 'index':
-      $page = Util::getPage();
+      $page = AppUtil::getPage();
       $size = (int)$_ENV['APP_DEFAULT_INDEX_SIZE'];
       $randomSize = 8;
 
@@ -88,7 +88,7 @@ try {
       if (!($res && $res->success)) throw new Exception($res->message, $res->code);
 
       // convert articles
-      $tmpArticles = Util::getWorksData($res->data->index);
+      $tmpArticles = AppUtil::getWorksData($res->data->index);
       $articles = (object)[
         'head' => $tmpArticles ? array_slice($tmpArticles, 0,4) : [],
         'body' => $tmpArticles ? array_slice($tmpArticles, 4) : [],
@@ -97,7 +97,7 @@ try {
       // make pagination
       if ($tmpArticles && count($tmpArticles) > 0)
       {
-        $paginate = Util::makePagination($res->data->total, $page, $size);
+        $paginate = AppUtil::makePagination($res->data->total, $page, $size);
       }
 
       // render page
@@ -106,21 +106,21 @@ try {
         'pageTitle' => 'Newest works',
         'count' => $tmpArticles ? count($tmpArticles) : 0,
         'index' => $articles,
-        'randomIndex' => (isset($res->data->random)) ? Util::getWorksData($res->data->random) : [],
+        'randomIndex' => (isset($res->data->random)) ? AppUtil::getWorksData($res->data->random) : [],
         'paginate' => isset($paginate) ? $paginate : null,
-        'navigation' => Util::getNavigation(),
+        'navigation' => AppUtil::getNavigation(),
       ]);
       break;
 
     case 'index/nest':
-      $page = Util::getPage();
+      $page = AppUtil::getPage();
       $size = (int)$_ENV['APP_DEFAULT_INDEX_SIZE'];
 
       $res = $api->call('get', '/external/redgoose-me-nest/', (object)[
         'app_srl' => $_ENV['APP_DEFAULT_APP_SRL'],
         'nest_id' => isset($_params->id) ? $_params->id : '',
         'category_srl' => isset($_params->srl) ? $_params->srl : null,
-        'page' => Util::getPage(),
+        'page' => AppUtil::getPage(),
         'size' => $_ENV['APP_DEFAULT_INDEX_SIZE'],
         'order' => '`order` desc, `srl` desc',
         'ext_field' => 'count_article',
@@ -132,7 +132,7 @@ try {
       // make pagination
       if (isset($res->data->works->index) && count($res->data->works->index) > 0)
       {
-        $paginate = Util::makePagination($res->data->works->total, $page, $size);
+        $paginate = AppUtil::makePagination($res->data->works->total, $page, $size);
       }
 
       $title = 'redgoose';
@@ -146,27 +146,27 @@ try {
         'category_srl' => isset($_params->srl) ? $_params->srl : null,
         'categories' => $res->data->categories,
         'categoryName' => isset($res->data->category->name) ? $res->data->category->name : null,
-        'index' => Util::getWorksData($res->data->works->index),
+        'index' => AppUtil::getWorksData($res->data->works->index),
         'paginate' => isset($paginate) ? $paginate : null,
-        'navigation' => Util::getNavigation(),
+        'navigation' => AppUtil::getNavigation(),
       ]);
       break;
 
     case 'article':
       $res = $api->call('get', '/articles/'.(int)$_params->srl.'/', (object)[
         'app' => $_ENV['APP_DEFAULT_APP_SRL'],
-        'hit' => Util::checkCookie('redgoose-hit-'.$_params->srl) ? 0 : 1,
+        'hit' => AppUtil::checkCookie('redgoose-hit-'.$_params->srl) ? 0 : 1,
         'ext_field' => 'category_name,nest_name'
       ]);
       if (!isset($res->response)) throw new Exception($res->message, $res->code);
       $res = $res->response;
       if (!($res && $res->success)) throw new Exception($res->message, $res->code);
-      $res->data->regdate = Util::convertDate($res->data->regdate);
+      $res->data->regdate = AppUtil::convertDate($res->data->regdate);
 
       // add key in cookie
-      if (!Util::checkCookie('redgoose-hit-'.$_params->srl))
+      if (!AppUtil::checkCookie('redgoose-hit-'.$_params->srl))
       {
-        Util::setCookie('redgoose-hit-'.$_params->srl, '1', 7);
+        AppUtil::setCookie('redgoose-hit-'.$_params->srl, '1', 7);
       }
 
       // parse markdown
@@ -177,11 +177,11 @@ try {
       $blade->render('detail', (object)[
         'title' => ($res->data->title === '.' ? 'Untitled work' : $res->data->title).' on '.$_ENV['APP_TITLE'],
         'pageTitle' => $res->data->title === '.' ? 'Untitled work' : $res->data->title,
-        'description' => Util::contentToShortText($res->data->content),
+        'description' => AppUtil::contentToShortText($res->data->content),
         'image' => __API__.'/'.$res->data->json->thumbnail->path,
         'data' => $res->data,
-        'onLike' => Util::checkCookie('redgoose-star-'.$_params->srl),
-        'navigation' => Util::getNavigation(),
+        'onLike' => AppUtil::checkCookie('redgoose-star-'.$_params->srl),
+        'navigation' => AppUtil::getNavigation(),
       ]);
       break;
 
@@ -193,7 +193,7 @@ try {
         throw new Exception('Not found page', 404);
       }
       $blade->render('pages.'.$_page, (object)[
-        'navigation' => Util::getNavigation(),
+        'navigation' => AppUtil::getNavigation(),
       ]);
       break;
 
@@ -232,7 +232,7 @@ try {
         }
       }
       // set header
-      Util::setHeader('rss');
+      AppUtil::setHeader('rss');
       // render
       $blade->render('rss', $data);
       break;
@@ -248,11 +248,22 @@ try {
       echo json_encode($res);
       break;
 
+    case 'lab':
+      if ($_ENV['APP_DEV'] === '1' && file_exists(__PATH__.'/./core/lab.php'))
+      {
+        require __PATH__.'/./core/lab.php';
+      }
+      else
+      {
+        throw new Exception('Not found page', 404);
+      }
+      break;
+
     default:
       throw new Exception('Not found page', 404);
   }
 }
 catch (Exception $e)
 {
-  Util::error($e, $blade);
+  AppUtil::error($e, $blade);
 }

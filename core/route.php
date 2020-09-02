@@ -20,4 +20,7 @@ return [
 
 	[ 'POST', '/on-like/[i:srl]/', 'on-like' ],
 
+  [ 'GET', '/lab', 'lab' ],
+  [ 'GET', '/lab/', 'lab' ],
+
 ];

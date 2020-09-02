@@ -3,12 +3,12 @@ namespace Core;
 use AltoRouter, Exception;
 
 /**
- * Router
+ * AppRouter
  *
  * @property AltoRouter route
  * @property array match
  */
-class Router {
+class AppRouter {
 
 	/**
 	 * @throws Exception
