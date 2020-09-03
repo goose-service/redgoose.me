@@ -152,7 +152,7 @@ class AppModel {
 
       // get categories
       $result->categories = [];
-      if ($nest->json->useCategory === '1')
+      if ((int)$nest->json->useCategory === 1)
       {
         $result->categories = $this->connect->model->getItems((object)[
           'table' => 'categories',
