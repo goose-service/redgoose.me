@@ -21,6 +21,10 @@ class AppModel {
     {
       // check path
       if (!($_ENV['APP_PATH_GOOSE'] && $_ENV['APP_TOKEN_PUBLIC'])) throw new Exception();
+      if (!file_exists(__PATH__.'/'.$_ENV['APP_PATH_GOOSE'].'connect.php'))
+      {
+        throw new Exception('Not found connect file');
+      }
       // require goose connect
       $this->connect = require __PATH__.'/'.$_ENV['APP_PATH_GOOSE'].'connect.php';
       // initial goose connect
