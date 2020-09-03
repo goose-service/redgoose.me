@@ -16,7 +16,7 @@ class Blade {
 	 * @param string $path_view
 	 * @param string $path_cache
 	 */
-	public function __construct($path_view, $path_cache)
+	public function __construct(string $path_view, string $path_cache)
 	{
 		$this->blade = new BladeOne($path_view, $path_cache);
 	}
@@ -25,10 +25,10 @@ class Blade {
 	 * render
 	 *
 	 * @param string $view
-	 * @param object $params
+	 * @param object|null $params
 	 * @throws Exception
 	 */
-	public function render($view, $params=null)
+	public function render(string $view, object $params=null)
 	{
 		if (!$view)
 		{

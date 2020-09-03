@@ -7,8 +7,9 @@ if(!defined("__GOOSE__")){exit();}
 
 /** @var string $title */
 /** @var string $pageTitle */
-/** @var array $index */
+/** @var array $articles */
 /** @var object $paginate */
+/** @var array $categories */
 /** @var string $categoryName */
 ?>
 
@@ -16,10 +17,10 @@ if(!defined("__GOOSE__")){exit();}
 
 @section('meta')
 <title>{{$title}}</title>
-<meta name="description" content="{{ $_ENV['APP_DESCRIPTION'] }}"/>
-<meta property="og:title" content="{{ $title }}"/>
-<meta property="og:description" content="{{ $_ENV['APP_DESCRIPTION'] }}">
-<meta property="og:image" content="{{ __API__ }}/usr/icons/og-redgoose.jpg">
+<meta name="description" content="{{$_ENV['APP_DESCRIPTION']}}"/>
+<meta property="og:title" content="{{$title}}"/>
+<meta property="og:description" content="{{$_ENV['APP_DESCRIPTION']}}">
+<meta property="og:image" content="{{__URL__}}/assets/images/og-redgoose.jpg">
 @endsection
 
 @section('contents')
@@ -54,14 +55,16 @@ if(!defined("__GOOSE__")){exit();}
     @endif
   </header>
   <div class="index-works index-works--head">
-    @if ($index && count($index))
+    @if ($articles && count($articles))
     <ul class="index-works__list">
-      @foreach($index as $k=>$item)
+      @foreach($articles as $k=>$item)
       <li class="index-work">
         <a href="/article/{{$item->srl}}/" class="index-work__wrap">
           <figure class="index-work__image">
             @if (isset($item->image))
-            <img src="{{__API__}}/{{$item->image}}" alt="{{$item->title}}">
+            <img src="{{$item->image}}" alt="{{$item->title}}">
+            @else
+            {!! Core\AppEmptyIcon::random() !!}
             @endif
           </figure>
           <div class="index-work__caption">
@@ -77,10 +80,10 @@ if(!defined("__GOOSE__")){exit();}
     @else
     <div class="index-empty">
       <img src="{{__ROOT__}}/assets/images/img-error.png" alt="error">
-      <p>Not found work.</p>
+      <p>Not found article.</p>
     </div>
     @endif
-    @if ($paginate && $paginate->total > 0)
+    @if (isset($paginate->total) && $paginate->total > 0)
     <div class="index-paginate">
       {!! $paginate->mobile !!}
       {!! $paginate->desktop !!}

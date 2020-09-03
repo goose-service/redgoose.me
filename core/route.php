@@ -17,6 +17,7 @@ return [
 	[ 'GET', '/page/[char:name]/', 'page' ],
 
 	[ 'GET', '/rss', 'rss' ],
+	[ 'GET', '/rss/', 'rss' ],
 
 	[ 'POST', '/on-like/[i:srl]/', 'on-like' ],
 

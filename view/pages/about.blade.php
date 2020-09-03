@@ -7,7 +7,7 @@
 <meta name="description" content="{{ $_ENV['APP_DESCRIPTION'] }}"/>
 <meta property="og:title" content="{{ $_ENV['APP_TITLE'] }}"/>
 <meta property="og:description" content="{{ $_ENV['APP_DESCRIPTION'] }}">
-<meta property="og:image" content="{{ __API__ }}/usr/icons/og-redgoose.jpg">
+<meta property="og:image" content="{{__URL__}}/assets/images/og-redgoose.jpg">
 @endsection
 
 @section('contents')

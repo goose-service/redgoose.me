@@ -255,6 +255,7 @@
   --size-image-height: 68vw;
   --size-image-max-height: auto;
   box-sizing: border-box;
+  min-width: 0;
   &__wrap {
     display: block;
     text-decoration: none;
@@ -285,6 +286,17 @@
         object-fit: cover;
         transform: scale(1);
       }
+    }
+    svg {
+      display: block;
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%,-50%);
+      width: 48px;
+      height: 48px;
+      color: var(--color-text-blur);
+      opacity: .75;
     }
     &:active {
       img {
@@ -451,7 +463,7 @@
 }
 
 .index-empty {
-  padding: 50px 0;
+  padding: 62px 0;
   img {
     width: 180px;
     max-width: 100%;
@@ -459,10 +471,11 @@
     margin: 0 auto;
   }
   p {
-    margin: 30px 0 0;
+    margin: 32px 0 0;
     text-align: center;
-    font-size: 1rem;
-    font-weight: 600;
+    font-size: 1.25rem;
+    font-weight: 500;
+    font-family: var(--font-circular);
   }
 }
 

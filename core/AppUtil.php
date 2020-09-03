@@ -42,6 +42,7 @@ class AppUtil {
       $blade->render('error', (object)[
         'title' => $_ENV['APP_TITLE'],
         'message' => $message,
+        'navigation' => AppUtil::getNavigation(),
       ]);
     }
     catch(Exception $e)
