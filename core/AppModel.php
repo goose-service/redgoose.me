@@ -111,7 +111,7 @@ class AppModel {
       $result->body = ($articles && count($articles) > 0) ? array_slice($articles, 4) : [];
 
       // make pagination
-      $result->paginate = ($result->total > 0) ? AppUtil::makePagination($result->total, $result->page, $result->size) : null;
+      $result->paginate = ($result->total > 0) ? $this->makePagination($result->total, $result->page, $result->size) : null;
 
       return $result;
     }
@@ -233,8 +233,6 @@ class AppModel {
       // extend articles
       if ($result->articles && count($result->articles) > 0)
       {
-        $result->articles = $this->extendCategoryNameInItems($result->articles);
-        $result->articles = $this->extendNestNameInItems($result->articles);
         $result->articles = $this->convertArticles($result->articles);
       }
 
@@ -245,7 +243,7 @@ class AppModel {
       ];
 
       // make pagination
-      $result->paginate = ($result->total > 0) ? AppUtil::makePagination($result->total, $result->page, $result->size) : null;
+      $result->paginate = ($result->total > 0) ? $this->makePagination($result->total, $result->page, $result->size) : null;
 
       return $result;
     }
@@ -395,7 +393,7 @@ class AppModel {
   }
 
   /**
-   * item
+   * like
    *
    * @param int $article_srl
    * @return object
@@ -415,6 +413,7 @@ class AppModel {
       }
       $result->success = true;
       $result->star = $res->data->star;
+      AppUtil::setCookie('redgoose-like-'.$article_srl, '1', 30);
     }
     catch(Exception $e)
     {
@@ -495,11 +494,39 @@ class AppModel {
         $obj->image = isset($item->json->thumbnail->path) ? $_ENV['APP_PATH_API_URL'].'/'.$item->json->thumbnail->path : null;
         if (isset($item->category_name)) $obj->categoryName = $item->category_name;
         if (isset($item->nest_name)) $obj->nestName = $item->nest_name;
-        if (isset($item->styleType)) $obj->styleType = $item->styleType;
         if (isset($item->order)) $obj->regdate = $item->order;
         $result[] = $obj;
       }
     }
+    return $result;
+  }
+
+  /**
+   * make pagination
+   * 모바일과 데스크탑 네비게이션 객체를 만들어준다.
+   *
+   * @param int $total
+   * @param int $page
+   * @param int $size
+   * @param array $params
+   * @return object
+   */
+  private function makePagination(int $total=0, int $page=1, int $size=10, $params=[])
+  {
+    $result = (object)[
+      'total' => $total,
+      'page' => $page,
+    ];
+    $paginate = new Paginate((object)[
+      'total' => $total,
+      'page' => $page,
+      'size' => $size,
+      'params' => $params,
+      'scale' => 3,
+    ]);
+    $result->mobile = $paginate->createElements(['paginate', 'paginate--mobile']);
+    $paginate->update((object)[ 'scale' => 10 ]);
+    $result->desktop = $paginate->createElements(['paginate', 'paginate--desktop']);
     return $result;
   }
 

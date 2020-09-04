@@ -61,35 +61,6 @@ class AppUtil {
   }
 
   /**
-   * get works data
-   *
-   * @param array $index
-   * @return array
-   */
-  static public function getWorksData($index)
-  {
-    if (!(isset($index) && count($index))) return null;
-
-    $result = [];
-    foreach ($index as $key=>$item)
-    {
-      $obj = (object)[];
-      if ($item->json)
-      {
-        $obj->srl = (int)$item->srl;
-        $obj->title = (isset($item->title) && $item->title === '.') ? 'untitled work' : $item->title;
-        $obj->image = isset($item->json->thumbnail->path) ? $item->json->thumbnail->path : null;
-        if (isset($item->category_name)) $obj->categoryName = $item->category_name;
-        if (isset($item->nest_name)) $obj->nestName = $item->nest_name;
-        if (isset($item->styleType)) $obj->styleType = $item->styleType;
-        if (isset($item->order)) $obj->regdate = $item->order;
-        $result[] = $obj;
-      }
-    }
-    return $result;
-  }
-
-  /**
    * convert date
    *
    * @param string $date
@@ -151,7 +122,7 @@ class AppUtil {
    */
   static public function checkCookie($key='')
   {
-    return isset($_COOKIE[$key]) ? true : false;
+    return isset($_COOKIE[$key]);
   }
 
   /**
@@ -169,35 +140,6 @@ class AppUtil {
       time() + 3600 * 24 * $day,
       $_ENV['APP_PATH_COOKIE']
     );
-  }
-
-  /**
-   * make pagination
-   * 모바일과 데스크탑 네비게이션 객체를 만들어준다.
-   *
-   * @param int $total
-   * @param int $page
-   * @param int $size
-   * @param array $params
-   * @return object
-   */
-  static public function makePagination($total, $page, $size, $params=[])
-  {
-    $result = (object)[
-      'total' => $total,
-      'page' => $page,
-    ];
-  	$paginate = new Paginate((object)[
-  	  'total' => $total,
-      'page' => $page,
-      'size' => $size,
-      'params' => $params,
-      'scale' => 3,
-    ]);
-  	$result->mobile = $paginate->createElements(['paginate', 'paginate--mobile']);
-    $paginate->update((object)[ 'scale' => 10 ]);
-    $result->desktop = $paginate->createElements(['paginate', 'paginate--desktop']);
-    return $result;
   }
 
   /**

@@ -1,6 +1,6 @@
 <?php
 namespace Core;
-use Dotenv\Dotenv, redgoose\Console, redgoose\RestAPI, Exception, Parsedown;
+use Dotenv\Dotenv, redgoose\Console, Exception;
 
 if (!defined('__GOOSE__')) exit();
 

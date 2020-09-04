@@ -1,12 +1,9 @@
-<?php
-//$https =
-?>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
 <meta http-equiv="X-UA-Compatible" content="ie=edge">
 <meta name="author" content="redgoose"/>
 <meta name="keywords" content="redgoose 2d 3d photography graphic design case-study programing web 붉은거위 거위 portfolio drawing"/>
-<link rel="canonical" href="{{__URL__}}{{ $_SERVER['REQUEST_URI'] }}"/>
+<link rel="canonical" href="{{__URL__}}{{$_SERVER['REQUEST_URI']}}"/>
 
 <meta name="google-site-verification" content="bF0pYg2C9_CT16xoUenLKPFbGDG-LNYJoV2vAOpf-74"/>
 <meta name="p:domain_verify" content="3e05cc5b868de908660cf4004dbdc8fe"/>

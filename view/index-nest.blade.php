@@ -83,7 +83,7 @@ if(!defined("__GOOSE__")){exit();}
       <p>Not found article.</p>
     </div>
     @endif
-    @if (isset($paginate->total) && $paginate->total > 0)
+    @if ($paginate->mobile || $paginate->desktop)
     <div class="index-paginate">
       {!! $paginate->mobile !!}
       {!! $paginate->desktop !!}

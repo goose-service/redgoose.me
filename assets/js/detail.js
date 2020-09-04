@@ -22,12 +22,10 @@ function toggleLikeButtonEvent()
         res = JSON.parse(res);
         if (!res.success) throw new Error();
         $self.find('em').text(res.star);
-        util.setCookie(`redgoose-star-${app.srl}`, '1', 10, app.url);
       }
       catch(e)
       {
-        $self.prop('disabled', false);
-        alert('Error update like');
+        throw new Error();
       }
     }).catch(function(error) {
       $self.prop('disabled', false);
