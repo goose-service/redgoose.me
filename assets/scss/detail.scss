@@ -56,18 +56,6 @@
       font-weight: 400;
     }
   }
-  .redgoose-body {
-    pre {
-      position: relative;
-      box-sizing: border-box;
-      left: 50%;
-      width: 75vw;
-      max-width: 1024px;
-      min-width: 100%;
-      transform: translateX(-50%);
-      transform-origin: 0 50%;
-    }
-  }
   @include responsive(tablet) {
     margin: 50px 0 0;
     &__wrap {
