@@ -12,6 +12,7 @@
     "build": "rm -rf assets/dist && parcel build assets/js/app.js --no-source-maps --out-dir assets/dist --public-url ./ --cache-dir cache/parcel"
   },
   "dependencies": {
+    "auto-writer": "^1.1.2",
     "cash-dom": "^8.0.0",
     "redgoose-content-body": "https://github.com/redgoose-dev/redgoose-content-body.git"
   },

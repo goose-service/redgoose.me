@@ -252,6 +252,7 @@
 
 // work
 .index-work {
+  $self: '.index-work';
   --size-image-height: 68vw;
   --size-image-max-height: auto;
   box-sizing: border-box;
@@ -339,6 +340,18 @@
     }
   }
   @include responsive(tablet) {
+    &__wrap {
+      &:hover {
+        #{$self}__image {
+          img {
+            transform: scale(1.1) translate(-45%, -45%);
+            @supports (object-fit: cover) {
+              transform: scale(1.1);
+            }
+          }
+        }
+      }
+    }
     &__image {
       box-sizing: border-box;
       overflow: hidden;
@@ -347,14 +360,6 @@
         transition: transform 300ms ease-out;
         transform-origin: 50% 50%;
         backface-visibility: hidden;
-      }
-      &:hover {
-        img {
-          transform: scale(1.1) translate(-45%, -45%);
-          @supports (object-fit: cover) {
-            transform: scale(1.1);
-          }
-        }
       }
     }
   }
