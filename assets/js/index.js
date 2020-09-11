@@ -16,7 +16,7 @@ function toggleCategoryNavigation()
 
 function mouseOverItems()
 {
-	const $works = $('.index-works a');
+	const $works = $('.index-works a, .index-random-works a');
 	$works.each(function() {
 		$(this).on('mouseenter', function() {
 			if ($(window).width() < 768) return true;

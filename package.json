@@ -1,6 +1,6 @@
 {
   "name": "redgoose.me",
-  "version": "5.3.0",
+  "version": "5.3.2",
   "main": "index.js",
   "repository": "https://gitlab.com/redgoose-me/redgoose.me.git",
   "author": "redgoose <scripter@me.com>",
