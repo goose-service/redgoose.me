@@ -193,7 +193,7 @@
   transform-origin: 50% 50%;
   margin: calc(var(--size-margin-vertical) * 2) 0 var(--size-margin-vertical);
   @include responsive(desktop) {
-    max-width: 1400px;
+    max-width: 1280px;
     @include retina() {
       zoom: .75;
     }
