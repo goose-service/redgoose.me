@@ -1,5 +1,6 @@
 import $ from 'cash-dom';
-import * as util from "./util";
+import LightBox from './LightBox';
+import * as util from './util';
 
 const app = window.app;
 const $detail = $('.detail');
@@ -34,7 +35,29 @@ function toggleLikeButtonEvent()
   });
 }
 
+/**
+ * initial images in grid item
+ */
+function initImagesInGridItem()
+{
+  const lightbox = new LightBox();
+  const $images = $detail.find('.grid-item img');
+  $images.each(function() {
+    this.addEventListener('click', (e) => {
+      if (!e.target.src) return;
+      lightbox.open(e.target.src, e.target.name);
+    });
+  });
+  // $images.forEach((o) => {
+  //   o.addEventListener('click', (e) => {
+  //     if (!e.target.src) return;
+  //     lightbox.open(e.target.src, e.target.name);
+  //   });
+  // });
+}
+
 export default function()
 {
   toggleLikeButtonEvent();
+  initImagesInGridItem();
 }
