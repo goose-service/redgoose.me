@@ -45,5 +45,10 @@ html.popup-lightbox {
     &__body {
       padding: 40px;
     }
+    @include retina() {
+      &__body img {
+        zoom: .75;
+      }
+    }
   }
 }
