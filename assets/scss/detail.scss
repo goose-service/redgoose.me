@@ -189,13 +189,11 @@
   position: relative;
   left: 50%;
   max-width: 100vw;
-  max-height: 1200px;
   transform: translateX(-50%);
   transform-origin: 50% 50%;
   margin: calc(var(--size-margin-vertical) * 2) 0 var(--size-margin-vertical);
-  object-fit: contain;
   @include responsive(desktop) {
-    max-width: 90vw;
+    max-width: 1400px;
     @include retina() {
       zoom: .75;
     }
