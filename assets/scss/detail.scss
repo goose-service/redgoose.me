@@ -198,6 +198,9 @@
       zoom: .75;
     }
   }
+  @include responsive(max) {
+    max-width: 1440px;
+  }
   @media (max-width: 320px) {
     max-width: 100%;
   }
@@ -214,7 +217,7 @@
     left: 50%;
     transform: translateX(-50%);
     width: 100vw;
-    max-width: 1024px;
+    max-width: 1280px;
     transform-origin: 50% 50%;
     > p {
       position: relative;
