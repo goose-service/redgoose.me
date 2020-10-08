@@ -11,6 +11,15 @@ $dir: '../fonts';
     url('#{$dir}/circular/CircularStd-#{$weight-name}.woff') format('woff');
   }
 }
+@mixin font-loader-title()
+{
+  @font-face {
+    font-family: 'contents-title';
+    font-style: normal;
+    font-weight: normal;
+    src: url('#{$dir}/content-title/MapoAgapeA.woff') format('woff');
+  }
+}
 
 
 // load fonts
@@ -18,3 +27,4 @@ $dir: '../fonts';
 @include font-loader-circular('Medium', 500);
 @include font-loader-circular('Bold', 600);
 @include font-loader-circular('Black', 900);
+@include font-loader-title();

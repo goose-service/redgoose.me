@@ -215,7 +215,7 @@ main {
       }
       > a {
         display: block;
-        font-family: var(--font-circular);
+        font-family: var(--font-eng);
         font-size: 18px;
         font-weight: 600;
         color: #fff;
@@ -239,7 +239,7 @@ main {
       padding: 7px 15px 7px 0;
       box-sizing: border-box;
       color: #fff;
-      font-family: var(--font-circular);
+      font-family: var(--font-eng);
       line-height: 1.42;
       font-size: 13px;
       font-weight: 400;
@@ -290,7 +290,7 @@ main {
           align-items: center;
           box-sizing: border-box;
           padding: 0 24px;
-          font-family: var(--font-circular);
+          font-family: var(--font-eng);
           font-weight: 600;
           font-size: .875rem;
           color: var(--color-text);
@@ -342,7 +342,7 @@ main {
       transition: opacity 200ms ease-out;
       > li {
         > a {
-          font-family: var(--font-circular);
+          font-family: var(--font-eng);
           display: block;
           padding: 4px 25px;
           color: #fff;
