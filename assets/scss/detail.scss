@@ -212,6 +212,13 @@
     font-family: var(--font-title);
     font-weight: normal;
   }
+  img {
+    transition: opacity .2s ease-out;
+    cursor: pointer;
+    &:active {
+      opacity: .75;
+    }
+  }
   .grid-item {
     --grid-item-columns: 1;
     --grid-item-gap: 10px;
@@ -243,11 +250,6 @@
         transform: none;
         box-sizing: border-box;
         object-fit: cover;
-        transition: opacity .2s ease-out;
-        cursor: pointer;
-        &:active {
-          opacity: .5;
-        }
       }
     }
     @for $i from 1 through 6 {

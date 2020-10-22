@@ -41,7 +41,7 @@ function toggleLikeButtonEvent()
 function initImagesInGridItem()
 {
   const lightbox = new LightBox();
-  const $images = $detail.find('.grid-item img');
+  const $images = $detail.find('img');
   $images.each(function() {
     this.addEventListener('click', (e) => {
       if (!e.target.src) return;
