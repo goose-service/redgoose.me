@@ -1,30 +1,46 @@
 $dir: '../fonts';
 
 // mixins
-@mixin font-loader-circular($weight-name, $weight)
+@mixin font-loader-ortsa($weight-name, $weight)
 {
+  // Astro font - 30(light), 45(regular), 60(medium), 75(bold), 90(black)
   @font-face {
-    font-family: 'Circular';
+    font-family: 'ortsa';
     font-style: normal;
     font-weight: $weight;
-    src: url('#{$dir}/circular/CircularStd-#{$weight-name}.woff2') format('woff2'),
-    url('#{$dir}/circular/CircularStd-#{$weight-name}.woff') format('woff');
+    src: url('#{$dir}/ortsa/ortsaWeb-#{$weight-name}.woff2') format('woff2');
   }
 }
-@mixin font-loader-title()
+@mixin font-loader-ortsa-italic($weight-name, $weight)
 {
+  // Astro font italic
+  @font-face {
+    font-family: 'ortsa';
+    font-style: italic;
+    font-weight: $weight;
+    src: url('#{$dir}/ortsa/ortsaWeb-#{$weight-name}-italic.woff2') format('woff2');
+  }
+}
+@mixin font-loader-title($weight)
+{
+  // Arita-buri - 200(Hairline), 300(Light), 400(Medium), 500(SemiBold), 600(Bold)
   @font-face {
     font-family: 'contents-title';
     font-style: normal;
-    font-weight: normal;
-    src: url('#{$dir}/content-title/MapoAgapeA.woff') format('woff');
+    font-weight: $weight;
+    src: url('#{$dir}/content-title/Arita-buri-#{$weight}.woff2') format('woff');
   }
 }
 
 
 // load fonts
-@include font-loader-circular('Book', 400);
-@include font-loader-circular('Medium', 500);
-@include font-loader-circular('Bold', 600);
-@include font-loader-circular('Black', 900);
-@include font-loader-title();
+@include font-loader-ortsa('30', 300); // light
+@include font-loader-ortsa('45', 400); // regular
+@include font-loader-ortsa('60', 500); // medium
+@include font-loader-ortsa('75', 600); // bold
+@include font-loader-ortsa('90', 900); // black
+@include font-loader-title(200);
+@include font-loader-title(300);
+@include font-loader-title(400);
+@include font-loader-title(500);
+@include font-loader-title(600);

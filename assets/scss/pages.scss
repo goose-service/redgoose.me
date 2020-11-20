@@ -20,7 +20,7 @@
 			margin: 2px 0 0;
 			font-family: var(--font-title);
 			font-size: 32px;
-			font-weight: 600;
+			font-weight: 500;
 			line-height: 1;
 			color: var(--color-about-metas-section-title);
 		}
@@ -53,9 +53,9 @@
 			}
 			> h3 {
 				margin: 0;
-				font-family: var(--font-title);
+				font-family: var(--font-eng);
 				font-size: 24px;
-				font-weight: normal;
+				font-weight: 500;
 				color: var(--color-about-metas-section-title);
 				&:after {
 					content: '';

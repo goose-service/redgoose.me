@@ -17,9 +17,9 @@
     "redgoose-content-body": "https://github.com/redgoose-dev/redgoose-content-body.git"
   },
   "devDependencies": {
-    "autoprefixer": "^10.0.0",
+    "autoprefixer": "^10.0.2",
     "cssnano": "^4.1.10",
-    "node-sass": "^4.14.1",
+    "node-sass": "^5.0.0",
     "parcel": "^1.12.4",
     "postcss-modules": "^3.2.2",
     "postcss-preset-env": "^6.7.0"

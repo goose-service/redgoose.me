@@ -38,11 +38,11 @@
 				<section>
 					<h3>information</h3>
 					<dl>
-						<dt>position</dt>
+						<dt>Position</dt>
 						<dd>frond-end engineer, visual creator</dd>
-						<dt>from</dt>
+						<dt>From</dt>
 						<dd>korea republic of</dd>
-						<dt>e-mail</dt>
+						<dt>E-Mail</dt>
 						<dd>
 							scripter@me.com<br/>
 							redgooseme@gmail.com
@@ -52,24 +52,24 @@
 				<section>
 					<h3>skill</h3>
 					<dl>
-						<dt>use tools</dt>
+						<dt>Use tools</dt>
 						<dd>photoshop, cinema4d, illustrator, webstorm, phpstorm, sketch, github client, zeplin, paw, trello, capture one pro</dd>
-						<dt>programing</dt>
+						<dt>Programing</dt>
 						<dd>html, css(scss), php, javascript(jQuery, react-js, react-native, vue.js, nuxt.js), markdown</dd>
 					</dl>
 				</section>
 				<section>
 					<h3>sns</h3>
 					<dl>
-						<dt>facebook</dt>
+						<dt>Facebook</dt>
 						<dd>
 							<a href="https://www.facebook.com/redgoose.me" target="_blank">scripter@me.com</a>
 						</dd>
-						<dt>instagram</dt>
+						<dt>Instagram</dt>
 						<dd>
 							<a href="https://www.instagram.com/redgoose.me" target="_blank">https://www.instagram.com/redgoose.me</a>
 						</dd>
-						<dt>pinterest</dt>
+						<dt>Pinterest</dt>
 						<dd>
 							<a href="https://pinterest.com/redgooseme" target="_blank">https://pinterest.com/redgooseme</a>
 						</dd>
@@ -78,15 +78,15 @@
 				<section>
 					<h3>source code</h3>
 					<dl>
-						<dt>github</dt>
+						<dt>GitHub</dt>
 						<dd>
 							<a href="https://github.com/redgoose-dev" target="_blank">https://github.com/redgoose-dev</a>
 						</dd>
-						<dt>github gist</dt>
+						<dt>GitHub gist</dt>
 						<dd>
 							<a href="https://gist.github.com/redgoose-dev" target="_blank">https://gist.github.com/redgoose-dev</a>
 						</dd>
-						<dt>codepen</dt>
+						<dt>CodePen</dt>
 						<dd>
 							<a href="https://codepen.io/redgoose" target="_blank">https://codepen.io/redgoose</a>
 						</dd>

@@ -28,7 +28,7 @@
       letter-spacing: -.05rem;
       line-height: 1.25;
       font-family: var(--font-title);
-      font-weight: normal;
+      font-weight: 400;
       font-size: 1.75rem;
     }
   }
@@ -75,7 +75,7 @@
       }
     }
     &__body {
-      margin: 40px 0 0;
+      margin: 50px 0 0;
     }
   }
   @include dark-mode() {
