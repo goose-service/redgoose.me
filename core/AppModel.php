@@ -46,7 +46,7 @@ class AppModel {
    * @return object
    * @throws Exception
    */
-  public function index()
+  public function index(): object
   {
     try
     {
@@ -128,7 +128,7 @@ class AppModel {
    * @return object
    * @throws Exception
    */
-  public function indexNest(object $options)
+  public function indexNest(object $options): object
   {
     try
     {
@@ -260,7 +260,7 @@ class AppModel {
    * @return object
    * @throws Exception
    */
-  public function item(int $article_srl)
+  public function item(int $article_srl): object
   {
     try
     {
@@ -343,7 +343,7 @@ class AppModel {
    *
    * @return object
    */
-  public function rss()
+  public function rss(): object
   {
     $result = (object)[
       'url' => __URL__,
@@ -398,7 +398,7 @@ class AppModel {
    * @param int $article_srl
    * @return object
    */
-  public function like(int $article_srl)
+  public function like(int $article_srl): object
   {
     $result = (object)[];
     try
@@ -428,7 +428,7 @@ class AppModel {
    * @param array $items
    * @return array
    */
-  private function extendCategoryNameInItems(array $items)
+  private function extendCategoryNameInItems(array $items): array
   {
     if (!(isset($items) && count($items))) return [];
     foreach ($items as $k=>$v)
@@ -454,7 +454,7 @@ class AppModel {
    * @param array $items
    * @return array
    */
-  private function extendNestNameInItems(array $items)
+  private function extendNestNameInItems(array $items): array
   {
     if (!(isset($items) && count($items))) return [];
     foreach ($items as $k=>$v)
@@ -480,7 +480,7 @@ class AppModel {
    * @param array $items
    * @return array
    */
-  private function convertArticles(array $items)
+  private function convertArticles(array $items): array
   {
     if (!(isset($items) && count($items))) return [];
     $result = [];
@@ -511,7 +511,7 @@ class AppModel {
    * @param array $params
    * @return object
    */
-  private function makePagination(int $total=0, int $page=1, int $size=10, $params=[])
+  private function makePagination(int $total=0, int $page=1, int $size=10, $params=[]): object
   {
     $result = (object)[
       'total' => $total,
