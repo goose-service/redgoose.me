@@ -28,8 +28,8 @@
       letter-spacing: -.1rem;
       line-height: 1.25;
       font-family: var(--font-title);
-      font-weight: 400;
-      font-size: 1.75rem;
+      font-weight: 500;
+      font-size: 30px;
     }
   }
   &__body {
@@ -71,7 +71,8 @@
       }
       h2 {
         padding: 0;
-        font-size: 2.75rem;
+        font-size: 42px;
+        line-height: 1.15;
       }
     }
     &__body {

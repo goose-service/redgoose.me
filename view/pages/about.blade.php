@@ -65,9 +65,9 @@
 						<dd>
 							<a href="https://www.facebook.com/redgoose.me" target="_blank">scripter@me.com</a>
 						</dd>
-						<dt>Instagram</dt>
+						<dt>Twitter</dt>
 						<dd>
-							<a href="https://www.instagram.com/redgoose.me" target="_blank">https://www.instagram.com/redgoose.me</a>
+							<a href="https://twitter.com/redgooseme" target="_blank">https://twitter.com/redgooseme</a>
 						</dd>
 						<dt>Pinterest</dt>
 						<dd>

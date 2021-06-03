@@ -1,14 +1,11 @@
 /**
  * LightBox
  */
-class LightBox {
+function LightBox() {
 
-  #id = 'lightbox';
-  #htmlClass = 'popup-lightbox';
-  $body = null;
-
-  constructor()
-  {}
+  const id = 'lightbox';
+  const htmlClass = 'popup-lightbox';
+  this.$body = null;
 
   /**
    * template
@@ -17,10 +14,10 @@ class LightBox {
    * @param {String} alt
    * @return ChildNode
    */
-  #template(src, alt)
+  function template(src, alt)
   {
     const template = document.createElement('template');
-    let html = `<div id="${this.#id}" class="lightbox">`;
+    let html = `<div id="${id}" class="lightbox">`;
     html += `<figure class="lightbox__body">`;
     html += `<img src="${src}" alt="${alt}"/>`;
     html += `</figure>`;
@@ -36,28 +33,28 @@ class LightBox {
    * @param {String} src
    * @param {String} alt
    */
-  open(src, alt)
+  this.open = function(src, alt)
   {
     if (!!this.$body)
     {
       this.$body.remove();
       this.$body = null;
     }
-    this.$body = this.#template(src, alt);
+    this.$body = template(src, alt);
     this.$body.addEventListener('click', () => this.close());
     document.body.appendChild(this.$body);
-    document.querySelector('html').classList.add(this.#htmlClass);
+    document.querySelector('html').classList.add(htmlClass);
   }
 
   /**
    * close
    */
-  close()
+  this.close = function()
   {
     if (!this.$body) return;
     this.$body.remove();
     this.$body = null;
-    document.querySelector('html').classList.remove(this.#htmlClass);
+    document.querySelector('html').classList.remove(htmlClass);
   }
 
 }

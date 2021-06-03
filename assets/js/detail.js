@@ -48,12 +48,6 @@ function initImagesInGridItem()
       lightbox.open(e.target.src, e.target.name);
     });
   });
-  // $images.forEach((o) => {
-  //   o.addEventListener('click', (e) => {
-  //     if (!e.target.src) return;
-  //     lightbox.open(e.target.src, e.target.name);
-  //   });
-  // });
 }
 
 export default function()

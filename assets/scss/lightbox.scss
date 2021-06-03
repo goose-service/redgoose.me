@@ -15,11 +15,6 @@ html.popup-lightbox {
   bottom: 0;
   background: rgba(255,255,255,.75);
   cursor: zoom-out;
-  @supports (backdrop-filter: blur(10px)) {
-    background: rgba(255,255,255,.75);
-    backdrop-filter: blur(10px);
-  }
-
   &__body {
     margin: 0;
     display: flex;
@@ -35,9 +30,13 @@ html.popup-lightbox {
       max-height: 100%;
       box-sizing: border-box;
       object-fit: contain;
+      background: var(--color-bg);
     }
   }
-
+  @supports (backdrop-filter: blur(10px)) {
+    background: rgba(255,255,255,.75);
+    backdrop-filter: blur(10px);
+  }
   @include dark-mode() {
     background: rgba(0,0,0,.75);
   }
