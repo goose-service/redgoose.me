@@ -43,7 +43,8 @@ function initImagesInGridItem()
   const lightbox = new LightBox();
   const $images = $detail.find('img');
   $images.each(function() {
-    this.addEventListener('click', (e) => {
+    if (!!this.closest('picture')) return;
+    this.addEventListener('click', e => {
       if (!e.target.src) return;
       lightbox.open(e.target.src, e.target.name);
     });
