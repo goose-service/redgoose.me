@@ -206,7 +206,7 @@
     transition: opacity .2s ease-out;
     cursor: pointer;
     @include responsive(desktop) {
-      max-width: 1280px;
+      max-width: 1024px;
       @include retina() {
         zoom: .75;
       }
