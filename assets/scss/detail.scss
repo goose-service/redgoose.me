@@ -206,13 +206,13 @@
     transition: opacity .2s ease-out;
     cursor: pointer;
     @include responsive(desktop) {
-      max-width: 1024px;
+      max-width: 1000px;
       @include retina() {
         zoom: .75;
       }
     }
     @include responsive(max) {
-      max-width: 1440px;
+      max-width: 1416px;
     }
     @media (max-width: 320px) {
       max-width: 100%;
