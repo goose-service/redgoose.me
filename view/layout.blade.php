@@ -17,7 +17,6 @@ $nest_id = isset($nest_id) ? $nest_id : null;
 </head>
 <body ontouchstart="">
 <h1 class="page-title">{{$pageTitle}}</h1>
-</body>
 <main>
   <header class="layout-header">
     <div class="layout-header__wrap">
