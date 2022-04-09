@@ -1,4 +1,4 @@
-@import "./mixins";
+@use './libs/mixins';
 
 .about {
 	--color-about-metas-section-title: #111;
@@ -16,11 +16,11 @@
 			font-size: 11px;
 			color: var(--color-text-blur);
 		}
-		h2 {
+		h1 {
 			margin: 2px 0 0;
 			font-family: var(--font-title);
 			font-size: 32px;
-			font-weight: 500;
+			font-weight: 600;
 			line-height: 1;
       letter-spacing: -.5px;
 			color: var(--color-about-metas-section-title);
@@ -52,12 +52,13 @@
 			&:first-child {
 				margin-top: 0;
 			}
-			> h3 {
+			> h1 {
 				margin: 0;
-				font-family: var(--font-eng);
+				font-family: var(--font-title);
 				font-size: 24px;
-				font-weight: 500;
+				font-weight: 600;
 				color: var(--color-about-metas-section-title);
+        letter-spacing: -.5px;
 				&:after {
 					content: '';
 					display: block;
@@ -85,14 +86,14 @@
 		}
 	}
 
-	@include responsive(tablet) {
+	@include mixins.responsive(tablet) {
 		padding-top: 50px;
 		padding-bottom: 0;
 		&__header {
 			p {
 				font-size: 12px;
 			}
-			h2 {
+			h1 {
 				font-size: 36px;
 			}
 		}
@@ -116,7 +117,7 @@
 			}
 		}
 	}
-	@include responsive(desktop) {
+	@include mixins.responsive(desktop) {
 		&__metas {
 			section {
 				> dl {
@@ -138,7 +139,7 @@
 			}
 		}
 	}
-	@include dark-mode() {
+	@include mixins.dark-mode() {
 		--color-about-metas-section-title: #fff;
 		--color-about-metas-section-sub-title: #fff;
 	}

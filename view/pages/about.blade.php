@@ -1,4 +1,4 @@
-<?php if(!defined("__GOOSE__")){exit();} ?>
+<?php if(!defined("__GOOSE__")){ exit; } ?>
 
 @extends('layout')
 
@@ -15,16 +15,14 @@
 	<div class="about__wrap">
 		<header class="about__header">
 			<p>Introduce</p>
-			<h2>About redgoose</h2>
+			<h1>About redgoose</h1>
 		</header>
-
 		<figure class="about__profile">
 			<img
 				srcset="{{ __ROOT__ }}/assets/images/img-about@2x.png 2x, {{ __ROOT__ }}/assets/images/img-about.png 1x"
 				src="{{ __ROOT__ }}/assets/images/img-about.png"
 				alt="redgoose">
 		</figure>
-
 		<div class="about__description">
 			<p>
 				창작일을 좋아하고 재미있는 작업을 하는것에 모든것을 쏟아붇는것에 마다하지 않고 있습니다. 처음에는 디자이너로써 일을 시작했지만 현재는 프론트엔드 개발자로 일을 하고 있습니다. 그래픽이나 디자인같은 비쥬얼 창작 작업은 취미활동으로 짬날때마다 하나씩 만들어서 이 사이트에 게시하고 있습니다. 사진찍는것을 좋아하여 한번씩 돌아다니며 세상의 모습을 기록합니다.<br/>
@@ -32,11 +30,10 @@
 				<a href="https://github.com/redgoose-dev" target="_blank">github 저장소</a>에 등록을 하고 있습니다.
 			</p>
 		</div>
-
 		<div class="about__metas">
 			<div>
 				<section>
-					<h3>information</h3>
+					<h1>information</h1>
 					<dl>
 						<dt>Position</dt>
 						<dd>frond-end engineer, visual creator</dd>
@@ -50,7 +47,7 @@
 					</dl>
 				</section>
 				<section>
-					<h3>skill</h3>
+					<h1>skill</h1>
 					<dl>
 						<dt>Use tools</dt>
 						<dd>photoshop, cinema4d, illustrator, webstorm, phpstorm, sketch, github client, zeplin, paw, trello, capture one pro</dd>
@@ -59,7 +56,7 @@
 					</dl>
 				</section>
 				<section>
-					<h3>sns</h3>
+					<h1>sns</h1>
 					<dl>
 						<dt>Facebook</dt>
 						<dd>
@@ -76,7 +73,7 @@
 					</dl>
 				</section>
 				<section>
-					<h3>source code</h3>
+					<h1>source code</h1>
 					<dl>
 						<dt>GitHub</dt>
 						<dd>

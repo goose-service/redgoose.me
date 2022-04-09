@@ -1,10 +1,6 @@
 <?php
 if(!defined("__GOOSE__")){exit();}
 
-/**
- * articles page in nest
- */
-
 /** @var string $title */
 /** @var string $pageTitle */
 /** @var array $articles */
@@ -26,8 +22,8 @@ if(!defined("__GOOSE__")){exit();}
 @section('contents')
 <article class="index">
   <header class="index-header">
-    <h2 class="index-header__title">{{$pageTitle}}</h2>
-    @if (isset($categories) && count($categories))
+    <h1 class="index-header__title">{{$pageTitle}}</h1>
+    @if (count($categories ?? []) > 0)
     <nav class="index-categories">
       <button type="button" class="index-categories__toggle-button">
         <span>
@@ -83,7 +79,7 @@ if(!defined("__GOOSE__")){exit();}
       <p>Not found article.</p>
     </div>
     @endif
-    @if ($paginate->mobile || $paginate->desktop)
+    @if ($paginate->desktop ?? false)
     <div class="index-paginate">
       {!! $paginate->mobile !!}
       {!! $paginate->desktop !!}

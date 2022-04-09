@@ -2,13 +2,11 @@
 namespace Core;
 
 /**
- * Empty icon
- *
+ * App empty icon
  * @property string prefix
  * @property array src
  * @property string suffix
  */
-
 class AppEmptyIcon {
 
   private static string $prefix = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" fill="none" stroke="currentColor">';
@@ -33,23 +31,21 @@ class AppEmptyIcon {
 
   /**
    * single icon
-   *
    * @param int $n
    * @return string
    */
-  static public function single($n=0)
+  static public function single(int $n = 0): string
   {
     return self::$prefix.self::$src[$n].self::$suffix;
   }
 
   /**
    * single icon
-   *
    * @return string
    */
-  static public function random()
+  static public function random(): string
   {
-    return self::$prefix.self::$src[rand(0, count(self::$src)-1)].self::$suffix;
+    return self::$prefix.self::$src[ rand(0, count(self::$src) - 1) ].self::$suffix;
   }
 
 }

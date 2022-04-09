@@ -2,21 +2,16 @@
 <?php
 if(!defined("__GOOSE__")){exit();}
 
-/**
- * layout
- */
-
 /** @var array $navigation */
 /** @var string $pageTitle */
 
-$nest_id = isset($nest_id) ? $nest_id : null;
+$nest_id = $nest_id ?? null;
 ?>
 <html lang="ko">
 <head>
 @include('head')
 </head>
 <body ontouchstart="">
-<h1 class="page-title">{{$pageTitle}}</h1>
 <main>
   <header class="layout-header">
     <div class="layout-header__wrap">
@@ -38,13 +33,13 @@ $nest_id = isset($nest_id) ? $nest_id : null;
       <nav class="header-navigation">
         <ul>
           @foreach ($navigation as $key=>$nav)
-          <li class="{{isset($nav->active) && $nav->active ? 'on' : ''}}">
+          <li class="{{(($nav->active ?? false) ?: false) ? 'on' : ''}}">
             <a href="{{$nav->link}}" target="{{$nav->target}}">{{$nav->label}}</a>
-            @if (isset($nav->children) && count($nav->children) > 0)
+            @if (count($nav->children ?? []) > 0)
             <div>
               <ol>
                 @foreach ($nav->children as $key2=>$nav2)
-                <li class="{{isset($nav2->active) && $nav2->active ? 'on' : ''}}">
+                <li class="{{(($nav2->active ?? false) ?: false) ? 'on' : ''}}">
                   <a href="{{$nav2->link}}" target="{{$nav2->target}}">{{$nav2->label}}</a>
                 </li>
                 @endforeach
@@ -66,6 +61,6 @@ $nest_id = isset($nest_id) ? $nest_id : null;
 </main>
 
 @yield('script')
-<script src="{{__ROOT__}}/assets/dist/app.js"></script>
+<script type="module" src="{{__ROOT__}}/assets/dist/app.es.js"></script>
 </body>
 </html>

@@ -27,7 +27,7 @@ if(!defined("__GOOSE__")){exit();}
           @if(isset($data->nest_name))<span>{{ $data->nest_name }}</span>@endif
           @if(isset($data->category_name))<span>{{ $data->category_name }}</span>@endif
         </p>
-        <h2>{{ ($data->title == '.') ? 'Untitled work' : $data->title }}</h2>
+        <h1>{{ ($data->title == '.') ? 'Untitled work' : $data->title }}</h1>
       </header>
       <div class="detail__body redgoose-body redgoose-body--dark">
         {!! $data->content !!}
@@ -64,7 +64,7 @@ if(!defined("__GOOSE__")){exit();}
 @endsection
 
 @section('script')
-<script>
+<script type="module">
 window.app = {
   mode: 'detail',
   url: '{{__URL__}}',

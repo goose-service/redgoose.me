@@ -1,20 +1,28 @@
-@import "./mixins";
+@use './libs/mixins';
 
 .error {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	padding: 80px 0;
+	display: grid;
+  place-content: center;
+	padding: 72px 0;
+  height: calc(100vh - var(--size-header-height) - 180px);
+  box-sizing: border-box;
 	img {
 		display: block;
 		width: 180px;
 		max-width: 100%;
+    user-select: none;
 	}
-	h2 {
-		margin: 30px 0 0;
+	h1 {
+		margin: 42px 0 0;
 		text-align: center;
 		font-family: var(--font-eng);
 		font-size: 1.25rem;
 		font-weight: 600;
+    line-height: 1.15;
 	}
+
+  @include mixins.responsive(tablet) {
+    height: 42vw;
+    max-height: 72vh;
+  }
 }

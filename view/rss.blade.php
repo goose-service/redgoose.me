@@ -1,16 +1,13 @@
 <?php
 echo '<?xml version="1.0" encoding="utf-8"?>';
 
-/**
- * @var string $url
- * @var string $title
- * @var string $description
- * @var string $link
- * @var string $copyright
- * @var array $articles
- */
+/** @var string $url */
+/** @var string $title */
+/** @var string $description */
+/** @var string $link */
+/** @var string $copyright */
+/** @var array $articles */
 ?>
-
 <rss version="2.0">
   <channel>
     <title>{{$title}}</title>
@@ -19,7 +16,7 @@ echo '<?xml version="1.0" encoding="utf-8"?>';
     <language>ko</language>
     <copyright>Copyright 2013-{{date('Y')}} redgoose. All right reserved.</copyright>
     <webMaster>scripter@me.com (redgoose)</webMaster>
-    @if(isset($articles) && count($articles))
+    @if(count($articles ?? []) > 0)
     @foreach($articles as $item)
     <item>
       <title><![CDATA[{!! $item->title !!}]]></title>

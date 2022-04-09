@@ -17,7 +17,7 @@ if(!defined("__GOOSE__")){exit();}
     <figure class="error__image">
       <img src="{{__ROOT__}}/assets/images/img-error.png" alt="error">
     </figure>
-    <h2 class="error__message">{{$message}}</h2>
+    <h1 class="error__message">{{$message}}</h1>
   </div>
 </article>
 @endsection

@@ -3,19 +3,15 @@ if (!defined('__GOOSE__')) exit();
 
 /**
  * check match uri
- *
  * @param array $matches
  * @return bool
  */
-function checkMatchUri($matches=[])
+function checkMatchUri(array $matches = []): bool
 {
   if (count($matches) <= 0) return false;
-  foreach ($matches as $k=>$o)
+  foreach ($matches as $k => $o)
   {
-    if (isset($o) && strpos($_SERVER['REQUEST_URI'], $o) !== false)
-    {
-      return true;
-    }
+    if (isset($o) && strpos($_SERVER['REQUEST_URI'], $o) !== false) return true;
   }
   return false;
 }
@@ -25,19 +21,19 @@ return [
     'label' => 'Works',
     'link' => '/nest/visual/',
     'target' => '',
-    'active' => checkMatchUri(['/nest/visual','/nest/tool']),
+    'active' => checkMatchUri([ '/nest/visual', '/nest/tool' ]),
     'children' => [
       (object)[
         'label' => 'Visual',
         'link' => '/nest/visual/',
         'target' => '',
-        'active' => checkMatchUri(['/nest/visual']),
+        'active' => checkMatchUri([ '/nest/visual' ]),
       ],
       (object)[
         'label' => 'Tool & Service',
         'link' => '/nest/tool/',
         'target' => '',
-        'active' => checkMatchUri(['/nest/tool']),
+        'active' => checkMatchUri([ '/nest/tool' ]),
       ],
     ],
   ],
@@ -57,31 +53,31 @@ return [
         'label' => 'Landscape',
         'link' => '/nest/landscape/',
         'target' => '',
-        'active' => checkMatchUri(['/nest/landscape']),
+        'active' => checkMatchUri([ '/nest/landscape' ]),
       ],
       (object)[
         'label' => 'Portrait',
         'link' => '/nest/portrait/',
         'target' => '',
-        'active' => checkMatchUri(['/nest/portrait']),
+        'active' => checkMatchUri([ '/nest/portrait' ]),
       ],
       (object)[
         'label' => 'Snap',
         'link' => '/nest/snap/',
         'target' => '',
-        'active' => checkMatchUri(['/nest/snap']),
+        'active' => checkMatchUri([ '/nest/snap' ]),
       ],
       (object)[
         'label' => 'Composition',
         'link' => '/nest/composition/',
         'target' => '',
-        'active' => checkMatchUri(['/nest/composition']),
+        'active' => checkMatchUri([ '/nest/composition' ]),
       ],
       (object)[
         'label' => 'Foreign countries',
         'link' => '/nest/foreign-countries/',
         'target' => '',
-        'active' => checkMatchUri(['/nest/foreign-countries']),
+        'active' => checkMatchUri([ '/nest/foreign-countries' ]),
       ],
     ],
   ],
@@ -89,7 +85,7 @@ return [
     'label' => 'About',
     'link' => '/page/about/',
     'target' => '',
-    'active' => checkMatchUri(['/page/about']),
+    'active' => checkMatchUri([ '/page/about' ]),
   ],
   (object)[
     'label' => 'Notes',

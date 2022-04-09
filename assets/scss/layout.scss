@@ -1,66 +1,18 @@
-@import "./mixins";
-
-body {
-  overflow-x: hidden;
-}
-main {
-  &:before {
-    content: '';
-    display: block;
-    height: var(--size-header-height);
-    background: var(--color-bg);
-  }
-}
-
-// page title
-.page-title {
-  position: absolute;
-  font-size: 1px;
-  margin: 0;
-  left: 0;
-  top: 0;
-  width: 1px;
-  height: 1px;
-  opacity: .01;
-  overflow: hidden;
-}
+@use './libs/mixins';
 
 // header
 .layout-header {
-  --color-header-button-fill: #222;
-  --color-header-line: #ccc;
   z-index: 3;
-  position: fixed;
+  position: sticky;
   left: 0;
   right: 0;
   top: 0;
   height: var(--size-header-height);
   box-sizing: border-box;
-  &:before {
-    content: '';
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    background: rgba(255,255,255,.9);
-    @supports (backdrop-filter: blur(15px)) {
-      background: rgba(#fff,.75);
-      backdrop-filter: blur(12px);
-    }
-  }
-  &:after {
-    content: '';
-    display: block;
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: var(--color-header-line);
-    height: 1px;
-    transform: scaleY(.5);
-    transform-origin: 0 100%;
-    pointer-events: none;
+  background: var(--header-color-bg, rgb(255 255 255 / 90%));
+  box-shadow: var(--header-shadow, (0 0 0 .5px rgb(0 0 0 / 10%), 0 1px 8px rgb(0 0 0 / 10%)));
+  @supports (backdrop-filter: blur(15px)) {
+    backdrop-filter: blur(12px);
   }
   &__wrap {
     position: relative;
@@ -100,15 +52,14 @@ main {
       box-sizing: border-box;
       border: none;
       background: none;
-      cursor: pointer;
-      outline: none;
+      @include mixins.button-setup();
       svg {
         position: absolute;
         left: 50%;
         top: 50%;
         transform: translate(-50%, -50%);
         transform-origin: 50% 50%;
-        color: var(--color-header-button-fill);
+        color: var(--header-color-button-fill, rgb(34 34 34));
         transition: transform 200ms ease-out;
         &:nth-child(1) {
           transform: translate(-50%, -50%) scale(1);
@@ -126,9 +77,6 @@ main {
       }
       &.navigation {
         left: 0;
-      }
-      &.search {
-        right: 0;
       }
       &.on {
         svg {
@@ -149,10 +97,7 @@ main {
       }
     }
   }
-  @media (orientation: landscape) {
-    position: absolute;
-  }
-  @include responsive(tablet) {
+  @include mixins.responsive(tablet) {
     padding: 0 var(--size-side-padding);
     &__logo {
       left: 24px;
@@ -170,63 +115,52 @@ main {
       display: none;
     }
   }
-  @include responsive(desktop) {
-    @media (orientation: landscape) {
-      position: fixed;
-    }
-  }
-  @include dark-mode() {
-    --color-header-button-fill: #fff;
-    --color-header-line: #333;
-    &:before {
-      background: rgba(#000,.9);
-      @supports (backdrop-filter: blur(15px)) {
-        background: rgba(#000,.65);
-      }
-    }
+  @include mixins.dark-mode() {
+    --header-color-button-fill: rgb(255 255 255);
+    --header-color-bg: rgb(0 0 0 / 80%);
   }
 }
 .header-navigation {
-  display: block;
+  --color-bg-gradient-start: rgb(204 91 64 / 95%);
+  --color-bg-gradient-end: rgb(123 42 121 / 95%);
+  display: none;
   position: absolute;
   left: 0;
   right: 0;
   top: var(--size-header-height);
   box-sizing: border-box;
   padding: 24px var(--size-side-padding) 30px;
-  @include color-linear-gradient(var(--color-key), #CC5B40, #7B2A79);
-  box-shadow: 0 2px 10px rgba(0,0,0,.3);
-  opacity: 0;
-  pointer-events: none;
+  box-shadow: inset 0 2px 8px rgb(0 0 0 / 20%);
   user-select: none;
-  transition: opacity 200ms ease-out;
-  @supports (backdrop-filter: blur(15px)) {
-    background: rgba(var(--rgb-key),.8);
-    backdrop-filter: blur(15px);
-    box-shadow: 0 2px 10px rgba(0,0,0,.3);
+  @include mixins.color-linear-gradient(var(--color-key), var(--color-bg-gradient-start), var(--color-bg-gradient-end));
+  a {
+    display: block;
+    text-decoration: none;
+    -webkit-tap-highlight-color: transparent;
+    transition: opacity 120ms ease-out;
+    box-sizing: border-box;
+    font-family: var(--font-eng);
   }
   ul {
+    display: grid;
+    gap: 16px;
     margin: 0;
     padding: 0;
     list-style: none;
+    box-sizing: border-box;
     > li {
-      &:nth-child(n+2) {
-        margin-top: 15px;
-      }
       > a {
-        display: block;
-        font-family: var(--font-eng);
         font-size: 18px;
         font-weight: 600;
-        color: #fff;
-        text-decoration: none;
-        transition: opacity 200ms ease-out;
-        -webkit-tap-highlight-color: transparent;
+        color: rgb(255 255 255);
         &:active {
           opacity: .5;
         }
       }
     }
+  }
+  li {
+    box-sizing: border-box;
   }
   ol {
     margin: 6px 0 0;
@@ -234,90 +168,66 @@ main {
     list-style: none;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
+    box-sizing: border-box;
     a {
-      display: block;
-      padding: 7px 15px 7px 0;
+      padding: 6px 16px 6px 0;
       box-sizing: border-box;
-      color: #fff;
-      font-family: var(--font-eng);
+      color: rgb(255 255 255);
       line-height: 1.42;
       font-size: 13px;
       font-weight: 400;
-      text-decoration: none;
-      -webkit-tap-highlight-color: transparent;
-      transition: opacity 200ms ease-out;
       &:active {
-        opacity: .5;
+        opacity: .75;
       }
     }
   }
   &.on {
-    opacity: 1;
-    pointer-events: auto;
-  }
-  @include responsive(tablet) {
     display: block;
-    position: absolute;
+  }
+  @include mixins.responsive(tablet) {
+    display: block;
     left: auto;
     right: 0;
     top: 0;
     height: var(--size-header-height);
-    background: none;
     margin: 0;
     padding: 0;
-    box-shadow: 0 0 0;
-    transition: none;
-    opacity: 1;
-    pointer-events: auto;
-    @supports (backdrop-filter: blur(0px)) {
-      backdrop-filter: blur(0px);
-    }
+    background: none;
+    box-shadow: none;
     ul {
       display: flex;
       align-items: center;
+      gap: 0;
       height: 100%;
-      margin: 0;
-      padding: 0;
-      list-style: none;
       > li {
         height: 100%;
-        &:nth-child(n+2) {
-          margin-top: 0;
-        }
         > a {
-          display: flex;
+          display: grid;
+          align-content: center;
           height: 100%;
-          align-items: center;
-          box-sizing: border-box;
           padding: 0 24px;
           font-family: var(--font-eng);
           font-weight: 600;
           font-size: .875rem;
           color: var(--color-text);
           text-decoration: none;
-          transition: color 200ms ease-out, background 200ms ease-out;
+          transition: color 120ms ease-out, background 120ms ease-out;
           &:active {
             opacity: 1;
           }
         }
         > div {
           position: relative;
-          > ol {
-            opacity: 0;
-            pointer-events: none;
-          }
+          display: none;
         }
         &:focus-within,
         &:hover {
           > a {
-            background: rgba(255,255,255,.75);
+            background: rgb(0 0 0 / 3%);
             color: var(--color-key);
           }
           > div {
-            > ol {
-              opacity: 1;
-              pointer-events: auto;
-            }
+            display: block;
           }
         }
         &.on {
@@ -331,19 +241,15 @@ main {
       display: block;
       margin: 0;
       padding: 16px 0;
-      list-style: none;
       position: absolute;
       left: 0;
       top: 0;
       min-width: 120px;
       border-bottom-left-radius: 4px;
       border-bottom-right-radius: 4px;
-      background: rgba(var(--rgb-key),.95);
-      transition: opacity 200ms ease-out;
+      @include mixins.color-linear-gradient(var(--color-key), var(--color-bg-gradient-start), var(--color-bg-gradient-end));
       > li {
         > a {
-          font-family: var(--font-eng);
-          display: block;
           padding: 4px 25px;
           color: #fff;
           font-size: .75rem;
@@ -352,7 +258,7 @@ main {
           white-space: nowrap;
           &:hover,
           &:active {
-            opacity: .5;
+            opacity: .75;
           }
         }
         &.on {
@@ -366,20 +272,19 @@ main {
       }
     }
   }
-  @include dark-mode() {
-    @include responsive(tablet) {
+  @include mixins.dark-mode() {
+    --color-bg-gradient-start: rgb(28 205 92 / 95%);
+    --color-bg-gradient-end: rgba(8 188 140 / 95%);
+    @include mixins.responsive(tablet) {
       ul {
         > li {
           &:focus-within,
           &:hover {
             > a {
-              background: rgba(30,30,30,.5);
+              background: rgb(255 255 255 / 7%);
             }
           }
         }
-      }
-      ol {
-        @include color-linear-gradient(rgba(var(--rgb-key),.95), rgba(var(--rgb-key),.95), rgba(0,133,113,.95));
       }
     }
   }
@@ -388,7 +293,7 @@ main {
 // footer
 .layout-footer {
   margin: 44px 0 0;
-  padding: 0 0 20px;
+  padding: 0 0 24px;
   box-sizing: border-box;
   &__copyright {
     text-align: center;
@@ -398,7 +303,7 @@ main {
     color: var(--color-text-blur);
     user-select: none;
   }
-  @include responsive(tablet) {
-    margin: 70px 0 0;
+  @include mixins.responsive(tablet) {
+    margin: 72px 0 0;
   }
 }

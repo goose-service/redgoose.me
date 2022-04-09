@@ -1,4 +1,4 @@
-@import "./mixins";
+@use './libs/mixins';
 
 html.popup-lightbox {
   &, > body {
@@ -37,14 +37,14 @@ html.popup-lightbox {
     background: rgba(255,255,255,.75);
     backdrop-filter: blur(10px);
   }
-  @include dark-mode() {
+  @include mixins.dark-mode() {
     background: rgba(0,0,0,.75);
   }
-  @include responsive(desktop) {
+  @include mixins.responsive(desktop) {
     &__body {
       padding: 40px;
     }
-    @include retina() {
+    @include mixins.retina() {
       &__body img {
         zoom: .75;
       }

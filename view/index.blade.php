@@ -1,9 +1,5 @@
 <?php
-if(!defined("__GOOSE__")){exit();}
-
-/**
- * intro page
- */
+if(!defined("__GOOSE__")){ exit(); }
 
 /** @var string $title */
 /** @var string $pageTitle */
@@ -25,7 +21,7 @@ if(!defined("__GOOSE__")){exit();}
 
 @section('contents')
 <article class="intro">
-  <h2 class="intro__title">Intro page</h2>
+  <h1 class="intro__title">redgoose works</h1>
   <div class="index intro__index">
     @if(count($indexHead))
     <div class="index-works index-works--head">
@@ -129,7 +125,7 @@ if(!defined("__GOOSE__")){exit();}
       <p>Not found article.</p>
     </div>
     @endif
-    @if ($paginate->mobile || $paginate->desktop)
+    @if ($paginate->desktop ?? false)
     <div class="index-paginate">
       {!! $paginate->mobile !!}
       {!! $paginate->desktop !!}

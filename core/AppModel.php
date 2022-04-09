@@ -12,7 +12,6 @@ class AppModel {
 
   /**
    * construct
-   *
    * @throws Exception
    */
   public function __construct()
@@ -42,7 +41,6 @@ class AppModel {
 
   /**
    * index
-   *
    * @return object
    * @throws Exception
    */
@@ -79,7 +77,7 @@ class AppModel {
         'json_field' => ['json'],
         'debug' => __APP_DEBUG__,
       ]);
-      $articles = isset($articles->data) ? $articles->data : [];
+      $articles = ($articles->data ?? false) ?: [];
       $articles = $this->extendCategoryNameInItems($articles);
       $articles = $this->extendNestNameInItems($articles);
       $articles = $this->convertArticles($articles);
@@ -100,7 +98,7 @@ class AppModel {
           'limit' => $randomCount,
           'debug' => __APP_DEBUG__,
         ]);
-        $result->spot = isset($randomArticles->data) ? $randomArticles->data : [];
+        $result->spot = $randomArticles->data ?? [];
         $result->spot = $this->extendCategoryNameInItems($result->spot);
         $result->spot = $this->extendNestNameInItems($result->spot);
         $result->spot = $this->convertArticles($result->spot);
@@ -123,7 +121,6 @@ class AppModel {
 
   /**
    * index/nest
-   *
    * @param object $options
    * @return object
    * @throws Exception
@@ -147,8 +144,14 @@ class AppModel {
         'json_field' => ['json'],
         'debug' => __APP_DEBUG__,
       ]);
-      if ($nest->data) $nest = $nest->data;
-      else throw new Exception('There is no `nest` data.');
+      if ($nest->data)
+      {
+        $nest = $nest->data;
+      }
+      else
+      {
+        throw new Exception('There is no `nest` data.', 404);
+      }
 
       // get categories
       $result->categories = [];
@@ -255,7 +258,6 @@ class AppModel {
 
   /**
    * item
-   *
    * @param int $article_srl
    * @return object
    * @throws Exception
@@ -264,7 +266,7 @@ class AppModel {
   {
     try
     {
-      if (!(isset($article_srl) && $article_srl))
+      if (!($article_srl ?? false))
       {
         throw new Exception('Not found article srl.');
       }
@@ -340,7 +342,6 @@ class AppModel {
 
   /**
    * rss
-   *
    * @return object
    */
   public function rss(): object
@@ -351,6 +352,7 @@ class AppModel {
       'description' => $_ENV['APP_DESCRIPTION'],
       'link' => __URL__,
     ];
+
     try
     {
       // get articles
@@ -374,7 +376,7 @@ class AppModel {
 
       // convert article items
       $result->articles = [];
-      foreach($articles as $k=>$item)
+      foreach($articles as $k => $item)
       {
         $result->articles[] = (object)[
           'srl' => $item->srl,
@@ -393,8 +395,7 @@ class AppModel {
   }
 
   /**
-   * like
-   *
+   * update like
    * @param int $article_srl
    * @return object
    */
@@ -405,15 +406,14 @@ class AppModel {
     {
       // request
       $res = $this->connect->request('post', "/articles/{$article_srl}/update/", (object)[
-        'get' => (object)[ 'type' => 'star' ],
+        'post' => (object)[
+          'type' => 'star',
+        ],
       ]);
-      if (!($res->success && isset($res->data)))
-      {
-        throw new Exception();
-      }
+      if (!($res->success && isset($res->data))) throw new Exception();
       $result->success = true;
       $result->star = $res->data->star;
-      AppUtil::setCookie('redgoose-like-'.$article_srl, '1', 30);
+      AppUtil::setCookie('redgoose-star-'.$article_srl, '1', 30);
     }
     catch(Exception $e)
     {
@@ -424,7 +424,6 @@ class AppModel {
 
   /**
    * extend category name in items
-   *
    * @param array $items
    * @return array
    */
@@ -443,14 +442,13 @@ class AppModel {
         'field' => 'name',
         'where' => 'srl='.(int)$v->category_srl,
       ]);
-      $items[$k]->category_name = isset($category->data->name) ? $category->data->name : null;
+      $items[$k]->category_name = $category->data->name ?? null;
     }
     return $items;
   }
 
   /**
    * extend nest name in items
-   *
    * @param array $items
    * @return array
    */
@@ -469,14 +467,13 @@ class AppModel {
         'field' => 'name',
         'where' => 'srl='.(int)$v->nest_srl,
       ]);
-      $items[$k]->nest_name = isset($nest->data->name) ? $nest->data->name : null;
+      $items[$k]->nest_name = $nest->data->name ?? null;
     }
     return $items;
   }
 
   /**
    * convert articles
-   *
    * @param array $items
    * @return array
    */
@@ -504,14 +501,12 @@ class AppModel {
   /**
    * make pagination
    * 모바일과 데스크탑 네비게이션 객체를 만들어준다.
-   *
    * @param int $total
    * @param int $page
    * @param int $size
-   * @param array $params
    * @return object
    */
-  private function makePagination(int $total=0, int $page=1, int $size=10, $params=[]): object
+  private function makePagination(int $total = 0, int $page = 1, int $size = 10): object
   {
     $result = (object)[
       'total' => $total,
@@ -521,12 +516,12 @@ class AppModel {
       'total' => $total,
       'page' => $page,
       'size' => $size,
-      'params' => $params,
+      'params' => [],
       'scale' => 3,
     ]);
-    $result->mobile = $paginate->createElements(['paginate', 'paginate--mobile']);
+    $result->mobile = $paginate->createElements([ 'paginate', 'paginate--mobile' ], './');
     $paginate->update((object)[ 'scale' => 10 ]);
-    $result->desktop = $paginate->createElements(['paginate', 'paginate--desktop']);
+    $result->desktop = $paginate->createElements([ 'paginate', 'paginate--desktop' ], './');
     return $result;
   }
 

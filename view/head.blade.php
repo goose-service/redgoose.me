@@ -11,7 +11,6 @@
 <meta property="fb:app_id" content="1619661748331088"/>
 <meta name="apple-mobile-web-app-capable" content="yes"/>
 <meta name="mobile-web-app-capable" content="yes"/>
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="theme-color" content="currentColor">
 <meta name="p:domain_verify" content="3e05cc5b868de908660cf4004dbdc8fe"/>
 @yield('meta')
@@ -19,5 +18,6 @@
 <link rel="icon" type="image/x-icon" href="{{__ROOT__}}/assets/images/redgoose_256x256.png"/>
 <link rel="apple-touch-icon" href="{{__ROOT__}}/assets/images/redgoose_256x256.png"/>
 <link rel="apple-touch-startup-image" href="{{__ROOT__}}/assets/images/redgoose_256x256.png"/>
-<link rel="stylesheet" href="{{__ROOT__}}/assets/dist/app.css" media="screen"/>
+<link rel="stylesheet" href="{{__ROOT__}}/assets/fonts/font-loader.css" media="screen"/>
+<link rel="stylesheet" href="{{__ROOT__}}/assets/dist/style.css" media="screen"/>
 <link rel="manifest" href="{{__ROOT__}}/manifest.json"/>

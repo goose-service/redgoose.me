@@ -37,7 +37,7 @@ if ($_ENV['APP_TIMEZONE'])
 }
 
 // set blade
-$blade = new Blade(__PATH__.'/view', __PATH__.'/cache/view');
+$blade = new Blade(__PATH__.'/view', __PATH__.'/cache');
 
 // set router
 try {
@@ -49,7 +49,7 @@ try {
     throw new Exception('Not found page', 404);
   }
 
-  // play route
+  // set route property
   $_target = $router->match['target'];
   $_params = (object)$router->match['params'];
 
@@ -73,7 +73,7 @@ try {
       break;
 
     case 'index/nest':
-      if (!(isset($_params->id) && $_params->id))
+      if (!($_params->id ?? false))
       {
         throw new Exception('Not found nest id.');
       }
@@ -82,12 +82,11 @@ try {
       $connect = new AppModel();
       $res = $connect->indexNest((object)[
         'nest_id' => $_params->id,
-        'category_srl' => isset($_params->srl) ? $_params->srl : null,
+        'category_srl' => $_params->srl ?? null,
       ]);
 
       // set title
-      $title = 'redgoose';
-      if (isset($res->nest->name)) $title = $res->nest->name.' / '.$title;
+      $title = isset($res->nest->name) ? $res->nest->name.' / redgoose' : 'redgoose';
 
       // render page
       $blade->render('index-nest', (object)[
@@ -95,9 +94,9 @@ try {
         'pageTitle' => $res->nest->name,
         'nest_id' => $_params->id,
         'nest_srl' => $res->nest->srl,
-        'category_srl' => isset($_params->srl) ? $_params->srl : null,
+        'category_srl' => $_params->srl ?? null,
         'categories' => $res->categories,
-        'categoryName' => isset($res->category->name) ? $res->category->name : null,
+        'categoryName' => $res->category->name ?? null,
         'articles' => $res->articles,
         'paginate' => $res->paginate,
         'navigation' => AppUtil::getNavigation(),
@@ -105,16 +104,20 @@ try {
       break;
 
     case 'article':
-      // get items
+      // get item
       $connect = new AppModel();
       $res = $connect->item((int)$_params->srl);
 
+      // set title
+      $title = ($res->article->title === '.' ? 'Untitled work' : $res->article->title).' on '.$_ENV['APP_TITLE'];
+      $pageTitle = $res->article->title === '.' ? 'Untitled work' : $res->article->title;
+
       // render page
-      $blade->render('detail', (object)[
-        'title' => ($res->article->title === '.' ? 'Untitled work' : $res->article->title).' on '.$_ENV['APP_TITLE'],
-        'pageTitle' => $res->article->title === '.' ? 'Untitled work' : $res->article->title,
+      $blade->render('article', (object)[
+        'title' => $title,
+        'pageTitle' => $pageTitle,
         'description' => AppUtil::contentToShortText($res->article->content),
-        'image' => isset($res->article->json->thumbnail->path) ? $_ENV['APP_PATH_API_URL'].'/'.$res->article->json->thumbnail->path : '',
+        'image' => ($res->article->json->thumbnail->path ?? false) ? $_ENV['APP_PATH_API_URL'].'/'.$res->article->json->thumbnail->path : '',
         'data' => $res->article,
         'onLike' => AppUtil::checkCookie('redgoose-star-'.$_params->srl),
         'navigation' => AppUtil::getNavigation(),
@@ -142,8 +145,7 @@ try {
 
     case 'on-like':
       $connect = new AppModel();
-      $res = $connect->like((int)$_params->srl);
-      echo json_encode($res);
+      echo json_encode($connect->like((int)$_params->srl));
       break;
 
     case 'lab':
@@ -163,5 +165,12 @@ try {
 }
 catch (Exception $e)
 {
-  AppUtil::error($e, $blade);
+  try
+  {
+    AppUtil::error($e, $blade);
+  }
+  catch(Exception $e)
+  {
+    echo "Failed Error page";
+  }
 }

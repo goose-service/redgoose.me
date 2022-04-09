@@ -1,71 +1,68 @@
-@import "./normalize";
-@import "./mixins";
-@import "./fonts";
+@use './libs/mixins';
+@import './libs/normalize';
 
 :root {
-	--color-text: #222;
-	--color-text-blur: #777;
-	--color-key: #b31f37;
+	--color-text: rgb(34 34 34);
+  --color-bg: rgb(250 251 252);
+	--color-text-blur: rgb(119 119 119);
+	--color-key: rgb(179 31 55);
+	--color-key-rgb: 179 31 55;
 	--rgb-key: 179,31,55;
-	--color-sub: #380AEF;
-	--color-bg: #fafbfc;
+	--color-sub: rgb(56 10 239);
 	--size-side-padding: 24px;
 	--size-header-height: 48px;
 	--font-base: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
 	--font-eng: 'ortsa', Helvetica, Arial, sans-serif;
-	--font-title: 'contents-title', sans-serif;
+	--font-title: 'AritaBuri', sans-serif;
 	--font-code: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
-	@include dark-mode() {
-		--color-text: #d8d8d8;
-		--color-text-blur: #777;
-		--color-key: #1ccd5c;
+	@include mixins.dark-mode() {
+    color-scheme: dark;
+		--color-text: rgb(216 216 216);
+    --color-bg: rgb(34 34 34);
+		--color-text-blur: rgb(119 119 119);
+		--color-key: rgb(28 205 92);
+		--color-key-rgb: 28 205 92;
 		--rgb-key: 28,205,92;
-		--color-sub: #826cef;
-		--color-bg: #222;
+		--color-sub: rgb(130 108 239);
 	}
-	@include responsive(tablet) {
+	@include mixins.responsive(tablet) {
 		--size-side-padding: 54px;
 		--size-header-height: 54px;
 	}
 }
 
+html {
+  touch-action: manipulation;
+}
 body {
 	margin: 0;
 	min-width: 320px;
 	color: var(--color-text);
-	text-size-adjust: 100%;
 	background: var(--color-bg);
 	-webkit-touch-callout: none;
+  overflow-x: hidden;
 }
-body,
-button,
-input,
-textarea,
-select {
+body, button, input, textarea, select {
 	font-family: var(--font-base);
-	text-size-adjust: none;
 	font-size: 1rem;
 	line-height: 1.54;
+  -webkit-text-size-adjust: none;
 }
 a {
 	color: var(--color-key);
 }
-code,
-kbd,
-pre,
-samp {
+code, kbd, pre, samp {
 	font-family: var(--font-code);
 }
-
 ::selection {
 	background: var(--color-key);
-	color: #fff;
+	color: rgb(255 255 255);
 }
 
 // load contents
-@import "./layout";
-@import "./index";
-@import "./detail";
-@import "./error";
-@import "./pages";
-@import "./lightbox";
+@import './layout';
+@import './index';
+@import './detail';
+@import './error';
+@import './pages';
+@import './lightbox';
