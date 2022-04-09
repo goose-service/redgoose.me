@@ -27,7 +27,7 @@ if(!defined("__GOOSE__")){exit();}
     <nav class="index-categories">
       <button type="button" class="index-categories__toggle-button">
         <span>
-          <em>Categories / {{$categoryName ? $categoryName : 'All'}}</em>
+          <em>Categories / {{$categoryName ?: 'All'}}</em>
           <svg xmlns="http://www.w3.org/2000/svg" width="12" height="6" viewBox="0 0 12 6">
             <g fill="none" fill-rule="evenodd">
               <path fill="currentColor" d="M12 0L6 6 0 0z"></path>
@@ -38,7 +38,7 @@ if(!defined("__GOOSE__")){exit();}
       <nav>
         <ul>
           @foreach($categories as $k=>$item)
-          <li{!!($category_srl === $item->srl || (!$category_srl && !$item->srl)) ? ' class="on"' : ''!!}>
+          <li{!!((int)$category_srl === $item->srl || (!$category_srl && !$item->srl)) ? ' class="on"' : ''!!}>
             <a href="/nest/{{$nest_id}}{{$item->srl ? '/'.$item->srl : ''}}/" data-srl="{{$item->srl}}">
               <span>{{$item->name}}</span>
               <em>{{$item->count_article}}</em>
