@@ -1,6 +1,6 @@
 {
   "name": "redgoose.me",
-  "version": "5.4.1",
+  "version": "5.5.0",
   "main": "index.js",
   "repository": "https://gitlab.com/redgoose-me/redgoose.me.git",
   "author": "redgoose <scripter@me.com>",
@@ -17,8 +17,8 @@
   "devDependencies": {
     "auto-writer": "^1.1.2",
     "cash-dom": "^8.1.1",
-    "vite": "^2.9.1",
-    "sass": "^1.50.0",
+    "vite": "^2.9.13",
+    "sass": "^1.53.0",
     "redgoose-content-body": "https://github.com/redgoose-dev/redgoose-content-body.git"
   }
 }

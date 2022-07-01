@@ -2,13 +2,16 @@
 @import './libs/normalize';
 
 :root {
-	--color-text: rgb(34 34 34);
-  --color-bg: rgb(250 251 252);
-	--color-text-blur: rgb(119 119 119);
-	--color-key: rgb(179 31 55);
-	--color-key-rgb: 179 31 55;
-	--rgb-key: 179,31,55;
-	--color-sub: rgb(56 10 239);
+	--color-text-hsl: 0 0% 13%;
+	--color-text: hsl(var(--color-text-hsl));
+  --color-bg-hsl: 210 25% 98%;
+  --color-bg: hsl(var(--color-bg-hsl));
+	--color-text-blur-hsl: 0 0% 47%;
+	--color-text-blur: hsl(var(--color-text-blur-hsl));
+	--color-key-hsl: 350 70% 41%;
+	--color-key: hsl(var(--color-key-hsl));
+	--color-sub-hsl: 233 100% 65%;
+	--color-sub: hsl(var(--color-sub-hsl));
 	--size-side-padding: 24px;
 	--size-header-height: 48px;
 	--font-base: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
@@ -17,13 +20,11 @@
 	--font-code: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
 	@include mixins.dark-mode() {
     color-scheme: dark;
-		--color-text: rgb(216 216 216);
-    --color-bg: rgb(34 34 34);
-		--color-text-blur: rgb(119 119 119);
-		--color-key: rgb(28 205 92);
-		--color-key-rgb: 28 205 92;
-		--rgb-key: 28,205,92;
-		--color-sub: rgb(130 108 239);
+		--color-text-hsl: 0 0% 85%;
+    --color-bg-hsl: 0 0% 13%;
+		--color-text-blur-hsl: 0 0% 47%;
+		--color-key-hsl: 142 76% 46%;
+		--color-sub-hsl: 250 80% 68%;
 	}
 	@include mixins.responsive(tablet) {
 		--size-side-padding: 54px;

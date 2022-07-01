@@ -4,7 +4,7 @@
 	display: grid;
   place-content: center;
 	padding: 72px 0;
-  height: calc(100vh - var(--size-header-height) - 180px);
+  height: calc(100vh - var(--size-header-height) - 100px);
   box-sizing: border-box;
 	img {
 		display: block;
@@ -17,12 +17,15 @@
 		text-align: center;
 		font-family: var(--font-eng);
 		font-size: 1.25rem;
-		font-weight: 600;
+		font-weight: 400;
     line-height: 1.15;
 	}
-
   @include mixins.responsive(tablet) {
-    height: 42vw;
-    max-height: 72vh;
+    height: calc(100vh - var(--size-header-height) - 160px);
+  }
+  @include mixins.dark-mode() {
+    img {
+      filter: invert(60%) sepia(26%) saturate(2284%) hue-rotate(24deg) brightness(104%) contrast(78%);
+    }
   }
 }

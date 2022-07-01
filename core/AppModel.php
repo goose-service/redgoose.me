@@ -1,6 +1,8 @@
 <?php
 namespace Core;
-use Exception, Parsedown, redgoose\Paginate, redgoose\Console;
+use Exception;
+use Parsedown;
+use redgoose\Paginate;
 
 /**
  * App model
@@ -329,7 +331,7 @@ class AppModel {
       }
 
       // parse markdown
-      $parsedown = new Parsedown();
+      $parsedown = new ParsedownExtension();
       $result->article->content = $parsedown->text($result->article->content);
 
       return $result;

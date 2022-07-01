@@ -102,3 +102,13 @@
   cursor: pointer;
   -webkit-tap-highlight-color: rgb(0 0 0 / 0%);
 }
+
+// hover
+@mixin hover()
+{
+  @media (hover: hover) {
+    &:hover {
+      @content;
+    }
+  }
+}
