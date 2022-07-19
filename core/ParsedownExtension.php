@@ -25,4 +25,28 @@ class ParsedownExtension extends Parsedown
     return $element;
   }
 
+  protected function inlineUrl($Excerpt): ?array
+  {
+    $url = parent::inlineUrl($Excerpt);
+    if (preg_match('/^http/', $url['element']['attributes']['href']) > 0)
+    {
+      $url['element']['attributes']['target'] = '_blank';
+    }
+    return $url;
+  }
+
+  protected function inlineLink($Excerpt): ?array
+  {
+    $type = (preg_match('/^!\[/', $Excerpt['context']) > 0) ? 'image': 'a';
+    $link = parent::inlineLink($Excerpt);
+    if ($type === 'a')
+    {
+      if (preg_match('/^http/', $link['element']['attributes']['href']) > 0)
+      {
+        $link['element']['attributes']['target'] = '_blank';
+      }
+    }
+    return $link;
+  }
+
 }
