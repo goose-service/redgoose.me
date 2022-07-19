@@ -44,19 +44,21 @@
 							scripter@me.com<br/>
 							redgooseme@gmail.com
 						</dd>
+            <dt>Ethereum</dt>
+            <dd><a href="https://etherscan.io/address/0x502782aa5076fda02d51e39f57243920633b6f35" target="_blank">redgoose.eth</a></dd>
 					</dl>
 				</section>
 				<section>
 					<h1>skill</h1>
 					<dl>
 						<dt>Use tools</dt>
-						<dd>photoshop, cinema4d, illustrator, webstorm, phpstorm, sketch, github client, zeplin, paw, trello, capture one pro</dd>
+						<dd>photoshop, cinema4d, illustrator, phpstorm, sketch, github client, zeplin, paw, trello, capture one pro, figma</dd>
 						<dt>Programing</dt>
-						<dd>html, css(scss), php, javascript(jQuery, react-js, react-native, vue.js, nuxt.js), markdown</dd>
+						<dd>html, css(scss), php, javascript(jQuery, react, vue, svelte), markdown</dd>
 					</dl>
 				</section>
 				<section>
-					<h1>sns</h1>
+					<h1>links</h1>
 					<dl>
 						<dt>Facebook</dt>
 						<dd>
@@ -66,9 +68,9 @@
 						<dd>
 							<a href="https://twitter.com/redgooseme" target="_blank">https://twitter.com/redgooseme</a>
 						</dd>
-						<dt>Pinterest</dt>
+						<dt>OpenSea</dt>
 						<dd>
-							<a href="https://pinterest.com/redgooseme" target="_blank">https://pinterest.com/redgooseme</a>
+							<a href="https://opensea.io/redgoose" target="_blank">https://opensea.io/redgoose</a>
 						</dd>
 					</dl>
 				</section>
