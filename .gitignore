@@ -1,13 +1,8 @@
 .idea/
 node_modules/
 .AppleDouble/
-vendor/
-!assets/vendor/
-cache/
 
 .DS_Store
 yarn.lock
 .env
 yarn-error.log
-composer.lock
-core/lab.php
