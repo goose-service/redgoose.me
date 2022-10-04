@@ -1,0 +1,48 @@
+@use '../../assets/scss/mixins';
+
+.paginate {
+  display: flex;
+  justify-content: center;
+  user-select: none;
+  a, strong {
+    display: grid;
+    place-content: center;
+    width: 44px;
+    height: 44px;
+    box-sizing: border-box;
+    font-size: 14px;
+    line-height: 1;
+    font-weight: 500;
+    border-radius: 2px;
+    letter-spacing: -1px;
+  }
+  a {
+    text-decoration: none;
+    font-family: var(--font-eng);
+    color: var(--color-text);
+    -webkit-tap-highlight-color: transparent;
+    transition: background-color 120ms ease-out;
+    &:active {
+      background-color: hsl(0 0% 100% / 5%);
+    }
+  }
+  :global(.icon) {
+    display: block;
+    --icon-size: 20px;
+  }
+  strong {
+    color: var(--color-key);
+  }
+  &--mobile {}
+  &--desktop {
+    display: none;
+  }
+  @include mixins.responsive(tablet) {
+    &--mobile {
+      display: none;
+    }
+    &--desktop {
+      display: flex;
+    }
+  }
+}

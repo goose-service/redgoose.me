@@ -1,8 +1,11 @@
 .idea/
 node_modules/
 .AppleDouble/
+dist/
 
 .DS_Store
+.env.local
 yarn.lock
-.env
 yarn-error.log
+package-lock.json
+bun.lockb

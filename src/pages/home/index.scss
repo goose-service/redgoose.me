@@ -1,0 +1,55 @@
+@use '../../assets/scss/mixins';
+
+.intro {
+  &__title {
+    font-size: 0;
+    visibility: hidden;
+  }
+  &__body {
+    margin: var(--size-body-top, 0) 0 0;
+  }
+  &__random-items {
+    margin: 24px 0 36px;
+  }
+  &__paginate {
+    margin: 24px 0 0;
+  }
+  @include mixins.responsive(mobile-large) {
+    --size-body-top: 30px;
+    &__items {
+      padding: 0 24px;
+    }
+    &__random-items {
+      margin: 32px 0 36px;
+    }
+  }
+  @include mixins.responsive(tablet) {
+    --size-body-top: 64px;
+    &__items {
+      padding: 0 48px;
+    }
+    &__random-items {
+      margin: 40px 0 48px;
+    }
+    &__paginate {
+      margin-top: 42px;
+    }
+  }
+  @include mixins.responsive(desktop) {
+    &__items {
+      padding: 0 64px;;
+    }
+    &__random-items {
+      margin: 50px 0 56px;
+    }
+  }
+  @include mixins.responsive(max) {
+    --size-body-top: 72px;
+    &__items {
+      padding: 0 78px;
+    }
+    &__random-items {
+      margin: 60px 0 68px;
+    }
+  }
+}

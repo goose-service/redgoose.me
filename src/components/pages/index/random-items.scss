@@ -1,0 +1,80 @@
+@use '../../../assets/scss/mixins';
+
+.random-items {
+  position: relative;
+  padding: 30px 0 8px;
+  &:before {
+    content: '';
+    display: block;
+    position: absolute;
+    left: 50%;
+    width: 100vw;
+    max-width: 100%;
+    top: 0;
+    bottom: 0;
+    transform: translateX(-50%);
+    background-color: hsla(0 0% 0% / 25%);
+    box-sizing: border-box;
+    pointer-events: none;
+  }
+  &__wrap {
+    position: relative;
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    -webkit-scroll-snap-type: x mandatory;
+    scroll-snap-type: x mandatory;
+    -webkit-scroll-padding-left: var(--random-items-side-outer, 24px);
+    scroll-padding-left: var(--random-items-side-outer, 24px);
+    padding: 0 var(--random-items-side-outer, 24px) 8px;
+    // TODO: 스크롤바 작업
+  }
+  &__index {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    gap: 0 var(--random-items-side-gap, 16px);
+    :global(> li) {
+      width: 80vw;
+      -webkit-scroll-snap-align: start;
+      scroll-snap-align: start;
+    }
+  }
+  @include mixins.responsive(mobile-large) {
+    &__index {
+      :global(> li) {
+        width: 42vw;
+      }
+    }
+  }
+  @include mixins.responsive(tablet) {
+    --random-items-side-outer: 48px;
+    --random-items-side-gap: 20px;
+  }
+  @include mixins.responsive(desktop) {
+    &__wrap {
+      display: block;
+      overflow: unset;
+    }
+    &__index {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      max-width: 1440px;
+      margin: 0 auto;
+      :global(> li) {
+        width: auto;
+      }
+    }
+  }
+  @include mixins.responsive(desktop) {
+    --random-items-side-outer: 64px;
+    padding: 64px 0 48px;
+  }
+  @include mixins.responsive(max) {
+    --random-items-side-outer: 78px;
+    --random-items-side-gap: 30px;
+  }
+}
