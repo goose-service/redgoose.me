@@ -11,7 +11,7 @@ import { sleep } from '../../../libs/util'
 let ready = false
 
 onMount(async () => {
-  // await sleep(300)
+  await sleep(300)
   ready = true
 })
 onDestroy(() => {
@@ -24,6 +24,5 @@ onDestroy(() => {
   display: grid;
   place-content: center;
   height: calc(100vh - var(--size-header-height));
-  background-color: lime;
 }
 </style>

@@ -4,6 +4,7 @@
   margin: 42px 0 0;
   &__header {
     padding: 0 24px;
+    user-select: none;
     h1 {
       margin: 0;
       text-align: center;

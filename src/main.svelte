@@ -2,28 +2,20 @@
   <Header/>
   <div class="container">
     <Route path="/" let:meta>
-      <Lazy
-        component={import('./pages/home/index.svelte')}
-        route={meta}/>
+      <Lazy component={import('./pages/home/index.svelte')} route={meta}/>
     </Route>
     <Route path="/nest/*">
       <Route path="/:nest/*">
         <Route path="/" let:meta>
-          <Lazy
-            component={import('./pages/nest/index.svelte')}
-            route={meta}/>
+          <Lazy component={import('./pages/nest/index.svelte')} route={meta}/>
         </Route>
         <Route path="/:category" let:meta>
-          <Lazy
-            component={import('./pages/nest/index.svelte')}
-            route={meta}/>
+          <Lazy component={import('./pages/nest/index.svelte')} route={meta}/>
         </Route>
       </Route>
     </Route>
     <Route path="/article/:article" let:meta>
-      <Lazy
-        component={import('./pages/article/index.svelte')}
-        route={meta}/>
+      <Lazy component={import('./pages/article/index.svelte')} route={meta}/>
     </Route>
     <Route path="/page/*">
       <Route path="/about">
