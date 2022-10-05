@@ -18,18 +18,18 @@
     <nav class="header-navigation">
       <ul>
         <li>
-          <a href="/nest/visual" on:click={onClickLink}>
+          <a href="/nest/visual/" use:active on:click={onClickLink}>
             Works
           </a>
           <div>
             <ol>
               <li>
-                <a href="/nest/visual" on:click={onClickLink}>
+                <a href="/nest/visual/" use:active on:click={onClickLink}>
                   Visual
                 </a>
               </li>
               <li>
-                <a href="/nest/tool" on:click={onClickLink}>
+                <a href="/nest/tool/" use:active on:click={onClickLink}>
                   Tool & Service
                 </a>
               </li>
@@ -37,33 +37,36 @@
           </div>
         </li>
         <li>
-          <a href="/nest/landscape" on:click={onClickLink}>
+          <a href="/nest/landscape/" use:active on:click={onClickLink}>
             Photography
           </a>
           <div>
             <ol>
               <li>
-                <a href="/nest/landscape" on:click={onClickLink}>
+                <a href="/nest/landscape/" use:active on:click={onClickLink}>
                   Landscape
                 </a>
               </li>
               <li>
-                <a href="/nest/portrait" on:click={onClickLink}>
+                <a href="/nest/portrait/" use:active on:click={onClickLink}>
                   Portrait
                 </a>
               </li>
               <li>
-                <a href="/nest/snap" on:click={onClickLink}>
+                <a href="/nest/snap/" use:active on:click={onClickLink}>
                   Snap
                 </a>
               </li>
               <li>
-                <a href="/nest/composition" on:click={onClickLink}>
+                <a href="/nest/composition/" use:active on:click={onClickLink}>
                   Composition
                 </a>
               </li>
               <li>
-                <a href="/nest/foreign-countries" on:click={onClickLink}>
+                <a
+                  href="/nest/foreign-countries/"
+                  use:active
+                  on:click={onClickLink}>
                   Foreign countries
                 </a>
               </li>
@@ -71,15 +74,12 @@
           </div>
         </li>
         <li>
-          <a href="/page/about" on:click={onClickLink}>
+          <a href="/page/about/" use:active on:click={onClickLink}>
             About
           </a>
         </li>
         <li>
-          <a
-            href="https://note.redgoose.me"
-            target="redgoose-note"
-            on:click={onClickLink}>
+          <a href="https://note.redgoose.me" target="redgoose-note" on:click={onClickLink}>
             Notes
           </a>
         </li>
@@ -89,6 +89,8 @@
 </header>
 
 <script lang="ts">
+import { active } from 'tinro'
+
 function onClickLink(e: PointerEvent): void
 {
   if (!e.currentTarget) return

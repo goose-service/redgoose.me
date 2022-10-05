@@ -2,28 +2,24 @@
   <Header/>
   <div class="container">
     <Route path="/" let:meta>
-      <Lazy component={import('./pages/home/index.svelte')} route={meta}/>
+      <Index route={meta}/>
     </Route>
-    <Route path="/nest/*">
-      <Route path="/:nest/*">
-        <Route path="/" let:meta>
-          <Lazy component={import('./pages/nest/index.svelte')} route={meta}/>
-        </Route>
-        <Route path="/:category" let:meta>
-          <Lazy component={import('./pages/nest/index.svelte')} route={meta}/>
-        </Route>
-      </Route>
+    <Route path="/nest/:nest/" let:meta>
+      <Nest route={meta}/>
     </Route>
-    <Route path="/article/:article" let:meta>
-      <Lazy component={import('./pages/article/index.svelte')} route={meta}/>
+    <Route path="/nest/:nest/:category/" let:meta>
+      <Nest route={meta}/>
+    </Route>
+    <Route path="/article/:article/" let:meta>
+      <Article route={meta}/>
     </Route>
     <Route path="/page/*">
-      <Route path="/about">
-        <Lazy component={import('./pages/page/about.svelte')}/>
+      <Route path="/about/">
+        <About/>
       </Route>
     </Route>
     <Route fallback>
-      <Lazy component={import('./pages/error/404.svelte')}/>
+      <NotFound/>
     </Route>
   </div>
   <Footer/>
@@ -31,9 +27,13 @@
 
 <script lang="ts">
 import { Route } from 'tinro'
-import Lazy from './components/layout/lazy/index.svelte'
 import Header from './components/layout/header/index.svelte'
 import Footer from './components/layout/footer/index.svelte'
+import Index from './pages/home/index.svelte'
+import Nest from './pages/nest/index.svelte'
+import Article from './pages/article/index.svelte'
+import About from './pages/page/about.svelte'
+import NotFound from './pages/error/404.svelte'
 </script>
 
 <style src="./main.scss" lang="scss"></style>

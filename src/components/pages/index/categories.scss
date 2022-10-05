@@ -1,7 +1,6 @@
 @use '../../../assets/scss/mixins';
 
 .categories {
-  user-select: none;
   &__button {
     display: grid;
     grid-template-columns: 1fr auto;
@@ -55,6 +54,7 @@
       letter-spacing: -.25px;
       -webkit-tap-highlight-color: transparent;
       box-sizing: border-box;
+      user-select: none;
       &:active {
         opacity: .5;
       }

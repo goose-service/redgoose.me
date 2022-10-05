@@ -215,6 +215,9 @@
           &:active {
             opacity: 1;
           }
+          &:global(.active) {
+            color: var(--color-key);
+          }
         }
         > div {
           position: relative;
@@ -228,11 +231,6 @@
           }
           > div {
             display: block;
-          }
-        }
-        &.on {
-          > a {
-            color: var(--color-key);
           }
         }
       }
@@ -260,13 +258,11 @@
           &:active {
             opacity: .75;
           }
-        }
-        &.on {
-          > a {
+          &:global(.active) {
             text-decoration: underline;
-            &:hover {
-              opacity: 1;
-            }
+          }
+          &:global(.active:hover) {
+            opacity: 1;
           }
         }
       }
@@ -278,6 +274,11 @@
     @include mixins.responsive(tablet) {
       ul {
         > li {
+          > a {
+            &:global(.active) {
+              color: var(--color-key);
+            }
+          }
           &:focus-within,
           &:hover {
             > a {

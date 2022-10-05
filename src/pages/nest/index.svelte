@@ -1,25 +1,27 @@
 {#if loading.nest}
-  <p>loading...</p>
+  <Loading full={true} move={true}/>
 {:else}
   <article class="nest">
     <header class="nest__header">
-      <h1>{_title}</h1>
+      <h1>
+        <span>{title}</span>
+      </h1>
     </header>
-    {#if _categories?.length > 0}
+    {#if categories?.length > 0}
       <div class="nest__categories">
         <Categories
-          items={_categories}
+          items={categories}
           active={route.params.category}/>
       </div>
     {/if}
     <div class="nest__body">
     {#if loading.items}
-      <p>loading...</p>
+      <Loading move={true}/>
     {:else}
       <div class="nest__items">
-        {#if _items?.length > 0}
+        {#if items?.length > 0}
           <Items>
-            {#each _items as o, key}
+            {#each items as o, key}
               <Item/>
             {/each}
           </Items>
@@ -34,30 +36,24 @@
 {/if}
 
 <script lang="ts">
-import { onMount, onDestroy } from 'svelte'
 import { sleep } from '../../libs/util'
-import Loading from '../../components/layout/loading/index.svelte'
 import Categories from '../../components/pages/index/categories.svelte'
 import Items from '../../components/pages/index/items.svelte'
 import Item from '../../components/pages/index/item.svelte'
 import Paginate from '../../components/paginate/index.svelte'
+import Loading from '../../components/loading/index.svelte'
 
 export let route: Route
 let currentRoute
-let data = {
-  title: route.params.nest,
-  categories: [],
-  items: undefined,
-}
-let _title = ''
-let _categories = [
+let title = ''
+let categories = [
   { key: '37', label: 'Artwork', count: 4, link: '/nest/visual/37/' },
   { key: '38', label: 'Artwork1', count: 8, link: '/nest/visual/38/' },
   { key: '39', label: 'Artwork2', count: 2, link: '/nest/visual/39/' },
   { key: '40', label: 'Artwork3', count: 12, link: '/nest/visual/40/' },
   { key: '41', label: 'Artwork4', count: 16, link: '/nest/visual/41/' },
 ]
-let _items = []
+let items = new Array(24).fill(true)
 let loading = {
   nest: false,
   items: false,
@@ -80,7 +76,7 @@ async function fetchNest(root?: boolean): Promise<void>
   //   title: route.params.nest,
   //   items: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24],
   // }
-  _title = route.params.nest
+  title = route.params.nest
   loading.nest = false
 }
 

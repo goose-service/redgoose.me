@@ -58,7 +58,7 @@
     text-align: center;
     strong {
       display: block;
-      font-size: .875rem;
+      font-size: 14px;
       color: var(--color-text);
       font-weight: 600;
       line-height: 1.25;
@@ -68,16 +68,9 @@
       display: block;
       margin: 0;
       font-family: var(--font-eng);
-      font-size: .625rem;
+      font-size: 10px;
       color: var(--color-text-blur);
-    }
-    em {
-      font-style: normal;
-      &:nth-child(n+2) {
-        &:before {
-          content: ' / ';
-        }
-      }
+      @include mixins.text-single-line();
     }
   }
   @include mixins.responsive(mobile-large) {
