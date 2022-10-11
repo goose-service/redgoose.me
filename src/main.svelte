@@ -4,11 +4,13 @@
     <Route path="/" let:meta>
       <Index route={meta}/>
     </Route>
-    <Route path="/nest/:nest/" let:meta>
-      <Nest route={meta}/>
-    </Route>
-    <Route path="/nest/:nest/:category/" let:meta>
-      <Nest route={meta}/>
+    <Route path="/nest/:nest/*">
+      <Route path="/" let:meta>
+        <Nest route={meta}/>
+      </Route>
+      <Route path="/:category/" let:meta>
+        <Nest route={meta}/>
+      </Route>
     </Route>
     <Route path="/article/:article/" let:meta>
       <Article route={meta}/>

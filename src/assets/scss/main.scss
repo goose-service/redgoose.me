@@ -31,7 +31,7 @@
     --color-sub-hsl: 250 80% 68%;
   }
   @include mixins.responsive(tablet) {
-    --size-side-padding: 54px;
+    --size-side-padding: 58px;
     --size-header-height: 54px;
   }
 }
@@ -63,3 +63,5 @@ code, kbd, pre, samp {
   background: var(--color-key);
   color: rgb(255 255 255);
 }
+
+@import '@redgoose/markdown-style/dist/body';

@@ -10,8 +10,8 @@
   box-sizing: border-box;
   background: var(--header-color-bg, rgb(255 255 255 / 90%));
   box-shadow: var(--header-shadow, (0 0 0 .5px rgb(0 0 0 / 10%), 0 1px 8px rgb(0 0 0 / 10%)));
-  @supports (backdrop-filter: blur(15px)) {
-    backdrop-filter: blur(12px);
+  @supports (backdrop-filter: blur(24px)) {
+    backdrop-filter: blur(24px);
   }
   &__wrap {
     position: relative;
@@ -116,7 +116,7 @@
   }
   @include mixins.dark-mode() {
     --header-color-button-fill: rgb(255 255 255);
-    --header-color-bg: rgb(0 0 0 / 80%);
+    --header-color-bg: rgb(0 0 0 / 60%);
   }
 }
 

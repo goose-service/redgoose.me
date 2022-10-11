@@ -1,0 +1,96 @@
+@use '../../../assets/scss/mixins';
+
+.button-like {
+  --color-like-step-1: #EB6635;
+  --color-like-step-2: #B31E36;
+  --color-like-step-3: #3422FF;
+  display: block;
+  margin: 0 auto;
+  padding: 10px;
+  border: none;
+  background: transparent;
+  font-size: 0;
+  -webkit-tap-highlight-color: transparent;
+  cursor: pointer;
+  outline: none;
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  transition: box-shadow 100ms ease-out, background-color 250ms ease-out;
+  user-select: none;
+  span {
+    display: block;
+  }
+  svg {
+    display: block;
+    margin: 0 auto;
+    width: 38px;
+    height: 38px;
+    transition: transform 300ms cubic-bezier(.24, 1.35, .8, 1.22);
+    .step-1 {
+      color: var(--color-like-step-1);
+    }
+    .step-2 {
+      color: var(--color-like-step-2);
+    }
+    .step-3 {
+      color: var(--color-like-step-3);
+    }
+  }
+  em {
+    display: block;
+    margin: -2px 0 0;
+    font-style: normal;
+    font-family: var(--font-eng);
+    font-size: 11px;
+    font-weight: 400;
+    color: var(--color-text-blur);
+    transition: opacity 150ms ease-out;
+  }
+  &:disabled {
+    --color-like-step-1: #ddd;
+    --color-like-step-2: #bbb;
+    --color-like-step-3: #aaa;
+    cursor: default;
+    &:focus {
+      outline: none;
+    }
+    &:active {
+      svg {
+        transform: none;
+      }
+    }
+  }
+  &:active,
+  &:focus-visible {
+    background: rgba(#000, .05);
+    svg {
+      transform: scale(1.4) translateY(6px);
+    }
+    em {
+      opacity: 0;
+    }
+  }
+  &:disabled {
+    &:active {
+      background: none;
+      em {
+        opacity: 1;
+      }
+    }
+  }
+  @include mixins.dark-mode() {
+    --color-like-step-1: #8ef01f;
+    --color-like-step-2: var(--color-key);
+    --color-like-step-3: #033615;
+    &:disabled {
+      --color-like-step-1: #666;
+      --color-like-step-2: #444;
+      --color-like-step-3: #333;
+    }
+    &:active,
+    &:focus {
+      background: rgba(#000, .15);
+    }
+  }
+}

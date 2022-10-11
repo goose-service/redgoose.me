@@ -1,0 +1,148 @@
+@use '../../assets/scss/mixins';
+
+.about {
+  --color-about-metas-section-title: #111;
+  padding: 50px var(--size-side-padding) 40px;
+
+  &__wrap {
+    max-width: 920px;
+    margin: 0 auto;
+  }
+  &__header {
+    text-align: center;
+    p {
+      margin: 0;
+      font-family: var(--font-eng);
+      font-size: 11px;
+      color: var(--color-text-blur);
+    }
+    h1 {
+      margin: 2px 0 0;
+      font-family: var(--font-title);
+      font-size: 32px;
+      font-weight: 600;
+      line-height: 1;
+      letter-spacing: -.5px;
+      color: var(--color-about-metas-section-title);
+    }
+  }
+  &__profile {
+    margin: 42px 0 0;
+    padding: 0 40px;
+    img {
+      display: block;
+      margin: 0 auto;
+      width: 120px;
+      max-width: 100%;
+      user-select: none;
+    }
+  }
+  &__description {
+    margin: 36px 0 0;
+    p {
+      margin: 0;
+      font-size: .875rem;
+      line-height: 1.64;
+    }
+  }
+  &__metas {
+    margin: 30px 0 0;
+    section {
+      margin: 30px 0 0;
+      &:first-child {
+        margin-top: 0;
+      }
+      > h1 {
+        margin: 0;
+        font-family: var(--font-title);
+        font-size: 24px;
+        font-weight: 600;
+        color: var(--color-about-metas-section-title);
+        letter-spacing: -.5px;
+        &:after {
+          content: '';
+          display: block;
+          width: 12px;
+          height: 1px;
+          background: var(--color-text-blur);
+        }
+      }
+      > dl {
+        margin: 10px 0 0;
+        font-size: 12px;
+        line-height: 20px;
+        > dt {
+          margin-top: 12px;
+          font-family: var(--font-eng);
+          font-weight: 500;
+          font-size: 15px;
+          color: var(--color-about-metas-section-title);
+        }
+        > dd {
+          margin: 5px 0 0;
+          font-family: var(--font-eng);
+        }
+      }
+    }
+  }
+
+  @include mixins.responsive(tablet) {
+    padding-top: 50px;
+    padding-bottom: 0;
+    &__header {
+      p {
+        font-size: 12px;
+      }
+      h1 {
+        font-size: 36px;
+      }
+    }
+    &__profile {
+      margin: 48px 0 0;
+      img {
+        width: 240px;
+      }
+    }
+    &__description {
+      margin-top: 42px;
+    }
+    &__metas {
+      margin: 50px 0 0;
+      > div {
+        display: flex;
+        flex-wrap: wrap;
+      }
+      section {
+        width: 50%;
+        margin: 0;
+        padding: 0 0 40px;
+      }
+    }
+  }
+  @include mixins.responsive(desktop) {
+    &__metas {
+      section {
+        > dl {
+          > dt {
+            margin: 0;
+            padding: 4px 0 0;
+            float: left;
+            width: 90px;
+            font-size: 12px;
+            line-height: 20px;
+            font-weight: 400;
+          }
+          > dd {
+            margin: 0 0 0 90px;
+            padding: 4px 0 0;
+            line-height: 20px;
+          }
+        }
+      }
+    }
+  }
+  @include mixins.dark-mode() {
+    --color-about-metas-section-title: #fff;
+    --color-about-metas-section-sub-title: #fff;
+  }
+}
