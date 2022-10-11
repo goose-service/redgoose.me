@@ -20,6 +20,10 @@ declare global {
     url: string
   }
 
+  export interface UnknownObject {
+    [key: string]: string|number
+  }
+
 }
 
 export {}

@@ -28,7 +28,11 @@
         {/if}
       </div>
       <div class="nest__paginate">
-        <Paginate/>
+        <Paginate
+          page={route.query.page}
+          total={400}
+          size={10}
+          on:change={onChangePage}/>
       </div>
     {/if}
     </div>
@@ -36,7 +40,8 @@
 {/if}
 
 <script lang="ts">
-import { sleep } from '../../libs/util'
+import { router } from 'tinro'
+import { getUrlQueryString, sleep } from '../../libs/util'
 import Categories from '../../components/pages/index/categories.svelte'
 import Items from '../../components/pages/index/items.svelte'
 import Item from '../../components/pages/index/item.svelte'
@@ -59,11 +64,25 @@ let loading = {
   items: false,
 }
 
-let nest = fetchNest(true)
+// let nest = fetchNest(true)
 
-$: if (currentRoute.params.nest !== route.params.nest) fetchNest()
-$: if (currentRoute.params.category !== route.params.category) fetchCategory()
-$: if (currentRoute.query.page !== route.query.page) fetchPage()
+// $: if (currentRoute.params.nest !== route.params.nest) fetchNest()
+// $: if (currentRoute.params.category !== route.params.category) fetchCategory()
+// $: if (currentRoute.query.page !== route.query.page) fetchPage()
+
+async function updateRoute(meta): Promise<void>
+{
+  if (meta.from === meta.url) return
+  if (!/^\/nest\//.test(meta.path)) return
+  try
+  {
+    console.warn('updateRoute() from index/nest ==>', meta.path)
+  }
+  catch (e)
+  {
+    //
+  }
+}
 
 async function fetchNest(root?: boolean): Promise<void>
 {
@@ -111,6 +130,14 @@ function updateCategories(src)
 {
   return
 }
+
+function onChangePage({ detail: { value } })
+{
+  let query = getUrlQueryString({ page: value })
+  router.goto(`./${query}`)
+}
+
+// router.subscribe(updateRoute)
 </script>
 
 <style src="./index.scss" lang="scss"></style>

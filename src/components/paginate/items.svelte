@@ -1,0 +1,113 @@
+<nav class="paginate">
+  <svelte:element
+    this={_disabledFirstPage ? 'strong' : 'a'}
+    href={_disabledFirstPage ? '' : makeUrl(1)}
+    title={`go to first page`}
+    class="arrow">
+    <Icon name="chevrons-left"/>
+  </svelte:element>
+  <svelte:element
+    this={_block <= 0 ? 'strong' : 'a'}
+    href={_block <= 0 ? '' : makeUrl(((_page - range) > 1) ? (_page - range) : 1)}
+    title={`go to ${range} page prev`}
+    class="arrow">
+    <Icon name="chevron-left"/>
+  </svelte:element>
+  {#if _pageItems.length > 0}
+    {#each _pageItems as item, key}
+      {#if item.active}
+        <strong title={`${item.key} page`} class="number">
+          <em>{item.key}</em>
+        </strong>
+      {:else}
+        <a href={makeUrl(item.key)} title={`go to ${item.key} page`} class="number">
+          <em>{item.key}</em>
+        </a>
+      {/if}
+    {/each}
+  {:else}
+    <strong title={`${_page || 1} page`} class="number">
+      <em>{_page || 1}</em>
+    </strong>
+  {/if}
+  <svelte:element
+    this={_block >= _blockTotal ? 'strong' : 'a'}
+    href={_block >= _blockTotal ? '' : makeUrl((_page + range) > _count ? _count : (_page + range))}
+    title={`go to ${range} page next`}
+    class="arrow">
+    <Icon name="chevron-right"/>
+  </svelte:element>
+  <svelte:element
+    this={_disabledLastPage ? 'strong' : 'a'}
+    href={_disabledLastPage ? '' : makeUrl(_count)}
+    title="go to last page"
+    class="arrow">
+    <Icon name="chevrons-right"/>
+  </svelte:element>
+</nav>
+
+<script lang="ts">
+import { createEventDispatcher, onMount } from 'svelte'
+import { Icon } from '../icons'
+import { serialize, pureObject } from '../../libs/util'
+
+interface PageItem {
+  key: number
+  active: boolean
+}
+
+const dispatch = createEventDispatcher()
+export let page: number = 1
+export let total: number = 0
+export let size: number = 10
+export let range: number = 5
+export let url: string = '/'
+export let query: UnknownObject = {}
+let _pageItems: PageItem[] = []
+let _disabledFirstPage: boolean
+let _disabledLastPage: boolean
+
+$: _page = (() => ((Number(page) > 1) ? Number(page) : 1))()
+$: _count = Math.ceil(total / size)
+$: _block = Math.floor((_page - 1) / range)
+$: _blockTotal = Math.floor((_count - 1) / range)
+$: if (_block !== undefined && page > 0) _pageItems = reactivePageItems()
+$: if (_block !== undefined && page > 0) _disabledFirstPage = reactiveFirstPage()
+$: if (_block !== undefined && page > 0) _disabledLastPage = reactiveLastPage()
+
+function reactivePageItems(): PageItem[]
+{
+  let items: any[] = []
+  let startPage = _block * range + 1
+  for (let i = 1; i < range + 1 && startPage <= _count; i++, startPage++)
+  {
+    items[i - 1] = {
+      key: startPage,
+      active: (startPage === _page),
+    }
+  }
+  let checkEmpty = false
+  items.forEach(o => {
+    if (o.active) checkEmpty = true
+  })
+  return checkEmpty ? items : []
+}
+function reactiveFirstPage(): boolean
+{
+  return _block === 0
+}
+function reactiveLastPage(): boolean
+{
+  return _page >= _count
+}
+
+function makeUrl(n: number): string
+{
+  let newQuery = pureObject(query)
+  newQuery.page = n
+  if (newQuery.page === 1) delete newQuery.page
+  return `${url}${serialize(newQuery, true)}`
+}
+</script>
+
+<style src="./items.scss" lang="scss"></style>

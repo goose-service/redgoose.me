@@ -26,7 +26,7 @@
 </div>
 
 <script lang="ts">
-import { Route } from 'tinro'
+import { Route, router } from 'tinro'
 import Header from './components/layout/header/index.svelte'
 import Footer from './components/layout/footer/index.svelte'
 import Index from './pages/home/index.svelte'
@@ -34,6 +34,10 @@ import Nest from './pages/nest/index.svelte'
 import Article from './pages/article/index.svelte'
 import About from './pages/page/about.svelte'
 import NotFound from './pages/error/404.svelte'
+
+router.subscribe(() => {
+  // console.log('============+>')
+})
 </script>
 
 <style src="./main.scss" lang="scss"></style>

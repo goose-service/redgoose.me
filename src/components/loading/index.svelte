@@ -19,7 +19,7 @@ export let move: boolean = false
 let ready: boolean = false
 
 onMount(async () => {
-  // await sleep(300)
+  await sleep(300)
   ready = true
 })
 onDestroy(() => {

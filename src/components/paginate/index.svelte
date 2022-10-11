@@ -1,37 +1,50 @@
-<div class="paginate paginate--mobile">
-  <a href="./?page=1" title="Prev">
-    <Icon name="chevron-left"/>
-  </a>
-  <a href="./?page=1">1</a>
-  <a href="./?page=2">2</a>
-  <strong>3</strong>
-  <a href="./?page=4">4</a>
-  <a href="./?page=5">5</a>
-  <a href="./?page=6" title="Next">
-    <Icon name="chevron-right"/>
-  </a>
+<div class="paginate--mobile">
+  <PaginateItems
+    bind:page={page}
+    total={total}
+    size={size}
+    range={3}
+    url={url}
+    query={query}
+    on:change/>
 </div>
-<div class="paginate paginate--desktop">
-  <a href="./?page=1" title="Prev">
-    <Icon name="chevron-left"/>
-  </a>
-  <a href="./?page=1">1</a>
-  <a href="./?page=2">2</a>
-  <strong>3</strong>
-  <a href="./?page=4">4</a>
-  <a href="./?page=5">5</a>
-  <a href="./?page=6">6</a>
-  <a href="./?page=7">7</a>
-  <a href="./?page=8">8</a>
-  <a href="./?page=9">9</a>
-  <a href="./?page=10">10</a>
-  <a href="./?page=11" title="Next">
-    <Icon name="chevron-right"/>
-  </a>
+<div class="paginate--desktop">
+  <PaginateItems
+    bind:page={page}
+    total={total}
+    size={size}
+    range={10}
+    url={url}
+    query={query}
+    on:change/>
 </div>
 
 <script lang="ts">
-import { Icon } from '../icons'
+import PaginateItems from './items.svelte'
+
+export let page: number
+export let total: number
+export let size: number
+export let url: string
+export let query: UnknownObject
 </script>
 
-<style src="./index.scss" lang="scss"></style>
+<style lang="scss">
+@use '../../assets/scss/mixins';
+.paginate {
+  &--mobile {
+    display: block;
+  }
+  &--desktop {
+    display: none;
+  }
+  @include mixins.responsive(tablet) {
+    &--mobile {
+      display: none;
+    }
+    &--desktop {
+      display: block;
+    }
+  }
+}
+</style>
