@@ -30,10 +30,9 @@
 
 <script lang="ts">
 import { onMount } from 'svelte'
-import { marked } from 'marked'
-import { sleep } from '../../libs/util'
-import Loading from '../../components/loading/index.svelte'
-import LikeButton from '../../components/pages/article/like-button.svelte'
+import { sleep } from '../libs/util'
+import Loading from '../components/loading/loading-page.svelte'
+import LikeButton from '../components/pages/article/like-button.svelte'
 
 export let route: Route
 let loading: boolean = false
@@ -46,7 +45,7 @@ let likeButton = {
   count: 0,
 }
 
-$: _contentBody = marked(contentBody)
+$: _contentBody = contentBody
 
 async function fetchData(): Promise<void>
 {
@@ -54,6 +53,7 @@ async function fetchData(): Promise<void>
   {
     loading = true
     console.log('fetchData()', route)
+    // TODO: /api/article/{SRL}/ 요청
     await sleep(1000)
     loading = false
   }
@@ -66,9 +66,10 @@ async function fetchData(): Promise<void>
 async function onClickLike(): Promise<void>
 {
   console.log('onClickLike()')
+  // TODO: /api/article/{SRL}/onLike/ 요청
 }
 
 onMount(() => fetchData().then())
 </script>
 
-<style src="./index.scss" lang="scss"></style>
+<style src="./article.scss" lang="scss"></style>

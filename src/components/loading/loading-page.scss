@@ -2,8 +2,9 @@
 
 .loading {
   position: relative;
-  width: var(--loading-width, 240px);
-  height: calc(100vh - var(--size-header-height) - 320px);
+  width: var(--loading-width, 50vw);
+  height: 75vw;
+  max-height: 360px;
   margin: 0 auto;
   &__unit {
     position: absolute;
@@ -45,7 +46,8 @@
     }
   }
   &--full {
-    height: calc(100vh - var(--size-header-height) - 160px);
+    height: calc(100vh - var(--size-header-height) - 100px);
+    max-height: none;
   }
   &--move {
     .loading__unit {
@@ -54,6 +56,14 @@
         0% { left: -20px; }
         100% { left: 90%; }
       }
+    }
+  }
+  @include mixins.responsive(tablet) {
+    width: var(--loading-width, 240px);
+    max-height: 420px;
+    &--full {
+      height: calc(100vh - var(--size-header-height) - 160px);
+      max-height: none;
     }
   }
 }

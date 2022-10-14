@@ -2,7 +2,7 @@
   <h1 class="intro__title">redgoose works</h1>
   <div class="intro__body">
     {#if loading}
-      <Loading full={false} move={true}/>
+      <Loading full={true} move={true}/>
     {:else}
       {#if itemsHead.length > 0}
         <div class="intro__items">
@@ -49,13 +49,13 @@
 
 <script lang="ts">
 import { router } from 'tinro'
-import Items from '../../components/pages/index/items.svelte'
-import Item from '../../components/pages/index/item.svelte'
-import RandomItems from '../../components/pages/index/random-items.svelte'
-import Empty from '../../components/pages/index/empty.svelte'
-import Paginate from '../../components/paginate/index.svelte'
-import Loading from '../../components/loading/index.svelte'
-import { getUrlQueryString, sleep } from '../../libs/util'
+import Items from '../components/pages/index/items.svelte'
+import Item from '../components/pages/index/item.svelte'
+import RandomItems from '../components/pages/index/random-items.svelte'
+import Empty from '../components/pages/index/empty.svelte'
+import Paginate from '../components/paginate.svelte'
+import Loading from '../components/loading/loading-page.svelte'
+import { sleep } from '../libs/util'
 
 export let route: Route
 let loading: boolean = false
@@ -71,6 +71,7 @@ async function updateRoute(): Promise<void>
   {
     loading = true
     console.warn('updateRoute() from home ==>', route)
+    // TODO: /api/ 요청
     await sleep(1000)
     loading = false
   }
@@ -81,4 +82,4 @@ async function updateRoute(): Promise<void>
 }
 </script>
 
-<style src="./index.scss" lang="scss"></style>
+<style src="./home.scss" lang="scss"></style>

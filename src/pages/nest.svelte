@@ -29,7 +29,7 @@
       <div class="nest__paginate">
         <Paginate
           page={route.query.page}
-          total={80}
+          total={450}
           size={10}
           url="./"
           query={router.location.query.get()}/>
@@ -40,12 +40,12 @@
 
 <script lang="ts">
 import { router } from 'tinro'
-import { sleep } from '../../libs/util'
-import Categories from '../../components/pages/index/categories.svelte'
-import Items from '../../components/pages/index/items.svelte'
-import Item from '../../components/pages/index/item.svelte'
-import Paginate from '../../components/paginate/index.svelte'
-import Loading from '../../components/loading/index.svelte'
+import { sleep } from '../libs/util'
+import Categories from '../components/pages/index/categories.svelte'
+import Items from '../components/pages/index/items.svelte'
+import Item from '../components/pages/index/item.svelte'
+import Paginate from '../components/paginate.svelte'
+import Loading from '../components/loading/loading-page.svelte'
 
 export let route: Route
 let currentRoute
@@ -71,6 +71,7 @@ async function updateNest(root?: boolean): Promise<void>
   currentRoute = route
   loading = true
   console.log('updateNest')
+  // TODO: /api/nests/{ID}/ 요청
   await sleep(1000)
   // console.log('fetchData()', root ? 'true' : 'false', JSON.stringify(route.params))
   // console.log(route.params.nest)
@@ -87,6 +88,7 @@ async function updateCategory(): Promise<void>
   currentRoute = route
   loading = true
   console.log('fetchCategory()')
+  // TODO: /api/nests/{ID}/ 요청
   await sleep(1000)
   loading = false
 }
@@ -96,9 +98,10 @@ async function updatePage(): Promise<void>
   currentRoute = route
   loading = true
   console.log('updatePage()')
+  // TODO: /api/nests/{ID}/?category={CATEGORY}&page={PAGE} 요청
   await sleep(1000)
   loading = false
 }
 </script>
 
-<style src="./index.scss" lang="scss"></style>
+<style src="./nest.scss" lang="scss"></style>

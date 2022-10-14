@@ -50,9 +50,7 @@
   }
   strong {
     color: var(--color-key);
-    :global(.icon) {
-      --icon-color: hsl(var(--color-text-hsl) / 25%);
-    }
+    --icon-color: hsl(var(--color-text-hsl) / 25%);
   }
   em {
     position: relative;

@@ -27,4 +27,4 @@ onDestroy(() => {
 })
 </script>
 
-<style src="./index.scss" lang="scss"></style>
+<style src="./loading-page.scss" lang="scss"></style>

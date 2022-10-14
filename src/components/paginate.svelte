@@ -20,7 +20,7 @@
 </div>
 
 <script lang="ts">
-import PaginateItems from './items.svelte'
+import PaginateItems from './paginate/items.svelte'
 
 export let page: number
 export let total: number
@@ -30,7 +30,7 @@ export let query: UnknownObject
 </script>
 
 <style lang="scss">
-@use '../../assets/scss/mixins';
+@use '../assets/scss/mixins';
 .paginate {
   &--mobile {
     display: block;

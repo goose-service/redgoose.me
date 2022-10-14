@@ -1,0 +1,11 @@
+# directories
+/src
+/dist
+/node_modules
+/_legacy
+
+# files
+.editorconfig
+.gitignore
+bun.lockb
+README.md

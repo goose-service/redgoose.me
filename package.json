@@ -7,13 +7,14 @@
   "license": "MIT",
   "scripts": {
     "dev": "node --no-warnings server/entry.js --development",
-    "dev:live": "nodemon server/entry.js --development",
+    "dev:live": "nodemon --no-warnings server/entry.js --development",
     "prebuild": "rm -rf ./dist",
     "build": "vite build",
     "start": "node server/entry.js --production"
   },
   "nodemonConfig": {
-    "delay": 500
+    "delay": 1000,
+    "ignore": [ "src/**/*", "dist/**/*" ]
   },
   "engines": {
     "node": "16"

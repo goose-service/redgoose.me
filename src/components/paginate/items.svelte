@@ -1,18 +1,32 @@
 <nav class="paginate">
-  <svelte:element
-    this={_disabledFirstPage ? 'strong' : 'a'}
-    href={_disabledFirstPage ? '' : makeUrl(1)}
-    title={`go to first page`}
-    class="arrow">
-    <Icon name="chevrons-left"/>
-  </svelte:element>
-  <svelte:element
-    this={_block <= 0 ? 'strong' : 'a'}
-    href={_block <= 0 ? '' : makeUrl(((_page - range) > 1) ? (_page - range) : 1)}
-    title={`go to ${range} page prev`}
-    class="arrow">
-    <Icon name="chevron-left"/>
-  </svelte:element>
+  {#if _block === 0}
+    <strong
+      title={`go to first page`}
+      class="arrow">
+      <Icon name="chevrons-left"/>
+    </strong>
+  {:else}
+    <a
+      href={makeUrl(1)}
+      title={`go to first page`}
+      class="arrow">
+      <Icon name="chevrons-left"/>
+    </a>
+  {/if}
+  {#if _block <= 0}
+    <strong
+      title={`go to ${range} page prev`}
+      class="arrow">
+      <Icon name="chevron-left"/>
+    </strong>
+  {:else}
+    <a
+      href={makeUrl(((_page - range) > 1) ? (_page - range) : 1)}
+      title={`go to ${range} page prev`}
+      class="arrow">
+      <Icon name="chevron-left"/>
+    </a>
+  {/if}
   {#if _pageItems.length > 0}
     {#each _pageItems as item, key}
       {#if item.active}
@@ -30,24 +44,37 @@
       <em>{_page || 1}</em>
     </strong>
   {/if}
-  <svelte:element
-    this={_block >= _blockTotal ? 'strong' : 'a'}
-    href={_block >= _blockTotal ? '' : makeUrl((_page + range) > _count ? _count : (_page + range))}
-    title={`go to ${range} page next`}
-    class="arrow">
-    <Icon name="chevron-right"/>
-  </svelte:element>
-  <svelte:element
-    this={_disabledLastPage ? 'strong' : 'a'}
-    href={_disabledLastPage ? '' : makeUrl(_count)}
-    title="go to last page"
-    class="arrow">
-    <Icon name="chevrons-right"/>
-  </svelte:element>
+  {#if _block >= _blockTotal}
+    <strong
+      title={`go to ${range} page next`}
+      class="arrow">
+      <Icon name="chevron-right"/>
+    </strong>
+  {:else}
+    <a
+      href={makeUrl((_page + range) > _count ? _count : (_page + range))}
+      title={`go to ${range} page next`}
+      class="arrow">
+      <Icon name="chevron-right"/>
+    </a>
+  {/if}
+  {#if _page >= _count}
+    <strong
+      title="go to last page"
+      class="arrow">
+      <Icon name="chevrons-right"/>
+    </strong>
+  {:else}
+    <a
+      href={makeUrl(_count)}
+      title="go to last page"
+      class="arrow">
+      <Icon name="chevrons-right"/>
+    </a>
+  {/if}
 </nav>
 
 <script lang="ts">
-import { createEventDispatcher, onMount } from 'svelte'
 import { Icon } from '../icons'
 import { serialize, pureObject } from '../../libs/util'
 
@@ -56,7 +83,6 @@ interface PageItem {
   active: boolean
 }
 
-const dispatch = createEventDispatcher()
 export let page: number = 1
 export let total: number = 0
 export let size: number = 10
@@ -64,16 +90,12 @@ export let range: number = 5
 export let url: string = '/'
 export let query: UnknownObject = {}
 let _pageItems: PageItem[] = []
-let _disabledFirstPage: boolean
-let _disabledLastPage: boolean
 
 $: _page = (() => ((Number(page) > 1) ? Number(page) : 1))()
 $: _count = Math.ceil(total / size)
 $: _block = Math.floor((_page - 1) / range)
 $: _blockTotal = Math.floor((_count - 1) / range)
 $: if (_block !== undefined && page > 0) _pageItems = reactivePageItems()
-$: if (_block !== undefined && page > 0) _disabledFirstPage = reactiveFirstPage()
-$: if (_block !== undefined && page > 0) _disabledLastPage = reactiveLastPage()
 
 function reactivePageItems(): PageItem[]
 {
@@ -91,14 +113,6 @@ function reactivePageItems(): PageItem[]
     if (o.active) checkEmpty = true
   })
   return checkEmpty ? items : []
-}
-function reactiveFirstPage(): boolean
-{
-  return _block === 0
-}
-function reactiveLastPage(): boolean
-{
-  return _page >= _count
 }
 
 function makeUrl(n: number): string
