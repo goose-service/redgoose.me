@@ -2,6 +2,7 @@ import * as fs from 'fs'
 import * as path from 'path'
 import express from 'express'
 import isbot from 'isbot'
+import cookieParser from 'cookie-parser'
 import { createServer } from 'vite'
 import { openServerMessage, isDev, getEnv } from './libs/entry-assets.js'
 import serviceServer from './service/main.js'
@@ -30,7 +31,6 @@ async function development(app)
   serviceServer(app)
   // global route
   app.use('*', async (req, res, next) => {
-    // TODO: 검색엔진에서 따로 렌더링 한다면 사용한다.
     // render search engine bot
     if (isbot(req.get('user-agent')))
     {
@@ -68,7 +68,6 @@ function production(app)
   serviceServer(app)
   // global route
   app.use((req, res, next) => {
-    // TODO: 검색엔진에서 따로 렌더링 한다면 사용한다.
     // render search engine bot
     if (isbot(req.get('user-agent')))
     {
@@ -105,6 +104,10 @@ async function server()
   let app = express()
   const dev = isDev()
   const env = getEnv()
+  // set timezone
+  process.env.TZ = env.VITE_TIMEZONE
+  // set cookie
+  app.use(cookieParser())
   // render app
   app = dev ? await development(app) : production(app)
   // listen server

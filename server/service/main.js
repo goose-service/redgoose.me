@@ -8,7 +8,6 @@ import api from './api/index.js'
 function server(app)
 {
   app.use('/api', api)
-  // app.use('/foo', (req, res) => res.end('page-foo'))
 }
 
 export default server

@@ -12,7 +12,7 @@
     </figure>
     <div class="item__body">
       <strong bind:this={elements[0]}>{title}</strong>
-      <span bind:this={elements[1]}>{description}</span>
+      <span bind:this={elements[1]}>{_description}</span>
     </div>
   </a>
 </li>
@@ -26,6 +26,8 @@ export let srl: number = 123
 export let image: string = 'https://images.unsplash.com/photo-1664627206290-9a9877f81da3?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=400&q=60'
 export let title: string = 'title'
 export let description: string = 'description'
+
+$: _description = `$$-${description}`
 
 function onEnterItem(e: MouseEvent): void
 {

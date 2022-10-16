@@ -88,7 +88,7 @@ async function updateCategory(): Promise<void>
   currentRoute = route
   loading = true
   console.log('fetchCategory()')
-  // TODO: /api/nests/{ID}/ 요청
+  // TODO: /api/nests/{ID}/articles/?category={CATEGORY} 요청
   await sleep(1000)
   loading = false
 }
@@ -98,7 +98,7 @@ async function updatePage(): Promise<void>
   currentRoute = route
   loading = true
   console.log('updatePage()')
-  // TODO: /api/nests/{ID}/?category={CATEGORY}&page={PAGE} 요청
+  // TODO: /api/nests/{ID}/articles/?category={CATEGORY}&page={PAGE} 요청
   await sleep(1000)
   loading = false
 }
