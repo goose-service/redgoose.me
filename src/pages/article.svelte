@@ -30,6 +30,7 @@
 
 <script lang="ts">
 import { onMount } from 'svelte'
+import { error } from '../store'
 import { sleep } from '../libs/util'
 import Loading from '../components/loading/loading-page.svelte'
 import LikeButton from '../components/pages/article/like-button.svelte'
@@ -59,6 +60,11 @@ async function fetchData(): Promise<void>
   }
   catch (e)
   {
+    const { status, message } = e.response?._data
+    error.update(() => ({
+      status: status || 500,
+      message: message || 'Unknown error',
+    }))
     loading = false
   }
 }

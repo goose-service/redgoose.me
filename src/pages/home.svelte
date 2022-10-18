@@ -4,64 +4,90 @@
     {#if loading}
       <Loading full={true} move={true}/>
     {:else}
-      {#if itemsHead.length > 0}
-        <div class="intro__items">
-          {#if itemsHead?.length > 0}
-            <Items>
-              {#each itemsHead as o, key}
-                <Item/>
-              {/each}
-            </Items>
-          {/if}
-        </div>
+      {#if (itemsHead?.length > 0) || (itemsBody?.length > 0)}
+        {#if itemsHead.length > 0}
+          <div class="intro__items">
+            {#if itemsHead?.length > 0}
+              <Items>
+                {#each itemsHead as o, key}
+                  <Item
+                    srl={o.srl}
+                    title={o.title}
+                    image={o.image}
+                    description={`${o.nest} / ${o.category}`}/>
+                {/each}
+              </Items>
+            {/if}
+          </div>
+        {/if}
         {#if itemsRandom?.length > 0}
           <div class="intro__random-items">
             <RandomItems>
               {#each itemsRandom as o, key}
-                <Item/>
+                <Item
+                  srl={o.srl}
+                  title={o.title}
+                  image={o.image}
+                  description={`${o.nest} / ${o.category}`}/>
               {/each}
             </RandomItems>
           </div>
         {/if}
-        {#if itemsBody?.length > 0}
-          <div class="intro__items">
-            <Items>
-              {#each itemsBody as o, key}
-                <Item/>
-              {/each}
-            </Items>
-          </div>
-        {/if}
+        <div class="intro__items">
+          <Items>
+            {#each itemsBody as o, key}
+              <Item
+                srl={o.srl}
+                title={o.title}
+                image={o.image}
+                description={`${o.nest} / ${o.category}`}/>
+            {/each}
+          </Items>
+        </div>
       {:else}
         <Empty/>
       {/if}
-      <div class="intro__paginate">
-        <Paginate
-          page={route.query.page}
-          total={400}
-          size={10}
-          url="/"
-          query={router.location.query.get()}/>
-      </div>
+      {#if total > 0}
+        <div class="intro__paginate">
+          <Paginate
+            page={route.query.page}
+            total={total}
+            size={10}
+            url="/"
+            query={router.location.query.get()}/>
+        </div>
+      {/if}
     {/if}
   </div>
 </article>
 
 <script lang="ts">
 import { router } from 'tinro'
+import { $fetch as fetch } from 'ohmyfetch'
+import { error } from '../store'
 import Items from '../components/pages/index/items.svelte'
 import Item from '../components/pages/index/item.svelte'
 import RandomItems from '../components/pages/index/random-items.svelte'
 import Empty from '../components/pages/index/empty.svelte'
 import Paginate from '../components/paginate.svelte'
 import Loading from '../components/loading/loading-page.svelte'
-import { sleep } from '../libs/util'
+
+interface Query {
+  page?: number
+}
+interface Response {
+  total: number
+  headItems?: object[]
+  randomItems?: object[]
+  bodyItems?: object[]
+}
 
 export let route: Route
 let loading: boolean = false
-let itemsHead = [1,2,3,4]
-let itemsRandom = [1,2,3,4]
-let itemsBody = [1,2,3,4,5,6,7,8]
+let total = 0
+let itemsHead: IndexItem[] = []
+let itemsRandom: IndexItem[] = []
+let itemsBody: IndexItem[] = []
 
 $: if (route.from !== route.url && location.pathname === '/') updateRoute()
 
@@ -70,14 +96,26 @@ async function updateRoute(): Promise<void>
   try
   {
     loading = true
-    console.warn('updateRoute() from home ==>', route)
-    // TODO: /api/ 요청
-    await sleep(1000)
+    let query: Query = {}
+    if (Number(route.query?.page) > 1) query.page = Number(route.query?.page)
+    let res: Response = await fetch('/api/', {
+      responseType: 'json',
+      query,
+    })
+    total = res.total
+    itemsHead = <IndexItem[]>res.headItems
+    itemsRandom = <IndexItem[]>res.randomItems
+    itemsBody = <IndexItem[]>res.bodyItems
     loading = false
   }
   catch (e)
   {
-    //
+    const { status, message } = e.response?._data
+    error.update(() => ({
+      status: status || 500,
+      message: message || 'Unknown error',
+    }))
+    loading = false
   }
 }
 </script>

@@ -20,8 +20,22 @@ declare global {
     url: string
   }
 
+  export interface ServiceError {
+    status?: number
+    message?: string
+  }
+
   export interface UnknownObject {
     [key: string]: string|number
+  }
+
+  export interface IndexItem {
+    srl: number
+    title: string
+    date?: string
+    image?: string
+    nest?: string
+    category?: string
   }
 
 }
