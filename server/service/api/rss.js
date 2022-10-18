@@ -1,11 +1,15 @@
-import { getEnv } from '../../libs/entry-assets.js'
+import { modelRss } from '../../models/rss.js'
+import * as error from '../../libs/error.js'
 
 export async function rss(req, res)
 {
-  let result = {}
-  const env = getEnv()
-  result.name = '/rss'
-  console.log(Object.keys(req.query))
-  console.log(req.query)
-  res.json(result)
+  try
+  {
+    let result = await modelRss()
+    res.json(result)
+  }
+  catch (e)
+  {
+    error.register(res, e)
+  }
 }
