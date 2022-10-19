@@ -24,6 +24,9 @@
   &__body {
     margin: var(--size-body-top, 0) 0 0;
   }
+  &__empty {
+    height: calc(100vh - var(--size-header-height) - 240px);
+  }
   &__paginate {
     margin: 24px 0 0;
   }
@@ -48,6 +51,9 @@
     }
     &__items {
       padding: 0 48px;
+    }
+    &__empty {
+      height: calc(65vh - var(--size-header-height));
     }
     &__paginate {
       margin-top: 42px;

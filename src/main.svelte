@@ -1,7 +1,7 @@
 <div class="viewport">
   <Header/>
   <div class="container">
-    {#if !_error}
+    {#if !$error}
       <Route path="/" let:meta>
         <Lazy component={import('./pages/home.svelte')} route={meta}/>
       </Route>
@@ -22,10 +22,18 @@
         </Route>
       </Route>
       <Route fallback let:meta>
-        <Lazy component={import('./pages/error/404.svelte')} route={meta}/>
+        <div class="viewport__error">
+          <Error status={404} message="Page not found"/>
+        </div>
       </Route>
     {:else}
-      <ErrorPage src={_error}/>
+      <div class="viewport__error">
+        {#if $error?.status && /^4/.test(String($error.status))}
+          <Error status={$error?.status} message={$error?.message}/>
+        {:else}
+          <Error status={$error?.status} message={$error?.message}/>
+        {/if}
+      </div>
     {/if}
   </div>
   <Footer/>
@@ -37,15 +45,10 @@ import { error } from './store'
 import Lazy from './components/layout/lazy.svelte'
 import Header from './components/layout/header/index.svelte'
 import Footer from './components/layout/footer/index.svelte'
-import ErrorPage from './pages/error/500.svelte'
-
-let _error: ServiceError
+import Error from './components/error.svelte'
 
 router.subscribe(() => {
   error.update(() => (undefined))
-})
-error.subscribe(value => {
-  _error = value
 })
 </script>
 

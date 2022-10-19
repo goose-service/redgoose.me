@@ -1,3 +1,8 @@
-.viewport {}
+.viewport {
+  &__error {
+    height: calc(75vh - var(--size-header-height));
+    min-height: 480px;
+  }
+}
 
 .container {}

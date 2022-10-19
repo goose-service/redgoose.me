@@ -45,7 +45,9 @@
           </Items>
         </div>
       {:else}
-        <Empty/>
+        <div class="intro__empty">
+          <Error status={204} message="no items"/>
+        </div>
       {/if}
       {#if total > 0}
         <div class="intro__paginate">
@@ -68,7 +70,7 @@ import { error } from '../store'
 import Items from '../components/pages/index/items.svelte'
 import Item from '../components/pages/index/item.svelte'
 import RandomItems from '../components/pages/index/random-items.svelte'
-import Empty from '../components/pages/index/empty.svelte'
+import Error from '../components/error.svelte'
 import Paginate from '../components/paginate.svelte'
 import Loading from '../components/loading/loading-page.svelte'
 
@@ -110,11 +112,9 @@ async function updateRoute(): Promise<void>
   }
   catch (e)
   {
-    const { status, message } = e.response?._data
-    error.update(() => ({
-      status: status || 500,
-      message: message || 'Unknown error',
-    }))
+    const status = e.response?._data?.status || 500
+    const message = e.response?._data?.message || 'Unknown error'
+    error.update(() => ({ status, message }))
     loading = false
   }
 }

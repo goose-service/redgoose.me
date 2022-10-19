@@ -46,7 +46,7 @@
     }
   }
   &--full {
-    height: calc(100vh - var(--size-header-height) - 100px);
+    height: calc(75vh - var(--size-header-height));
     max-height: none;
   }
   &--move {
@@ -62,7 +62,6 @@
     width: var(--loading-width, 240px);
     max-height: 420px;
     &--full {
-      height: calc(100vh - var(--size-header-height) - 160px);
       max-height: none;
     }
   }

@@ -14,6 +14,10 @@
   &__paginate {
     margin: 24px 0 0;
   }
+  &__empty {
+    height: calc(70vh - var(--size-header-height));
+    min-height: 480px;
+  }
   @include mixins.responsive(mobile-large) {
     --size-body-top: 30px;
     &__items {
