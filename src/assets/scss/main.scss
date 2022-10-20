@@ -24,7 +24,7 @@
   @include mixins.dark-mode() {
     color-scheme: dark;
     --color-text-hsl: 0 0% 85%;
-    --color-edge-hsl: 0 0% 95%;
+    --color-edge-hsl: 0 0% 98%;
     --color-bg-hsl: 0 0% 13%;
     --color-text-blur-hsl: 0 0% 47%;
     --color-key-hsl: 142 76% 46%;
@@ -63,5 +63,3 @@ code, kbd, pre, samp {
   background: var(--color-key);
   color: rgb(255 255 255);
 }
-
-@import '@redgoose/markdown-style/dist/body';

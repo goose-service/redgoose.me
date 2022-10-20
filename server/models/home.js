@@ -36,7 +36,7 @@ export async function modelHome({ page })
     instance('/articles/', {
       query: {
         ...baseQuery,
-        order: '`order` desc,`srl` desc',
+        order: '`order` desc, `srl` desc',
         limit: `${(page-1)*size},${size}`,
       },
     }),

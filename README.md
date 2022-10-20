@@ -5,7 +5,7 @@ redgoose.me ver 5.6
 
 ## Install
 
-저장소를 클론 받으면 다음 명령어로 실행해줘야함.
+저장소를 클론 받으면 다음 명령어로 실행해줘야한다
 
 ```bash
 ```
@@ -25,7 +25,7 @@ redgoose.me ver 5.6
 
 ## .env
 
-`.env.local`파일을 만들어서 `.env` 내용을 참고하여 사용합니다.
+`.env.local`파일을 만들어서 `.env` 내용을 참고하여 사용한다.
 
 
 ## vendors
@@ -37,3 +37,8 @@ redgoose.me ver 5.6
 - express
 - isbot
 - svelte
+
+
+## TODO
+
+- [ ] 출력 순서가 거꾸로 되어있는거 같다?

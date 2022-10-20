@@ -17,8 +17,8 @@
         {/if}
         <h1>{title === '.' ? 'Untitled work' : title}</h1>
       </header>
-      <div class="article__body redgoose-body redgoose-body--dark">
-        {@html _contentBody}
+      <div class="article__body">
+        <ContentBody body={_contentBody}/>
       </div>
       <nav class="article__like">
         <LikeButton
@@ -36,6 +36,7 @@ import { error } from '../store'
 import Loading from '../components/loading/loading-page.svelte'
 import Error from '../components/error.svelte'
 import LikeButton from '../components/pages/article/like-button.svelte'
+import ContentBody from '../components/pages/article/content-body.svelte'
 
 export let route: Route
 let loading: boolean = true

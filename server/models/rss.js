@@ -19,7 +19,7 @@ export async function modelRss()
     items: [],
   }
   const env = getEnv()
-  const size = 15
+  const size = env.VITE_RSS_SIZE
   const host = env.VITE_API_URL
   let articles = await instance('/articles/', {
     query: {

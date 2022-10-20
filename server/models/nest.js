@@ -90,7 +90,7 @@ export async function modelNests({ nestId, categorySrl, page })
       result.categories[i].active = false
     }
   }
-  if (!isActive)
+  if (!isActive && result.categories.length > 0)
   {
     result.categories[0].active = true
   }

@@ -64,6 +64,7 @@
 </article>
 
 <script lang="ts">
+import { onMount, onDestroy } from 'svelte'
 import { router } from 'tinro'
 import { $fetch as fetch } from 'ohmyfetch'
 import { error } from '../store'
@@ -85,18 +86,23 @@ interface Response {
 }
 
 export let route: Route
-let loading: boolean = false
+let ready: boolean = false
+let loading: boolean = true
+let currentRoute
 let total = 0
 let itemsHead: IndexItem[] = []
 let itemsRandom: IndexItem[] = []
 let itemsBody: IndexItem[] = []
 
 $: if (route.from !== route.url && location.pathname === '/') updateRoute()
+$: if (currentRoute?.query.page !== route.query.page) updateRoute()
 
 async function updateRoute(): Promise<void>
 {
+  if (!ready) return
   try
   {
+    currentRoute = route
     loading = true
     let query: Query = {}
     if (Number(route.query?.page) > 1) query.page = Number(route.query?.page)
@@ -118,6 +124,14 @@ async function updateRoute(): Promise<void>
     loading = false
   }
 }
+
+onMount(() => {
+  if (!ready) ready = true
+  updateRoute()
+})
+onDestroy(() => {
+  ready = false
+})
 </script>
 
 <style src="./home.scss" lang="scss"></style>
