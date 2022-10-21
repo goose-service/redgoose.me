@@ -6,7 +6,12 @@
       </a>
     </h1>
     <nav class="layout-header__buttons">
-      <button type="button" title="toggle menu" class="navigation">
+      <button
+        type="button"
+        title="toggle menu"
+        class="navigation"
+        class:on={activeNavigation}
+        on:click|stopPropagation={onClickNavigationToggle}>
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
           <path fill="currentColor" fill-rule="nonzero" d="M3 18h18v-2H3v2zm0-5h10v-2H3v2zm0-7v2h14V6H3z"/>
         </svg>
@@ -15,7 +20,11 @@
         </svg>
       </button>
     </nav>
-    <nav class="header-navigation">
+    <nav
+      class="header-navigation"
+      class:on={activeNavigation}
+      aria-hidden="true"
+      on:click|stopPropagation={() => {}}>
       <ul>
         <li>
           <a href="/nest/visual/" use:active on:click={onClickLink}>
@@ -91,10 +100,28 @@
 <script lang="ts">
 import { active } from 'tinro'
 
+let activeNavigation: boolean = false
+
 function onClickLink(e: PointerEvent): void
 {
   if (!e.currentTarget) return
   (e.currentTarget as HTMLElement).blur()
+  activeNavigation = false
+  window.removeEventListener('click', onCloseNavigation)
+}
+
+function onClickNavigationToggle(_: PointerEvent): void
+{
+  activeNavigation = !activeNavigation
+  if (activeNavigation)
+  {
+    window.addEventListener('click', onCloseNavigation)
+  }
+}
+
+function onCloseNavigation(_: PointerEvent): void
+{
+  activeNavigation = false
 }
 </script>
 

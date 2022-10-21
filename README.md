@@ -14,18 +14,25 @@ redgoose.me ver 5.6
 ## Development
 
 ```bash
+bun run dev
+bun run dev:live
 ```
 
 
 ## Production
 
 ```bash
+npm run build
+npm run start
 ```
 
 
 ## .env
 
 `.env.local`파일을 만들어서 `.env` 내용을 참고하여 사용한다.
+
+
+## docker
 
 
 ## vendors
@@ -41,4 +48,10 @@ redgoose.me ver 5.6
 
 ## TODO
 
-- [ ] 출력 순서가 거꾸로 되어있는거 같다?
+- [x] 출력 순서가 거꾸로 되어있는거 같다?
+- [x] 좋아요 액션 API 연동
+- [ ] RSS 작업
+- [x] 모바일 화면에서 메뉴토글 기능작업
+- [ ] docker 설정
+- [ ] 본문 라이트박스 제작
+- [x] markdown 조정

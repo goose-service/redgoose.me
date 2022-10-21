@@ -17,7 +17,7 @@
         <Lazy component={import('./pages/article.svelte')} route={meta}/>
       </Route>
       <Route path="/page/*" let:meta>
-        <Route path="/about/">
+        <Route path="/about/" let:meta>
           <Lazy component={import('./pages/page/about.svelte')} route={meta}/>
         </Route>
       </Route>

@@ -1,8 +1,8 @@
 <button
   type="button"
-  title="on like"
+  title="on star"
   disabled={disabled}
-  class="button-like"
+  class="button-star"
   on:click={onClickButton}>
   <svg xmlns="http://www.w3.org/2000/svg" width="38" height="38" viewBox="0 0 38 38">
     <defs>
@@ -28,8 +28,8 @@ export let disabled: boolean = false
 
 function onClickButton(): void
 {
-  //
+  dispatch('click')
 }
 </script>
 
-<style src="./like-button.scss" lang="scss"></style>
+<style src="./star-button.scss" lang="scss"></style>

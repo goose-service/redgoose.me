@@ -3,6 +3,6 @@
 {/await}
 
 <script lang="ts">
-export let component
-export let route
+export let component = undefined
+export let route = undefined
 </script>

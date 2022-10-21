@@ -39,7 +39,7 @@
           <Paginate
             page={route.query.page}
             total={totalArticles}
-            size={10}
+            size={size}
             url="./"
             query={router.location.query.get()}/>
         </div>
@@ -61,6 +61,7 @@ import Loading from '../components/loading/loading-page.svelte'
 
 export let route: Route
 let currentRoute
+let size = Number(import.meta.env.VITE_INDEX_SIZE)
 let nest: Nest = undefined
 let categories: Category[] = []
 let totalArticles: number = 0

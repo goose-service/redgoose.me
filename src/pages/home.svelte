@@ -54,7 +54,7 @@
           <Paginate
             page={route.query.page}
             total={total}
-            size={10}
+            size={size}
             url="/"
             query={router.location.query.get()}/>
         </div>
@@ -89,6 +89,7 @@ export let route: Route
 let ready: boolean = false
 let loading: boolean = true
 let currentRoute
+let size = Number(import.meta.env.VITE_INDEX_SIZE)
 let total = 0
 let itemsHead: IndexItem[] = []
 let itemsRandom: IndexItem[] = []

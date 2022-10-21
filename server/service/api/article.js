@@ -1,4 +1,4 @@
-import { modelArticle, modelArticleUpdateLike } from '../../models/article.js'
+import { modelArticle, modelArticleUpdateStar } from '../../models/article.js'
 import { ERROR_CODE } from '../../libs/assets.js'
 import * as error from '../../libs/error.js'
 
@@ -7,8 +7,9 @@ export async function article(req, res)
   try
   {
     let srl = Number(req.params.srl)
-    let cookieKey = `rg-hit-${srl}`
-    let updateHit = !(req.cookies[cookieKey] === '1')
+    let cookieKeyHit = `rg-hit-${srl}`
+    let cookieKeyStar = `rg-star-${srl}`
+    let updateHit = !(req.cookies[cookieKeyHit] === '1')
     let result = await modelArticle({
       srl: Number(req.params.srl),
       updateHit,
@@ -16,10 +17,13 @@ export async function article(req, res)
     // set cookie
     if (updateHit)
     {
-      res.cookie(cookieKey, 1, {
+      res.cookie(cookieKeyHit, 1, {
         maxAge: 1000 * 60 * 60 * 24 * 7,
       })
     }
+    // set star
+    result.enableStarButton = Number(req.cookies[cookieKeyStar]) !== 1
+    // print result
     res.json(result)
   }
   catch (e)
@@ -28,7 +32,7 @@ export async function article(req, res)
   }
 }
 
-export async function articleLike(req, res)
+export async function articleStar(req, res)
 {
   try
   {
@@ -54,7 +58,7 @@ export async function articleLike(req, res)
       maxAge: 1000 * 60 * 60 * 24 * 7,
     })
     // update data
-    let starCount = await modelArticleUpdateLike({
+    let starCount = await modelArticleUpdateStar({
       srl: Number(req.params.srl),
     })
     res.json({

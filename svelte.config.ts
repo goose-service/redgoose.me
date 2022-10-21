@@ -10,6 +10,7 @@ const config: SvelteOptions = {
     {
       case 'css-unused-selector':
       case 'a11y-label-has-associated-control':
+      case 'unused-export-let':
         return
     }
     defaultHandler(warning)

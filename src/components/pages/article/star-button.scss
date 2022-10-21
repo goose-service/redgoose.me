@@ -1,9 +1,9 @@
 @use '../../../assets/scss/mixins';
 
-.button-like {
-  --color-like-step-1: #EB6635;
-  --color-like-step-2: #B31E36;
-  --color-like-step-3: #3422FF;
+.button-star {
+  --color-star-step-1: #EB6635;
+  --color-star-step-2: #B31E36;
+  --color-star-step-3: #3422FF;
   display: block;
   margin: 0 auto;
   padding: 10px;
@@ -28,13 +28,13 @@
     height: 38px;
     transition: transform 300ms cubic-bezier(.24, 1.35, .8, 1.22);
     .step-1 {
-      color: var(--color-like-step-1);
+      color: var(--color-star-step-1);
     }
     .step-2 {
-      color: var(--color-like-step-2);
+      color: var(--color-star-step-2);
     }
     .step-3 {
-      color: var(--color-like-step-3);
+      color: var(--color-star-step-3);
     }
   }
   em {
@@ -48,9 +48,9 @@
     transition: opacity 150ms ease-out;
   }
   &:disabled {
-    --color-like-step-1: #ddd;
-    --color-like-step-2: #bbb;
-    --color-like-step-3: #aaa;
+    --color-star-step-1: #ddd;
+    --color-star-step-2: #bbb;
+    --color-star-step-3: #aaa;
     cursor: default;
     &:focus {
       outline: none;
@@ -80,13 +80,13 @@
     }
   }
   @include mixins.dark-mode() {
-    --color-like-step-1: #8ef01f;
-    --color-like-step-2: var(--color-key);
-    --color-like-step-3: #033615;
+    --color-star-step-1: #8ef01f;
+    --color-star-step-2: var(--color-key);
+    --color-star-step-3: #033615;
     &:disabled {
-      --color-like-step-1: #666;
-      --color-like-step-2: #444;
-      --color-like-step-3: #333;
+      --color-star-step-1: #666;
+      --color-star-step-2: #444;
+      --color-star-step-3: #333;
     }
     &:active,
     &:focus {

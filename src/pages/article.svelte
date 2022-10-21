@@ -20,10 +20,11 @@
       <div class="article__body">
         <ContentBody body={_contentBody}/>
       </div>
-      <nav class="article__like">
-        <LikeButton
-          count={likeButton.count}
-          disabled={likeButton.disabled}/>
+      <nav class="article__star">
+        <StarButton
+          count={starButton.count}
+          disabled={starButton.disabled}
+          on:click={onClickStar}/>
       </nav>
     </div>
   {/if}
@@ -32,10 +33,11 @@
 <script lang="ts">
 import { onMount } from 'svelte'
 import { $fetch as fetch } from 'ohmyfetch'
+import type { FetchOptions } from 'ohmyfetch'
 import { error } from '../store'
 import Loading from '../components/loading/loading-page.svelte'
 import Error from '../components/error.svelte'
-import LikeButton from '../components/pages/article/like-button.svelte'
+import StarButton from '../components/pages/article/star-button.svelte'
 import ContentBody from '../components/pages/article/content-body.svelte'
 
 export let route: Route
@@ -44,7 +46,7 @@ let srl: number
 let title: string
 let headDescription: string[]
 let contentBody: string
-let likeButton = {
+let starButton = {
   disabled: false,
   count: 0,
 }
@@ -57,15 +59,15 @@ async function fetchData(): Promise<void>
   try
   {
     loading = true
-    let res = await fetch(`/api/article/${route.params.article}/`, {
+    let res = await fetch(`/api/article/${route.params.article}/`, <FetchOptions>{
       responseType: 'json',
     })
     srl = res.srl
     title = res.title
     headDescription = [ res.nestName, res.categoryName ]
     contentBody = res.content
-    likeButton.disabled = false
-    likeButton.count = res.star
+    starButton.disabled = !res.enableStarButton
+    starButton.count = res.star
     loading = false
   }
   catch (e)
@@ -84,10 +86,22 @@ async function fetchData(): Promise<void>
   }
 }
 
-async function onClickLike(): Promise<void>
+async function onClickStar(): Promise<void>
 {
-  console.log('onClickLike()')
-  // TODO: /api/article/{SRL}/onLike/ 요청
+  try
+  {
+    let res = await fetch(`/api/article/${route.params.article}/star/`, <FetchOptions>{
+      method: 'post',
+      responseType: 'json',
+    })
+    starButton.disabled = true
+    starButton.count = Number(res.star)
+    if (!res.success) throw new Error(res.message)
+  }
+  catch (e)
+  {
+    alert('Failed update star')
+  }
 }
 
 onMount(() => fetchData().then())

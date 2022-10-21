@@ -41,8 +41,8 @@
       transition: transform .2s ease-out;
     }
     @include mixins.hover() {
-      --icon-color: var(--color-bg);
-      color: var(--color-bg);
+      --icon-color: hsl(0 0% 95%);
+      color: hsl(0 0% 95%);
       &:before {
         transform: translateY(0);
       }

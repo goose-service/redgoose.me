@@ -1,5 +1,5 @@
 <nav class="paginate">
-  {#if _block === 0}
+  {#if _page === 1}
     <strong
       title={`go to first page`}
       class="arrow">
