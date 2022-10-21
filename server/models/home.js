@@ -1,6 +1,7 @@
 import { instance } from './index.js'
 import { getEnv } from '../libs/entry-assets.js'
 import { ERROR_CODE } from '../libs/assets.js'
+import { dateFormat } from '../libs/date.js'
 
 function filteringArticles({ src, host })
 {
@@ -45,7 +46,7 @@ export async function modelHome({ page })
         ...baseQuery,
         size: 4,
         duration: `old,order,1 week`,
-        random: 'YmdHis',
+        random: dateFormat(new Date(), '{yyyy}{MM}{dd}'),
       }
     }),
   ].filter(Boolean))

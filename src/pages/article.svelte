@@ -18,7 +18,9 @@
         <h1>{title === '.' ? 'Untitled work' : title}</h1>
       </header>
       <div class="article__body">
-        <ContentBody body={_contentBody}/>
+        <ContentBody
+          body={_contentBody}
+          on:openLightbox={onOpenLightbox}/>
       </div>
       <nav class="article__star">
         <StarButton
@@ -29,6 +31,11 @@
     </div>
   {/if}
 </article>
+{#if lightbox?.src}
+  <LightBox
+    {...lightbox}
+    on:close={onCloseLightbox}/>
+{/if}
 
 <script lang="ts">
 import { onMount } from 'svelte'
@@ -39,6 +46,12 @@ import Loading from '../components/loading/loading-page.svelte'
 import Error from '../components/error.svelte'
 import StarButton from '../components/pages/article/star-button.svelte'
 import ContentBody from '../components/pages/article/content-body.svelte'
+import LightBox from '../components/pages/article/lightbox.svelte'
+
+interface Lightbox {
+  src?: string
+  alt?: string
+}
 
 export let route: Route
 let loading: boolean = true
@@ -51,6 +64,7 @@ let starButton = {
   count: 0,
 }
 let empty: boolean = false
+let lightbox: Lightbox = {}
 
 $: _contentBody = contentBody
 
@@ -102,6 +116,18 @@ async function onClickStar(): Promise<void>
   {
     alert('Failed update star')
   }
+}
+
+function onOpenLightbox({ detail: { src, alt } }): void
+{
+  lightbox.src = src
+  lightbox.alt = alt
+}
+
+function onCloseLightbox(): void
+{
+  lightbox.src = undefined
+  lightbox.alt = undefined
 }
 
 onMount(() => fetchData().then())

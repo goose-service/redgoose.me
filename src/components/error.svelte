@@ -35,6 +35,8 @@ export let message
     height: 525px;
     aspect-ratio: 465 / 525;
     background: linear-gradient(125deg, var(--color-step-1) 0%, var(--color-step-2) 50%, var(--color-step-3) 100%);
+    filter: drop-shadow(4px 4px 16px red);
+    box-sizing: border-box;
   }
   &__title {
     margin: 24px 0 0;
@@ -53,9 +55,9 @@ export let message
     letter-spacing: -.5px;
   }
   @include mixins.dark-mode() {
-    --color-step-1: #8ef01f;
+    --color-step-1: #f7cf1e;
     --color-step-2: var(--color-key);
-    --color-step-3: #033615;
+    --color-step-3: #09abb5;
   }
   @include mixins.responsive(tablet) {
     &__image {

@@ -10,9 +10,7 @@
   box-sizing: border-box;
   background: var(--header-color-bg, hsl(0 0% 100% / 75%));
   box-shadow: var(--header-shadow, (0 0 0 .5px rgb(0 0 0 / 10%), 0 1px 8px rgb(0 0 0 / 10%)));
-  @supports (backdrop-filter: blur(24px)) {
-    backdrop-filter: blur(24px);
-  }
+  @include mixins.background-blur(24px);
   &__wrap {
     position: relative;
     box-sizing: border-box;
@@ -116,7 +114,7 @@
   }
   @include mixins.dark-mode() {
     --header-color-button-fill: rgb(255 255 255);
-    --header-color-bg: hsl(0 0% 0% / 60%);
+    --header-color-bg: hsl(0 0% 0% / 70%);
   }
 }
 
@@ -133,9 +131,6 @@
   box-shadow: inset 0 2px 8px rgb(0 0 0 / 20%);
   user-select: none;
   @include mixins.color-linear-gradient(var(--color-key), var(--color-bg-gradient-start), var(--color-bg-gradient-end));
-  @supports (backdrop-filter: blur(24px)) {
-    backdrop-filter: blur(24px);
-  }
   a {
     display: block;
     text-decoration: none;
@@ -233,7 +228,7 @@
         &:focus-within,
         &:hover {
           > a {
-            background: rgb(0 0 0 / 3%);
+            background-color: hsl(0 0% 0% / 3%);
             color: var(--color-key);
           }
           > div {

@@ -63,3 +63,10 @@ code, kbd, pre, samp {
   background: var(--color-key);
   color: rgb(255 255 255);
 }
+
+// popup
+.popup-lightbox {
+  &, > body {
+    overflow: hidden;
+  }
+}

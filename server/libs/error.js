@@ -1,9 +1,10 @@
 import { ERROR_CODE } from './assets.js'
 import { dateFormat } from './date.js'
 
-export function register(res, err)
+export function register(res, err, returning = false)
 {
   // TODO: 좀더 개선할 필요가 있을것이다.
+  let dev = process.env.NODE_ENV === 'development'
   let status
   let message
   let date = new Date()
@@ -22,15 +23,14 @@ export function register(res, err)
   }
 
   // console
-  console.group('> SERVICE ERROR')
-  console.error(`- Status: [${status}] ${err.status || 'unknown error'}`)
-  console.error(`- Date: ${dateFormat(date, '{yyyy}-{MM}-{dd} {hh}:{mm}:{ss}')}`)
-  console.error(`- Message: ${err.message}`)
-  console.groupEnd()
+  if (dev)
+  {
+    console.group('> SERVICE ERROR')
+    console.error(`- Status: [${status}] ${err.status || 'unknown error'}`)
+    console.error(`- Date: ${dateFormat(date, '{yyyy}-{MM}-{dd} {hh}:{mm}:{ss}')}`)
+    console.error(`- Message: ${err.message}`)
+    console.groupEnd()
+  }
 
-  // end
-  res.status(status).json({
-    status,
-    message,
-  })
+  return { status, message }
 }

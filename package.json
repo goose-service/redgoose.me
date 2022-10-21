@@ -7,7 +7,7 @@
   "license": "MIT",
   "scripts": {
     "dev": "node --no-warnings server/entry.js --development",
-    "dev:live": "nodemon --no-warnings server/entry.js --development",
+    "dev:live": "NODE_ENV=development nodemon --no-warnings server/entry.js",
     "prebuild": "rm -rf ./dist",
     "build": "vite build",
     "start": "node server/entry.js --production"

@@ -8,6 +8,9 @@
 </div>
 
 <script lang="ts">
+import { createEventDispatcher } from 'svelte'
+
+const dispatch = createEventDispatcher()
 export let body: string = undefined
 
 function onClickBody(e): void
@@ -16,7 +19,10 @@ function onClickBody(e): void
   switch (_target.tagName?.toLowerCase())
   {
     case 'img':
-      console.log(_target)
+      dispatch('openLightbox', {
+        src: (_target as HTMLImageElement).src,
+        alt: (_target as HTMLImageElement).alt,
+      })
       break
   }
 }

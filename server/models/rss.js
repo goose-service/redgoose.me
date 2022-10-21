@@ -16,6 +16,7 @@ function parsingContent(src)
 export async function modelRss()
 {
   let result = {
+    total: 0,
     items: [],
   }
   const env = getEnv()
@@ -23,7 +24,8 @@ export async function modelRss()
   const host = env.VITE_API_URL
   let articles = await instance('/articles/', {
     query: {
-      order: '`order` desc,`srl` desc',
+      app: env.VITE_APP_SRL,
+      order: '`order` desc, `srl` desc',
       size,
     },
   })
@@ -34,6 +36,7 @@ export async function modelRss()
       message: 'not found articles',
     }
   }
+  result.total = articles.data?.total || 0
   result.items = articles.data?.index?.length > 0 ? articles.data.index.map(o => {
     return {
       srl: o.srl,

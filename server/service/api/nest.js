@@ -14,7 +14,8 @@ export async function nest(req, res)
   }
   catch (e)
   {
-    error.register(res, e)
+    let err = error.register(res, e)
+    res.status(err.status).json(err)
   }
 }
 
@@ -31,6 +32,7 @@ export async function nestArticles(req, res)
   }
   catch (e)
   {
-    error.register(res, e)
+    let err = error.register(res, e)
+    res.status(err.status).json(err)
   }
 }

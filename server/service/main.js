@@ -1,4 +1,5 @@
 import api from './api/index.js'
+import rss from './rss/index.js'
 
 /**
  * server
@@ -8,6 +9,7 @@ import api from './api/index.js'
 function server(app)
 {
   app.use('/api', api)
+  app.use('/rss', rss)
 }
 
 export default server

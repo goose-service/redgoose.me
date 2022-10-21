@@ -28,7 +28,8 @@ export async function article(req, res)
   }
   catch (e)
   {
-    error.register(res, e)
+    let err = error.register(res, e)
+    res.status(err.status).json(err)
   }
 }
 
@@ -68,6 +69,7 @@ export async function articleStar(req, res)
   }
   catch (e)
   {
-    error.register(res, e)
+    let err = error.register(res, e)
+    res.status(err.status).json(err)
   }
 }
