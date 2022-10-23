@@ -1,0 +1,22 @@
+doctype html
+html(lang="ko")
+  head
+    include ./layout/head
+  body
+    main
+      include ./layout/header
+      if error && error.status
+        include ./components/error
+      else
+        section
+          h1 #{nest.title} / #{categoryName}
+          if categories && categories.length > 0
+            include ./components/categories
+          if articles && articles.length > 0
+            ul
+              each o in articles
+                li
+                  include ./components/index-item
+        if paginate && paginate.length > 0
+          include ./components/paginate
+      include ./layout/footer

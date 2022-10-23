@@ -1,0 +1,15 @@
+if (o.image)
+  figure
+    img(src=o.image alt=o.title)
+h3
+  a(href=`/article/${o.srl}/`) #{o.title}
+dl
+  if o.nest
+    dt Nest
+    dd #{o.nest}
+  if o.category
+    dt Category
+    dd #{o.category}
+  if o.date
+    dt Date
+    dd #{o.date}

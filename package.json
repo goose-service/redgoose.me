@@ -7,7 +7,7 @@
   "license": "MIT",
   "scripts": {
     "dev": "node --no-warnings server/entry.js --development",
-    "dev:live": "NODE_ENV=development nodemon --no-warnings server/entry.js",
+    "dev:live": "nodemon --no-warnings server/entry.js --development",
     "prebuild": "rm -rf ./dist",
     "build": "vite build",
     "start": "node server/entry.js --production"
@@ -19,16 +19,14 @@
   "engines": {
     "node": "16"
   },
-  "browserslist": [
-    "> 1%",
-    "last 2 versions"
-  ],
+  "browserslist": ["> 1%", "last 2 versions"],
   "dependencies": {
     "cookie-parser": "^1.4.6",
     "express": "^4.18.1",
     "isbot": "^3.6.0",
     "marked": "^4.1.1",
-    "ohmyfetch": "^0.4.19"
+    "ohmyfetch": "^0.4.19",
+    "pug": "^3.0.2"
   },
   "devDependencies": {
     "@redgoose/markdown-style": "^1.1.3",

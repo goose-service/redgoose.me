@@ -6,7 +6,7 @@ import cookieParser from 'cookie-parser'
 import { createServer } from 'vite'
 import { openServerMessage, isDev, getEnv } from './libs/entry-assets.js'
 import serviceServer from './service/main.js'
-import searchEngine from  './search-engine/main.js'
+import { searchEngine, allowSearchEngine } from  './search-engine/main.js'
 
 const __dirname = path.resolve()
 
@@ -29,10 +29,19 @@ async function development(app)
   app.use(vite.middlewares)
   // extend routes
   serviceServer(app)
+
+  // TODO: url 뒤에 슬래시 처리 고민할 필요가 있다.
+  // app.use((req, res, next) => {
+  //   const test = /\?[^]*\//.test(req.url);
+  //   if (req.url.substr(-1) === '/' && req.url.length > 1 && !test)
+  //     res.redirect(301, req.url.slice(0, -1));
+  //   else
+  //     next();
+  // })
+
   // global route
   app.use('*', async (req, res, next) => {
-    // render search engine bot
-    if (isbot(req.get('user-agent')))
+    if (isbot(req.get('user-agent')) && allowSearchEngine(req.baseUrl))
     {
       searchEngine(app)
       next()

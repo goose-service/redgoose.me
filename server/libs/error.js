@@ -1,15 +1,20 @@
 import { ERROR_CODE } from './assets.js'
 import { dateFormat } from './date.js'
+import { isDev } from './entry-assets.js'
 
-export function register(res, err, returning = false)
+export function register(res, err)
 {
   // TODO: 좀더 개선할 필요가 있을것이다.
-  let dev = process.env.NODE_ENV === 'development'
+  let dev = isDev()
   let status
   let message
   let date = new Date()
-  switch (err.status)
+  switch (err.status || err.message)
   {
+    case ERROR_CODE.NO_ITEMS:
+      status = 204
+      message = 'No items'
+      break
     case ERROR_CODE.NOT_FOUND:
       status = 404
       message = 'Not found item'

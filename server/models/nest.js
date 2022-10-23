@@ -84,6 +84,7 @@ export async function modelNests({ nestId, categorySrl, page })
     {
       result.categories[i].active = true
       isActive = true
+      result.categoryName = result.categories[i].name
     }
     else
     {
@@ -93,6 +94,7 @@ export async function modelNests({ nestId, categorySrl, page })
   if (!isActive && result.categories.length > 0)
   {
     result.categories[0].active = true
+    result.categoryName = result.categories[0].name
   }
   // set articles
   result.articles.total = articles.data?.total || 0

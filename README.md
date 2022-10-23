@@ -55,3 +55,4 @@ npm run start
 - [ ] docker 설정
 - [x] 본문 라이트박스 제작
 - [x] markdown 조정
+- [ ] 봇용 html 작업
