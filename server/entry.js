@@ -29,19 +29,9 @@ async function development(app)
   app.use(vite.middlewares)
   // extend routes
   serviceServer(app)
-
-  // TODO: url 뒤에 슬래시 처리 고민할 필요가 있다.
-  // app.use((req, res, next) => {
-  //   const test = /\?[^]*\//.test(req.url);
-  //   if (req.url.substr(-1) === '/' && req.url.length > 1 && !test)
-  //     res.redirect(301, req.url.slice(0, -1));
-  //   else
-  //     next();
-  // })
-
   // global route
   app.use('*', async (req, res, next) => {
-    if (isbot(req.get('user-agent')) && allowSearchEngine(req.baseUrl))
+    if (!!(isbot(req.get('user-agent')) && allowSearchEngine(req.baseUrl)))
     {
       searchEngine(app)
       next()
@@ -77,19 +67,19 @@ function production(app)
   serviceServer(app)
   // global route
   app.use((req, res, next) => {
-    // render search engine bot
-    if (isbot(req.get('user-agent')))
-    {
-      searchEngine(app)
-      next()
-      return
-    }
     // load static files
     if (req.path.indexOf('.') > -1)
     {
       app.use(express.static(outDir, {
         // https://expressjs.com/en/5x/api.html#express.static
       }))
+      next()
+      return
+    }
+    // render search engine bot
+    if (isbot(req.get('user-agent')))
+    {
+      searchEngine(app)
       next()
       return
     }

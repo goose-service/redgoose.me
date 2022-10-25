@@ -4,6 +4,6 @@ nav
     each o in paginate
       li
         if !o.url
-          strong #{o.key}
+          strong #{o.key}page
         else
-          a(href=o.url title=`go to ${o.key} page`) #{o.key}
+          a(href=o.url title=`go to ${o.key} page`) #{o.key}page

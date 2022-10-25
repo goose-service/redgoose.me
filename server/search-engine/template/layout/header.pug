@@ -1,7 +1,6 @@
 header
   h1
-    a(href=navigation.home.href) #{title}
-  p #{description}
+    a(href=navigation.home.href) #{bodyTitle || title}
   if navigation.global
     nav
       h1 Navigation

@@ -7,10 +7,11 @@ import { serialize } from './text.js'
  * @param {number} page
  * @param {number} size
  * @param {number} range
+ * @param {string} baseUrl
  * @param {object} query
  * @return {array}
  */
-export function createPaginate(total = 0, page = 1, size = 24, range = 10, query = {})
+export function createPaginate(total = 0, page = 1, size = 24, range = 10, baseUrl = './', query = {})
 {
   page = Number(page) > 1 ? Number(page) : 1
   let items = []
@@ -21,7 +22,7 @@ export function createPaginate(total = 0, page = 1, size = 24, range = 10, query
     let newQuery = query ? JSON.parse(JSON.stringify(query)) : {}
     newQuery.page = n
     if (newQuery.page === 1) delete newQuery.page
-    return `./${serialize(newQuery, true)}`
+    return `${baseUrl}${serialize(newQuery, true)}`
   }
   function pageItems()
   {

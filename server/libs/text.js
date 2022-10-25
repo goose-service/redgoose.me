@@ -17,3 +17,8 @@ export function serialize(obj, usePrefix = false)
   res = str.join('&')
   return (res && usePrefix ? '?' : '') + res
 }
+
+export function convertUrl(url = '')
+{
+  return /\/$/.test(url) ? url : `${url}/`
+}

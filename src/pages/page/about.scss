@@ -35,6 +35,7 @@
       width: 120px;
       max-width: 100%;
       user-select: none;
+      border-radius: 50%;
     }
   }
   &__description {
@@ -98,9 +99,9 @@
       }
     }
     &__profile {
-      margin: 48px 0 0;
+      margin: 64px 0 0;
       img {
-        width: 240px;
+        width: 256px;
       }
     }
     &__description {

@@ -1,0 +1,24 @@
+doctype html
+html(lang="ko")
+  head
+    include ./layout/head
+  body
+    main
+      include ./layout/header
+      if error && error.status
+        include ./components/error
+      else
+        article
+          header
+            h1 #{articleTitle}
+            dl(title="article information")
+              dt Nest
+              dd #{nest}
+              dt Category
+              dd #{category}
+              dt Hit
+              dd #{hit}
+              dt Star
+              dd #{star}
+          div !{content}
+      include ./layout/footer

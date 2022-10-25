@@ -9,7 +9,7 @@ import { pageAbout } from './pages/page/about.js'
 import { pageNotFound } from './pages/pageNotFound.js'
 
 // set base
-const router = Router()
+const router = Router({ strict: false })
 const dev = isDev()
 const __dirname = path.resolve('server/search-engine')
 

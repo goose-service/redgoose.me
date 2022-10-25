@@ -8,15 +8,17 @@ html(lang="ko")
       if error && error.status
         include ./components/error
       else
-        section
-          h1 #{nest.title} / #{categoryName}
+        article
+          h1 #{nest.title}#{categoryName ? ` / ${categoryName}` : ''}
           if categories && categories.length > 0
             include ./components/categories
           if articles && articles.length > 0
-            ul
-              each o in articles
-                li
-                  include ./components/index-item
-        if paginate && paginate.length > 0
-          include ./components/paginate
+            article
+              h1 Articles
+              ul
+                each o in articles
+                  li
+                    include ./components/index-item
+          if paginate && paginate.length > 0
+            include ./components/paginate
       include ./layout/footer
