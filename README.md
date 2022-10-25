@@ -46,6 +46,22 @@ npm run start
 - svelte
 
 
+## docker
+
+### make image
+
+이미지 만들기
+
+```shell
+# Mac M1 for linux
+docker buildx build --platform=linux/amd64 -t redgoose/redgoose.me:latest .
+# Mac M1 for macos
+docker buildx build --platform=linux/arm64/v8 -t redgoose/redgoose.me:latest .
+# Mac Intel
+docker build -t redgoose/redgoose.me:latest .
+```
+
+
 ## TODO
 
 - [x] 출력 순서가 거꾸로 되어있는거 같다?
@@ -55,4 +71,4 @@ npm run start
 - [ ] docker 설정
 - [x] 본문 라이트박스 제작
 - [x] markdown 조정
-- [ ] 봇용 html 작업
+- [x] 봇용 html 작업
