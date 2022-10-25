@@ -1,7 +1,7 @@
 <header class="layout-header">
   <div class="layout-header__wrap">
     <h1 class="layout-header__logo">
-      <a href="/" on:click={onClickLink}>
+      <a href={navigation.home.href} on:click={onClickLink}>
         <img src="/images/ico-logo.png" alt="redgoose"/>
       </a>
     </h1>
@@ -26,72 +26,26 @@
       aria-hidden="true"
       on:click|stopPropagation={() => {}}>
       <ul>
-        <li>
-          <a href="/nest/visual/" use:active on:click={onClickLink}>
-            Works
-          </a>
-          <div>
-            <ol>
-              <li>
-                <a href="/nest/visual/" use:active on:click={onClickLink}>
-                  Visual
-                </a>
-              </li>
-              <li>
-                <a href="/nest/tool/" use:active on:click={onClickLink}>
-                  Tool & Service
-                </a>
-              </li>
-            </ol>
-          </div>
-        </li>
-        <li>
-          <a href="/nest/landscape/" use:active on:click={onClickLink}>
-            Photography
-          </a>
-          <div>
-            <ol>
-              <li>
-                <a href="/nest/landscape/" use:active on:click={onClickLink}>
-                  Landscape
-                </a>
-              </li>
-              <li>
-                <a href="/nest/portrait/" use:active on:click={onClickLink}>
-                  Portrait
-                </a>
-              </li>
-              <li>
-                <a href="/nest/snap/" use:active on:click={onClickLink}>
-                  Snap
-                </a>
-              </li>
-              <li>
-                <a href="/nest/composition/" use:active on:click={onClickLink}>
-                  Composition
-                </a>
-              </li>
-              <li>
-                <a
-                  href="/nest/foreign-countries/"
-                  use:active
-                  on:click={onClickLink}>
-                  Foreign countries
-                </a>
-              </li>
-            </ol>
-          </div>
-        </li>
-        <li>
-          <a href="/page/about/" use:active on:click={onClickLink}>
-            About
-          </a>
-        </li>
-        <li>
-          <a href="https://note.redgoose.me" target="redgoose-note" on:click={onClickLink}>
-            Notes
-          </a>
-        </li>
+        {#each gnb as o,k}
+          <li>
+            <a href={o.href} target={o.target} use:active on:click={onClickLink}>
+              {o.label}
+            </a>
+            {#if o.children?.length > 0}
+              <div>
+                <ol>
+                  {#each o.children as oo}
+                    <li>
+                      <a href={oo.href} target={oo.target} use:active on:click={onClickLink}>
+                        {oo.label}
+                      </a>
+                    </li>
+                  {/each}
+                </ol>
+              </div>
+            {/if}
+          </li>
+        {/each}
       </ul>
     </nav>
   </div>
@@ -99,8 +53,22 @@
 
 <script lang="ts">
 import { active } from 'tinro'
+import navigation from '../../../../server/resource/navigation.json'
 
 let activeNavigation: boolean = false
+
+$: gnb = navigation.global.map((o) => ({
+  label: o.label,
+  href: o.href,
+  target: /^http/.test(o.href) ? '_blank' : '',
+  children: o.children?.map(oo => {
+    return {
+      label: oo.label,
+      href: oo.href,
+      target: /^http/.test(oo.href) ? '_blank' : '',
+    }
+  })
+}))
 
 function onClickLink(e: PointerEvent): void
 {
