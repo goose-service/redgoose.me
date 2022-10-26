@@ -19,13 +19,15 @@
     }
   }
   &__categories {
-    margin: 16px 0 0;
+    margin: 20px 0 0;
   }
   &__body {
     margin: var(--size-body-top, 0) 0 0;
   }
   &__empty {
-    height: calc(100vh - var(--size-header-height) - 240px);
+    height: 100vh;
+    min-height: calc(100vh - var(--size-header-height) - 240px);
+    max-height: calc(100vh - var(--size-header-height) - 240px);
   }
   &__paginate {
     margin: 24px 0 0;
@@ -53,7 +55,8 @@
       padding: 0 48px;
     }
     &__empty {
-      height: calc(65vh - var(--size-header-height));
+      min-height: calc(65vh - var(--size-header-height));
+      max-height: calc(65vh - var(--size-header-height));
     }
     &__paginate {
       margin-top: 42px;

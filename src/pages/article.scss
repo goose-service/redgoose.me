@@ -4,7 +4,6 @@
   --article-side-padding: 24px;
   --article-top-margin: 42px;
   margin: var(--article-top-margin) 0 0;
-  padding: 0 var(--article-side-padding);
   &__header {
     text-align: center;
     p {
@@ -35,6 +34,7 @@
   }
   &__body {
     margin: 20px 0 0;
+    padding: 0 var(--article-side-padding);
     min-height: 15vh;
   }
   &__star {
@@ -42,7 +42,9 @@
     text-align: center;
   }
   &__empty {
-    height: calc(75vh - var(--size-header-height));
+    height: 100vh;
+    min-height: calc(75vh - var(--size-header-height));
+    max-height: calc(75vh - var(--size-header-height));
   }
   @include mixins.responsive(tablet) {
     --article-side-padding: 62px;

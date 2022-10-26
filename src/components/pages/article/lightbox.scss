@@ -21,12 +21,13 @@
       max-height: 88vh;
       object-fit: contain;
       border-radius: 2px;
-      filter:
-        drop-shadow(2.7px 1.4px 1.9px hsl(0 0% 0% / 4%))
-        drop-shadow(6.9px 3.5px 5.8px hsl(0 0% 0% / 6%))
-        drop-shadow(14.2px 7.1px 13.2px hsl(0 0% 0% / 8%))
-        drop-shadow(29.2px 14.6px 29.1px hsl(0 0% 0% / 10%))
-        drop-shadow(36px 24px 30px hsl(0 0% 0% / 16%));
+      // ios에서 문제가 일어나서 주석처리한다.
+      //filter:
+      //  drop-shadow(2.7px 1.4px 1.9px hsl(0 0% 0% / 4%))
+      //  drop-shadow(6.9px 3.5px 5.8px hsl(0 0% 0% / 6%))
+      //  drop-shadow(14.2px 7.1px 13.2px hsl(0 0% 0% / 8%))
+      //  drop-shadow(29.2px 14.6px 29.1px hsl(0 0% 0% / 10%))
+      //  drop-shadow(36px 24px 30px hsl(0 0% 0% / 16%));
     }
   }
   &__close {
@@ -49,12 +50,12 @@
     background: hsl(var(--color-bg-hsl) / 100%);
     &__image {
       img {
-        filter:
-          drop-shadow(2.7px 1.4px 1.9px hsl(0 0% 0% / 4%))
-          drop-shadow(6.9px 3.5px 5.8px hsl(0 0% 0% / 6%))
-          drop-shadow(14.2px 7.1px 13.2px hsl(0 0% 0% / 8%))
-          drop-shadow(29.2px 14.6px 29.1px hsl(0 0% 0% / 10%))
-          drop-shadow(36px 24px 30px hsl(0 0% 0% / 24%));
+        //filter:
+        //  drop-shadow(2.7px 1.4px 1.9px hsl(0 0% 0% / 4%))
+        //  drop-shadow(6.9px 3.5px 5.8px hsl(0 0% 0% / 6%))
+        //  drop-shadow(14.2px 7.1px 13.2px hsl(0 0% 0% / 8%))
+        //  drop-shadow(29.2px 14.6px 29.1px hsl(0 0% 0% / 10%))
+        //  drop-shadow(36px 24px 30px hsl(0 0% 0% / 24%));
       }
     }
   }

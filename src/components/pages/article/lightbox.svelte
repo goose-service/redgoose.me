@@ -1,9 +1,4 @@
-<div
-  class="lightbox"
-  transition:fade="{{
-    opacity: 0,
-    duration: 300,
-  }}">
+<div class="lightbox">
   <figure class="lightbox__image">
     <img src={src} alt={alt}/>
   </figure>
@@ -17,7 +12,6 @@
 
 <script lang="ts">
 import { createEventDispatcher, onMount, onDestroy } from 'svelte'
-import { fade } from 'svelte/transition'
 
 const dispatch = createEventDispatcher()
 export let src: string = undefined

@@ -22,6 +22,8 @@ export let message
   width: 100%;
   height: 100%;
   user-select: none;
+  padding: 36px 0;
+  box-sizing: border-box;
   &__wrap {
     text-align: center;
   }

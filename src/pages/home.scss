@@ -15,8 +15,9 @@
     margin: 24px 0 0;
   }
   &__empty {
-    height: calc(70vh - var(--size-header-height));
-    min-height: 480px;
+    height: 100vh;
+    min-height: calc(72vh - var(--size-header-height));
+    max-height: calc(72vh - var(--size-header-height));
   }
   @include mixins.responsive(mobile-large) {
     --size-body-top: 30px;

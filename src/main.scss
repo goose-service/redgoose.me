@@ -1,7 +1,8 @@
 .viewport {
   &__error {
-    height: calc(75vh - var(--size-header-height));
-    min-height: 480px;
+    height: 100vh;
+    min-height: calc(75vh - var(--size-header-height));
+    max-height: calc(75vh - var(--size-header-height));
   }
 }
 

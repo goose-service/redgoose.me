@@ -49,6 +49,7 @@ import Error from './components/error.svelte'
 
 router.subscribe(() => {
   error.update(() => (undefined))
+  window.scrollTo(0, 0)
 })
 </script>
 
