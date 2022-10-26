@@ -10,7 +10,8 @@
     "dev:live": "nodemon --no-warnings server/entry.js --development",
     "prebuild": "rm -rf ./dist",
     "build": "vite build",
-    "start": "node --no-warnings server/entry.js --production"
+    "start": "node --no-warnings server/entry.js --production",
+    "start:live": "nodemon --no-warnings server/entry.js --production"
   },
   "nodemonConfig": {
     "delay": 1000,

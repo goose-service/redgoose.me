@@ -65,17 +65,13 @@ function production(app)
   const outDir = env.VITE_OUT_DIR || 'dist'
   // extend routes
   serviceServer(app)
-  // global route
+  // load static files
+  app.use(express.static(outDir, {
+    index: false,
+    extensions: [ 'html' ],
+  }))
+  // service route
   app.use((req, res, next) => {
-    // load static files
-    if (req.path.indexOf('.') > -1)
-    {
-      app.use(express.static(outDir, {
-        // https://expressjs.com/en/5x/api.html#express.static
-      }))
-      next()
-      return
-    }
     // render search engine bot
     if (isbot(req.get('user-agent')))
     {
