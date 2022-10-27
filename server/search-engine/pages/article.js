@@ -31,7 +31,6 @@ export async function pageArticle(req, res)
         maxAge: 1000 * 60 * 60 * 24 * 7,
       })
     }
-    // console.log(result)
   }
   catch (e)
   {

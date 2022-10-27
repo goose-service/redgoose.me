@@ -6,12 +6,13 @@
     type="button"
     class="lightbox__close"
     on:click={() => dispatch('close')}>
-    close
+    <Icon name="x"/>
   </button>
 </div>
 
 <script lang="ts">
 import { createEventDispatcher, onMount, onDestroy } from 'svelte'
+import { Icon } from '../../icons'
 
 const dispatch = createEventDispatcher()
 export let src: string = undefined
@@ -30,7 +31,6 @@ onMount(() => {
 onDestroy(() => {
   document.querySelector('html').classList.remove('popup-lightbox')
 })
-
 </script>
 
 <style src="./lightbox.scss" lang="scss"></style>

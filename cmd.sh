@@ -2,12 +2,13 @@ script="$(basename "$(test -L "$0" && readlink "$0" || echo "$0")")"
 
 case "$1" in
 
-  upload)
-    docker save redgoose/redgoose.me:latest | ssh -C reverse docker load
+  upgrade)
+    docker buildx build --platform=linux/amd64 -t redgoose/redgoose.me:latest .
+    docker save redgoose/redgoose.me:latest | ssh -C reverse 'cd www && docker-compose down && docker load && docker-compose up -d'
     ;;
 
   *)
-    echo "Usage: ${script} {upload}" >&2
+    echo "Usage: ${script} {upgrade}" >&2
     exit 3
     ;;
 
