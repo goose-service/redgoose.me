@@ -1,7 +1,7 @@
 {
   "name": "redgoose.me",
   "version": "5.6.1",
-  "repository": "https://gitlab.com/redgoose-me/redgoose.me.git",
+  "repository": "https://github.com/redgoose-dev/redgoose.me.git",
   "author": "redgoose <scripter@me.com>",
   "type": "module",
   "license": "MIT",
