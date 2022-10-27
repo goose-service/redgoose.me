@@ -32,16 +32,10 @@
     @media (max-width: 320px) {
       max-width: 100%;
     }
-    &:active {
-      opacity: .75;
-    }
   }
   picture {
     img {
       cursor: auto;
-      &:active {
-        opacity: unset;
-      }
     }
   }
   .grid-item {
