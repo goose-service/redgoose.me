@@ -1,17 +1,6 @@
-import { router } from 'tinro'
-
 export function sleep(delay: number = 3000): Promise<void>
 {
   return new Promise(resolve => setTimeout(resolve, delay))
-}
-
-export function getUrlQueryString(src: UnknownObject): string
-{
-  let qs = {
-    ...<UnknownObject>router.location.query.get(),
-    ...src,
-  }
-  return serialize(qs, true)
 }
 
 export function serialize(obj?: any, usePrefix: boolean = false): string

@@ -21,10 +21,10 @@
       </button>
     </nav>
     <nav
+      aria-hidden="true"
       class="header-navigation"
       class:on={activeNavigation}
-      aria-hidden="true"
-      on:click|stopPropagation={() => {}}>
+      on:click={onClickMenu}>
       <ul>
         {#each gnb as o,k}
           <li>
@@ -69,6 +69,12 @@ $: gnb = navigation.global.map((o) => ({
     }
   })
 }))
+
+function onClickMenu(e): void
+{
+  if (!e.target.classList.contains('header-navigation')) return
+  e.stopPropagation()
+}
 
 function onClickLink(e: PointerEvent): void
 {
