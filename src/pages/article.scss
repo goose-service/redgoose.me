@@ -9,12 +9,12 @@
     padding: 0 var(--article-side-padding);
     p {
       margin: 0;
-      color: #aaa;
+      color: var(--color-text-blur);
       font-size: 0;
       span {
         display: inline-block;
         font-family: var(--font-eng);
-        font-size: .625rem;
+        font-size: 10px;
         &:nth-child(n+2):before {
           content: '/';
           display: inline-block;
@@ -25,7 +25,7 @@
     }
     h1 {
       margin: 1px 0 0;
-      padding: 0 20px;
+      padding: 0 16px;
       letter-spacing: -.1rem;
       line-height: 1.25;
       font-family: var(--font-title);
