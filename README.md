@@ -60,15 +60,3 @@ docker buildx build --platform=linux/arm64/v8 -t redgoose/redgoose.me:latest .
 # Mac Intel
 docker build -t redgoose/redgoose.me:latest .
 ```
-
-
-## TODO
-
-- [x] 출력 순서가 거꾸로 되어있는거 같다?
-- [x] 좋아요 액션 API 연동
-- [x] RSS 작업
-- [x] 모바일 화면에서 메뉴토글 기능작업
-- [ ] docker 설정
-- [x] 본문 라이트박스 제작
-- [x] markdown 조정
-- [x] 봇용 html 작업

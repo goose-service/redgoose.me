@@ -33,6 +33,7 @@ export function register(res, err)
     console.group('> SERVICE ERROR')
     console.error(`- Status: [${status}] ${err.status || 'unknown error'}`)
     console.error(`- Date: ${dateFormat(date, '{yyyy}-{MM}-{dd} {hh}:{mm}:{ss}')}`)
+    console.error(`- URL: ${res.req.url}`)
     console.error(`- Message: ${err.message}`)
     console.groupEnd()
   }
