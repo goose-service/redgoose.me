@@ -42,6 +42,7 @@ import { onMount } from 'svelte'
 import { $fetch as fetch } from 'ohmyfetch'
 import type { FetchOptions } from 'ohmyfetch'
 import { error } from '../store'
+import { hashScroll } from '../libs/util'
 import Loading from '../components/loading/loading-page.svelte'
 import Error from '../components/error.svelte'
 import StarButton from '../components/pages/article/star-button.svelte'
@@ -83,6 +84,8 @@ async function fetchData(): Promise<void>
     starButton.disabled = !res.enableStarButton
     starButton.count = res.star
     loading = false
+    // move scroll
+    hashScroll(location.hash)
   }
   catch (e)
   {

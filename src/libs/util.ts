@@ -30,3 +30,13 @@ export function pureObject(src: any): any
     return null
   }
 }
+
+export function hashScroll(hash): void
+{
+  if (!hash) return
+  sleep(20).then(() => {
+    const _el = document.getElementById(decodeURIComponent(hash).replace(/^#/, ''))
+    if (!_el) return
+    _el.scrollIntoView(true)
+  })
+}
