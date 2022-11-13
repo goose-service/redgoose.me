@@ -19,7 +19,8 @@
     }
   }
   &__categories {
-    margin: 20px 0 0;
+    margin: 20px auto 0;
+    max-width: 900px;
   }
   &__body {
     margin: var(--size-body-top, 0) 0 0;

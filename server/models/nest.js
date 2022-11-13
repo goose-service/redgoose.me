@@ -47,9 +47,10 @@ export async function modelNests({ nestId, categorySrl, page })
   let [ categories, articles ] = await Promise.all([
     instance('/categories/', {
       query: {
+        module: 'article',
         field: 'srl,name',
-        nest: nest.data.srl,
-        ext_field: 'count_article,item_all',
+        target: nest.data.srl,
+        ext_field: 'count,all',
       },
     }),
     instance('/articles/', {
