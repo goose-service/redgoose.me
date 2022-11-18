@@ -72,7 +72,7 @@ export async function modelHome({ page })
   {
     throw {
       status: ERROR_CODE.NOT_FOUND,
-      message: 'not found item',
+      message: 'not found items',
     }
   }
   // filtering random articles
