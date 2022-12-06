@@ -18,8 +18,9 @@
         &:nth-child(n+2):before {
           content: '/';
           display: inline-block;
-          margin: 0 5px;
+          margin: 0 8px;
           line-height: 1.2;
+          opacity: .5;
         }
       }
     }
@@ -67,16 +68,16 @@
       }
     }
     &__body {
-      margin: 50px 0 0;
+      margin: 48px 0 0;
     }
   }
   @include mixins.dark-mode() {
     &__header {
       p {
-        color: #888;
+        color: hsl(0 0% 53%);
       }
       h1 {
-        color: #fff;
+        color: hsl(0 0% 100%);
       }
     }
   }

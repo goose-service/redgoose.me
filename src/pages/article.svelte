@@ -79,7 +79,7 @@ async function fetchData(): Promise<void>
     })
     srl = res.srl
     title = res.title
-    headDescription = [ res.nestName, res.categoryName ]
+    headDescription = [ res.nestName, res.categoryName, res.order ]
     contentBody = res.content
     starButton.disabled = !res.enableStarButton
     starButton.count = res.star

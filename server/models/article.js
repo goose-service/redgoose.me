@@ -79,6 +79,7 @@ export async function modelArticle({ srl, updateHit })
   result.image = article.data.json?.thumbnail?.path ? `${host}/${article.data.json.thumbnail.path}` : null
   result.hit = article.data.hit
   result.star = article.data.star
+  result.order = article.data.order
   return result
 }
 
