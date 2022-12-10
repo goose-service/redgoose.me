@@ -19,3 +19,7 @@ ul {
 blockquote {
   margin: 1rem;
 }
+pre {
+  word-break: break-all;
+  white-space: pre-wrap;
+}

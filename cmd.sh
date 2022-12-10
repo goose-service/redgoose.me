@@ -12,7 +12,7 @@ case "$1" in
     ;;
 
   *)
-    echo "Usage: ${script} {upgrade}" >&2
+    echo "Usage: ${script} {upload|upgrade}" >&2
     exit 3
     ;;
 
