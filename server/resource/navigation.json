@@ -62,6 +62,11 @@
       "label": "Notes",
       "key": "notes",
       "href": "https://note.redgoose.me"
+    },
+    {
+      "label": "Slideshow",
+      "key": "slideshow",
+      "href": "https://slideshow.redgoose.me"
     }
   ]
 }

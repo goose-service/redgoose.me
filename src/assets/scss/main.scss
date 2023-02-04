@@ -13,7 +13,7 @@
   --color-text-blur: hsl(var(--color-text-blur-hsl));
   --color-key-hsl: 350 70% 41%;
   --color-key: hsl(var(--color-key-hsl));
-  --color-sub-hsl: 233 100% 65%;
+  --color-sub-hsl: 140 80% 42%;
   --color-sub: hsl(var(--color-sub-hsl));
   --size-side-padding: 24px;
   --size-header-height: 48px;
@@ -28,7 +28,7 @@
     --color-bg-hsl: 0 0% 13%;
     --color-text-blur-hsl: 0 0% 47%;
     --color-key-hsl: 142 76% 46%;
-    --color-sub-hsl: 250 80% 68%;
+    --color-sub-hsl: 45 100% 60%;
   }
   @include mixins.responsive(tablet) {
     --size-side-padding: 58px;

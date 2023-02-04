@@ -9,6 +9,7 @@ export function register(res, err)
   let status
   let message
   let date = new Date()
+  // set status and message
   switch (err.status || err.message)
   {
     case ERROR_CODE.NO_ITEMS:
@@ -26,8 +27,7 @@ export function register(res, err)
       message = 'Service error'
       break
   }
-
-  // console
+  // print console
   if (dev)
   {
     console.group('> SERVICE ERROR')
@@ -37,6 +37,5 @@ export function register(res, err)
     console.error(`- Message: ${err.message}`)
     console.groupEnd()
   }
-
   return { status, message }
 }
