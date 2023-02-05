@@ -3,27 +3,15 @@
   "name": "붉은거위 / redgoose",
   "icons": [
     {
-      "src": "/images/redgoose-256x256.webp",
+      "src": "/images/redgoose-1024x1024.webp",
       "type": "image/webp",
-      "sizes": "256x256",
+      "sizes": "1024x1024",
       "purpose": "any"
     },
     {
-      "src": "/images/redgoose-512x512.webp",
+      "src": "/images/redgoose-1024x1024-mask.webp",
       "type": "image/webp",
-      "sizes": "512x512",
-      "purpose": "any"
-    },
-    {
-      "src": "/images/redgoose-256x256-mask.webp",
-      "type": "image/webp",
-      "sizes": "256x256",
-      "purpose": "maskable"
-    },
-    {
-      "src": "/images/redgoose-512x512-mask.webp",
-      "type": "image/webp",
-      "sizes": "512x512",
+      "sizes": "1024x1024",
       "purpose": "maskable"
     }
   ],
