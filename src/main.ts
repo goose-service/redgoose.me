@@ -1,3 +1,4 @@
+import registerServiceWorker from './registerServiceWorker'
 import Main from './main.svelte'
 import './assets/scss/main.scss'
 
@@ -6,6 +7,4 @@ window.app = new Main({
 })
 
 // setup service worker
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('/sw.js')
-}
+registerServiceWorker().then()
