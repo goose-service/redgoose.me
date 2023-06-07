@@ -13,6 +13,7 @@
             {#each headDescription as label}
               <span>{label}</span>
             {/each}
+            <em>{order}</em>
           </p>
         {/if}
         <h1>{title === '.' ? 'Untitled work' : title}</h1>
@@ -39,8 +40,7 @@
 
 <script lang="ts">
 import { onMount } from 'svelte'
-import { $fetch as fetch } from 'ohmyfetch'
-import type { FetchOptions } from 'ohmyfetch'
+import { ofetch } from 'ofetch'
 import { error } from '../store'
 import { hashScroll } from '../libs/util'
 import Loading from '../components/loading/loading-page.svelte'
@@ -59,6 +59,7 @@ let loading: boolean = true
 let srl: number
 let title: string
 let headDescription: string[]
+let order: string
 let contentBody: string
 let starButton = {
   disabled: false,
@@ -74,12 +75,13 @@ async function fetchData(): Promise<void>
   try
   {
     loading = true
-    let res = await fetch(`/api/article/${route.params.article}/`, <FetchOptions>{
+    let res = await ofetch(`/api/article/${route.params.article}/`, {
       responseType: 'json',
     })
     srl = res.srl
     title = res.title
-    headDescription = [ res.nestName, res.categoryName, res.order ]
+    headDescription = [ res.nestName, res.categoryName ]
+    order = res.order
     contentBody = res.content
     starButton.disabled = !res.enableStarButton
     starButton.count = res.star
@@ -107,7 +109,7 @@ async function onClickStar(): Promise<void>
 {
   try
   {
-    let res = await fetch(`/api/article/${route.params.article}/star/`, <FetchOptions>{
+    let res = await ofetch(`/api/article/${route.params.article}/star/`, {
       method: 'post',
       responseType: 'json',
     })

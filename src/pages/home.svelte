@@ -66,7 +66,7 @@
 <script lang="ts">
 import { onMount, onDestroy } from 'svelte'
 import { router } from 'tinro'
-import { $fetch as fetch } from 'ohmyfetch'
+import { ofetch } from 'ofetch'
 import { error } from '../store'
 import Items from '../components/pages/index/items.svelte'
 import Item from '../components/pages/index/item.svelte'
@@ -107,7 +107,7 @@ async function updateRoute(): Promise<void>
     loading = true
     let query: Query = {}
     if (Number(route.query?.page) > 1) query.page = Number(route.query?.page)
-    let res: Response = await fetch('/api/', {
+    let res: Response = await ofetch('/api/', {
       responseType: 'json',
       query,
     })

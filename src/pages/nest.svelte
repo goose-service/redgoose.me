@@ -50,7 +50,7 @@
 
 <script lang="ts">
 import { router } from 'tinro'
-import { $fetch as fetch } from 'ohmyfetch'
+import { ofetch } from 'ofetch'
 import { error } from '../store'
 import Error from '../components/error.svelte'
 import Categories from '../components/pages/index/categories.svelte'
@@ -96,7 +96,7 @@ async function updateNest(): Promise<void>
     {
       query.page = Number(route.query?.page)
     }
-    let res: Response = await fetch(`/api/nests/${route.params?.nest}/`, {
+    let res: Response = await ofetch(`/api/nests/${route.params?.nest}/`, {
       responseType: 'json',
       query,
     })

@@ -1,6 +1,6 @@
 import https from 'https'
 import { marked } from 'marked'
-import { $fetch } from 'ohmyfetch'
+import { ofetch } from 'ofetch'
 import { getEnv } from '../libs/entry-assets.js'
 import { filteringHostname } from '../libs/text.js'
 
@@ -16,7 +16,7 @@ export function setup()
     rejectUnauthorized: !/^https/.test(VITE_API_URL),
   })
   // set instance
-  instance = $fetch.create({
+  instance = ofetch.create({
     baseURL: filteringHostname(VITE_API_URL),
     responseType: 'json',
     headers: {
