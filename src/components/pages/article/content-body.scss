@@ -3,7 +3,7 @@
 
 .redgoose-body {
   --size-margin: 2rem 0;
-  --img-margin: 4rem auto 2rem;
+  --img-margin: 4rem 0 2rem;
   h1, h2, h3, h4, h5, h6 {
     scroll-margin-top: calc(var(--size-header-height) + 30px);
     .anchor {
