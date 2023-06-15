@@ -29,5 +29,6 @@ export function setup()
   marked.setOptions({
     gfm: true,
     breaks: true,
+    silent: true,
   })
 }
