@@ -51,6 +51,7 @@ export async function modelNests({ nestId, categorySrl, page })
         field: 'srl,name',
         target: nest.data.srl,
         ext_field: 'count,all',
+        order: 'turn',
       },
     }),
     instance('/articles/', {
