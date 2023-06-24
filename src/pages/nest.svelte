@@ -126,7 +126,7 @@ async function updateCategory(): Promise<void>
     {
       query.categorySrl = route.params.category || ''
     }
-    let res = await fetch(`/api/nests/${nest.srl}/articles/`, {
+    let res = await ofetch(`/api/nests/${nest.srl}/articles/`, {
       responseType: 'json',
       query,
     })
@@ -158,7 +158,7 @@ async function updatePage(): Promise<void>
     {
       query.page = Number(route.query?.page)
     }
-    let res = await fetch(`/api/nests/${nest.srl}/articles/`, {
+    let res = await ofetch(`/api/nests/${nest.srl}/articles/`, {
       responseType: 'json',
       query,
     })
