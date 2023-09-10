@@ -10,13 +10,13 @@
   {/if}
 </div>
 
-<script lang="ts">
+<script>
 import { onMount, onDestroy } from 'svelte'
 import { sleep } from '../../libs/util'
 
-export let full: boolean = false
-export let move: boolean = false
-let ready: boolean = false
+export let full = false
+export let move = false
+let ready = false
 
 onMount(async () => {
   await sleep(300)

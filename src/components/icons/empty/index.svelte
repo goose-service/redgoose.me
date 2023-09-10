@@ -1,6 +1,6 @@
 <Icon name={_iconName}/>
 
-<script lang="ts">
+<script>
 import { Icon } from '../index'
 import iconNames from '../icon/names.json'
 

@@ -1,6 +1,6 @@
 import { defineConfig, loadEnv } from 'vite'
+import preprocess from 'svelte-preprocess'
 import { svelte } from '@sveltejs/vite-plugin-svelte'
-import svelteConfig from './svelte.config'
 import createServiceWorkerPlugin from './plugins/create-service-worker'
 
 const config = defineConfig(async ({ mode }) => {
@@ -15,9 +15,9 @@ const config = defineConfig(async ({ mode }) => {
       outDir: env.VITE_OUT_DIR,
       rollupOptions: {
         output: {
-          assetFileNames: (assetInfo: any): string => {
-            const info: string[] = assetInfo.name.split('.')
-            let ext: string = info[info.length - 1]
+          assetFileNames: (assetInfo) => {
+            const info = assetInfo.name.split('.')
+            let ext = info[info.length - 1]
             if (/png|jpe?g|svg|gif|tiff|bmp|ico|webp/i.test(ext))
             {
               ext = 'images/'
@@ -37,7 +37,21 @@ const config = defineConfig(async ({ mode }) => {
     },
     define: {},
     plugins: [
-      svelte(svelteConfig),
+      svelte({
+        preprocess: preprocess(),
+        extensions: ['.svelte'],
+        compilerOptions: {},
+        onwarn(warning, defaultHandler) {
+          switch (warning.code)
+          {
+            case 'css-unused-selector':
+            case 'a11y-label-has-associated-control':
+            case 'unused-export-let':
+              return
+          }
+          defaultHandler(warning)
+        },
+      }),
       createServiceWorkerPlugin(),
     ],
   }

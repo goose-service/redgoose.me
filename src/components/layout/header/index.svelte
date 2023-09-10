@@ -51,11 +51,11 @@
   </div>
 </header>
 
-<script lang="ts">
+<script>
 import { active } from 'tinro'
 import navigation from '../../../../server/resource/navigation.json'
 
-let activeNavigation: boolean = false
+let activeNavigation = false
 
 $: gnb = navigation.global.map((o) => ({
   label: o.label,
@@ -70,21 +70,21 @@ $: gnb = navigation.global.map((o) => ({
   })
 }))
 
-function onClickMenu(e): void
+function onClickMenu(e)
 {
   if (!e.target.classList.contains('header-navigation')) return
   e.stopPropagation()
 }
 
-function onClickLink(e: PointerEvent): void
+function onClickLink(e)
 {
   if (!e.currentTarget) return
-  (e.currentTarget as HTMLElement).blur()
+  e.currentTarget.blur()
   activeNavigation = false
   window.removeEventListener('click', onCloseNavigation)
 }
 
-function onClickNavigationToggle(_: PointerEvent): void
+function onClickNavigationToggle(_)
 {
   activeNavigation = !activeNavigation
   if (activeNavigation)
@@ -93,7 +93,7 @@ function onClickNavigationToggle(_: PointerEvent): void
   }
 }
 
-function onCloseNavigation(_: PointerEvent): void
+function onCloseNavigation(_)
 {
   activeNavigation = false
 }

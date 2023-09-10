@@ -20,19 +20,12 @@
   </ul>
 </nav>
 
-<script lang="ts">
+<script>
 import { Icon } from '../../icons'
 
-interface Item {
-  srl: string
-  label: string
-  count: number
-  link: string
-}
-
-let opened: boolean = false
-export let active: string = ''
-export let items: Item[] = []
+let opened = false
+export let active = ''
+export let items = []
 
 $: _activeCategoryName = items.filter(o => (o.srl === active))[0]?.label || 'All'
 

@@ -74,22 +74,17 @@
   {/if}
 </nav>
 
-<script lang="ts">
+<script>
 import { Icon } from '../icons'
 import { serialize, pureObject } from '../../libs/util'
 
-interface PageItem {
-  key: number
-  active: boolean
-}
-
-export let page: number = 1
-export let total: number = 0
-export let size: number = 10
-export let range: number = 5
-export let url: string = '/'
-export let query: UnknownObject = {}
-let _pageItems: PageItem[] = []
+export let page = 1
+export let total = 0
+export let size = 10
+export let range = 5
+export let url = '/'
+export let query = {}
+let _pageItems = []
 
 $: _page = (() => ((Number(page) > 1) ? Number(page) : 1))()
 $: _count = Math.ceil(total / size)
@@ -97,9 +92,9 @@ $: _block = Math.floor((_page - 1) / range)
 $: _blockTotal = Math.floor((_count - 1) / range)
 $: if (_block !== undefined && page > 0) _pageItems = reactivePageItems()
 
-function reactivePageItems(): PageItem[]
+function reactivePageItems()
 {
-  let items: any[] = []
+  let items = []
   let startPage = _block * range + 1
   for (let i = 1; i < range + 1 && startPage <= _count; i++, startPage++)
   {
@@ -115,7 +110,7 @@ function reactivePageItems(): PageItem[]
   return checkEmpty ? items : []
 }
 
-function makeUrl(n: number): string
+function makeUrl(n)
 {
   let newQuery = pureObject(query)
   newQuery.page = n

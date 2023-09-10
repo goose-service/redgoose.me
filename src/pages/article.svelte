@@ -38,7 +38,7 @@
     on:close={onCloseLightbox}/>
 {/if}
 
-<script lang="ts">
+<script>
 import { onMount } from 'svelte'
 import { ofetch } from 'ofetch'
 import { error } from '../store'
@@ -49,28 +49,23 @@ import StarButton from '../components/pages/article/star-button.svelte'
 import ContentBody from '../components/pages/article/content-body.svelte'
 import LightBox from '../components/pages/article/lightbox.svelte'
 
-interface Lightbox {
-  src?: string
-  alt?: string
-}
-
-export let route: Route
-let loading: boolean = true
-let srl: number
-let title: string
-let headDescription: string[]
-let order: string
-let contentBody: string
+export let route
+let loading = true
+let srl
+let title
+let headDescription
+let order
+let contentBody
 let starButton = {
   disabled: false,
   count: 0,
 }
-let empty: boolean = false
-let lightbox: Lightbox = {}
+let empty = false
+let lightbox = {}
 
 $: _contentBody = contentBody
 
-async function fetchData(): Promise<void>
+async function fetchData()
 {
   try
   {
@@ -105,7 +100,7 @@ async function fetchData(): Promise<void>
   }
 }
 
-async function onClickStar(): Promise<void>
+async function onClickStar()
 {
   try
   {
@@ -123,13 +118,13 @@ async function onClickStar(): Promise<void>
   }
 }
 
-function onOpenLightbox({ detail: { src, alt } }): void
+function onOpenLightbox({ detail: { src, alt } })
 {
   lightbox.src = src
   lightbox.alt = alt
 }
 
-function onCloseLightbox(): void
+function onCloseLightbox()
 {
   lightbox.src = undefined
   lightbox.alt = undefined

@@ -6,7 +6,7 @@
   </div>
 </article>
 
-<script lang="ts">
+<script>
 export let status
 export let message
 </script>

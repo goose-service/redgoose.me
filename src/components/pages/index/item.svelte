@@ -19,17 +19,17 @@
   </a>
 </li>
 
-<script lang="ts">
+<script>
 import shuffle from 'auto-writer/src/shuffle'
 import { EmptyIcon } from '../../icons'
 
 let elements = []
-export let srl: number
-export let image: string
-export let title: string
-export let description: string
+export let srl
+export let image
+export let title
+export let description
 
-function onEnterItem(): void
+function onEnterItem()
 {
   elements.forEach((el, k) => {
     setTimeout(() => shuffle(el, {

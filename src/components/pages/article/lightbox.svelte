@@ -10,15 +10,15 @@
   </button>
 </div>
 
-<script lang="ts">
+<script>
 import { createEventDispatcher, onMount, onDestroy } from 'svelte'
 import { Icon } from '../../icons'
 
 const dispatch = createEventDispatcher()
-export let src: string = undefined
-export let alt: string = undefined
+export let src = undefined
+export let alt = undefined
 
-function onCloseByKeyup(e: KeyboardEvent): void
+function onCloseByKeyup(e)
 {
   if (e.key !== 'Escape') return
   dispatch('close')

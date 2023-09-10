@@ -14,11 +14,11 @@
   <use href={`${FeatherIcon}#${name}`}/>
 </svg>
 
-<script lang="ts">
+<script>
 import FeatherIcon from './feather-sprite.svg'
 
-export let name: string
-export let rotate: boolean = false
+export let name
+export let rotate = false
 </script>
 
 <style lang="scss">

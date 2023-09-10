@@ -18,9 +18,9 @@
     }
     h1 {
       margin: 2px 0 0;
-      font-family: var(--font-title);
+      font-family: var(--font-eng);
       font-size: 32px;
-      font-weight: 600;
+      font-weight: 700;
       line-height: 1;
       letter-spacing: -.5px;
       color: var(--color-about-metas-section-title);
@@ -55,11 +55,12 @@
       }
       > h1 {
         margin: 0;
-        font-family: var(--font-title);
+        font-family: var(--font-eng);
         font-size: 24px;
-        font-weight: 600;
+        font-weight: 700;
         color: var(--color-about-metas-section-title);
         letter-spacing: -.5px;
+        text-transform: capitalize;
         &:after {
           content: '';
           display: block;
@@ -95,7 +96,7 @@
         font-size: 12px;
       }
       h1 {
-        font-size: 36px;
+        font-size: 42px;
       }
     }
     &__profile {

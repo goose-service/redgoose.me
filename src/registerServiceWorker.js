@@ -18,7 +18,10 @@ export default async function registerServiceWorker()
   // register.unregister().then()
 }
 
-function onUpdateFound(_e)
+/**
+ * @param {any} e
+ */
+function onUpdateFound(e)
 {
-  // console.warn('STATE', '===>', _e.target.state)
+  // console.warn('STATE', '===>', e.target.state)
 }

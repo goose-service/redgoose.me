@@ -39,7 +39,7 @@
   <Footer/>
 </div>
 
-<script lang="ts">
+<script>
 import { Route, router } from 'tinro'
 import { error } from './store'
 import Lazy from './components/layout/lazy.svelte'

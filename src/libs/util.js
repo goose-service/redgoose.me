@@ -1,12 +1,18 @@
-export function sleep(delay: number = 3000): Promise<void>
+export function sleep(delay = 3000)
 {
   return new Promise(resolve => setTimeout(resolve, delay))
 }
 
-export function serialize(obj?: any, usePrefix: boolean = false): string
+/**
+ * serialize
+ * @param {object} obj
+ * @param {boolean} usePrefix
+ * @return {string}
+ */
+export function serialize(obj, usePrefix = false)
 {
-  let str: string[] = []
-  let res: string
+  let str = []
+  let res
   for (let p in obj)
   {
     if (obj.hasOwnProperty(p) && obj[p] !== undefined)
@@ -18,7 +24,7 @@ export function serialize(obj?: any, usePrefix: boolean = false): string
   return (res && usePrefix ? '?' : '') + res
 }
 
-export function pureObject(src: any): any
+export function pureObject(src)
 {
   if (!src) return null
   try
@@ -31,7 +37,7 @@ export function pureObject(src: any): any
   }
 }
 
-export function hashScroll(hash): void
+export function hashScroll(hash)
 {
   if (!hash) return
   sleep(20).then(() => {

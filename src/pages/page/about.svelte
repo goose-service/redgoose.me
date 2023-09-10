@@ -33,9 +33,9 @@
   </div>
 </article>
 
-<script lang="ts">
+<script>
 import content from '../../../server/resource/about.json'
-export let route: Route = undefined
+export let route = undefined
 </script>
 
 <style src="./about.scss" lang="scss"></style>

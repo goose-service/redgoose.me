@@ -7,25 +7,25 @@
   {/if}
 </div>
 
-<script lang="ts">
+<script>
 import { createEventDispatcher } from 'svelte'
 
 const dispatch = createEventDispatcher()
-export let body: string = undefined
+export let body = undefined
 
-function onClickBody(e): void
+function onClickBody(e)
 {
-  let _target: HTMLElement = e.target
+  let _target = e.target
   switch (_target.tagName?.toLowerCase())
   {
     case 'img':
       dispatch('openLightbox', {
-        src: (_target as HTMLImageElement).src,
-        alt: (_target as HTMLImageElement).alt,
+        src: _target.src,
+        alt: _target.alt,
       })
       break
   }
 }
 </script>
 
-<style src="./content-body.scss" global lang="scss"></style>
+<style src="./content-body.scss" lang="scss"></style>

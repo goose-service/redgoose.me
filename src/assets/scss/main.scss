@@ -1,6 +1,6 @@
 @use './mixins';
 @use './normalize';
-@import './fonts';
+@import 'https://assets.redgoose.me/fonts/index.css';
 
 :root {
   --color-text-hsl: 0 0% 13%;
@@ -17,9 +17,8 @@
   --color-sub: hsl(var(--color-sub-hsl));
   --size-side-padding: 24px;
   --size-header-height: 48px;
-  --font-base: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+  --font-base: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
   --font-eng: 'ortsa', Helvetica, Arial, sans-serif;
-  --font-title: 'AritaBuri', sans-serif;
   --font-code: 'Monaco', 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
   @include mixins.dark-mode() {
     color-scheme: dark;

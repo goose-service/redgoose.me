@@ -4,7 +4,7 @@
   </p>
 </footer>
 
-<script lang="ts">
+<script>
 let currentYear = (new Date()).getFullYear()
 </script>
 

@@ -19,14 +19,14 @@
     on:change/>
 </div>
 
-<script lang="ts">
+<script>
 import PaginateItems from './paginate/items.svelte'
 
-export let page: number
-export let total: number
-export let size: number
-export let url: string
-export let query: UnknownObject
+export let page
+export let total
+export let size
+export let url
+export let query
 </script>
 
 <style lang="scss">

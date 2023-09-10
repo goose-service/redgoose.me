@@ -48,7 +48,7 @@
   </article>
 {/if}
 
-<script lang="ts">
+<script>
 import { router } from 'tinro'
 import { ofetch } from 'ofetch'
 import { error } from '../store'
@@ -59,14 +59,14 @@ import Item from '../components/pages/index/item.svelte'
 import Paginate from '../components/paginate.svelte'
 import Loading from '../components/loading/loading-page.svelte'
 
-export let route: Route
+export let route
 let currentRoute
 let size = Number(import.meta.env.VITE_INDEX_SIZE)
-let nest: Nest = undefined
-let categories: Category[] = []
-let totalArticles: number = 0
-let articles: Article[] = []
-let loading: boolean = false
+let nest = undefined
+let categories = []
+let totalArticles = 0
+let articles = []
+let loading = false
 
 $: if (currentRoute?.params?.nest !== route.params?.nest) updateNest()
 $: if (currentRoute?.params?.category !== route.params.category) updateCategory()
@@ -81,13 +81,13 @@ $: _categories = categories.map(o => {
   }
 })
 
-async function updateNest(): Promise<void>
+async function updateNest()
 {
   try
   {
     currentRoute = route
     loading = true
-    let query: Query = {}
+    let query = {}
     if (route.params.category)
     {
       query.categorySrl = route.params.category || ''
@@ -96,7 +96,7 @@ async function updateNest(): Promise<void>
     {
       query.page = Number(route.query?.page)
     }
-    let res: Response = await ofetch(`/api/nests/${route.params?.nest}/`, {
+    let res = await ofetch(`/api/nests/${route.params?.nest}/`, {
       responseType: 'json',
       query,
     })
@@ -115,13 +115,13 @@ async function updateNest(): Promise<void>
   }
 }
 
-async function updateCategory(): Promise<void>
+async function updateCategory()
 {
   try
   {
     currentRoute = route
     loading = true
-    let query: Query = {}
+    let query = {}
     if (route.params.category)
     {
       query.categorySrl = route.params.category || ''
@@ -143,13 +143,13 @@ async function updateCategory(): Promise<void>
   }
 }
 
-async function updatePage(): Promise<void>
+async function updatePage()
 {
   try
   {
     currentRoute = route
     loading = true
-    let query: Query = {}
+    let query = {}
     if (route.params.category)
     {
       query.categorySrl = route.params.category || ''

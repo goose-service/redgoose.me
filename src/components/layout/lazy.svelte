@@ -2,7 +2,7 @@
   <svelte:component this={resolvedComponent.default} {route}/>
 {/await}
 
-<script lang="ts">
+<script>
 export let component = undefined
 export let route = undefined
 </script>

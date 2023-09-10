@@ -19,14 +19,14 @@
   <em>{count}</em>
 </button>
 
-<script lang="ts">
+<script>
 import { createEventDispatcher } from 'svelte'
 
 const dispatch = createEventDispatcher()
-export let count: number = 0
-export let disabled: boolean = false
+export let count = 0
+export let disabled = false
 
-function onClickButton(): void
+function onClickButton()
 {
   dispatch('click')
 }

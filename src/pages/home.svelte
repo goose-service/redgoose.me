@@ -63,7 +63,7 @@
   </div>
 </article>
 
-<script lang="ts">
+<script>
 import { onMount, onDestroy } from 'svelte'
 import { router } from 'tinro'
 import { ofetch } from 'ofetch'
@@ -75,46 +75,36 @@ import Error from '../components/error.svelte'
 import Paginate from '../components/paginate.svelte'
 import Loading from '../components/loading/loading-page.svelte'
 
-interface Query {
-  page?: number
-}
-interface Response {
-  total: number
-  headItems?: object[]
-  randomItems?: object[]
-  bodyItems?: object[]
-}
-
-export let route: Route
-let ready: boolean = false
-let loading: boolean = true
+export let route
+let ready = false
+let loading = true
 let currentRoute
 let size = Number(import.meta.env.VITE_INDEX_SIZE)
 let total = 0
-let itemsHead: IndexItem[] = []
-let itemsRandom: IndexItem[] = []
-let itemsBody: IndexItem[] = []
+let itemsHead = []
+let itemsRandom = []
+let itemsBody = []
 
 $: if (route.from !== route.url && location.pathname === '/') updateRoute()
 $: if (currentRoute?.query.page !== route.query.page) updateRoute()
 
-async function updateRoute(): Promise<void>
+async function updateRoute()
 {
   if (!ready) return
   try
   {
     currentRoute = route
     loading = true
-    let query: Query = {}
+    let query = {}
     if (Number(route.query?.page) > 1) query.page = Number(route.query?.page)
-    let res: Response = await ofetch('/api/', {
+    let res = await ofetch('/api/', {
       responseType: 'json',
       query,
     })
     total = res.total
-    itemsHead = <IndexItem[]>res.headItems
-    itemsRandom = <IndexItem[]>res.randomItems
-    itemsBody = <IndexItem[]>res.bodyItems
+    itemsHead = res.headItems
+    itemsRandom = res.randomItems
+    itemsBody = res.bodyItems
     loading = false
   }
   catch (e)
