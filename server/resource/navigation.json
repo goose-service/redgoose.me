@@ -5,6 +5,11 @@
   },
   "global": [
     {
+      "label": "About",
+      "key": "about",
+      "href": "/page/about/"
+    },
+    {
       "label": "Works",
       "key": "works",
       "href": "/nest/visual/",
@@ -52,21 +57,6 @@
           "href": "/nest/foreign-countries/"
         }
       ]
-    },
-    {
-      "label": "About",
-      "key": "about",
-      "href": "/page/about/"
-    },
-    {
-      "label": "Notes",
-      "key": "notes",
-      "href": "https://note.redgoose.me"
-    },
-    {
-      "label": "Slideshow",
-      "key": "slideshow",
-      "href": "https://slideshow.redgoose.me"
     }
   ]
 }

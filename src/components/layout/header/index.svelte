@@ -28,7 +28,11 @@
       <ul>
         {#each gnb as o,k}
           <li>
-            <a href={o.href} target={o.target} use:active on:click={onClickLink}>
+            <a
+              href={o.href}
+              target={o.target}
+              use:active
+              on:click={onClickLink}>
               {o.label}
             </a>
             {#if o.children?.length > 0}
@@ -36,7 +40,11 @@
                 <ol>
                   {#each o.children as oo}
                     <li>
-                      <a href={oo.href} target={oo.target} use:active on:click={onClickLink}>
+                      <a
+                        href={oo.href}
+                        target={oo.target}
+                        use:active
+                        on:click={onClickLink}>
                         {oo.label}
                       </a>
                     </li>

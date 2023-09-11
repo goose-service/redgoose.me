@@ -23,10 +23,6 @@
         {
           "label": "E-Mail",
           "body": "scripter@me.com<br/>redgooseme@gmail.com"
-        },
-        {
-          "label": "Ethereum",
-          "body": "<a href=\"https://etherscan.io/address/0x502782aa5076fda02d51e39f57243920633b6f35\" target=\"_blank\" rel=\"noreferrer\">redgoose.eth</a>"
         }
       ]
     },
@@ -46,6 +42,14 @@
     {
       "title": "links",
       "items": [
+        {
+          "label": "Note",
+          "body": "<a href=\"https://note.redgoose.me\" target=\"_blank\" rel=\"noreferrer\">https://note.redgoose.me</a>"
+        },
+        {
+          "label": "Slideshow",
+          "body": "<a href=\"https://slideshow.redgoose.me\" target=\"_blank\" rel=\"noreferrer\">https://slideshow.redgoose.me</a>"
+        },
         {
           "label": "Facebook",
           "body": "<a href=\"https://www.facebook.com/redgoose.me\" target=\"_blank\" rel=\"noreferrer\">scripter@me.com</a>"

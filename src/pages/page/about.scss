@@ -13,7 +13,7 @@
     p {
       margin: 0;
       font-family: var(--font-eng);
-      font-size: 11px;
+      font-size: 12px;
       color: var(--color-text-blur);
     }
     h1 {
@@ -42,8 +42,9 @@
     margin: 36px 0 0;
     p {
       margin: 0;
-      font-size: .875rem;
+      font-size: 15px;
       line-height: 1.64;
+      white-space: break-spaces;
     }
   }
   &__metas {
@@ -71,17 +72,17 @@
       }
       > dl {
         margin: 10px 0 0;
-        font-size: 12px;
+        font-size: 13px;
         line-height: 20px;
         > dt {
           margin-top: 12px;
           font-family: var(--font-eng);
-          font-weight: 500;
+          font-weight: 600;
           font-size: 15px;
           color: var(--color-about-metas-section-title);
         }
         > dd {
-          margin: 5px 0 0;
+          margin: 2px 0 0;
           font-family: var(--font-eng);
         }
       }
