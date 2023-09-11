@@ -14,7 +14,6 @@ README.md
 .DS_Store
 .env.local
 cmd.sh
-README.md
 docker-compose.yml
 0
 Dockerfile

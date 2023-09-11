@@ -1,6 +1,6 @@
 @use './mixins';
 @use './normalize';
-@import 'https://assets.redgoose.me/fonts/index.css';
+@import url('https://assets.redgoose.me/fonts/index.css');
 
 :root {
   --color-text-hsl: 0 0% 13%;
