@@ -1,21 +1,15 @@
 {
   "name": "redgoose.me",
-  "version": "5.8.1",
+  "version": "5.8.2",
   "repository": "https://github.com/gooose-eth/redgoose.me.git",
   "author": "redgoose <scripter@me.com>",
   "type": "module",
   "license": "MIT",
   "scripts": {
-    "dev": "node --no-warnings server/entry.js --development",
-    "dev:live": "nodemon --no-warnings server/entry.js --development",
+    "dev": "bun server/entry.js --development",
     "prebuild": "rm -rf ./dist",
     "build": "vite build",
-    "start": "node --no-warnings server/entry.js --production",
-    "start:live": "nodemon --no-warnings server/entry.js --production"
-  },
-  "nodemonConfig": {
-    "delay": 1000,
-    "ignore": ["src/**/*", "dist/**/*"]
+    "start": "bun server/entry.js --production"
   },
   "browserslist": [
     "> 1%",
@@ -34,10 +28,8 @@
     "@sveltejs/vite-plugin-svelte": "^2.4.5",
     "auto-writer": "^1.1.2",
     "esbuild": "^0.19.2",
-    "nodemon": "^3.0.1",
     "sass": "^1.66.1",
     "svelte": "^4.2.0",
-    "svelte-check": "^3.5.1",
     "svelte-preprocess": "^5.0.4",
     "tinro": "^0.6.12",
     "vite": "^4.4.9"
