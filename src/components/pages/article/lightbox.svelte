@@ -1,6 +1,13 @@
 <div class="lightbox">
   <figure class="lightbox__image">
-    <img src={src} alt={alt}/>
+    {#if srcDark}
+      <goose-dark-mode-image
+        src-light={src}
+        src-dark={srcDark}
+        alt={alt}/>
+    {:else}
+      <img src={src} alt={alt}/>
+    {/if}
   </figure>
   <button
     type="button"
@@ -16,6 +23,7 @@ import { Icon } from '../../icons'
 
 const dispatch = createEventDispatcher()
 export let src = undefined
+export let srcDark = undefined
 export let alt = undefined
 
 function onCloseByKeyup(e)

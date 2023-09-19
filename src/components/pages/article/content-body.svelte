@@ -24,6 +24,13 @@ function onClickBody(e)
         alt: _target.alt,
       })
       break
+    case 'goose-dark-mode-image':
+      dispatch('openLightbox', {
+        src: _target.getAttribute('src-light'),
+        srcDark: _target.getAttribute('src-dark'),
+        alt: _target.getAttribute('alt'),
+      })
+      break
   }
 }
 </script>

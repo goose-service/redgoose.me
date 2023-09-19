@@ -22,6 +22,10 @@
       object-fit: contain;
       border-radius: 2px;
     }
+    goose-dark-mode-image {
+      max-width: 92vw;
+      //max-height: 96vh;
+    }
   }
   &__close {
     position: absolute;

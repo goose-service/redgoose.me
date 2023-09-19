@@ -1,6 +1,6 @@
 {
   "name": "redgoose.me",
-  "version": "5.8.2",
+  "version": "5.8.3",
   "repository": "https://github.com/gooose-eth/redgoose.me.git",
   "author": "redgoose <scripter@me.com>",
   "type": "module",
@@ -18,17 +18,16 @@
   "dependencies": {
     "cookie-parser": "^1.4.6",
     "express": "^4.18.2",
-    "isbot": "^3.6.13",
-    "marked": "^9.0.0",
+    "isbot": "^3.7.0",
+    "marked": "^9.0.3",
     "ofetch": "^1.3.3",
     "pug": "^3.0.2"
   },
   "devDependencies": {
-    "@redgoose/markdown-style": "^1.1.6",
-    "@sveltejs/vite-plugin-svelte": "^2.4.5",
+    "@sveltejs/vite-plugin-svelte": "^2.4.6",
     "auto-writer": "^1.1.2",
-    "esbuild": "^0.19.2",
-    "sass": "^1.66.1",
+    "esbuild": "^0.19.3",
+    "sass": "^1.67.0",
     "svelte": "^4.2.0",
     "svelte-preprocess": "^5.0.4",
     "tinro": "^0.6.12",

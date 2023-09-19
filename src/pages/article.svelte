@@ -118,15 +118,17 @@ async function onClickStar()
   }
 }
 
-function onOpenLightbox({ detail: { src, alt } })
+function onOpenLightbox({ detail: { src, srcDark, alt } })
 {
   lightbox.src = src
+  lightbox.srcDark = srcDark
   lightbox.alt = alt
 }
 
 function onCloseLightbox()
 {
   lightbox.src = undefined
+  lightbox.srcDark = undefined
   lightbox.alt = undefined
 }
 
