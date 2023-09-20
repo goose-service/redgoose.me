@@ -23,7 +23,6 @@
     }
   }
   :global(:is(img, goose-dark-mode-image)) {
-    cursor: pointer;
     @include mixins.button-setup();
   }
 }
