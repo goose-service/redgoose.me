@@ -56,13 +56,19 @@
         {/each}
       </ul>
     </nav>
+    <nav class="dark-mode-switch">
+      <goose-dark-mode-switch bind:this={darkModeSwitch} theme={$theme}/>
+    </nav>
   </div>
 </header>
 
 <script>
+import { onMount, onDestroy } from 'svelte'
 import { active } from 'tinro'
+import { theme } from '../../../store.js'
 import navigation from '../../../../server/resource/navigation.json'
 
+let darkModeSwitch
 let activeNavigation = false
 
 $: gnb = navigation.global.map((o) => ({
@@ -105,6 +111,18 @@ function onCloseNavigation(_)
 {
   activeNavigation = false
 }
+
+function changeTheme({ detail })
+{
+  theme.update(detail.theme)
+}
+
+onMount(() => {
+  darkModeSwitch.addEventListener('change', changeTheme)
+})
+onDestroy(() => {
+  darkModeSwitch.removeEventListener('change', changeTheme)
+})
 </script>
 
 <style src="./index.scss" lang="scss"></style>

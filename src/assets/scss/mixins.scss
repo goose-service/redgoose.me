@@ -50,7 +50,29 @@
 // dark mode
 @mixin dark-mode()
 {
-  @media (prefers-color-scheme: dark) { @content; }
+  :global(html[data-theme=dark]) & {
+    @content;
+  }
+  @media (prefers-color-scheme: dark) {
+    :global(html[data-theme=system]) &,
+    :global(html:not([data-theme])) &,
+    :global(html[data-theme=""]) & {
+      @content;
+    }
+  }
+}
+@mixin dark-mode-root()
+{
+  &[data-theme=dark] {
+    @content;
+  }
+  &[data-theme=system],
+  &:not([data-theme]),
+  &[data-theme=""] {
+    @media (prefers-color-scheme: dark) {
+      @content;
+    }
+  }
 }
 
 // horizontal scroll for mobile

@@ -215,7 +215,7 @@
     right: 0;
     top: 0;
     height: var(--size-header-height);
-    margin: 0;
+    margin: 0 56px 0 0;
     padding: 0;
     background: none;
     box-shadow: none;
@@ -328,5 +328,16 @@
         }
       }
     }
+  }
+}
+
+.dark-mode-switch {
+  position: absolute;
+  top: 50%;
+  right: 16px;
+  transform: translateY(-50%);
+  -webkit-tap-highlight-color: transparent;
+  @include mixins.responsive(tablet) {
+    right: 0;
   }
 }

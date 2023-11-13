@@ -46,3 +46,12 @@ export function hashScroll(hash)
     _el.scrollIntoView(true)
   })
 }
+
+/**
+ * get system theme
+ * @return {string}
+ */
+export function getSystemTheme()
+{
+  return (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light'
+}
