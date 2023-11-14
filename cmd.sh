@@ -7,7 +7,7 @@ case "$1" in
     ;;
 
   upload)
-    docker save redgoose/redgoose.me:latest | ssh -C redgoose.me 'cd ~/docker/www && docker load'
+    docker save redgoose/redgoose.me:latest | ssh -C goose@redgoose.me 'cd ~/docker/www && docker-compose down && docker load && docker-compose up -d && cd ../service && ./cmd.sh service reload'
     ;;
 
   upgrade)

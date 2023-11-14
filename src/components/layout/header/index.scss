@@ -334,9 +334,16 @@
 .dark-mode-switch {
   position: absolute;
   top: 50%;
-  right: 16px;
+  right: 14px;
   transform: translateY(-50%);
   -webkit-tap-highlight-color: transparent;
+  goose-dark-mode-switch {
+    display: block;
+    --dark-switch-width: 48px;
+    --dark-switch-height: 28px;
+    --dark-switch-padding: 2px;
+    --dark-switch-icon-size: 16px;
+  }
   @include mixins.responsive(tablet) {
     right: 0;
   }
