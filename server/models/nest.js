@@ -9,7 +9,7 @@ function filteringArticles({ src, host })
       srl: o.srl,
       title: o.title,
       date: o.order,
-      image: o.json?.thumbnail?.path ? `${host}/${o.json.thumbnail.path}` : null,
+      image: o.json?.thumbnail?.path ? `${host}/data/upload/thumbnail/${o.json.thumbnail.path}` : null,
     }
   })
 }
