@@ -1,7 +1,7 @@
 import * as fs from 'fs'
 import * as path from 'path'
 import express from 'express'
-import isbot from 'isbot'
+import { isbot } from 'isbot'
 import cookieParser from 'cookie-parser'
 import { createServer } from 'vite'
 import { openServerMessage, isDev, getEnv } from './libs/entry-assets.js'

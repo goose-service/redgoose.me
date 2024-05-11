@@ -1,5 +1,5 @@
 import fs from 'fs'
-import { build } from 'esbuild'
+import { build } from 'esbuild-wasm'
 
 const pathServiceWorker = 'dist/sw.js'
 const pathServiceWorkerTarget = 'dist/sw.js'

@@ -2,6 +2,7 @@ import { marked, Renderer } from 'marked'
 import { instance } from './index.js'
 import { getEnv } from '../libs/entry-assets.js'
 import { ERROR_CODE } from '../libs/assets.js'
+import { setThumbnailPath } from '../libs/text.js'
 
 const sharp = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>`
 
@@ -76,7 +77,7 @@ export async function modelArticle({ srl, updateHit })
   result.nestName = article.data.nest_name
   result.categoryName = article.data.category_name
   result.content = parsingContent(article.data.content)
-  result.image = article.data.json?.thumbnail?.path ? `${host}/${article.data.json.thumbnail.path}` : null
+  result.image = article.data.json?.thumbnail?.path ? `${host}/${setThumbnailPath(article.data.json.thumbnail.path)}` : null
   result.hit = article.data.hit
   result.star = article.data.star
   result.order = article.data.order

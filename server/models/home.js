@@ -2,6 +2,7 @@ import { instance } from './index.js'
 import { getEnv } from '../libs/entry-assets.js'
 import { ERROR_CODE } from '../libs/assets.js'
 import { dateFormat } from '../libs/date.js'
+import { setThumbnailPath } from '../libs/text.js'
 
 function filteringArticles({ src, host })
 {
@@ -10,7 +11,7 @@ function filteringArticles({ src, host })
       srl: o.srl,
       title: o.title,
       date: o.order,
-      image: o.json?.thumbnail?.path ? `${host}/data/upload/thumbnail/${o.json.thumbnail.path}` : null,
+      image: o.json?.thumbnail?.path ? `${host}/${setThumbnailPath(o.json.thumbnail.path)}` : null,
       nest: o.nest_name || null,
       category: o.category_name || null,
     }

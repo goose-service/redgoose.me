@@ -33,3 +33,8 @@ export function filteringHostname(host)
 {
   return host.replace(/localhost/i, '0.0.0.0')
 }
+
+export function setThumbnailPath(path)
+{
+  return `data/upload/thumbnail/${path}`
+}
