@@ -1,9 +1,0 @@
-.viewport {
-  &__error {
-    height: 100vh;
-    min-height: calc(75vh - var(--size-header-height));
-    max-height: calc(75vh - var(--size-header-height));
-  }
-}
-
-.container {}
