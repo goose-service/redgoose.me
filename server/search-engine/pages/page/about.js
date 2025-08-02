@@ -1,7 +1,7 @@
 import * as url from 'url'
 import { getEnv } from '../../../libs/entry-assets.js'
-import navigation from '../../../resource/navigation.json' assert { type: 'json' }
-import content from '../../../resource/about.json' assert { type: 'json' }
+import navigation from '../../../resource/navigation.json'
+import content from '../../../resource/about.json'
 
 export async function pageAbout(req, res)
 {

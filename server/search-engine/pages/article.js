@@ -3,7 +3,7 @@ import { getEnv } from '../../libs/entry-assets.js'
 import { modelArticle } from '../../models/article.js'
 import * as error from '../../libs/error.js'
 import { ERROR_CODE } from '../../libs/assets.js'
-import navigation from '../../resource/navigation.json' assert { type: 'json' }
+import navigation from '../../resource/navigation.json'
 
 export async function pageArticle(req, res)
 {

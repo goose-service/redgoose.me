@@ -5,7 +5,7 @@ import * as error from '../../libs/error.js'
 import { ERROR_CODE } from '../../libs/assets.js'
 import { createPaginate } from '../../libs/paginate.js'
 import { convertUrl } from '../../libs/text.js'
-import navigation from '../../resource/navigation.json' assert { type: 'json' }
+import navigation from '../../resource/navigation.json'
 
 export async function pageNests(req, res)
 {
