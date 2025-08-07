@@ -1,22 +1,33 @@
 {
   "name": "redgoose.me",
   "version": "6.0.0",
-  "repository": "https://github.com/gooose-eth/redgoose.me.git",
+  "repository": "https://github.com/goose-service/redgoose.me.git",
   "author": "redgoose <scripter@me.com>",
   "type": "module",
   "license": "ISC",
   "scripts": {
-    "dev": "",
+    "dev": "NODE_ENV=development concurrently \"bun run --bun server/main.js\" \"bunx --bun vite\"",
     "prebuild": "rm -rf ./dist",
-    "build": "",
-    "start": ""
+    "build": "bunx --bun vite build",
+    "start": "NODE_ENV=production bun run --bun server/main.js"
   },
   "browserslist": [
     "> 1%",
     "last 2 versions"
   ],
   "dependencies": {
+    "@types/bun": "^1.2.19",
+    "isbot": "^5.1.29",
+    "marked": "^16.1.2",
+    "sass": "^1.89.2"
   },
   "devDependencies": {
+    "@vitejs/plugin-vue": "^6.0.1",
+    "auto-writer": "^1.1.2",
+    "concurrently": "^9.2.0",
+    "ofetch": "^1.4.1",
+    "vite": "^7.0.6",
+    "vue": "^3.5.18",
+    "vue-router": "^4.5.1"
   }
 }
