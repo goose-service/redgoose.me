@@ -5,10 +5,9 @@ import article from './article.js'
 import updateStar from './update-star.js'
 
 export default {
-  '/api/': home,
-  '/api/nest/:code/': nest,
-  '/api/nest/:code/:category_srl/': nest,
-  '/api/article/': articles,
-  '/api/article/:srl/': article,
-  '/api/article/:srl/star/': { POST: updateStar },
+  '/api/': home, // 첫화면
+  '/api/nest/:code/': nest, // 둥지
+  '/api/article/': articles, // 둥지 only 아티클
+  '/api/article/:srl/': article, // 아티클 상세
+  '/api/article/:srl/star/': { POST: updateStar }, // 좋아요 업데이트
 }

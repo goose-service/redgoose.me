@@ -2,7 +2,7 @@ import ServiceError from '../../classes/ServiceError.js'
 import { isDev, onRequest, onResponse, printMessage } from '../../libs/server.js'
 import { requestApi, apiAssets } from '../../libs/api.js'
 import { getQuery } from '../../libs/util.js'
-import { filteringArticle } from "./_libs.js";
+import { filteringArticle } from './_libs.js'
 
 const dev = isDev()
 
@@ -50,7 +50,8 @@ async function nest(req, ctx)
           key: 'article',
           url: '/article/',
           params: {
-            fields: 'srl,nest_srl,category_srl,title,regdate,json',
+            fields: apiAssets.articleIndexFields,
+            app_srl: apiAssets.appSrl,
             nest_srl: '{{nest.data.srl}}',
             category_srl: category_srl || undefined,
             size: apiAssets.size,
@@ -71,6 +72,7 @@ async function nest(req, ctx)
     }
     // set response
     response = Response.json({
+      message: 'Complete get nest data.',
       nest: {
         srl: nest.data.srl,
         name: nest.data.name,

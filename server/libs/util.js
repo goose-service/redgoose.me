@@ -18,3 +18,19 @@ export function getQuery(url, key = '')
     return Object.fromEntries(_query)
   }
 }
+
+/**
+ * filtering query
+ * value 값이 undefined인 경우 삭제한다.
+ *
+ * @param {object} src
+ * @return {object}
+ */
+export function filteringQuery(src)
+{
+  Object.keys(src).forEach(key => {
+    if (src[key] === undefined) delete src[key]
+    if (src[key] === null) delete src[key]
+  })
+  return src
+}

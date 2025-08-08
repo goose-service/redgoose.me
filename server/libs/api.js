@@ -1,10 +1,12 @@
 import ServiceError from '../classes/ServiceError.js'
+import { filteringQuery } from './util.js'
 
 const { API_URL, API_TOKEN, APP_SRL, APP_INDEX_SIZE } = Bun.env
 
 export let apiAssets = {
   appSrl: Number(APP_SRL),
   size: Number(APP_INDEX_SIZE),
+  articleIndexFields: 'srl,nest_srl,category_srl,title,regdate,json',
 }
 
 /**
@@ -35,7 +37,7 @@ export async function requestApi(path, options = {}, debug = false)
   // set query
   if (query)
   {
-    const _query = new URLSearchParams(query)
+    const _query = new URLSearchParams(filteringQuery(query))
     url += `?${_query}`
   }
   // set request options

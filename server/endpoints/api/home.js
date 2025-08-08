@@ -26,7 +26,7 @@ async function home(req, ctx)
     const page = Number(query.page || 1)
     const baseParams = {
       app_srl: apiAssets.appSrl,
-      fields: 'srl,nest_srl,category_srl,title,regdate,json',
+      fields: apiAssets.articleIndexFields,
       mod: 'nest,category',
     }
     const res = await requestApi('/mix/', {
@@ -86,7 +86,7 @@ async function home(req, ctx)
     }
     // set response
     response = Response.json({
-      message: 'Complete get data.',
+      message: 'Complete get home data.',
       data,
     })
   }
