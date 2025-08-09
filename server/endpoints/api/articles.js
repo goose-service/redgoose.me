@@ -39,7 +39,7 @@ async function articles(req, ctx)
       },
     })
     // check response
-    if (!(res.data?.total > 0))
+    if (!(res?.data?.total > 0))
     {
       throw new ServiceError('Not found article.', {
         status: 204,

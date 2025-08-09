@@ -1,6 +1,8 @@
 import { marked, Renderer } from 'marked'
+import { isDev, printMessage } from '../../libs/server.js'
 
 const { API_CLIENT_URL } = Bun.env
+const dev = isDev()
 const sharp = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>`
 
 export function filteringArticle(src)
@@ -48,4 +50,52 @@ export function parsingContent(src)
     return `<a href="${href}"${_target}${_title}>${text}</a>`
   }
   return marked.parse(src, { renderer })
+}
+
+/**
+ * get cookie key
+ *
+ * @param {string} type
+ * @param {number} srl
+ * @return {string}
+ */
+export function getCookieKey(type, srl)
+{
+  switch (type)
+  {
+    case 'hit':
+      return `goose-hit-${srl}`
+    case 'star':
+      return `goose-star-${srl}`
+    default:
+      return ''
+  }
+}
+
+/**
+ * catch response
+ *
+ * @param {ServiceError} err
+ * @return {Response}
+ */
+export function catchResponse(err)
+{
+  switch (err.status)
+  {
+    case 200:
+    case 202:
+      return Response.json({
+        message: err.message,
+      }, {
+        status: err.status,
+        statusText: err.statusText,
+      })
+    default:
+      if (dev) printMessage('error', `[${err.status || 500}] ${err.message}`)
+      return new Response(err.message, {
+        status: err.status || 500,
+        statusText: err.statusText,
+        error: err.error,
+      })
+  }
 }

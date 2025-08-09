@@ -1,10 +1,10 @@
 import { defineConfig } from 'vite'
+import { isbot } from 'isbot'
 import vue from '@vitejs/plugin-vue'
 
-const { HOST, PORT, PORT_CLIENT, SEARCH_ENGINE, API_TOKEN } = Bun.env
+const { HOST, PORT, PORT_CLIENT, API_TOKEN } = Bun.env
 
 const config = defineConfig(async () => {
-  const useSearchEngine = SEARCH_ENGINE === 'true'
   const proxyUrl = `http://${HOST}:${PORT}`
   return {
     root: 'client',
@@ -29,7 +29,7 @@ const config = defineConfig(async () => {
           target: proxyUrl,
           changeOrigin: true,
           bypass: (_req, _res, _options) => {
-            if (!useSearchEngine) return _req.url
+            if (!isbot(_req.headers['user-agent'])) return _req.url
           },
         },
       },

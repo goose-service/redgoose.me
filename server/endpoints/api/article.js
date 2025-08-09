@@ -1,7 +1,8 @@
+import ServiceCookie from '../../classes/ServiceCookie.js'
 import ServiceError from '../../classes/ServiceError.js'
 import { isDev, onRequest, onResponse, printMessage } from '../../libs/server.js'
 import { requestApi } from '../../libs/api.js'
-import { makeThumbnailPath, parsingContent } from './_libs.js'
+import { makeThumbnailPath, parsingContent, getCookieKey } from './_libs.js'
 
 const dev = isDev()
 
@@ -28,6 +29,11 @@ async function article(req, ctx)
         status: 204,
       })
     }
+    // cookie
+    const cookie = new ServiceCookie(req)
+    const cookieHitKey = getCookieKey('hit', srl)
+    const cookieStarKey = getCookieKey('star', srl)
+
     // get article data
     const { article, nest, category } = await requestApi(`/mix/`, {
       method: 'post',
@@ -37,7 +43,7 @@ async function article(req, ctx)
           url: '/article/{srl}/',
           params: {
             srl,
-            mod: 'up-hit', // TODO: 쿠키로 조회수 업데이트 구현하기
+            mod: cookie.existValue(cookieHitKey) ? '' : 'up-hit',
           },
         },
         {
@@ -65,6 +71,8 @@ async function article(req, ctx)
         status: 204,
       })
     }
+    // update cookie
+    cookie.setValue(cookieHitKey, 1)
     // set response
     response = Response.json({
       message: 'Complete get article data.',
@@ -77,6 +85,7 @@ async function article(req, ctx)
         image: makeThumbnailPath(article.data.json?.thumbnail),
         hit: article.data.hit,
         star: article.data.star,
+        usedUpStar: cookie.existValue(cookieStarKey),
       },
     })
   }
