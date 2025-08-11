@@ -14,15 +14,17 @@ class ServiceError {
    * @param {object} options
    * @param {number} [options.status] http 상태 코드
    * @param {number} [options.text] 디테일한 오류 메시지
+   * @param {string} [options._type] 서비스 타입 ex) text,html,json
    * @param {Error} [options._err] 내부 오류 객체
    * @param {any} [options._data] 추가 데이터
    */
   constructor(message, options = {})
   {
-    const { status, text, _err, _data } = options
+    const { status, text, _type, _err, _data } = options
     this.message = message
     this.status = status || 500
     this.statusText = text || message
+    this.type = _type || 'text'
     this.error = _err || undefined
     if (_data) this.data = _data
   }

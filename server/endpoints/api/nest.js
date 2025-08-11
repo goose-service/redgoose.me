@@ -12,7 +12,7 @@ const dev = isDev()
  *
  * @return {Promise<Response>}
  */
-async function nest(req, ctx)
+async function apiNest(req, ctx)
 {
   let response
 
@@ -115,4 +115,4 @@ async function nest(req, ctx)
   return response
 }
 
-export default nest
+export default apiNest

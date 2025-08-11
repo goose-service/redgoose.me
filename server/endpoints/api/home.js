@@ -13,7 +13,7 @@ const dev = isDev()
  *
  * @return {Promise<Response>}
  */
-async function home(req, ctx)
+async function apiHome(req, ctx)
 {
   let response
 
@@ -103,4 +103,4 @@ async function home(req, ctx)
   return response
 }
 
-export default home
+export default apiHome

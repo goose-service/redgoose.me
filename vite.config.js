@@ -1,6 +1,7 @@
 import { defineConfig } from 'vite'
 import { isbot } from 'isbot'
 import vue from '@vitejs/plugin-vue'
+import pluginHeadToJson from './plugins/headToJson.js'
 
 const { HOST, PORT, PORT_CLIENT, API_TOKEN } = Bun.env
 
@@ -59,7 +60,6 @@ const config = defineConfig(async () => {
             vue: [
               'vue',
               'vue-router',
-              'pinia',
             ],
           },
         },
@@ -77,6 +77,7 @@ const config = defineConfig(async () => {
           compilerOptions: {},
         },
       }),
+      pluginHeadToJson(),
     ],
   }
 })

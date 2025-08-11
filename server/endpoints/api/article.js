@@ -12,7 +12,7 @@ const dev = isDev()
  *
  * @return {Promise<Response>}
  */
-async function article(req, ctx)
+async function apiArticle(req, ctx)
 {
   let response
 
@@ -101,4 +101,4 @@ async function article(req, ctx)
   return response
 }
 
-export default article
+export default apiArticle

@@ -1,6 +1,9 @@
 import { colorText, dateFormat } from './string.js'
 
 const { NODE_ENV  } = Bun.env
+export const DEFAULT_HEADERS = {
+  'Server': 'bun',
+}
 
 /**
  * is development

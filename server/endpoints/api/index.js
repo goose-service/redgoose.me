@@ -1,13 +1,13 @@
-import home from './home.js'
-import nest from './nest.js'
-import articles from './articles.js'
-import article from './article.js'
-import updateStar from './update-star.js'
+import apiHome from './home.js'
+import apiNest from './nest.js'
+import apiArticles from './articles.js'
+import apiArticle from './article.js'
+import apiUpdateStar from './update-star.js'
 
 export default {
-  '/api/': home, // 첫화면
-  '/api/nest/:code/': nest, // 둥지
-  '/api/article/': articles, // 둥지 only 아티클
-  '/api/article/:srl/': article, // 아티클 상세
-  '/api/article/:srl/star/': { POST: updateStar }, // 좋아요 업데이트
+  '/api/': apiHome, // 첫화면
+  '/api/nest/:code/': apiNest, // 둥지
+  '/api/article/': apiArticles, // 둥지 only 아티클
+  '/api/article/:srl/': apiArticle, // 아티클 상세
+  '/api/article/:srl/star/': { POST: apiUpdateStar }, // 좋아요 업데이트
 }

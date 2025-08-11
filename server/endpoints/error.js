@@ -1,8 +1,7 @@
 export default function error(err)
 {
-  // TODO
-  return new Response(`Internal Error: ${err.message}`, {
-    status: 500,
-    headers: { 'Content-Type': 'text/plain' },
+  return new Response('Internal Server Error', {
+    status: err.status || 500,
+    statusText: err.message,
   })
 }

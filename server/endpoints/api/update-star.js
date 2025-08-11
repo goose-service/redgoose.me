@@ -10,7 +10,7 @@ import { catchResponse, getCookieKey } from './_libs.js'
  *
  * @return {Promise<Response>}
  */
-async function updateStar(req, ctx)
+async function apiUpdateStar(req, ctx)
 {
   let response
 
@@ -65,4 +65,4 @@ async function updateStar(req, ctx)
   return response
 }
 
-export default updateStar
+export default apiUpdateStar
