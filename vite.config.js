@@ -74,7 +74,9 @@ const config = defineConfig(async () => {
     plugins: [
       vue({
         template: {
-          compilerOptions: {},
+          compilerOptions: {
+            isCustomElement: tag => /^ext-|^goose-/.test(tag),
+          },
         },
       }),
       pluginHeadToJson(),

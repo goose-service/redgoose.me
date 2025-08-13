@@ -1,0 +1,69 @@
+@use 'normalize';
+@use 'mixins';
+@import url('https://assets.redgoose.me/fonts/index.css');
+
+:root {
+  color-scheme: light;
+  // color
+  --color-text: hsl(0 0% 12%);
+  --color-edge: hsl(0 0% 2%);
+  --color-bg: hsl(210 25% 98%);
+  --color-weak: hsl(0 0% 46%);
+  --color-key: hsl(350 70% 42%);
+  --color-sub: hsl(140 80% 42%);
+  // size
+  --size-side-padding: 24px;
+  --size-header-height: 48px;
+  // font
+  --font-base: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+  --font-eng: 'ortsa', Helvetica, Arial, sans-serif;
+  --font-code: 'Monaco', 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
+  @include mixins.dark-mode(true) {
+    color-scheme: dark;
+    --color-text: hsl(0 0% 88%);
+    --color-edge: hsl(0 0% 98%);
+    --color-bg: hsl(0 0% 20%);
+    --color-weak: hsl(0 0% 42%);
+    --color-key: hsl(142 76% 46%);
+    --color-sub: hsl(40 100% 58%);
+  }
+  @include mixins.responsive(tablet) {
+    --size-side-padding: 56px;
+    --size-header-height: 54px;
+  }
+}
+
+html {
+  touch-action: manipulation;
+}
+body {
+  margin: 0;
+  min-width: 320px;
+  color: var(--color-text);
+  background: var(--color-bg);
+  -webkit-touch-callout: none;
+  //overflow-x: hidden;
+}
+body, button, input, textarea, select {
+  font-family: var(--font-base);
+  font-size: 1rem;
+  line-height: 1.54;
+  -webkit-text-size-adjust: none;
+}
+a {
+  color: var(--color-key);
+}
+code, kbd, pre, samp {
+  font-family: var(--font-code);
+}
+::selection {
+  background: var(--color-key);
+  color: var(--color-bg);
+}
+
+// popup
+.popup-lightbox {
+  &, > body {
+    overflow: hidden;
+  }
+}

@@ -1,4 +1,12 @@
-console.log('hello world, client!')
+import { createApp } from 'vue'
+import router from './router/index.js'
+import App from './app.vue'
 
-const $app = document.getElementById('app')
-$app.innerHTML = `<h1>Hello, redgoose.me DEV</h1>`
+// load main stylesheet
+import './scss/main.scss'
+
+const app = createApp(App, {})
+  .use(router)
+  .mount('#app')
+
+export default app
