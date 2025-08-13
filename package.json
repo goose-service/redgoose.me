@@ -7,6 +7,7 @@
   "license": "ISC",
   "scripts": {
     "dev": "NODE_ENV=development concurrently \"bun run --bun server/main.js\" \"bunx --bun vite\"",
+    "dev:server": "NODE_ENV=development bun run --bun server/main.js",
     "prebuild": "rm -rf ./dist",
     "build": "bunx --bun vite build",
     "preview": "NODE_ENV=production bun run --bun server/main.js"

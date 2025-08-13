@@ -1,10 +1,8 @@
 import ServiceError from '../../classes/ServiceError.js'
-import { isDev, onRequest, onResponse, printMessage } from '../../libs/server.js'
+import { onRequest, onResponse } from '../../libs/server.js'
 import { requestApi, apiAssets } from '../../libs/api.js'
 import { getQuery } from '../../libs/util.js'
-import { filteringArticle } from './_libs.js'
-
-const dev = isDev()
+import { catchResponse, filteringArticle } from './_libs.js'
 
 /**
  * nest
@@ -12,12 +10,12 @@ const dev = isDev()
  *
  * @return {Promise<Response>}
  */
-async function apiNest(req, ctx)
+async function apiNest(req, _ctx = undefined)
 {
   let response
 
   // trigger request event
-  onRequest(req, ctx)
+  if (_ctx) onRequest(req, _ctx)
 
   try
   {
@@ -104,12 +102,11 @@ async function apiNest(req, ctx)
   }
   catch (e)
   {
-    if (dev) printMessage('error', `[${e.status || 500}] ${e.message}`)
-    response = new Response('Failed get data.', { status: e.status || 500 })
+    response = catchResponse(e)
   }
 
   // trigger response event
-  onResponse(req, response, ctx)
+  if (_ctx) onResponse(req, response, _ctx)
 
   // return response
   return response

@@ -19,19 +19,15 @@ await html.setup()
 
 // set routes
 let routes = {
-  // for api
+  // api
   ...endpointApi,
-  // for rss
+  // rss
   ...endpointRss,
-  // sear
+  // production service and search engine
   ...endpointService,
-  // statics
+  // serving static files
   ...endpointStatics,
 }
-
-// TODO: 개발모드에서는 vite를 통하여 클라이언트를 우선으로 서빙된다.
-// TODO: 프로덕션 모드에서는 dist 디렉토리로 전부 서빙된다.
-// TODO: 하지만 api, rss, 검색엔진 경로라면 별도의 라우터로 서빙된다.
 
 // run server
 const server = serve({

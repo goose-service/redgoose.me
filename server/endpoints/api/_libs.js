@@ -91,7 +91,7 @@ export function catchResponse(err)
         statusText: err.statusText,
       })
     default:
-      if (dev) printMessage('error', `[${err.status || 500}] ${err.message}`)
+      if (dev) printMessage('error', `[${err.status || 500}] API / ${err.message}`)
       return new Response(err.message, {
         status: err.status || 500,
         statusText: err.statusText,

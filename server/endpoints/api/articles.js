@@ -1,10 +1,8 @@
 import ServiceError from '../../classes/ServiceError.js'
-import { isDev, onRequest, onResponse, printMessage } from '../../libs/server.js'
+import { onRequest, onResponse } from '../../libs/server.js'
 import { requestApi, apiAssets } from '../../libs/api.js'
 import { getQuery } from '../../libs/util.js'
-import { filteringArticle } from './_libs.js'
-
-const dev = isDev()
+import { catchResponse, filteringArticle } from './_libs.js'
 
 /**
  * articles
@@ -54,8 +52,7 @@ async function apiArticles(req, ctx)
   }
   catch (e)
   {
-    if (dev) printMessage('error', `[${e.status || 500}] ${e.message}`)
-    response = new Response('Failed get data.', { status: e.status || 500 })
+    response = catchResponse(e)
   }
 
   // trigger response event

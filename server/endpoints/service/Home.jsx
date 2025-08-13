@@ -1,12 +1,17 @@
 import ServiceError from '../../classes/ServiceError.js'
 import { isDev, onRequest, onResponse, printMessage } from '../../libs/server.js'
+import { getQuery } from '../../libs/util.js'
 import { setResponse, checkingBot, renderIndex } from './_libs.js'
+import apiHome from '../api/home.js'
 import Layout from './components/Layout.jsx'
+import Paginate from './components/Paginate.jsx'
+import IndexItem from './components/IndexItem.jsx'
 import ErrorScreen from './components/ErrorScreen.jsx'
+import Empty from './components/Empty.jsx'
 
 const dev = isDev()
 
-async function home(req, _ctx)
+async function Home(req, _ctx)
 {
   let response
 
@@ -17,9 +22,57 @@ async function home(req, _ctx)
   {
     if (checkingBot(req))
     {
+      const res = await apiHome(req)
+      if (!(res.ok && res.status === 200))
+      {
+        throw new ServiceError('Failed get api data.', {
+          status: res.status,
+        })
+      }
+      const _res = await res.json()
+      const query = getQuery(req.url)
+      const items = {
+        body: [
+          ..._res.data.head,
+          ..._res.data.body,
+        ],
+        random: _res.data.random,
+      }
       response = setResponse((
         <Layout>
-          <h1>render search-engine page</h1>
+          {(items.body?.length > 0 || items.random?.length > 0) ? (
+            <>
+              {items.body?.length > 0 && (
+                <section>
+                  <h1>작업물</h1>
+                  <ul>
+                    {items.body.map((item, key) => (
+                      <li>
+                        <IndexItem {...item}/>
+                      </li>
+                    ))}
+                  </ul>
+                </section>
+              )}
+              {items.random?.length > 0 && (
+                <section>
+                  <h1>무작위 작업물</h1>
+                  <ul>
+                    {items.random.map((item, key) => (
+                      <li>
+                        <IndexItem {...item}/>
+                      </li>
+                    ))}
+                  </ul>
+                </section>
+              )}
+            </>
+          ) : (
+            <Empty/>
+          )}
+          {_res.data.total > 0 && (
+            <Paginate total={_res.data.total} page={query.page || 1}/>
+          )}
         </Layout>
       ), 200)
     }
@@ -30,13 +83,10 @@ async function home(req, _ctx)
   }
   catch (_e)
   {
-    if (_e)
-    {
-      if (dev) printMessage('error', `[${_e.status || 500}] ${_e.message}`)
-      response = setResponse((
-        <ErrorScreen message="Failed get data."/>
-      ), _e.status || 500)
-    }
+    if (dev) printMessage('error', `[${_e.status || 500}] ${_e.message}`)
+    response = setResponse((
+      <ErrorScreen code={_e.status} message="Failed get data."/>
+    ))
   }
 
   // trigger response event
@@ -45,4 +95,4 @@ async function home(req, _ctx)
   return response
 }
 
-export default home
+export default Home
