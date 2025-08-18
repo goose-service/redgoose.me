@@ -35,10 +35,6 @@ const server = serve({
   port: _server.port,
   hostname: _server.host,
   routes,
-  // fetch(req, ctx) {
-  //   // return new Response('Page not found.', { status: 404 })
-  //   return new Response(`TEST ROUTES\n${req.method}\n${req.url}`)
-  // }
   error: endpointError,
 })
 
