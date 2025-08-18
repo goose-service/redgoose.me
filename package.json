@@ -1,36 +1,39 @@
 {
   "name": "redgoose.me",
-  "version": "5.9.4",
-  "repository": "https://github.com/gooose-eth/redgoose.me.git",
+  "version": "6.0.0",
+  "repository": "https://github.com/goose-service/redgoose.me.git",
   "author": "redgoose <scripter@me.com>",
   "type": "module",
-  "license": "MIT",
+  "license": "ISC",
   "scripts": {
-    "dev": "node server/entry.js --development",
+    "dev": "NODE_ENV=development concurrently \"bun run --bun server/main.js\" \"bunx --bun vite\"",
+    "dev:server": "NODE_ENV=development bun run --bun server/main.js",
     "prebuild": "rm -rf ./dist",
-    "build": "vite build",
-    "start": "node server/entry.js --production"
+    "build": "bunx --bun vite build",
+    "preview": "NODE_ENV=production bun run --bun server/main.js"
   },
   "browserslist": [
     "> 1%",
     "last 2 versions"
   ],
   "dependencies": {
-    "cookie-parser": "^1.4.6",
-    "express": "^4.19.2",
-    "isbot": "^5.1.6",
-    "marked": "^12.0.2",
-    "ofetch": "^1.3.4",
-    "pug": "^3.0.2"
+    "@kitajs/html": "^4.2.9",
+    "@types/bun": "^1.2.20",
+    "isbot": "^5.1.30",
+    "marked": "^16.2.0",
+    "react-dom": "^19.1.1",
+    "sass": "^1.90.0"
   },
   "devDependencies": {
-    "@sveltejs/vite-plugin-svelte": "^3.1.0",
+    "@vitejs/plugin-vue": "^6.0.1",
     "auto-writer": "^1.1.2",
-    "esbuild-wasm": "^0.21.1",
-    "sass": "^1.77.1",
-    "svelte": "^4.2.16",
-    "svelte-preprocess": "^5.1.4",
-    "tinro": "^0.6.12",
-    "vite": "^5.2.11"
+    "concurrently": "^9.2.0",
+    "jsdom": "^26.1.0",
+    "lucide-vue-next": "^0.540.0",
+    "ofetch": "^1.4.1",
+    "terser": "^5.43.1",
+    "vite": "^7.1.2",
+    "vue": "^3.5.18",
+    "vue-router": "^4.5.1"
   }
 }

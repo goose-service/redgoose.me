@@ -1,12 +1,13 @@
+# directories
 .idea/
 node_modules/
 .AppleDouble/
 dist/
+__legacy/
 
+# files
 .DS_Store
-.env.local
-yarn.lock
-yarn-error.log
-package-lock.json
-bun.lockb
+.env.*
+cmd.sh
 docker-compose.yml
+podman-compose.yml

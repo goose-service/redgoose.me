@@ -1,58 +1,85 @@
-import { defineConfig, loadEnv } from 'vite'
-import preprocess from 'svelte-preprocess'
-import { svelte } from '@sveltejs/vite-plugin-svelte'
-import createServiceWorkerPlugin from './plugins/create-service-worker'
+import { defineConfig } from 'vite'
+import { isbot } from 'isbot'
+import vue from '@vitejs/plugin-vue'
+import pluginHeadToJson from './plugins/headToJson.js'
 
-const config = defineConfig(async ({ mode }) => {
-  const env = loadEnv(mode, process.cwd())
+const { HOST, PORT, PORT_CLIENT, API_TOKEN } = Bun.env
+
+const config = defineConfig(async () => {
+  const proxyUrl = `http://${HOST}:${PORT}`
   return {
+    root: 'client',
+    publicDir: './public',
+    base: '/',
     server: {
-      host: env.VITE_HOST,
-      port: Number(env.VITE_PORT),
-      open: env.VITE_OPEN_BROWSER === 'true',
-    },
-    build: {
-      outDir: env.VITE_OUT_DIR,
-      rollupOptions: {
-        output: {
-          assetFileNames: (assetInfo) => {
-            const info = assetInfo.name.split('.')
-            let ext = info[info.length - 1]
-            if (/png|jpe?g|svg|gif|tiff|bmp|ico|webp/i.test(ext))
-            {
-              ext = 'images/'
-            }
-            else if (/woff|woff2/.test(ext))
-            {
-              ext = 'fonts/'
-            }
-            else
-            {
-              ext = ''
-            }
-            return `assets/${ext}[name]-[hash][extname]`
+      host: HOST,
+      port: Number(PORT_CLIENT),
+      open: false,
+      proxy: {
+        '/api': {
+          target: `${proxyUrl}/api`,
+          changeOrigin: true,
+          rewrite: path => path.replace(/^\/api\/?/, '/'),
+        },
+        '/rss': {
+          target: `${proxyUrl}/rss`,
+          changeOrigin: true,
+          rewrite: path => path.replace(/^\/rss\/?/, '/'),
+        },
+        '/': {
+          target: proxyUrl,
+          changeOrigin: true,
+          bypass: (_req, _res, _options) => {
+            if (!isbot(_req.headers['user-agent'])) return _req.url
           },
         },
       },
     },
-    define: {},
+    css: {
+      preprocessorOptions: {
+        scss: {
+          api: 'modern-compiler',
+        },
+      },
+    },
+    build: {
+      outDir: '../dist',
+      emptyOutDir: true,
+      rollupOptions: {
+        output: {
+          assetFileNames: assetInfo => {
+            const info = assetInfo.name.split('.')
+            let ext = info[info.length - 1]
+            if (/png|jpe?g|svg|gif|ico|webp|avif/i.test(ext)) ext = 'images/'
+            else if (/css/.test(ext)) ext = 'css/'
+            else if (/woff?2|ttf/i.test(ext)) ext = 'fonts/'
+            else ext = ''
+            return `assets/${ext}[name]-[hash][extname]`
+          },
+          manualChunks: {
+            vue: [
+              'vue',
+              'vue-router',
+            ],
+          },
+        },
+      },
+      minify: 'terser',
+      terserOptions: {
+        format: {
+          comments: false,
+        },
+      },
+    },
     plugins: [
-      svelte({
-        preprocess: preprocess(),
-        extensions: ['.svelte'],
-        compilerOptions: {},
-        onwarn(warning, defaultHandler) {
-          switch (warning.code)
-          {
-            case 'css-unused-selector':
-            case 'a11y-label-has-associated-control':
-            case 'unused-export-let':
-              return
-          }
-          defaultHandler(warning)
+      vue({
+        template: {
+          compilerOptions: {
+            isCustomElement: tag => /^ext-|^goose-/.test(tag),
+          },
         },
       }),
-      createServiceWorkerPlugin(),
+      pluginHeadToJson(),
     ],
   }
 })

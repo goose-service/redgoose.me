@@ -1,8 +1,0 @@
-nav
-  h1 categories
-  ul
-    each o in categories
-      li
-        a(href=`/nest/${nest.id}${o.srl ? `/${o.srl}/` : ''}`)
-          strong #{o.name}
-          em #{o.count_article}

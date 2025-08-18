@@ -1,0 +1,66 @@
+@use '../../scss/mixins';
+
+.error {
+  display: grid;
+  height: calc(100dvh - var(--size-header-height) - 160px);
+  place-content: center;
+  padding: 0 var(--size-side-padding);
+  .wrap {
+    text-align: center;
+    padding: 0 16px 36px;
+    user-select: none;
+  }
+  .cover-image {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    img {
+      display: block;
+      margin: 0 auto;
+      max-width: 240px;
+      aspect-ratio: 1/1;
+      height: auto;
+    }
+  }
+  .code {
+    margin: 0;
+    font-family: var(--font-eng);
+    font-size: 72px;
+    line-height: 1;
+    font-weight: 900;
+    letter-spacing: -2px;
+    color: var(--color-edge);
+  }
+  .title {
+    margin: 4px 0 0;
+    font-size: 24px;
+    font-weight: 200;
+    line-height: 1.05;
+    letter-spacing: -1px;
+  }
+  .message {
+    margin: 6px 0 0;
+    font-size: 11px;
+    color: var(--color-weak);
+    line-height: 1.25;
+  }
+  @include mixins.responsive(tablet) {
+    .cover-image {
+      img {
+        max-width: 360px;
+      }
+    }
+    .code {
+      margin-top: 0;
+      font-size: 100px;
+    }
+    .title {
+      margin-top: -4px;
+      font-size: 42px;
+      font-weight: 100;
+    }
+    .message {
+      font-size: 14px;
+    }
+  }
+}

@@ -1,0 +1,160 @@
+@use '../../scss/mixins';
+
+.about {
+  padding: 50px var(--size-side-padding) 40px;
+  @include mixins.responsive(tablet) {
+    padding-bottom: 0;
+  }
+}
+
+.wrap {
+  max-width: 920px;
+  margin: 0 auto;
+}
+
+.header {
+  text-align: center;
+  p {
+    margin: 0;
+    font-family: var(--font-eng);
+    font-size: 12px;
+    color: var(--color-weak);
+    user-select: none;
+  }
+  h1 {
+    margin: 2px 0 0;
+    font-family: var(--font-eng);
+    font-size: 32px;
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: -.5px;
+    color: var(--color-edge);
+  }
+  @include mixins.responsive(tablet) {
+    p {
+      font-size: 12px;
+    }
+    h1 {
+      font-size: 42px;
+      letter-spacing: -1.5px;
+    }
+  }
+}
+
+.profile {
+  margin: 42px 0 0;
+  padding: 0 40px;
+  img {
+    display: block;
+    margin: 0 auto;
+    width: 75vw;
+    max-width: 180px;
+    height: auto;
+    user-select: none;
+    border-radius: 50%;
+    border: 10px solid var(--color-reverse);
+    box-shadow:
+      0 4px 8px hsla(0 0% 0% / 10%),
+      0 4px 32px hsla(0 0% 0% / 25%);
+  }
+  @include mixins.responsive(tablet) {
+    margin-top: 64px;
+    img {
+      max-width: 256px;
+      border-width: 16px;
+    }
+  }
+}
+
+.description {
+  margin: 36px 0 0;
+  p {
+    margin: 0;
+    font-size: 15px;
+    line-height: 1.64;
+    white-space: break-spaces;
+  }
+  @include mixins.responsive(tablet) {
+    margin-top: 42px;
+  }
+}
+
+.meta {
+  margin: 30px 0 0;
+  section {
+    margin: 30px 0 0;
+    &:is(:first-child) {
+      margin-top: 0;
+    }
+    > h1 {
+      margin: 0;
+      font-family: var(--font-eng);
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--color-about-metas-section-title);
+      letter-spacing: -.5px;
+      line-height: 1.15;
+      text-transform: capitalize;
+      &:after {
+        content: '';
+        display: block;
+        width: 12px;
+        height: 1px;
+        background: var(--color-weak);
+      }
+    }
+    > dl {
+      margin: 10px 0 0;
+      font-size: 13px;
+      line-height: 20px;
+      > dt {
+        font-family: var(--font-eng);
+        font-weight: 700;
+        font-size: 14px;
+        color: var(--color-edge);
+        line-height: 1.15;
+        &:not(:first-child) {
+          margin-top: 16px;
+        }
+      }
+      > dd {
+        margin: 4px 0 0;
+        font-family: var(--font-eng);
+        line-height: 1.25;
+      }
+    }
+  }
+  @include mixins.responsive(tablet) {
+    margin: 50px 0 0;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 40px 16px;
+    section {
+      margin: 0;
+    }
+  }
+  @include mixins.responsive(desktop) {
+    section {
+      > dl {
+        display: grid;
+        grid-template-columns: 80px 1fr;
+        gap: 6px 10px;
+        > dt {
+          margin: 0;
+          padding: 0;
+          font-weight: 400;
+          font-size: 13px;
+          line-height: 1.42;
+          &:not(:first-child) {
+            margin-top: unset;
+          }
+        }
+        > dd {
+          margin: 0;
+          font-size: 13px;
+          line-height: 1.42;
+        }
+      }
+    }
+  }
+}
