@@ -18,20 +18,21 @@
   ],
   "dependencies": {
     "@kitajs/html": "^4.2.9",
-    "@types/bun": "^1.2.19",
-    "isbot": "^5.1.29",
-    "marked": "^16.1.2",
-    "sass": "^1.89.2"
+    "@types/bun": "^1.2.20",
+    "isbot": "^5.1.30",
+    "marked": "^16.2.0",
+    "react-dom": "^19.1.1",
+    "sass": "^1.90.0"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^6.0.1",
     "auto-writer": "^1.1.2",
     "concurrently": "^9.2.0",
     "jsdom": "^26.1.0",
-    "lucide-vue-next": "^0.539.0",
+    "lucide-vue-next": "^0.540.0",
     "ofetch": "^1.4.1",
     "terser": "^5.43.1",
-    "vite": "^7.0.6",
+    "vite": "^7.1.2",
     "vue": "^3.5.18",
     "vue-router": "^4.5.1"
   }

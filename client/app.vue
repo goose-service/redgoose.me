@@ -16,7 +16,7 @@ import Store from './store.js'
 import ServiceError from './libs/error.js'
 import LayoutBlank from './layouts/blank.vue'
 import LayoutDefault from './layouts/default.vue'
-import Error from './pages/error/index.vue'
+import Error from './components/content/error.vue'
 
 const route = useRoute()
 const error = ref(undefined)

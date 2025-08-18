@@ -1,10 +1,13 @@
+# directories
 .idea/
 node_modules/
 .AppleDouble/
 dist/
 __legacy/
 
+# files
 .DS_Store
-.env.local
-bun.lock
+.env.*
+cmd.sh
+docker-compose.yml
 podman-compose.yml
