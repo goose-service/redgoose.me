@@ -8,6 +8,5 @@ __legacy/
 # files
 .DS_Store
 .env.*
-cmd.sh
 docker-compose.yml
 podman-compose.yml
