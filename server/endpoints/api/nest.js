@@ -98,6 +98,10 @@ async function apiNest(req, _ctx = undefined)
         total: article.data.total || 0,
         index: (article.data.index?.length > 0) ? article.data.index.map(filteringArticle) : [],
       },
+      assets: {
+        page,
+        size: apiAssets.size,
+      },
     })
   }
   catch (e)

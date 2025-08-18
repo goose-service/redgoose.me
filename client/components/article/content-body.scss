@@ -1,0 +1,31 @@
+@use '../../scss/mixins';
+@import url('https://assets.redgoose.me/markdown/index.css');
+
+.redgoose-body {
+  --markdown-size-margin: 1.5rem;
+  --markdown-size-img-margin: 3rem 0 1.5rem;
+  --markdown-size-side-padding: var(--size-side-padding);
+  --markdown-color-base: var(--color-text);
+  --markdown-color-title: var(--color-edge);
+  --markdown-color-key: var(--color-key);
+  --markdown-color-blockquote-line: var(--color-key);
+  --markdown-color-blockquote-outline: var(--color-weak);
+  --markdown-head-scroll-margin-top: calc(var(--size-header-height) + 30px);
+  --markdown-color-code-bg: hsl(0 0% 52%);
+  :where(img, goose-dark-mode-image) {
+    outline: none;
+    user-select: none;
+    cursor: pointer;
+    -webkit-tap-highlight-color: hsla(0 0% 0% / 0%);
+  }
+  @include mixins.dark-mode() {
+    --markdown-color-code-bg: hsl(0 0% 10%);
+  }
+  @include mixins.responsive(tablet) {
+    :where(h1, h2, h3, h4, h5, h6) {
+      .anchor svg {
+        color: var(--color-weak);
+      }
+    }
+  }
+}

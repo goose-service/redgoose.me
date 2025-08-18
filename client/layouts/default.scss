@@ -24,8 +24,8 @@
     padding: 0 var(--size-side-padding);
   }
   @include mixins.dark-mode() {
-    --header-color-button-fill: rgb(255 255 255);
-    --header-color-bg: hsla(0 0% 0% / 70%);
+    --header-color-button-fill: hsl(0 0% 100%);
+    --header-color-bg: hsla(0 0% 0% / 65%);
   }
 }
 
@@ -43,7 +43,7 @@
     user-select: none;
     outline: none;
     &:focus-visible {
-      outline: 2px solid var(--color-key);
+      outline: 3px dashed var(--color-key);
       outline-offset: -2px;
     }
   }
@@ -54,13 +54,13 @@
   }
   @include mixins.responsive(tablet) {
     left: 24px;
-    top: 8px;
+    top: 4px;
     margin: 0;
     transform: none;
     a {
       padding: 0;
       &:focus-visible {
-        outline-offset: 0;
+        outline-offset: 3px;
       }
     }
     img {
@@ -92,7 +92,7 @@
       top: 50%;
       transform: translate(-50%, -50%);
       transform-origin: 50% 50%;
-      color: var(--header-color-button-fill, var(--color-text));
+      color: var(--header-color-button-fill, var(--color-edge));
       transition: transform 200ms ease-out;
       &:nth-child(1) {
         transform: translate(-50%, -50%) scale(1);
@@ -109,8 +109,8 @@
       }
     }
     &:focus-visible {
-      outline: 2px solid var(--color-key);
-      outline-offset: -2px;
+      outline: 3px dashed var(--color-key);
+      outline-offset: -3px;
     }
     &.navigation {
       left: 0;
@@ -179,8 +179,8 @@
           opacity: .5;
         }
         &:focus-visible {
-          outline: 2px solid var(--color-bg);
-          outline-offset: -2px;
+          outline: 3px dashed var(--color-bg);
+          outline-offset: -3px;
         }
       }
     }
@@ -209,8 +209,8 @@
         opacity: .75;
       }
       &:focus-visible {
-        outline: 2px solid var(--color-bg);
-        outline-offset: -2px;
+        outline: 3px dashed var(--color-bg);
+        outline-offset: -3px;
       }
     }
   }
@@ -246,7 +246,7 @@
           font-family: var(--font-eng);
           font-weight: 700;
           font-size: .875rem;
-          color: var(--color-edge);
+          color: var(--header-color-button-fill, var(--color-edge));
           text-decoration: none;
           transition: color 120ms ease-out, background 120ms ease-out;
           &:active {

@@ -1,0 +1,76 @@
+@use '../../scss/mixins';
+
+.nest {
+  margin: 42px 0 0;
+  @include mixins.responsive(tablet) {
+    margin-top: 64px;
+  }
+}
+
+.nest-header {
+  padding: 0 24px;
+  h1 {
+    margin: 0;
+    text-align: center;
+    font-family: var(--font-eng);
+    font-size: 32px;
+    line-height: 1;
+    letter-spacing: -.5px;
+    font-weight: 700;
+    color: var(--color-edge);
+    user-select: none;
+  }
+  @include mixins.responsive(tablet) {
+    padding: 0 52px;
+    h1 {
+      font-size: 42px;
+      letter-spacing: -1.5px;
+    }
+  }
+}
+
+.nest-category {
+  margin: 20px auto 0;
+  max-width: 1000px;
+  @include mixins.responsive(tablet) {
+    margin-top: 8px;
+    padding: 0 24px;
+  }
+  @include mixins.responsive(desktop) {
+    padding: 0 48px;
+  }
+  @include mixins.responsive(max) {
+    padding: 0 64px;
+  }
+}
+
+.body {
+  margin: 0;
+  @include mixins.responsive(mobile-large) {
+    margin-top: 24px;
+  }
+  @include mixins.responsive(tablet) {
+    margin-top: 32px;
+  }
+}
+
+.empty {
+  height: auto;
+  padding: 48px 0 36px;
+}
+
+.nest-paginate {
+  margin: 24px 0 0;
+  .paginate--desktop {
+    display: none;
+  }
+  @include mixins.responsive(tablet) {
+    margin-top: 42px;
+    .paginate--mobile {
+      display: none;
+    }
+    .paginate--desktop {
+      display: flex;
+    }
+  }
+}

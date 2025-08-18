@@ -1,0 +1,95 @@
+@use '../../scss/mixins';
+
+.article {
+  --article-margin-top: 42px;
+  --article-side-padding: 24px;
+  margin: var(--article-margin-top) 0 0;
+  padding: 0 var(--article-side-padding);
+  @include mixins.responsive(tablet) {
+    --article-margin-top: 52px;
+    --article-side-padding: 64px;
+  }
+}
+
+.article-header {
+  text-align: center;
+  padding: 0 var(--article-side-padding);
+  p {
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    color: var(--color-weak);
+    font-weight: 500;
+    span, em {
+      display: block;
+      font-size: 10px;
+      font-family: var(--font-eng);
+    }
+    span {
+      &:nth-child(n+2):before {
+        content: '/';
+        display: inline-block;
+        margin: 0 8px;
+        line-height: 1.2;
+        opacity: .5;
+      }
+    }
+    em {
+      font-style: normal;
+      &:before {
+        content: '|||';
+        display: inline-block;
+        margin: 0 8px;
+        line-height: 1.2;
+        opacity: .5;
+        letter-spacing: -1px;
+      }
+    }
+  }
+  h1 {
+    margin: 4px 0 0;
+    padding: 0 16px;
+    letter-spacing: -.1rem;
+    line-height: 1.25;
+    font-weight: 700;
+    font-size: 32px;
+    color: var(--color-edge);
+  }
+  @include mixins.responsive(tablet) {
+    p {
+      span, em {
+        font-size: 12px;
+      }
+    }
+    h1 {
+      margin: 4px 0 0;
+      padding: 0;
+      font-size: 44px;
+      line-height: 1.15;
+    }
+  }
+  @include mixins.dark-mode() {
+    p {
+      color: mixins.mix-color(var(--color-edge), var(--color-reverse), 45%);
+    }
+  }
+}
+
+.article-body {
+  margin: 24px 0 0;
+  min-height: 15vh;
+  @include mixins.responsive(tablet) {
+    max-width: 900px;
+    margin: 48px auto 0;
+  }
+}
+
+.article-star {
+  margin: 40px 0 0;
+  text-align: center;
+}
+
+.article-empty {
+  height: auto;
+  padding: 48px 0 36px;
+}

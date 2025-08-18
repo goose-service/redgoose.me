@@ -74,17 +74,16 @@ async function apiArticle(req, _ctx = undefined)
     // set response
     response = Response.json({
       message: 'Complete get article data.',
-      data: {
-        srl: article.data.srl,
-        title: article.data.title,
-        nestName: nest?.data?.name,
-        categoryName: category?.data?.name,
-        content: parsingContent(article.data.content),
-        image: makeThumbnailPath(article.data.json?.thumbnail),
-        hit: article.data.hit,
-        star: article.data.star,
-        usedUpStar: cookie.existValue(cookieStarKey),
-      },
+      srl: article.data.srl,
+      title: article.data.title,
+      nestName: nest?.data?.name,
+      categoryName: category?.data?.name,
+      content: parsingContent(article.data.content),
+      image: makeThumbnailPath(article.data.json?.thumbnail),
+      hit: article.data.hit,
+      star: article.data.star,
+      regdate: article.data.created_at,
+      usedUpStar: cookie.existValue(cookieStarKey),
     })
   }
   catch (e)

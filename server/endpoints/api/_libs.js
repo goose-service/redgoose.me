@@ -1,7 +1,8 @@
 import { marked, Renderer } from 'marked'
 import { isDev, printMessage } from '../../libs/server.js'
+import { htmlToText } from '../../libs/string.js'
 
-const { API_CLIENT_URL } = Bun.env
+const { API_CLIENT_URL, COOKIE_PREFIX } = Bun.env
 const dev = isDev()
 const sharp = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>`
 
@@ -33,11 +34,12 @@ export function parsingContent(src)
   renderer.heading = (ctx) => {
     const { depth, text } = ctx
     const id = text.replace(/\s+/g, '_')
-    let str = `<h${depth} id="${id}">`
-    str += `<a href="#${id}" class="anchor">${sharp}</a>`
-    str += text
-    str += `</h${depth}>`
-    return str
+    let _str = `<h${depth} id="${id}">`
+    let _text = htmlToText(text)
+    _str += `<a href="#${id}" class="anchor">${sharp}</a>`
+    _str += _text
+    _str += `</h${depth}>`
+    return _str
   }
   renderer.image = (ctx) => {
     const { href, title, text } = ctx
@@ -49,7 +51,12 @@ export function parsingContent(src)
     const _title = title ? ` title="${title}"` : ''
     return `<a href="${href}"${_target}${_title}>${text}</a>`
   }
-  return marked.parse(src, { renderer })
+  return marked.parse(src, {
+    gfm: true,
+    breaks: true,
+    silent: true,
+    renderer,
+  })
 }
 
 /**
@@ -64,9 +71,9 @@ export function getCookieKey(type, srl)
   switch (type)
   {
     case 'hit':
-      return `goose-hit-${srl}`
+      return `${COOKIE_PREFIX}hit-${srl}`
     case 'star':
-      return `goose-star-${srl}`
+      return `${COOKIE_PREFIX}star-${srl}`
     default:
       return ''
   }

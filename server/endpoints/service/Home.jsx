@@ -33,10 +33,10 @@ async function Home(req, _ctx)
       const query = getQuery(req.url)
       const items = {
         body: [
-          ..._res.data.head,
-          ..._res.data.body,
+          ..._res.head,
+          ..._res.body,
         ],
-        random: _res.data.random,
+        random: _res.random,
       }
       response = setResponse((
         <Layout>
@@ -70,8 +70,8 @@ async function Home(req, _ctx)
           ) : (
             <Empty/>
           )}
-          {_res.data.total > 0 && (
-            <Paginate total={_res.data.total} page={query.page || 1}/>
+          {_res.total > 0 && (
+            <Paginate total={_res.total} page={query.page || 1}/>
           )}
         </Layout>
       ), 200)

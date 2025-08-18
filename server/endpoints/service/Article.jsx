@@ -29,48 +29,54 @@ async function Article(req, _ctx)
       }
       const { srl } = req.params
       const _res = await res.json()
-      const _description = contentToDescription(_res.data.content)
-      let _title = `${_res.data.title} 🪴 ${html.title}`
+      const _description = contentToDescription(_res.content)
+      let _title = `${_res.title} 🪴 ${html.title}`
       let _meta = {
         'description': _description,
-        'og:title': `${_res.data.title} 🪴 ${html.title}`,
+        'og:title': `${_res.title} 🪴 ${html.title}`,
         'og:description': _description,
         'og:url': `${html.meta['og:url']}/article/${srl}/`,
-        'og:image': _res.data.image,
+        'og:image': _res.image,
       }
       let _link = {}
       response = setResponse((
         <Layout title={_title} _meta={_meta} _link={_link}>
-          {_res.data ? (
+          {_res ? (
             <article>
-              <h1>{_res.data.title}</h1>
+              <h1>{_res.title}</h1>
               <header>
                 <h2>아티클 정보</h2>
                 <dl>
-                  {_res.data.nestName && (
+                  {_res.nestName && (
                     <>
                       <dt>둥지</dt>
-                      <dd>{_res.data.nestName}</dd>
+                      <dd>{_res.nestName}</dd>
                     </>
                   )}
-                  {_res.data.categoryName && (
+                  {_res.categoryName && (
                     <>
                       <dt>분류</dt>
-                      <dd>{_res.data.categoryName}</dd>
+                      <dd>{_res.categoryName}</dd>
+                    </>
+                  )}
+                  {_res.regdate && (
+                    <>
+                      <dt>등록일</dt>
+                      <dd>{_res.regdate}</dd>
                     </>
                   )}
                 </dl>
               </header>
               <article class="content">
-                {_res.data.content}
+                {_res.content}
               </article>
               <footer>
                 <h2>메타데이터</h2>
                 <dl>
                   <dt>조회수</dt>
-                  <dd>{_res.data.hit}</dd>
+                  <dd>{_res.hit}</dd>
                   <dt>좋아요</dt>
-                  <dd>{_res.data.star}</dd>
+                  <dd>{_res.star}</dd>
                 </dl>
               </footer>
             </article>

@@ -39,7 +39,7 @@
                 :href="o.href"
                 :target="o.target"
                 :class="{
-                  'active': route.path !== '/' && o.href.startsWith(route.path),
+                  'active': route.path !== '/' && route.path.startsWith(o.href),
                 }"
                 @click.prevent="onClickLink">
                 {{o.label}}
@@ -51,7 +51,7 @@
                       :href="oo.href"
                       :target="oo.target"
                       :class="{
-                        'active': route.path !== '/' && oo.href.startsWith(route.path),
+                        'active': route.path !== '/' && route.path.startsWith(oo.href),
                       }"
                       @click.prevent="onClickLink">
                       {{oo.label}}
@@ -65,7 +65,7 @@
       </transition>
       <nav class="dark-mode-switch">
         <goose-dark-mode-switch
-          :theme="state.theme"
+          :theme="store.data.theme"
           @change="onChangeTheme"/>
       </nav>
     </div>
@@ -82,15 +82,15 @@
 </template>
 
 <script setup>
-import { reactive, computed } from 'vue'
+import { reactive, computed, inject } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import navigation from '../../server/resource/navigation.json'
 
 const router = useRouter()
 const route = useRoute()
+const store = inject('store')
 const state = reactive({
   activeNavigation: false,
-  theme: 'light', // light,dark // TODO: 스토리지에서 읽어오기
 })
 
 const _navigation = computed(() => {
@@ -148,11 +148,7 @@ function onClickLink(e)
 
 function onChangeTheme(_e)
 {
-  const $html = document.documentElement
-  state.theme = _e.detail.theme
-  $html.dataset.theme = state.theme
-  // TODO: 스토리지 업데이트
-
+  store.changeTheme(_e.detail.theme)
 }
 </script>
 

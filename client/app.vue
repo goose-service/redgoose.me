@@ -1,27 +1,63 @@
 <template>
 <component :is="_layout">
-  <router-view/>
+  <Error
+    v-if="_error"
+    page-title="Service Error"
+    :page-message="error?.message || '알 수 없는 오류가 발생했습니다.'"
+    :error="error"/>
+  <router-view v-else/>
 </component>
 </template>
 
 <script setup>
-import { ref, computed, watch, onErrorCaptured, inject } from 'vue'
-import { useRouter, useRoute } from 'vue-router'
+import { ref, computed, watch, onErrorCaptured, provide } from 'vue'
+import { useRoute } from 'vue-router'
+import Store from './store.js'
+import ServiceError from './libs/error.js'
 import LayoutBlank from './layouts/blank.vue'
 import LayoutDefault from './layouts/default.vue'
+import Error from './pages/error/index.vue'
 
-const router = useRouter()
 const route = useRoute()
+const error = ref(undefined)
+
+// set provides
+provide('store', new Store())
 
 const _layout = computed(() => {
   switch (route.meta.layout)
   {
-    case 'default':
-      return LayoutDefault
-    default:
+    case 'blank':
       return LayoutBlank
+    default:
+      return LayoutDefault
   }
 })
-</script>
+const _error = computed(() => {
+  return Boolean(error.value || null)
+})
 
-<style lang="scss" scoped></style>
+// captured error
+onErrorCaptured(e => {
+  if (e instanceof ServiceError)
+  {
+    error.value = e
+  }
+  else if (e?.message)
+  {
+    error.value = new ServiceError(e.message)
+  }
+  else if (typeof e === 'string')
+  {
+    error.value = new ServiceError(e)
+  }
+  else
+  {
+    error.value = new ServiceError('Invalid Error')
+  }
+})
+
+watch(() => route.name, () => {
+  if (!!error.value) error.value = undefined
+})
+</script>

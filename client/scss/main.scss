@@ -7,8 +7,10 @@
   // color
   --color-text: hsl(0 0% 12%);
   --color-edge: hsl(0 0% 2%);
+  --color-reverse: hsl(0 0% 98%);
   --color-bg: hsl(210 25% 98%);
   --color-weak: hsl(0 0% 46%);
+  --color-blur: hsl(0 0% 90%);
   --color-key: hsl(350 70% 42%);
   --color-sub: hsl(140 80% 42%);
   // size
@@ -22,14 +24,16 @@
     color-scheme: dark;
     --color-text: hsl(0 0% 88%);
     --color-edge: hsl(0 0% 98%);
+    --color-reverse: hsl(0 0% 2%);
     --color-bg: hsl(0 0% 20%);
-    --color-weak: hsl(0 0% 42%);
+    --color-weak: hsl(0 0% 54%);
+    --color-blur: hsl(0 0% 10%);
     --color-key: hsl(142 76% 46%);
     --color-sub: hsl(40 100% 58%);
   }
   @include mixins.responsive(tablet) {
     --size-side-padding: 56px;
-    --size-header-height: 54px;
+    --size-header-height: 52px;
   }
 }
 
@@ -42,7 +46,7 @@ body {
   color: var(--color-text);
   background: var(--color-bg);
   -webkit-touch-callout: none;
-  //overflow-x: hidden;
+  overflow-x: clip;
 }
 body, button, input, textarea, select {
   font-family: var(--font-base);
@@ -58,7 +62,7 @@ code, kbd, pre, samp {
 }
 ::selection {
   background: var(--color-key);
-  color: var(--color-bg);
+  color: var(--color-reverse);
 }
 
 // popup

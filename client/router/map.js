@@ -1,3 +1,4 @@
+import ServiceError from '../libs/error.js'
 
 export default [
   {
@@ -35,10 +36,10 @@ export default [
     name: 'NotFound',
     component: () => import('../pages/error/index.vue'),
     props: {
-      code: 404,
+      error: new ServiceError('Page not found', 404),
       pageTitle: '페이지가 없습니다.',
-      pageDescription: '현재 페이지가 없거나 주소가 잘못되었습니다.',
+      pageMessage: '현재 페이지가 없거나 주소가 잘못되었습니다.',
     },
-    meta: { layout: 'blank', active: 'service' },
+    meta: { layout: 'default', active: 'service' },
   },
 ]

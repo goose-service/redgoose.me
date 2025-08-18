@@ -15,7 +15,7 @@
   }
   @else if $range == max
   {
-    @media (max-width: 1440px) { @content; }
+    @media (min-width: 1440px) { @content; }
   }
 }
 
@@ -55,10 +55,10 @@
 // custom scrollbar
 @mixin custom-scrollbar()
 {
-  --scroll-size: 16px;
-  --scroll-padding: 4px;
+  --scroll-size: 12px;
+  --scroll-padding: 3px;
   --scroll-track: var(--scroll-track, var(--color-weak));
-  --scroll-track-hover: #{mix-alpha(var(--color-weak), 65%)};
+  --scroll-track-hover: #{mix-alpha(var(--color-weak), 60%)};
   --scroll-bg: hsla(0 0% 100% / 0%);
   &::-webkit-scrollbar {
     width: var(--scroll-size);
@@ -76,6 +76,14 @@
   &::-webkit-scrollbar-track {
     background: var(--scroll-bg);
   }
+}
+
+// single line text
+@mixin text-single-line()
+{
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 

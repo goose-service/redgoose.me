@@ -85,7 +85,11 @@ async function apiHome(req, _ctx = undefined)
     // set response
     response = Response.json({
       message: 'Complete get home data.',
-      data,
+      ...data,
+      assets: {
+        page,
+        size: apiAssets.size,
+      },
     })
   }
   catch (e)

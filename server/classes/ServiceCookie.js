@@ -1,12 +1,12 @@
 import ServiceError from './ServiceError.js'
 
-const { HOST, URL_PATH } = Bun.env
+const { COOKIE_MAX_AGE, COOKIE_DOMAIN, COOKIE_HTTP_ONLY, COOKIE_SECURE } = Bun.env
 const defaultOptions = {
-  maxAge: 60 * 60 * 24 * 7, // 7 days
+  maxAge: Number(COOKIE_MAX_AGE), // 7 days
   sameSite: 'strict',
-  domain: HOST,
-  httpOnly: true,
-  secure: /^https/.test(URL_PATH),
+  domain: COOKIE_DOMAIN,
+  httpOnly: COOKIE_HTTP_ONLY === 'true',
+  secure: COOKIE_SECURE === 'true',
 }
 
 class ServiceCookie {

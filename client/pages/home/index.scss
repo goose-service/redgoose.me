@@ -1,0 +1,43 @@
+@use '../../scss/mixins';
+
+.home {
+  > h1 {
+    font-size: 0;
+    visibility: hidden;
+  }
+}
+
+.body {
+  margin: var(--size-body-top, 0) 0 0;
+  @include mixins.responsive(mobile-large) {
+    margin-top: 30px;
+  }
+  @include mixins.responsive(tablet) {
+    margin-top: 64px;
+  }
+  @include mixins.responsive(desktop) {
+    margin-top: 72px;
+  }
+}
+
+.empty {
+  height: 100dvh;
+  min-height: calc(72dvh - var(--size-header-height));
+  max-height: calc(72dvh - var(--size-header-height));
+}
+
+.pagination {
+  margin: 24px 0 0;
+  .paginate--desktop {
+    display: none;
+  }
+  @include mixins.responsive(tablet) {
+    margin-top: 42px;
+    .paginate--mobile {
+      display: none;
+    }
+    .paginate--desktop {
+      display: flex;
+    }
+  }
+}

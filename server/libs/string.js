@@ -65,3 +65,19 @@ export function serialize(obj, usePrefix = false)
   res = str.join('&')
   return (res && usePrefix ? '?' : '') + res
 }
+
+/**
+ * html to text
+ * @param {string} html
+ * returns {string}
+ */
+export function htmlToText(html)
+{
+  if (!html) return ''
+  let text = html
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+  return text.trim()
+}
