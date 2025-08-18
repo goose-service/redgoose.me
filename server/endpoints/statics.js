@@ -1,6 +1,8 @@
 import ServiceError from '../classes/ServiceError.js'
 import { PATH_DIST, NUM_CACHE_MAX_AGE } from '../libs/assets.js'
 import { DEFAULT_HEADERS } from '../libs/server.js'
+import { checkingFile } from '../libs/util.js'
+import { renderIndex } from './service/_libs.js'
 
 const ignorePaths = [
   '/head.json',
@@ -33,9 +35,16 @@ async function statics(req, _ctx)
     }
     else
     {
-      throw new ServiceError(`Not found file. path: "${filePath}"`, {
-        status: 404,
-      })
+      if (checkingFile(url.pathname))
+      {
+        throw new ServiceError(`Not found file. path: "${filePath}"`, {
+          status: 404,
+        })
+      }
+      else
+      {
+        return await renderIndex(req)
+      }
     }
   }
   catch (e)

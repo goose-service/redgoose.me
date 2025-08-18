@@ -34,3 +34,15 @@ export function filteringQuery(src)
   })
   return src
 }
+
+/**
+ * checking file
+ * 파일인지 아닌지 검사한다.
+ * @param {string} path
+ * @return {boolean}
+ */
+export function checkingFile(path)
+{
+  const fileRegex = /\.[a-zA-Z0-9]{1,10}$/
+  return fileRegex.test(path)
+}
