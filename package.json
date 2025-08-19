@@ -1,6 +1,6 @@
 {
   "name": "redgoose.me",
-  "version": "6.0.2",
+  "version": "6.0.3",
   "repository": "https://github.com/goose-service/redgoose.me.git",
   "author": "redgoose <scripter@me.com>",
   "type": "module",
@@ -21,8 +21,7 @@
     "@types/bun": "^1.2.20",
     "isbot": "^5.1.30",
     "marked": "^16.2.0",
-    "react-dom": "^19.1.1",
-    "sass": "^1.90.0"
+    "react-dom": "^19.1.1"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^6.0.1",
@@ -31,6 +30,7 @@
     "jsdom": "^26.1.0",
     "lucide-vue-next": "^0.540.0",
     "ofetch": "^1.4.1",
+    "sass": "^1.90.0",
     "terser": "^5.43.1",
     "vite": "^7.1.2",
     "vue": "^3.5.18",
