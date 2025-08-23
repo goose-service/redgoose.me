@@ -1,5 +1,3 @@
-import ServiceError from '../libs/error.js'
-
 export default [
   {
     path: '/',

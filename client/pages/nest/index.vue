@@ -71,9 +71,7 @@ const state = reactive({
   nest: {},
   article: [],
   category: [],
-  assets: {
-    size: 24,
-  },
+  assets: { size: 24 },
 })
 
 onMounted(_fetch)

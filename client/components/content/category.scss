@@ -129,7 +129,7 @@
       line-height: 1.15;
     }
     a {
-      :hover {
+      &:hover {
         text-decoration: underline;
       }
       &:active {

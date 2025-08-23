@@ -20,7 +20,7 @@ class Meta {
     }
     else
     {
-      // head 파일이 없으므로 새로 만든다.
+      // head 파일이 없으므로 새로 만든다. (for DEV)
       const script = require('../../plugins/headToJson.js')
       if (!script?.default)
       {

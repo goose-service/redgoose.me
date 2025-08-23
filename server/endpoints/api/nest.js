@@ -62,7 +62,7 @@ async function apiNest(req, _ctx = undefined)
       ],
     })
     const { nest, category, article } = res
-    if (!(nest?.data && article?.data))
+    if (!(nest?.data || article?.data))
     {
       throw new ServiceError('Not found article.', {
         status: 204,
@@ -71,10 +71,10 @@ async function apiNest(req, _ctx = undefined)
     // set response
     response = Response.json({
       message: 'Complete get nest data.',
-      nest: {
+      nest: nest.data ? {
         srl: nest.data.srl,
         name: nest.data.name,
-      },
+      } : null,
       category: (category?.data?.index?.length > 0) ? category.data.index.map(o => {
         let category, label
         switch (o.name)
@@ -95,8 +95,8 @@ async function apiNest(req, _ctx = undefined)
         }
       }) : [],
       article: {
-        total: article.data.total || 0,
-        index: (article.data.index?.length > 0) ? article.data.index.map(filteringArticle) : [],
+        total: article.data?.total || 0,
+        index: (article.data?.index?.length > 0) ? article.data.index.map(filteringArticle) : [],
       },
       assets: {
         page,

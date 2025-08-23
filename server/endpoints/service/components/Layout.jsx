@@ -8,6 +8,9 @@ img { display: block; max-width: 100%; }
 ul { padding-left: 24px; }
 blockquote { margin: 1rem; }
 pre { word-break: break-all; white-space: pre-wrap; }
+video { max-width: 100%; height: auto; }
+.iframe { max-width: 100%; height: auto; aspect-ratio: 16/9; }
+.iframe iframe { display: block; width: 100%; height: 100%; }
 `
 
 const Layout = ({ children, title, _meta, _link }) => {
