@@ -30,11 +30,13 @@ async function apiNest(req, _ctx = undefined)
            url: '/nest/{srl}/',
            params: {
              srl: code,
+             app_srl: apiAssets.appSrl,
            },
         },
         {
           key: 'category',
           url: '/category/',
+          if: '{{nest.data}}',
           params: {
             module: 'nest',
             module_srl: '{{nest.data.srl}}',
@@ -47,11 +49,13 @@ async function apiNest(req, _ctx = undefined)
         {
           key: 'article',
           url: '/article/',
+          if: '{{nest.data}}',
           params: {
             fields: apiAssets.articleIndexFields,
             app_srl: apiAssets.appSrl,
             nest_srl: '{{nest.data.srl}}',
             category_srl: category_srl || undefined,
+            mode: 'public',
             size: apiAssets.size,
             order: 'regdate',
             sort: 'desc',

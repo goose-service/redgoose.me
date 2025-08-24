@@ -1,7 +1,7 @@
 import ServiceCookie from '../../classes/ServiceCookie.js'
 import ServiceError from '../../classes/ServiceError.js'
 import { onRequest, onResponse } from '../../libs/server.js'
-import { requestApi } from '../../libs/api.js'
+import { requestApi, apiAssets } from '../../libs/api.js'
 import { catchResponse, makeThumbnailPath, parsingContent, getCookieKey } from './_libs.js'
 
 /**
@@ -41,12 +41,14 @@ async function apiArticle(req, _ctx = undefined)
           url: '/article/{srl}/',
           params: {
             srl,
+            app_srl: apiAssets.appSrl,
             mod: cookie.existValue(cookieHitKey) ? '' : 'up-hit',
           },
         },
         {
           key: 'nest',
           url: '/nest/{srl}/',
+          if: '{{article.data}}',
           params: {
             srl: '{{article.data.nest_srl}}',
             fields: 'srl,name',
@@ -55,6 +57,7 @@ async function apiArticle(req, _ctx = undefined)
         {
           key: 'category',
           url: '/category/{srl}/',
+          if: '{{article.data}}',
           params: {
             srl: '{{article.data.category_srl}}',
             fields: 'srl,name',

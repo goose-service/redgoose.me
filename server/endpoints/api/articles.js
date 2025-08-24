@@ -29,6 +29,7 @@ async function apiArticles(req, ctx)
         app: apiAssets.appSrl,
         nest: nest_srl,
         category: category_srl,
+        mode: 'public',
         size: apiAssets.size,
         order: 'regdate',
         sort: 'desc',

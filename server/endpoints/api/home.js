@@ -25,6 +25,7 @@ async function apiHome(req, _ctx = undefined)
     const baseParams = {
       app_srl: apiAssets.appSrl,
       fields: apiAssets.articleIndexFields,
+      mode: 'public',
       mod: 'nest,category',
     }
     const res = await requestApi('/mix/', {
