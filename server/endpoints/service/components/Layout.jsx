@@ -72,7 +72,7 @@ const Layout = ({ children, title, _meta, _link }) => {
           </header>
           {children}
           <footer>
-            Copyright &copy; 2013-#{new Date().getFullYear()} redgoose. All right reserved.
+            Copyright &copy; 2013-#{new Date().getFullYear()} GoOSe. All right reserved.
           </footer>
         </main>
       </body>

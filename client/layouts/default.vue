@@ -75,7 +75,7 @@
   </div>
   <footer class="layout-footer">
     <p class="layout-footer__copyright">
-      Copyright 2013-{{_currentYear}} redgoose. All right reserved.
+      Copyright 2013-{{_currentYear}} GoOSe. All right reserved.
     </p>
   </footer>
 </div>

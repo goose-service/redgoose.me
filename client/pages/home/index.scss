@@ -21,9 +21,8 @@
 }
 
 .empty {
-  height: 100dvh;
-  min-height: calc(72dvh - var(--size-header-height));
-  max-height: calc(72dvh - var(--size-header-height));
+  height: auto;
+  padding: 32px 0 24px;
 }
 
 .pagination {
