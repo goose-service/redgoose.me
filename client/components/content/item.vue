@@ -22,7 +22,7 @@
 
 <script setup>
 import { ref } from 'vue'
-import shuffle from 'auto-writer/src/shuffle'
+import autoWriter from 'auto-writer'
 
 const props = defineProps({
   srl: { type: Number, required: true },
@@ -38,7 +38,7 @@ function onMouseEnter(e)
   const arr = [ $title.value, $description.value ]
   arr.forEach((el, k) => {
     if (!el) return
-    setTimeout(() => shuffle(el, {
+    setTimeout(() => autoWriter(el, {
       text: el.innerText,
       pattern: 'abcdefghijklmnopqrstuvwxyz0123456789-_!@#$%^&*()+~<>ㄱㄴㄷㄹㅁㅂㅅㅇㅈㅊㅋㅌㅍㅎㄲㄸㅃㅆㅉ',
       randomTextType: k === 0 ? 'pattern' : 'unicode',
