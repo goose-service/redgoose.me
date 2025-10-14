@@ -6,7 +6,6 @@ TMP_FILE="_tmp.tar"
 HOST="redgoose.me"
 
 build() {
-  bun run build
   podman build --force-rm -t $IMAGE_NAME .
   podman image prune -f
 }

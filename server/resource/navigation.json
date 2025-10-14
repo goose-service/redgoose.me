@@ -57,6 +57,11 @@
           "href": "/nest/foreign-countries/"
         }
       ]
+    },
+    {
+      "label": "A.I",
+      "key": "ai",
+      "href": "/nest/ai/"
     }
   ]
 }
