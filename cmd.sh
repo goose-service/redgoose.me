@@ -6,13 +6,13 @@ TMP_FILE="_tmp.tar"
 HOST="redgoose.me"
 
 build() {
-  podman build --force-rm -t $IMAGE_NAME .
-  podman image prune -f
+  docker build --force-rm -t $IMAGE_NAME .
+  docker image prune -f
 }
 
 upload() {
-  podman save -o $TMP_FILE $IMAGE_NAME
-  cat $TMP_FILE | ssh $HOST 'podman load'
+  docker save -o $TMP_FILE $IMAGE_NAME
+  cat $TMP_FILE | ssh $HOST 'docker load'
   rm $TMP_FILE
 }
 
@@ -32,7 +32,7 @@ case "$1" in
     ;;
 
   compose)
-    podman-compose down && podman-compose --project-name goose up -d
+    docker-compose down && docker-compose up -d
     ;;
 
   *)
