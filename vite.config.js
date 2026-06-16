@@ -56,12 +56,6 @@ const config = defineConfig(async () => {
             else ext = ''
             return `assets/${ext}[name]-[hash][extname]`
           },
-          manualChunks: {
-            vue: [
-              'vue',
-              'vue-router',
-            ],
-          },
         },
       },
       minify: 'terser',
