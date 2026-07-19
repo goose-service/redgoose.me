@@ -1,0 +1,16 @@
+# Version control and local tooling
+.git
+.idea
+.vscode
+.DS_Store
+
+# Local and generated dependencies/assets
+node_modules
+dist
+coverage
+*.log
+
+# Keep the base defaults in the image; environment-specific overrides are
+# supplied separately, for example by docker-compose as .env.local.
+.env.*
+!.env.example

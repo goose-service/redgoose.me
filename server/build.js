@@ -42,9 +42,6 @@ await Bun.build({
     identifiers: true,
     syntax: true,
   },
-  external: [
-    'react-dom',
-  ],
   naming: {
     entry: '[name].[ext]',
     chunk: 'service/chunk-[name]-[hash].[ext]',
