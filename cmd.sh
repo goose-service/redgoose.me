@@ -2,7 +2,7 @@
 
 # set docker container name
 IMAGE_NAME="redgoose/redgoose.me:local"
-TMP_FILE="_tmp.tar"
+UPLOAD_IMAGE_NAME="super8/service:dev"
 HOST="redgoose.me"
 
 build() {
@@ -11,9 +11,9 @@ build() {
 }
 
 upload() {
-  docker save -o $TMP_FILE $IMAGE_NAME
-  cat $TMP_FILE | ssh $HOST 'docker load'
-  rm $TMP_FILE
+  docker image tag $IMAGE_NAME $UPLOAD_IMAGE_NAME
+  docker save $UPLOAD_IMAGE_NAME | ssh $HOST 'docker load'
+  docker image rm $UPLOAD_IMAGE_NAME >/dev/null
 }
 
 case "$1" in
