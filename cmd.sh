@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # set docker container name
-IMAGE_NAME="redgoose/redgoose.me:latest"
+IMAGE_NAME="redgoose/redgoose.me:local"
 TMP_FILE="_tmp.tar"
 HOST="redgoose.me"
 

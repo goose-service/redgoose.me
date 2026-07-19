@@ -2,7 +2,7 @@ import ServiceError from '../../classes/ServiceError.js'
 import { onRequest, onResponse } from '../../libs/server.js'
 import { requestApi, apiAssets } from '../../libs/api.js'
 import { getQuery } from '../../libs/util.js'
-import { catchResponse, filteringArticle } from './_libs.js'
+import { catchResponse, filteringArticle, filteringCategory } from './_libs.js'
 
 /**
  * nest
@@ -30,35 +30,33 @@ async function apiNest(req, _ctx = undefined)
            url: '/nest/{srl}/',
            params: {
              srl: code,
-             app_srl: apiAssets.appSrl,
+             app: apiAssets.appSrl,
+             field: 'srl,code,name',
            },
         },
         {
           key: 'category',
           url: '/category/',
-          if: '{{nest.data}}',
+          if: '{{nest.srl}}',
           params: {
             module: 'nest',
-            module_srl: '{{nest.data.srl}}',
-            order: 'turn',
-            sort: 'asc',
-            unlimited: '1',
+            module_srl: '{{nest.srl}}',
+            page: 0,
+            order: 'turn ASC',
             mod: 'count,all',
           },
         },
         {
           key: 'article',
           url: '/article/',
-          if: '{{nest.data}}',
+          if: '{{nest.srl}}',
           params: {
-            fields: apiAssets.articleIndexFields,
-            app_srl: apiAssets.appSrl,
-            nest_srl: '{{nest.data.srl}}',
-            category_srl: category_srl || undefined,
+            field: apiAssets.field,
+            nest: '{{nest.srl}}',
+            category: category_srl ?? undefined,
             mode: 'public',
             size: apiAssets.size,
-            order: 'regdate',
-            sort: 'desc',
+            order: 'a.regdate DESC, a.srl DESC',
             page,
             mod: 'nest,category',
           },
@@ -66,41 +64,26 @@ async function apiNest(req, _ctx = undefined)
       ],
     })
     const { nest, category, article } = res
-    if (!(nest?.data || article?.data))
+    if (!nest.srl)
     {
-      throw new ServiceError('Not found article.', {
+      throw new ServiceError('Not found data.', {
         status: 204,
       })
     }
     // set response
     response = Response.json({
       message: 'Complete get nest data.',
-      nest: nest.data ? {
-        srl: nest.data.srl,
-        name: nest.data.name,
+      nest: nest ? {
+        srl: nest.srl,
+        name: nest.name,
       } : null,
-      category: (category?.data?.index?.length > 0) ? category.data.index.map(o => {
-        let category, label
-        switch (o.name)
-        {
-          case 'all':
-            category = undefined
-            label = 'All'
-            break
-          default:
-            category = String(o.srl)
-            label = o.name
-            break
-        }
-        return {
-          srl: category,
-          name: label,
-          count: o.count,
-        }
-      }) : [],
-      article: {
-        total: article.data?.total || 0,
-        index: (article.data?.index?.length > 0) ? article.data.index.map(filteringArticle) : [],
+      category: (category?.index?.length > 0) ? category.index.map(filteringCategory) : [],
+      article: (article?.index?.length > 0) ? {
+        total: article.total || 0,
+        index: article.index.map(filteringArticle),
+      } : {
+        total: 0,
+        index: [],
       },
       assets: {
         page,

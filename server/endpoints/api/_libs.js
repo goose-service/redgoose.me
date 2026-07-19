@@ -18,14 +18,71 @@ export function filteringArticle(src)
   }
 }
 
+export function filteringCategory(src)
+{
+  let category, label
+  switch (src.name)
+  {
+    case 'all':
+      category = undefined
+      label = 'All'
+      break
+    case 'none':
+      category = '0'
+      label = 'None'
+      break
+    default:
+      category = String(src.srl)
+      label = src.name
+      break
+  }
+  return {
+    srl: category,
+    name: label,
+    count: src.count,
+  }
+}
+
 export function makeThumbnailPath(code)
 {
   return code ? `${API_CLIENT_URL}/file/${code}/` : null
 }
 
-export function parsingContent(src)
+const HTML_ESCAPE_MAP = {
+  '&': '&amp;',
+  '<': '&lt;',
+  '>': '&gt;',
+  '"': '&quot;',
+  "'": '&#39;',
+}
+
+function escapeHtml(value)
+{
+  return String(value ?? '').replace(/[&<>"']/g, char => HTML_ESCAPE_MAP[char])
+}
+
+function isSafeUrl(value, allowMailto = false)
+{
+  const url = String(value || '').trim()
+  if (!url || url.startsWith('//')) return false
+  if (url.startsWith('#') || url.startsWith('/')) return true
+
+  try
+  {
+    const protocol = new URL(url, 'https://redgoose.me').protocol
+    const protocols = allowMailto ? [ 'http:', 'https:', 'mailto:' ] : [ 'http:', 'https:' ]
+    return protocols.includes(protocol)
+  }
+  catch (_e)
+  {
+    return false
+  }
+}
+
+export function parsingContent(src, options = {})
 {
   if (!src) return ''
+  const safe = options.safe === true
   // replace API_HOST
   src = src.replaceAll('{{API_HOST}}', API_CLIENT_URL)
   // parse markdown content
@@ -34,23 +91,26 @@ export function parsingContent(src)
     const { depth, text, tokens } = ctx
     const id = text.replace(/\s+/g, '_')
     const _text = renderer.parser.parseInline(tokens)
-    let _str = `<h${depth} id="${id}">`
-    _str += `<a href="#${id}" class="anchor">${sharp}</a>`
+    let _str = `<h${depth} id="${escapeHtml(id)}">`
+    _str += `<a href="#${escapeHtml(id)}" class="anchor">${sharp}</a>`
     _str += _text
     _str += `</h${depth}>`
     return _str
   }
   renderer.image = (ctx) => {
     const { href, title, text } = ctx
-    return `<img src="${href}" alt="${title || text}" loading="lazy"/>`
+    if (safe && !isSafeUrl(href)) return ''
+    return `<img src="${escapeHtml(href)}" alt="${escapeHtml(title || text)}" loading="lazy"/>`
   }
   renderer.link = (ctx) => {
     const { href, title, tokens } = ctx
-    const _target = /^http/.test(href) ? ' target="_blank"' : ''
-    const _title = title ? ` title="${title}"` : ''
     const _text = renderer.parser.parseInline(tokens)
-    return `<a href="${href}"${_target}${_title}>${_text}</a>`
+    if (safe && !isSafeUrl(href, true)) return _text
+    const _target = /^https?:\/\//i.test(href) ? ' target="_blank" rel="noopener noreferrer"' : ''
+    const _title = title ? ` title="${escapeHtml(title)}"` : ''
+    return `<a href="${escapeHtml(href)}"${_target}${_title}>${_text}</a>`
   }
+  renderer.html = (ctx) => safe ? '' : ctx.text
   return marked.parse(src, {
     gfm: true,
     breaks: true,

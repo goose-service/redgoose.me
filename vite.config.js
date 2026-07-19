@@ -3,79 +3,71 @@ import { isbot } from 'isbot'
 import vue from '@vitejs/plugin-vue'
 import pluginHeadToJson from './plugins/headToJson.js'
 
-const { HOST, PORT, PORT_CLIENT, API_TOKEN } = Bun.env
+const { HOST, PORT, PORT_CLIENT } = Bun.env
 
-const config = defineConfig(async () => {
-  const proxyUrl = `http://${HOST}:${PORT}`
-  return {
-    root: 'client',
-    publicDir: './public',
-    base: '/',
-    server: {
-      host: HOST,
-      port: Number(PORT_CLIENT),
-      open: false,
-      proxy: {
-        '/api': {
-          target: `${proxyUrl}/api`,
-          changeOrigin: true,
-          rewrite: path => path.replace(/^\/api\/?/, '/'),
-        },
-        '/rss': {
-          target: `${proxyUrl}/rss`,
-          changeOrigin: true,
-          rewrite: path => path.replace(/^\/rss\/?/, '/'),
-        },
-        '/': {
-          target: proxyUrl,
-          changeOrigin: true,
-          bypass: (_req, _res, _options) => {
-            if (!isbot(_req.headers['user-agent'])) return _req.url
-          },
+export default defineConfig(({
+  root: 'client',
+  publicDir: './public',
+  base: '/',
+  server: {
+    host: HOST,
+    port: Number(PORT_CLIENT),
+    open: false,
+    proxy: {
+      '/api': {
+        target: `http://${HOST}:${PORT}/api`,
+        changeOrigin: true,
+        rewrite: path => path.replace(/^\/api\/?/, '/'),
+      },
+      '/rss': {
+        target: `http://${HOST}:${PORT}/rss`,
+        changeOrigin: true,
+        rewrite: path => path.replace(/^\/rss\/?/, '/'),
+      },
+      '/': {
+        target: `http://${HOST}:${PORT}`,
+        changeOrigin: true,
+        bypass: (_req, _res, _options) => {
+          if (!isbot(_req.headers['user-agent'])) return _req.url
         },
       },
     },
-    css: {
-      preprocessorOptions: {
-        scss: {
-          api: 'modern-compiler',
+  },
+  css: {
+    preprocessorOptions: {
+      scss: {},
+    },
+  },
+  build: {
+    outDir: '../dist/client',
+    emptyOutDir: false,
+    rolldownOptions: {
+      output: {
+        assetFileNames: assetInfo => {
+          const info = assetInfo.name?.split('.') || ''
+          let ext = info ? info[info.length - 1] : ''
+          let subDir = ''
+          if (/png|jpe?g|svg|gif|ico|webp|avif/i.test(ext)) subDir = 'images/'
+          else if (/css/.test(ext)) subDir = 'css/'
+          else if (/woff?2|ttf/i.test(ext)) subDir = 'fonts/'
+          return `${subDir}[name]-[hash][extname]`
         },
       },
     },
-    build: {
-      outDir: '../dist',
-      emptyOutDir: true,
-      rollupOptions: {
-        output: {
-          assetFileNames: assetInfo => {
-            const info = assetInfo.name.split('.')
-            let ext = info[info.length - 1]
-            if (/png|jpe?g|svg|gif|ico|webp|avif/i.test(ext)) ext = 'images/'
-            else if (/css/.test(ext)) ext = 'css/'
-            else if (/woff?2|ttf/i.test(ext)) ext = 'fonts/'
-            else ext = ''
-            return `assets/${ext}[name]-[hash][extname]`
-          },
-        },
-      },
-      minify: 'terser',
-      terserOptions: {
-        format: {
-          comments: false,
-        },
-      },
+  },
+  resolve: {
+    alias: {
+      '@': new URL('./client', import.meta.url).pathname,
     },
-    plugins: [
-      vue({
-        template: {
-          compilerOptions: {
-            isCustomElement: tag => /^ext-|^goose-/.test(tag),
-          },
+  },
+  plugins: [
+    vue({
+      template: {
+        compilerOptions: {
+          isCustomElement: tag => /^ext-|^goose-/.test(tag),
         },
-      }),
-      pluginHeadToJson(),
-    ],
-  }
-})
-
-export default config
+      },
+    }),
+    pluginHeadToJson(),
+  ],
+}))

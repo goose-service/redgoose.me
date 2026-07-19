@@ -1,19 +1,27 @@
 /**
  * storage control
  * @param {string} key
- * @param {string|number|null} value
+ * @param {string|number|boolean|null} [value]
  * @return {any}
  */
-export function storageControl(key, value = null)
+export function storageControl(key, value)
 {
   if (!key) return null
-  if (value)
+  // An explicitly supplied value means "set", even when it is falsy.
+  if (arguments.length > 1)
   {
     window.localStorage.setItem(key, JSON.stringify(value))
+    return value
   }
-  else
+  const stored = window.localStorage.getItem(key)
+  if (stored === null) return null
+  try
   {
-    return JSON.parse(window.localStorage.getItem(key) || null)
+    return JSON.parse(stored)
+  }
+  catch (_e)
+  {
+    return stored
   }
 }
 

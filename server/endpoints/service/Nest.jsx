@@ -1,7 +1,8 @@
 import ServiceError from '../../classes/ServiceError.js'
 import { isDev, onRequest, onResponse, printMessage } from '../../libs/server.js'
 import { getQuery } from '../../libs/util.js'
-import { setResponse, checkingBot, renderIndex, getCategoryName } from './_libs.js'
+import { html } from '../../classes/Meta.js'
+import { setResponse, checkingBot, renderIndex, getCategoryName, getCanonicalUrl, getErrorStatus } from './_libs.js'
 import apiNest from '../api/nest.js'
 import Layout from './components/Layout.jsx'
 import Category from './components/Category.jsx'
@@ -34,15 +35,27 @@ async function Nest(req, _ctx)
       const _res = await res.json()
       const query = getQuery(req.url)
       const categoryName = getCategoryName(_res.category, category_srl)
+      const pageName = `${_res.nest.name}${categoryName ? ` / ${categoryName}` : ''}`
+      const canonicalUrl = getCanonicalUrl(req)
       response = setResponse((
-        <Layout>
-          <article>
-            <h1>{_res.nest.name}{categoryName ? ` / ${categoryName}` : ''}</h1>
+        <Layout
+          title={`${pageName} 🪴 ${html.title}`}
+          _meta={{
+            description: `${pageName} 작업물 목록`,
+            'og:title': `${pageName} 🪴 ${html.title}`,
+            'og:description': `${pageName} 작업물 목록`,
+            'og:url': canonicalUrl,
+          }}
+          _link={{ canonical: canonicalUrl }}>
+          <article class="page">
+            <header class="page-header">
+              <h1>{pageName}</h1>
+            </header>
             <Category
               items={_res.category}
               basePath={`/nest/${code}`}/>
             {_res.article?.index?.length > 0 ? (
-              <ul>
+              <ul class="item-list">
                 {_res.article.index.map((item, key) => (
                   <li>
                     <IndexItem {...item}/>
@@ -69,7 +82,7 @@ async function Nest(req, _ctx)
     if (dev) printMessage('error', `[${_e.status || 500}] ${_e.message}`)
     response = setResponse((
       <ErrorScreen code={_e.status} message="Failed get data."/>
-    ))
+    ), getErrorStatus(_e.status))
   }
 
   // trigger response event

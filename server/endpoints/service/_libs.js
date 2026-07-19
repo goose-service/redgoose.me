@@ -1,7 +1,8 @@
 import { isbot } from 'isbot'
-import { serialize } from '../../libs/string.js'
+import { serialize, dateFormat } from '../../libs/string.js'
 import { PATH_DIST } from '../../libs/assets.js'
 import { DEFAULT_HEADERS } from '../../libs/server.js'
+import { html as documentMeta } from '../../classes/Meta.js'
 
 export const withDoctype = (jsx) => `<!doctype html>\n${jsx}`
 
@@ -10,9 +11,44 @@ export function setResponse(content, status = 200)
   return new Response(withDoctype(content), {
     status,
     headers: {
+      ...DEFAULT_HEADERS,
       'Content-Type': 'text/html; charset=utf-8',
     },
   })
+}
+
+/**
+ * 검색 결과에 사용할 현재 페이지의 정규 URL을 만든다.
+ * 페이지 번호 외의 임시 쿼리는 canonical URL에서 제외한다.
+ */
+export function getCanonicalUrl(req)
+{
+  try
+  {
+    const requestUrl = new URL(req.url)
+    const canonicalUrl = new URL(requestUrl.pathname, documentMeta.link['canonical'])
+    const page = Number(requestUrl.searchParams.get('page'))
+    if (page > 1) canonicalUrl.searchParams.set('page', String(page))
+    return canonicalUrl.href
+  }
+  catch (_e)
+  {
+    return documentMeta.link['canonical']
+  }
+}
+
+/** API의 빈 응답(204)을 검색엔진이 이해할 수 있는 404로 변환한다. */
+export function getErrorStatus(status)
+{
+  const value = Number(status)
+  if (value === 204) return 404
+  return value >= 400 && value <= 599 ? value : 500
+}
+
+export function formatDate(value, format = '{yyyy}-{MM}-{dd}')
+{
+  const date = new Date(value)
+  return Number.isNaN(date.getTime()) ? String(value || '') : dateFormat(date, format)
 }
 
 /**
@@ -27,7 +63,7 @@ export function checkingBot(_req)
 
 /**
  * render index page
- * `dist/index.html` 파일 렌더링
+ * `dist/client/index.html` 파일 렌더링
  *
  * @param {Request} _req
  * @return {Promise<Response>}
@@ -121,7 +157,7 @@ export function getCategoryName(category, srl)
  */
 export function contentToDescription(html, maxLength = 100)
 {
-  let text = html.replace(/<[^>]+>/g, '')
+  let text = String(html || '').replace(/<[^>]+>/g, '')
   text = text.replace(/https?:\/\/[^ \n]+/g, '')
   text = text.replace(/\s+/g, ' ').trim()
   if (text.length > maxLength)

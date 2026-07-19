@@ -2,10 +2,10 @@ import { createPaginate } from '../_libs.js'
 import { apiAssets } from '../../../libs/api.js'
 
 const Paginate = ({ total, page, size }) => {
-  const items = createPaginate(total, page, apiAssets.size, 10)
+  const items = createPaginate(total, page, size || apiAssets.size, 10)
   return (
-    <nav>
-      <h1>페이지 네비게이션</h1>
+    <nav class="paginate" aria-label="페이지 탐색">
+      <h2>페이지</h2>
       <ul>
         {items.map((o) => (
           <li>

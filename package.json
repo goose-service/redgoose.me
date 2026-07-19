@@ -1,6 +1,6 @@
 {
   "name": "redgoose.me",
-  "version": "6.0.9",
+  "version": "6.1.0",
   "repository": "https://github.com/goose-service/redgoose.me.git",
   "author": "redgoose <scripter@me.com>",
   "type": "module",
@@ -9,9 +9,10 @@
     "dev": "NODE_ENV=development concurrently \"bun run --bun server/main.js\" \"bunx --bun vite\"",
     "dev:server": "NODE_ENV=development bun run --bun server/main.js",
     "prebuild": "rm -rf ./dist",
-    "build": "bunx --bun vite build",
-    "preview": "NODE_ENV=production bun run --bun server/main.js",
-    "version-patch": "npm version patch"
+    "build": "bunx --bun vite build && bun run --bun ./server/build.js",
+    "build:server": "rm -rf ./dist && bun run --bun ./server/build.js",
+    "build:client": "rm -rf ./dist && bunx --bun vite build",
+    "prod:preview": "NODE_ENV=production bun run --bun dist/main.js"
   },
   "browserslist": [
     "> 1%",
@@ -19,22 +20,23 @@
   ],
   "dependencies": {
     "@kitajs/html": "^4.2.13",
-    "@types/bun": "^1.3.14",
-    "isbot": "^5.1.43",
-    "marked": "^18.0.5",
     "react-dom": "^19.2.7"
   },
   "devDependencies": {
-    "@vitejs/plugin-vue": "^6.0.7",
+    "@types/bun": "^1.3.14",
+    "@vitejs/plugin-vue": "^6.0.8",
     "auto-writer": "^1.2.5",
     "concurrently": "^10.0.3",
+    "isbot": "^5.2.1",
     "jsdom": "^29.1.1",
+    "lightningcss": "^1.32.0",
     "lucide-vue-next": "^1.0.0",
+    "marked": "^18.0.6",
     "ofetch": "^1.5.1",
     "sass": "^1.101.0",
-    "terser": "^5.48.0",
-    "vite": "^8.0.16",
-    "vue": "^3.5.38",
-    "vue-router": "^5.1.0"
+    "terser": "^5.49.0",
+    "vite": "^8.1.5",
+    "vue": "^3.5.40",
+    "vue-router": "^5.2.0"
   }
 }

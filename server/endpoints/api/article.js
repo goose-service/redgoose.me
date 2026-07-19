@@ -7,7 +7,6 @@ import { catchResponse, makeThumbnailPath, parsingContent, getCookieKey } from '
 /**
  * article
  * article 데이터 가져오기
- *
  * @return {Promise<Response>}
  */
 async function apiArticle(req, _ctx = undefined)
@@ -23,10 +22,9 @@ async function apiArticle(req, _ctx = undefined)
     const { srl } = req.params
     if (!(Number(srl) > 0))
     {
-      throw new ServiceError('Not found srl.', {
-        status: 204,
-      })
+      throw new ServiceError('Not found srl.', { status: 204 })
     }
+
     // cookie
     const cookie = new ServiceCookie(req)
     const cookieHitKey = getCookieKey('hit', srl)
@@ -41,57 +39,66 @@ async function apiArticle(req, _ctx = undefined)
           url: '/article/{srl}/',
           params: {
             srl,
-            app_srl: apiAssets.appSrl,
+            app: apiAssets.appSrl,
             mod: cookie.existValue(cookieHitKey) ? '' : 'up-hit',
           },
         },
         {
           key: 'nest',
           url: '/nest/{srl}/',
-          if: '{{article.data}}',
+          if: '{{article.srl}}',
           params: {
-            srl: '{{article.data.nest_srl}}',
+            srl: '{{article.nest_srl}}',
             fields: 'srl,name',
           },
         },
         {
           key: 'category',
           url: '/category/{srl}/',
-          if: '{{article.data}}',
+          if: '{{article.srl}}',
           params: {
-            srl: '{{article.data.category_srl}}',
+            srl: '{{article.category_srl}}',
             fields: 'srl,name',
           },
         },
       ],
     })
-    // check response
-    if (!article?.data)
+
+    // check app srl
+    if (nest?.app_srl !== apiAssets.appSrl)
     {
-      throw new ServiceError('Not found data.', {
-        status: 204,
-      })
+      throw new ServiceError('Not found data.', { status: 204 })
     }
+
+    // check response
+    if (!article)
+    {
+      throw new ServiceError('Not found article.', { status: 204 })
+    }
+
     // update cookie
     cookie.setValue(cookieHitKey, 1)
+
     // set response
     response = Response.json({
       message: 'Complete get article data.',
-      srl: article.data.srl,
-      title: article.data.title,
-      nestName: nest?.data?.name,
-      categoryName: category?.data?.name,
-      content: parsingContent(article.data.content),
-      image: makeThumbnailPath(article.data.json?.thumbnail),
-      hit: article.data.hit,
-      star: article.data.star,
-      regdate: article.data.created_at,
-      usedUpStar: cookie.existValue(cookieStarKey),
+      data: {
+        srl: article.srl,
+        title: article.title,
+        nestName: nest?.name,
+        categoryName: category?.name,
+        content: parsingContent(article.content),
+        image: makeThumbnailPath(article.json?.thumbnail),
+        hit: article.hit,
+        star: article.star,
+        regdate: article.created_at,
+        usedUpStar: cookie.existValue(cookieStarKey),
+      },
     })
   }
-  catch (e)
+  catch (_e)
   {
-    response = catchResponse(e)
+    response = catchResponse(_e)
   }
 
   // trigger response event

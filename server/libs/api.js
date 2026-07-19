@@ -6,7 +6,7 @@ const { API_URL, API_TOKEN, APP_SRL, APP_INDEX_SIZE } = Bun.env
 export let apiAssets = {
   appSrl: Number(APP_SRL),
   size: Number(APP_INDEX_SIZE),
-  articleIndexFields: 'srl,nest_srl,category_srl,title,regdate,json',
+  field: 'a.srl,a.nest_srl,a.category_srl,a.title,a.regdate,a.json',
 }
 
 /**
@@ -20,6 +20,31 @@ function formData(src)
   let data = new FormData()
   Object.keys(src).forEach(o => data.append(o, src[o]))
   return data
+}
+
+/**
+ * parse response body
+ * @param {Response} res
+ * @return {Promise<object|string|null>}
+ */
+async function parseResponseBody(res)
+{
+  if (res.status === 204) return null
+  const contentType = res.headers.get('content-type') || ''
+  if (contentType.includes('application/json'))
+  {
+    return await res.json()
+  }
+  const text = await res.text()
+  if (!text) return null
+  try
+  {
+    return JSON.parse(text)
+  }
+  catch
+  {
+    return text
+  }
 }
 
 /**
@@ -43,7 +68,10 @@ export async function requestApi(path, options = {}, debug = false)
   // set request options
   let _options = {
     method: method || 'get',
-    headers: { 'Authorization': API_TOKEN },
+    headers: {
+      'Authorization': API_TOKEN,
+      'Content-Type': 'application/json',
+    },
     verbose: debug,
   }
   // set body
@@ -59,5 +87,5 @@ export async function requestApi(path, options = {}, debug = false)
     })
   }
   // return response
-  return await res.json()
+  return await parseResponseBody(res)
 }

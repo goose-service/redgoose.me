@@ -1,5 +1,6 @@
 import { isDev, onRequest, onResponse, printMessage } from '../../../libs/server.js'
-import { setResponse, checkingBot, renderIndex } from '../_libs.js'
+import { html } from '../../../classes/Meta.js'
+import { setResponse, checkingBot, renderIndex, contentToDescription, getCanonicalUrl, getErrorStatus } from '../_libs.js'
 import Layout from '../components/Layout.jsx'
 import ErrorScreen from '../components/ErrorScreen.jsx'
 
@@ -18,10 +19,21 @@ async function PageAbout(req, _ctx)
     {
       const file = Bun.file('./server/resource/about.json')
       const about = await file.json()
+      const canonicalUrl = getCanonicalUrl(req)
+      const title = `${about.title} 🪴 ${html.title}`
+      const description = contentToDescription(about.description)
       response = setResponse((
-        <Layout>
-          <article>
-            <header>
+        <Layout
+          title={title}
+          _meta={{
+            description,
+            'og:title': title,
+            'og:description': description,
+            'og:url': canonicalUrl,
+          }}
+          _link={{ canonical: canonicalUrl }}>
+          <article class="page">
+            <header class="page-header">
               <p>Introduce</p>
               <h1>{about.title}</h1>
               <figure>
@@ -31,7 +43,7 @@ async function PageAbout(req, _ctx)
             </header>
             {about.information.map((content) => (
               <section>
-                <h1>{content.title}</h1>
+                <h2>{content.title}</h2>
                 <dl>
                   {content.items.map(item => (
                     <>
@@ -56,7 +68,7 @@ async function PageAbout(req, _ctx)
     if (dev) printMessage('error', `[${_e.status || 500}] ${_e.message}`)
     response = setResponse((
       <ErrorScreen message="Failed get data."/>
-    ), _e.status || 500)
+    ), getErrorStatus(_e.status))
   }
 
   // trigger response event

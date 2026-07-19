@@ -40,19 +40,19 @@ async function apiUpdateStar(req, ctx)
     }
 
     // update data
-    const res = await requestApi(`/article/${srl}/up/`, {
+    await requestApi(`/article/${srl}/up/`, {
       method: 'patch',
-      data: { mode: 'star' },
+      json: {
+        mode: 'star',
+        count: 1,
+      },
     })
 
     // save cookie
     cookie.setValue(cookieKey, 1)
 
     // set response
-    response = Response.json({
-      message: 'Complete update star.',
-      count: res?.count || 0,
-    })
+    response = new Response('Complete update star.')
   }
   catch (e)
   {

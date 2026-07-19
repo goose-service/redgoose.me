@@ -7,7 +7,6 @@ import { catchResponse, filteringArticle } from './_libs.js'
 /**
  * articles
  * article 목록 데이터 가져오기
- *
  * @return {Promise<Response>}
  */
 async function apiArticles(req, ctx)
@@ -21,22 +20,24 @@ async function apiArticles(req, ctx)
   {
     const query = getQuery(req.url)
     const page = Number(query.page || 1)
-    const nest_srl = query.nest || undefined
-    const category_srl = query.category || undefined
+    const nest_srl = query.nest ?? undefined
+    const category_srl = query.category ?? undefined
+
+    // call request
     const res = await requestApi('/article/', {
       query: {
-        fields: apiAssets.articleIndexFields,
+        field: apiAssets.field,
         app: apiAssets.appSrl,
         nest: nest_srl,
         category: category_srl,
-        mode: 'public',
-        size: apiAssets.size,
-        order: 'regdate',
-        sort: 'desc',
         page,
+        size: apiAssets.size,
+        order: 'a.regdate DESC, a.srl DESC',
+        mode: 'public',
         mod: 'nest,category',
       },
     })
+
     // check response
     if (!(res?.data?.total > 0))
     {
@@ -44,6 +45,7 @@ async function apiArticles(req, ctx)
         status: 204,
       })
     }
+
     // set response
     response = Response.json({
       message: 'Complete get article data.',

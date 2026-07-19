@@ -8,11 +8,6 @@ import endpointError from './endpoints/error.js'
 
 const { serve } = Bun
 const { HOST, PORT } = Bun.env
-const _server = {
-  host: HOST,
-  port: Number(PORT),
-  dev: isDev(),
-}
 
 // setup meta
 await html.setup()
@@ -31,12 +26,12 @@ let routes = {
 
 // run server
 const server = serve({
-  development: _server.dev,
-  port: _server.port,
-  hostname: _server.host,
+  development: isDev(),
+  hostname: Number(HOST) || '0.0.0.0',
+  port: String(PORT) || 80,
   routes,
   error: endpointError,
 })
 
 // open server message
-openServerMessage(_server.host, _server.port, _server.dev)
+openServerMessage(server.hostname, server.port, isDev())

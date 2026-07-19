@@ -142,7 +142,7 @@ function onClickLink(e)
   const href = e.currentTarget.getAttribute('href')
   const target = e.currentTarget.getAttribute('target')
   if (!href) return
-  if (target) history.href = href
+  if (target) location.href = href
   else router.push(href)
 }
 

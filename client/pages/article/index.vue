@@ -75,14 +75,14 @@ onMounted(async () => {
   {
     state.loading = true
     const res = await ofetch(`/api/article/${route.params.srl}/`)
-    if (!res) throw new ServiceError('No Content', 204)
-    state.srl = res.srl
-    state.title = res.title
-    state.headDescription = [ res.nestName, res.categoryName ]
-    state.regdate = res.regdate
-    state.content = res.content
-    state.star.count = res.star
-    state.star.disabled = res.usedUpStar
+    if (!res?.data) throw new ServiceError('No Content', 204)
+    state.srl = res.data.srl
+    state.title = res.data.title
+    state.headDescription = [ res.data.nestName, res.data.categoryName ]
+    state.regdate = res.data.regdate
+    state.content = res.data.content
+    state.star.count = res.data.star
+    state.star.disabled = res.data.usedUpStar
     // scroll to hash content
     if (location.hash)
     {
@@ -121,11 +121,11 @@ async function onClickStar()
 {
   try
   {
-    const res = await ofetch(`/api/article/${route.params.srl}/star/`, {
+    await ofetch(`/api/article/${route.params.srl}/star/`, {
       method: 'post',
     })
     state.star.disabled = true
-    state.star.count = res.count
+    state.star.count += 1
   }
   catch (_e)
   {

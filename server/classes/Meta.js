@@ -11,34 +11,26 @@ class Meta {
 
   async setup()
   {
-    const data = await this.#loadFile()
-    if (data)
+    let data = await this.#loadFile()
+    if (!data && !Bun.env.USE_BUILD)
     {
-      this.title = data.title
-      this.meta = data.meta
-      this.link = data.link
-    }
-    else
-    {
-      // head 파일이 없으므로 새로 만든다. (for DEV)
+      // Generate metadata only for the unbundled development server. The
+      // production bundle must not include this build-only jsdom dependency.
       const script = require('../../plugins/headToJson.js')
       if (!script?.default)
       {
         throw new Error('Failed to load headToJson plugin.')
       }
       await script.default().closeBundle()
-      const data = await this.#loadFile()
-      if (data)
-      {
-        this.title = data.title
-        this.meta = data.meta
-        this.link = data.link
-      }
-      else
-      {
-        throw new Error('Failed to load "head.json" file.')
-      }
+      data = await this.#loadFile()
     }
+    if (!data)
+    {
+      throw new Error('Failed to load "head.json" file.')
+    }
+    this.title = data.title
+    this.meta = data.meta
+    this.link = data.link
   }
 
   async #loadFile()

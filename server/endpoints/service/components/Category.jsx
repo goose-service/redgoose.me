@@ -1,7 +1,7 @@
 const Category = ({ items, basePath }) => {
   return (
-    <nav>
-      <h1>분류목록</h1>
+    <nav class="category" aria-label="분류 목록">
+      <h2>분류 목록</h2>
       <ul>
         {items.map((o) => (
           <li>

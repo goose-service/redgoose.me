@@ -1,7 +1,7 @@
 import ServiceError from '../../classes/ServiceError.js'
 import { isDev, onRequest, onResponse, printMessage } from '../../libs/server.js'
 import { getQuery } from '../../libs/util.js'
-import { setResponse, checkingBot, renderIndex } from './_libs.js'
+import { setResponse, checkingBot, renderIndex, getCanonicalUrl, getErrorStatus } from './_libs.js'
 import apiHome from '../api/home.js'
 import Layout from './components/Layout.jsx'
 import Paginate from './components/Paginate.jsx'
@@ -31,6 +31,7 @@ async function Home(req, _ctx)
       }
       const _res = await res.json()
       const query = getQuery(req.url)
+      const canonicalUrl = getCanonicalUrl(req)
       const items = {
         body: [
           ..._res.head,
@@ -39,13 +40,15 @@ async function Home(req, _ctx)
         random: _res.random,
       }
       response = setResponse((
-        <Layout>
+        <Layout
+          _meta={{ 'og:url': canonicalUrl }}
+          _link={{ canonical: canonicalUrl }}>
           {(items.body?.length > 0 || items.random?.length > 0) ? (
             <>
               {items.body?.length > 0 && (
-                <section>
+                <section class="index-section">
                   <h1>작업물</h1>
-                  <ul>
+                  <ul class="item-list">
                     {items.body.map((item, key) => (
                       <li>
                         <IndexItem {...item}/>
@@ -55,9 +58,9 @@ async function Home(req, _ctx)
                 </section>
               )}
               {items.random?.length > 0 && (
-                <section>
-                  <h1>무작위 작업물</h1>
-                  <ul>
+                <section class="index-section">
+                  <h2>무작위 작업물</h2>
+                  <ul class="item-list">
                     {items.random.map((item, key) => (
                       <li>
                         <IndexItem {...item}/>
@@ -86,7 +89,7 @@ async function Home(req, _ctx)
     if (dev) printMessage('error', `[${_e.status || 500}] ${_e.message}`)
     response = setResponse((
       <ErrorScreen code={_e.status} message="Failed get data."/>
-    ))
+    ), getErrorStatus(_e.status))
   }
 
   // trigger response event

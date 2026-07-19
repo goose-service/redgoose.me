@@ -1,8 +1,14 @@
 import { JSDOM } from 'jsdom'
+import { mkdir } from 'node:fs/promises'
 
 async function getHtmlContent()
 {
-  const htmlFile = Bun.file('dist/index.html')
+  let htmlFile = Bun.file('dist/client/index.html')
+  if (!(await htmlFile.exists())) htmlFile = Bun.file('client/index.html')
+  if (!(await htmlFile.exists()))
+  {
+    throw new Error('Failed to load client index.html.')
+  }
   const htmlText = await htmlFile.text()
   const { window } = new JSDOM(htmlText)
   return window.document
@@ -45,7 +51,8 @@ function convertElementToObject($head)
 async function writeFile(obj)
 {
   const raw = JSON.stringify(obj, null, 2)
-  await Bun.write('dist/head.json', raw)
+  await mkdir('dist/client', { recursive: true })
+  await Bun.write('dist/client/head.json', raw)
 }
 
 function pluginHeadToJson()

@@ -12,8 +12,8 @@ const ErrorScreen = ({ code, message }) => {
       break
   }
   return (
-    <Layout>
-      <article>
+    <Layout _meta={{ robots: 'noindex, nofollow' }}>
+      <article class="error">
         <h1>{title}</h1>
         <p>{message}</p>
       </article>

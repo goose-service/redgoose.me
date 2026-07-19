@@ -1,12 +1,12 @@
 const IndexItem = ({ srl, title, date, image, nest, category }) => {
   return (
-    <>
+    <article class="index-item">
       {image && (
         <figure>
           <img src={image} alt={title} loading="lazy"/>
         </figure>
       )}
-      <h3><a href={`/article/${srl}/`}>{title}</a></h3>
+      <h2><a href={`/article/${srl}/`}>{title}</a></h2>
       <dl>
         {nest && (
           <>
@@ -27,7 +27,7 @@ const IndexItem = ({ srl, title, date, image, nest, category }) => {
           </>
         )}
       </dl>
-    </>
+    </article>
   )
 }
 

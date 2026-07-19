@@ -1,32 +1,20 @@
 import { html } from '../../../classes/Meta.js'
-
-const css = `
-html, body { -webkit-text-size-adjust: 100%; }
-body { margin: 24px; word-wrap: break-word; word-break: keep-all; }
-figure { margin: 0; }
-img { display: block; max-width: 100%; }
-ul { padding-left: 24px; }
-blockquote { margin: 1rem; }
-pre { word-break: break-all; white-space: pre-wrap; }
-video { max-width: 100%; height: auto; }
-.iframe { max-width: 100%; height: auto; aspect-ratio: 16/9; }
-.iframe iframe { display: block; width: 100%; height: 100%; }
-`
+import css from '../style.css' with { type: 'text' }
 
 const Layout = ({ children, title, _meta, _link }) => {
   const navigation = require('../../../resource/navigation.json')
-  let { meta, link } = html
-  const _css = css.replace(/\n/g, '').trim()
-  if (_meta) meta = { ...meta, ..._meta }
-  if (_link) link = { ...link, ..._link }
+  const meta = { ...html.meta, ..._meta }
+  const link = { ...html.link, ..._link }
   return (
     <html lang="ko">
       <head>
+        <meta charset="utf-8"/>
         <title>{title || html.title}</title>
-        <meta name="viewport" content="width=device-width"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
         <meta name="author" content={meta['author']}/>
         <meta name="description" content={meta['description']}/>
         <meta name="keywords" content={meta['keywords']}/>
+        {meta['robots'] && <meta name="robots" content={meta['robots']}/>}
         <link rel="canonical" href={link['canonical']}/>
         <meta property="og:title" content={meta['og:title']}/>
         <meta property="og:description" content={meta['og:description']}/>
@@ -37,20 +25,20 @@ const Layout = ({ children, title, _meta, _link }) => {
         <meta property="og:type" content={meta['og:type']}/>
         <meta name="apple-mobile-web-app-capable" content="yes"/>
         <meta name="mobile-web-app-capable" content="yes"/>
-        <meta name="theme-color" content="currentColor"/>
+        <meta name="theme-color" content="#f4f5f3"/>
         <link rel="shortcut icon" href={link['shortcut icon']}/>
         <link rel="icon" type="image/x-icon" href={link['icon']}/>
         <link rel="apple-touch-icon" href={link['apple-touch-icon']}/>
         <link rel="apple-touch-startup-image" href={link['apple-touch-startup-image']}/>
         <link rel="manifest" href={link['manifest']}/>
-        <style>{_css}</style>
+        <style>{css}</style>
       </head>
       <body>
-        <main>
-          <header>
-            <h1><a href="/">{html.title}</a></h1>
+        <main class="site">
+          <header class="site-header">
+            <p class="site-title"><a href="/">{html.title}</a></p>
             {navigation.global?.length > 0 && (
-              <nav>
+              <nav class="site-nav" aria-label="주요 메뉴">
                 <ul>
                   {navigation.global.map((dep1) => (
                     <li>
@@ -71,8 +59,8 @@ const Layout = ({ children, title, _meta, _link }) => {
             )}
           </header>
           {children}
-          <footer>
-            Copyright &copy; 2013-#{new Date().getFullYear()} GoOSe. All right reserved.
+          <footer class="site-footer">
+            Copyright &copy; 2013&ndash;{new Date().getFullYear()} GoOSe. All rights reserved.
           </footer>
         </main>
       </body>

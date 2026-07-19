@@ -21,7 +21,7 @@ redgoose 대표 서비스 도메인
 서버를 실행하려면 다음과 같은 명령어를 실행합니다.
 
 ```shell
-bun run dev
+bun run dev:preview
 ```
 
 서버가 열리면 `.env`에서 설정한 포트 두개가 같이 열리게 됩니다. 이때 `PORT_CLIENT` 포트를 조합한 URL로 접속합니다. ex) `http://localhost:81`
@@ -39,7 +39,7 @@ bun run build
 빌드가 완료되면 `dist` 디렉토리가 생성됩니다. 이 디렉토리의 내용으로 웹 서버를 실행하기 위하여 다음과 같은 명령어를 실행합니다.
 
 ```shell
-bun run preview
+bun run prod:preview
 ```
 
 서버가 실행되었으면 `.env`에서 설정한 `PORT` 포트로 접속할 수 있습니다. ex) `http://localhost:80`

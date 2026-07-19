@@ -1,6 +1,7 @@
 import ServiceError from '../../classes/ServiceError.js'
 import { onRequest, onResponse } from '../../libs/server.js'
 import { requestApi, apiAssets } from '../../libs/api.js'
+import { getQuery } from '../../libs/util.js'
 import { catchResponse, makeThumbnailPath, parsingContent } from './_libs.js'
 
 /**
@@ -18,14 +19,17 @@ async function apiRss(req, _ctx = undefined)
 
   try
   {
+    const query = getQuery(req.url)
+    const page = Number(query.page || 1)
     // get data from api
     const res = await requestApi('/article/', {
       query: {
         app: apiAssets.appSrl,
-        mode: 'public',
+        page,
         size: apiAssets.size,
-        order: 'regdate',
-        sort: 'desc',
+        order: 'a.regdate DESC, a.srl DESC',
+        mode: 'public',
+        mod: 'nest,category',
       },
     })
     if (!(res?.data?.index?.length > 0))
@@ -41,7 +45,7 @@ async function apiRss(req, _ctx = undefined)
         title: o.title,
         date: o.regdate,
         image: makeThumbnailPath(o.json?.thumbnail),
-        content: parsingContent(o.content),
+        content: parsingContent(o.content, { safe: true }),
       }
     })
     // set response
@@ -53,7 +57,7 @@ async function apiRss(req, _ctx = undefined)
   }
   catch (_e)
   {
-    response = catchResponse(e)
+    response = catchResponse(_e)
   }
 
   // trigger response event

@@ -23,8 +23,11 @@ async function apiHome(req, _ctx = undefined)
     const query = getQuery(req.url)
     const page = Number(query.page || 1)
     const baseParams = {
-      app_srl: apiAssets.appSrl,
-      fields: apiAssets.articleIndexFields,
+      app: apiAssets.appSrl,
+      field: apiAssets.field,
+      page,
+      size: apiAssets.size,
+      order: 'a.regdate DESC, a.srl DESC',
       mode: 'public',
       mod: 'nest,category',
     }
@@ -34,13 +37,7 @@ async function apiHome(req, _ctx = undefined)
         {
           key: 'article',
           url: '/article/',
-          params: {
-            ...baseParams,
-            size: apiAssets.size,
-            order: 'regdate',
-            sort: 'desc',
-            page,
-          },
+          params: baseParams,
         },
         page === 1 && {
           key: 'articleRandom',
@@ -54,20 +51,20 @@ async function apiHome(req, _ctx = undefined)
       ].filter(Boolean),
     }, false)
     const { article, articleRandom } = res
-    if (!(article?.data?.index?.length > 0))
+    if (!(article?.index?.length > 0))
     {
       throw new ServiceError('Not found article.', {
         status: 204,
       })
     }
     let data = {
-      total: article.data.total,
+      total: article.total,
       head: [],
       body: [],
       random: [],
     }
     // set articles
-    const _articles = article.data.index.map(filteringArticle)
+    const _articles = article.index.map(filteringArticle)
     if (page === 1)
     {
       data.head = _articles.slice(0, 4) || []
@@ -78,9 +75,9 @@ async function apiHome(req, _ctx = undefined)
       data.body = _articles
     }
     // set random articles
-    if (articleRandom?.data?.index?.length > 0)
+    if (articleRandom?.index?.length > 0)
     {
-      const _randomArticles = articleRandom.data.index.map(filteringArticle)
+      const _randomArticles = articleRandom.index.map(filteringArticle)
       data.random = _randomArticles || []
     }
     // set response
@@ -93,9 +90,9 @@ async function apiHome(req, _ctx = undefined)
       },
     })
   }
-  catch (e)
+  catch (_e)
   {
-    response = catchResponse(e)
+    response = catchResponse(_e)
   }
 
   // trigger response event
