@@ -5,6 +5,11 @@ import { dateFormat } from '../../libs/string.js'
 import { getQuery } from '../../libs/util.js'
 import { catchResponse, filteringArticle } from './_libs.js'
 
+// Random articles use the current date as their seed, so one process-local
+// cache entry is enough. The cache is naturally replaced when the date changes
+// and is cleared when the server process restarts.
+const randomArticleCache = { key: null, data: null }
+
 /**
  * home
  * 첫페이지에서 사용되는 article 목록 가져오기
@@ -22,6 +27,9 @@ async function apiHome(req, _ctx = undefined)
   {
     const query = getQuery(req.url)
     const page = Number(query.page || 1)
+    const randomDate = dateFormat(new Date(), '{yyyy}{MM}{dd}')
+    const randomCacheKey = `${apiAssets.appSrl}:${randomDate}:4:2year`
+    const hasRandomCache = page === 1 && randomArticleCache.key === randomCacheKey && Array.isArray(randomArticleCache.data)
     const baseParams = {
       app: apiAssets.appSrl,
       field: apiAssets.field,
@@ -39,13 +47,14 @@ async function apiHome(req, _ctx = undefined)
           url: '/article/',
           params: baseParams,
         },
-        page === 1 && {
+        page === 1 && !hasRandomCache && {
           key: 'articleRandom',
           url: '/article/',
           params: {
             ...baseParams,
             size: 4,
-            random: dateFormat(new Date(), '{yyyy}{MM}{dd}'), // 20251225
+            random: randomDate, // 20251225
+            duration: `regdate,2year`,
           },
         },
       ].filter(Boolean),
@@ -75,10 +84,21 @@ async function apiHome(req, _ctx = undefined)
       data.body = _articles
     }
     // set random articles
-    if (articleRandom?.index?.length > 0)
+    if (page === 1)
     {
-      const _randomArticles = articleRandom.index.map(filteringArticle)
-      data.random = _randomArticles || []
+      if (hasRandomCache)
+      {
+        data.random = randomArticleCache.data
+      }
+      else
+      {
+        if (Array.isArray(articleRandom?.index))
+        {
+          data.random = articleRandom.index.map(filteringArticle)
+          randomArticleCache.key = randomCacheKey
+          randomArticleCache.data = data.random
+        }
+      }
     }
     // set response
     response = Response.json({
