@@ -2,6 +2,7 @@ import ServiceError from '../classes/ServiceError.js'
 import { filteringQuery } from './util.js'
 
 const { API_URL, API_TOKEN, APP_SRL, APP_INDEX_SIZE } = Bun.env
+const SERVICE_UNAVAILABLE_MESSAGE = '현재 서비스가 일시적으로 이용할 수 없습니다. 잠시 후 다시 시도해 주세요.'
 
 export let apiAssets = {
   appSrl: Number(APP_SRL),
@@ -78,13 +79,31 @@ export async function requestApi(path, options = {}, debug = false)
   if (json) _options.body = JSON.stringify(json)
   else if (data) _options.body = formData(data)
   // request to API
-  const res = await fetch(url, _options)
+  let res
+  try
+  {
+    res = await fetch(url, _options)
+  }
+  catch (_e)
+  {
+    throw new ServiceError(SERVICE_UNAVAILABLE_MESSAGE, {
+      status: 503,
+      text: 'Service Unavailable',
+      _err: _e,
+    })
+  }
   if (!res.ok)
   {
-    throw new ServiceError('Failed API request.', {
-      status: res.status,
-      text: res.statusText,
-    })
+    const status = res.status >= 500 ? 503 : res.status
+    throw new ServiceError(
+      status === 503
+        ? SERVICE_UNAVAILABLE_MESSAGE
+        : 'Failed API request.',
+      {
+        status,
+        text: status === 503 ? 'Service Unavailable' : res.statusText,
+      },
+    )
   }
   // return response
   return await parseResponseBody(res)

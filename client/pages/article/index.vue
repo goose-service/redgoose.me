@@ -98,7 +98,7 @@ onMounted(async () => {
     }
     else
     {
-      throw new ServiceError(_e?.message)
+      throw ServiceError.from(_e)
     }
   }
   finally
@@ -129,7 +129,7 @@ async function onClickStar()
   }
   catch (_e)
   {
-    alert('Failed update star.')
+    alert(ServiceError.from(_e).message)
   }
 }
 </script>

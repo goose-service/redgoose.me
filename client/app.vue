@@ -2,8 +2,8 @@
 <component :is="_layout">
   <Error
     v-if="_error"
-    page-title="Service Error"
-    :page-message="error?.message || '알 수 없는 오류가 발생했습니다.'"
+    page-title="서비스 오류"
+    :page-message="error?.message || '서비스를 불러오지 못했어요.'"
     :error="error"/>
   <router-view v-else/>
 </component>
@@ -45,15 +45,15 @@ onErrorCaptured(e => {
   }
   else if (e?.message)
   {
-    error.value = new ServiceError(e.message)
+    error.value = ServiceError.from(e)
   }
   else if (typeof e === 'string')
   {
-    error.value = new ServiceError(e)
+    error.value = ServiceError.from({ message: e })
   }
   else
   {
-    error.value = new ServiceError('Invalid Error')
+    error.value = ServiceError.from(e)
   }
 })
 
