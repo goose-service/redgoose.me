@@ -21,7 +21,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { onBeforeUnmount, ref } from 'vue'
 import autoWriter from 'auto-writer'
 
 const props = defineProps({
@@ -32,19 +32,55 @@ const props = defineProps({
 })
 const $title = ref()
 const $description = ref()
+const writerTimeouts = []
 
-function onMouseEnter(e)
+function getWriterTargets()
 {
-  const arr = [ $title.value, $description.value ]
-  arr.forEach((el, k) => {
-    if (!el) return
-    setTimeout(() => autoWriter(el, {
-      text: el.innerText,
-      pattern: 'abcdefghijklmnopqrstuvwxyz0123456789-_!@#$%^&*()+~<>ㄱㄴㄷㄹㅁㅂㅅㅇㅈㅊㅋㅌㅍㅎㄲㄸㅃㅆㅉ',
-      randomTextType: k === 0 ? 'pattern' : 'unicode',
-    }), 180 * k)
+  return [
+    { element: $title.value, text: props.title },
+    { element: $description.value, text: props.description },
+  ]
+}
+
+function stopWriter(element)
+{
+  if (!element) return
+  const id = Number(element.dataset.id)
+  if (Number.isInteger(id)) clearInterval(id)
+  delete element.dataset.id
+}
+
+function stopWriters(reset = false)
+{
+  writerTimeouts.forEach(clearTimeout)
+  writerTimeouts.length = 0
+
+  getWriterTargets().forEach(({ element, text }) => {
+    stopWriter(element)
+    if (reset && element) element.textContent = text || ''
   })
 }
+
+function onMouseEnter()
+{
+  stopWriters(true)
+
+  getWriterTargets().forEach(({ element, text }, k) => {
+    if (!element || !text) return
+    const timeout = setTimeout(() => {
+      const index = writerTimeouts.indexOf(timeout)
+      if (index !== -1) writerTimeouts.splice(index, 1)
+      autoWriter(element, {
+        text,
+        pattern: 'abcdefghijklmnopqrstuvwxyz0123456789-_!@#$%^&*()+~<>ㄱㄴㄷㄹㅁㅂㅅㅇㅈㅊㅋㅌㅍㅎㄲㄸㅃㅆㅉ',
+        randomTextType: k === 0 ? 'pattern' : 'unicode',
+      })
+    }, 180 * k)
+    writerTimeouts.push(timeout)
+  })
+}
+
+onBeforeUnmount(() => stopWriters())
 </script>
 
 <style src="./item.scss" lang="scss" scoped></style>
