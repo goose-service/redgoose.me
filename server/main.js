@@ -27,8 +27,8 @@ let routes = {
 // run server
 const server = serve({
   development: isDev(),
-  hostname: Number(HOST) || '0.0.0.0',
-  port: String(PORT) || 80,
+  hostname: String(HOST) || '0.0.0.0',
+  port: Number(PORT) || 80,
   routes,
   error: endpointError,
 })

@@ -1,6 +1,6 @@
 {
-  "short_name": "redgoose",
-  "name": "붉은거위 / redgoose",
+  "short_name": "GoOSe",
+  "name": "붉은거위 / GoOSe",
   "icons": [
     {
       "src": "/images/redgoose-1024x1024.webp",
@@ -17,7 +17,7 @@
   ],
   "id": "/",
   "start_url": "/",
-  "description": "붉은거위의 개인작업물 라이브러리. Redgoose personal work library",
+  "description": "붉은거위의 개인작업물 라이브러리. GoOSe personal work library",
   "display": "standalone",
   "theme_color": "#111111",
   "background_color": "#fafbfc",

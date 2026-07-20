@@ -61,3 +61,5 @@ watch(() => route.name, () => {
   if (!!error.value) error.value = undefined
 })
 </script>
+
+<style src="./app.scss" lang="scss"></style>
