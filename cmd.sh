@@ -2,7 +2,7 @@
 
 # set docker container name
 IMAGE_NAME="redgoose/redgoose.me:local"
-UPLOAD_IMAGE_NAME="super8/service:latest"
+UPLOAD_IMAGE_NAME="redgoose/redgoose.me:latest"
 HOST="redgoose.me"
 
 build() {

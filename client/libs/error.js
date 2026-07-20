@@ -13,9 +13,10 @@ class ServiceError extends Error {
       const status = Number(value)
       return status >= 400 && status <= 599
     })
-    const status = Number(code) || 503
+    const rawStatus = Number(code) || 503
+    const status = rawStatus === 401 ? 503 : rawStatus
     let message = error?.message || '서비스를 불러오지 못했어요.'
-    if (status === 503 || !code)
+    if (status === 503 || rawStatus === 401 || !code)
     {
       message = ServiceError.SERVICE_UNAVAILABLE_MESSAGE
     }

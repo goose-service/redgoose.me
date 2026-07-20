@@ -1,7 +1,9 @@
 import ServiceError from '../classes/ServiceError.js'
+import { isDev } from './server.js'
 import { filteringQuery } from './util.js'
 
 const { API_URL, API_TOKEN, APP_SRL, APP_INDEX_SIZE } = Bun.env
+const dev = isDev()
 const SERVICE_UNAVAILABLE_MESSAGE = '현재 서비스가 일시적으로 이용할 수 없습니다. 잠시 후 다시 시도해 주세요.'
 
 export let apiAssets = {
@@ -94,7 +96,8 @@ export async function requestApi(path, options = {}, debug = false)
   }
   if (!res.ok)
   {
-    const status = res.status >= 500 ? 503 : res.status
+    const isUnauthorized = res.status === 401 && !dev
+    const status = res.status >= 500 || isUnauthorized ? 503 : res.status
     throw new ServiceError(
       status === 503
         ? SERVICE_UNAVAILABLE_MESSAGE
